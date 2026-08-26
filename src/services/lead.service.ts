@@ -15,6 +15,26 @@ export class LeadService {
   public static async captureLead(input: LeadIntakeInput) {
     const adminSupabase = createAdminClient();
 
+    const resolvedName = input.studentName || input.fullName || "Prospective Student";
+    const currentYear = new Date().getFullYear();
+    const randomSuffix = Math.floor(100000 + Math.random() * 900000);
+    const enquiryReferenceNumber = `ENQ-${currentYear}-${randomSuffix}`;
+
+    // Consolidate rich enquiry metadata into notes for CRM counsellors
+    const extraDetails: string[] = [];
+    if (input.targetExam) extraDetails.push(`Target Exam: ${input.targetExam}`);
+    if (input.preferredMode) extraDetails.push(`Preferred Mode: ${input.preferredMode}`);
+    if (input.preferredDate) extraDetails.push(`Preferred Date: ${input.preferredDate}`);
+    if (input.message) extraDetails.push(`Message: ${input.message}`);
+    if (input.utmSource) extraDetails.push(`UTM Source: ${input.utmSource} | Medium: ${input.utmMedium || "-"} | Campaign: ${input.utmCampaign || "-"}`);
+
+    const consolidatedNotes = [
+      input.notes,
+      extraDetails.length > 0 ? `[Enquiry Details] ${extraDetails.join(" | ")}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
     // Check if recent lead with same phone exists to prevent spam duplicates
     const { data: existingLead } = await (adminSupabase
       .from("leads") as any)
@@ -25,7 +45,7 @@ export class LeadService {
 
     if (existingLead) {
       // Append note rather than duplicate
-      const updatedNotes = `${existingLead.notes || ""}\n[${new Date().toISOString()}] Re-enquiry: ${input.notes || "Interest in " + (input.courseInterest || "courses")}`;
+      const updatedNotes = `${existingLead.notes || ""}\n[${new Date().toISOString()}] Re-enquiry (${enquiryReferenceNumber}): ${consolidatedNotes || "Interest in " + (input.courseInterest || "courses")}`;
       await (adminSupabase
         .from("leads") as any)
         .update({
@@ -34,13 +54,17 @@ export class LeadService {
         })
         .eq("id", existingLead.id);
 
-      return { leadId: existingLead.id, isExisting: true };
+      return {
+        leadId: existingLead.id,
+        isExisting: true,
+        enquiryReferenceNumber,
+      };
     }
 
     const { data: newLead, error } = await (adminSupabase
       .from("leads") as any)
       .insert({
-        student_name: input.studentName,
+        student_name: resolvedName,
         parent_name: input.parentName || null,
         phone: input.phone,
         email: input.email || null,
@@ -49,7 +73,7 @@ export class LeadService {
         course_interest: input.courseInterest || null,
         source: input.source,
         status: "NEW",
-        notes: input.notes || null,
+        notes: consolidatedNotes || null,
       })
       .select("id")
       .single();
@@ -62,10 +86,14 @@ export class LeadService {
       action: "LEAD_CAPTURED",
       entityName: "leads",
       entityId: newLead.id,
-      metadata: { source: input.source, studentName: input.studentName },
+      metadata: { source: input.source, studentName: resolvedName, enquiryReferenceNumber },
     });
 
-    return { leadId: newLead.id, isExisting: false };
+    return {
+      leadId: newLead.id,
+      isExisting: false,
+      enquiryReferenceNumber,
+    };
   }
 
   /**
