@@ -2,29 +2,43 @@
 
 @layer base {
   :root {
-    /* Brand Primary & Secondary Tokens */
+    /* Brand Primary (Navy) */
     --brand-primary: #0A192F;
     --brand-primary-dark: #0D2342;
     --brand-primary-light: #132E59;
+    --brand-primary-hover: #1E3A8A;
+    
+    /* Brand Accent (Orange) */
     --brand-accent: #FF6B00;
     --brand-accent-vibrant: #FA5A00;
     --brand-accent-light: #FF8533;
+    --brand-accent-hover: #EA580C;
     
     /* Academic Achievement / Gold */
     --brand-gold: #D97706;
     --brand-gold-light: #F59E0B;
+    --brand-gold-dark: #B45309;
     
     /* Surface & Background */
     --brand-background: #F8FAFC;
     --brand-surface: #FFFFFF;
+    --brand-surface-muted: #F1F5F9;
+    --brand-surface-dark: #0D2342;
     --brand-text: #0F172A;
+    --brand-text-secondary: #334155;
     --brand-muted: #64748B;
     --brand-border: #E2E8F0;
+    --brand-border-dark: #334155;
     
     /* Status Feedback */
     --brand-success: #10B981;
+    --brand-success-light: #ECFDF5;
     --brand-warning: #F59E0B;
+    --brand-warning-light: #FFFBEB;
     --brand-danger: #EF4444;
+    --brand-danger-light: #FEF2F2;
+    --brand-info: #3B82F6;
+    --brand-info-light: #EFF6FF;
 
     --background: var(--brand-background);
     --foreground: var(--brand-text);
@@ -35,8 +49,56 @@ body {
   background-color: var(--brand-background);
   color: var(--brand-text);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Custom Accessibility Focus Rings */
+:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+
+/* Micro-animations and transitions */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -1,0 +1,35 @@
+import React from "react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+
+export interface NavLinkProps
+  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  href: string;
+  isActive?: boolean;
+  children: React.ReactNode;
+}
+
+export const NavLink: React.FC<NavLinkProps> = ({
+  href,
+  isActive = false,
+  className,
+  children,
+  ...props
+}) => {
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "text-sm font-medium transition-colors duration-150 py-1.5 px-3 rounded-md",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-accent)]",
+        isActive
+          ? "text-[var(--brand-accent)] bg-orange-50/70 font-semibold"
+          : "text-[var(--brand-text-secondary)] hover:text-[var(--brand-primary)] hover:bg-[var(--brand-surface-muted)]",
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </Link>
+  );
+};
