@@ -1,8 +1,16 @@
 /**
- * ETSE 2026 and Admit Card Type Definitions
+ * ETSE 2026 and Admit Card Type Definitions (Phase 1.1 Hardened)
  */
 
-export type ETSEStatus = "REGISTERED" | "ADMIT_CARD_GENERATED" | "APPEARED" | "ABSENT" | "RESULT_DECLARED" | "CANCELLED";
+export type ETSEStatus =
+  | "REGISTERED"
+  | "ADMIT_CARD_GENERATED"
+  | "APPEARED"
+  | "ABSENT"
+  | "RESULT_DECLARED"
+  | "CANCELLED";
+
+export type AdmitCardStatus = "DRAFT" | "GENERATED" | "PUBLISHED" | "REVOKED";
 
 export interface ExamCentre {
   id: string;
@@ -57,6 +65,9 @@ export interface ETSERegistration {
   examCentreId: string;
   photoUrl?: string | null;
   status: ETSEStatus;
+  claimTokenHash?: string | null;
+  claimTokenExpiresAt?: string | null;
+  claimedAt?: string | null;
   registeredAt: string;
   createdAt: string;
   updatedAt: string;
@@ -75,8 +86,22 @@ export interface AdmitCard {
   examTime: string;
   reportingTime: string;
   examCentreId: string;
+  status: AdmitCardStatus;
+  // Snapshot immutability fields
+  studentNameSnapshot?: string | null;
+  fatherNameSnapshot?: string | null;
+  motherNameSnapshot?: string | null;
+  dobSnapshot?: string | null;
+  classSnapshot?: string | null;
+  schoolNameSnapshot?: string | null;
+  centreNameSnapshot?: string | null;
+  centreAddressSnapshot?: string | null;
+  instructionsSnapshot?: string[];
   isGenerated: boolean;
   generatedAt: string;
+  regeneratedAt?: string | null;
+  revokedAt?: string | null;
+  revocationReason?: string | null;
   downloadCount: number;
   lastDownloadedAt?: string | null;
   createdAt: string;
@@ -88,12 +113,23 @@ export interface AdmitCard {
 
 export interface AdmitCardVerificationResult {
   isValid: boolean;
-  candidateName: string;
-  applicationNumber: string;
-  rollNumber: string;
-  examTitle: string;
-  examDate: string;
-  examCentre: string;
-  status: string;
+  candidateName?: string;
+  applicationNumber?: string;
+  rollNumber?: string;
+  examTitle?: string;
+  examDate?: string;
+  examCentre?: string;
+  centreAddress?: string;
+  status?: string;
+  revocationReason?: string | null;
   verifiedAt: string;
+  message?: string;
+}
+
+export interface RegistrationResult {
+  registration: ETSERegistration;
+  admitCard: AdmitCard | null;
+  applicationNumber: string;
+  claimToken?: string | null;
+  isNewAccountClaimRequired: boolean;
 }

@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(arrayBuffer);
 
     // 3. Generate preview and validation report
-    const report = ResultImportEngine.parseAndValidate(buffer, examId, academicYear);
+    const report = await ResultImportEngine.parseAndValidate(buffer, examId, academicYear);
 
     return apiSuccess(report, {
       totalRows: report.totalRows,

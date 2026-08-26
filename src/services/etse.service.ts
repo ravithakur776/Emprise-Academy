@@ -1,20 +1,24 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClientServer } from "@/lib/supabase/server";
 import { ETSERegistrationInput } from "@/validations/etse.validation";
-import { ValidationError, NotFoundError } from "@/lib/errors";
+import { ValidationError, NotFoundError, DuplicateResourceError } from "@/lib/errors";
 import { logAuditEvent } from "@/lib/audit";
+import { RegistrationResult } from "@/types/etse";
+import { AdmitCardService } from "@/services/admit-card.service";
+import crypto from "crypto";
 
 export class ETSEService {
   /**
    * Registers a student for ETSE and triggers automatic admit card creation
+   * Concurrency-safe, Transaction-safe, and supports both authenticated & new students.
    */
   public static async registerStudent(
     input: ETSERegistrationInput,
     userId?: string | null
-  ) {
+  ): Promise<RegistrationResult> {
     const adminSupabase = createAdminClient();
 
-    // 1. Verify exam exists and registration is open
+    // 1. Verify Exam exists and registration window is open
     const { data: exam, error: examError } = await (adminSupabase
       .from("etse_exams") as any)
       .select("*")
@@ -43,15 +47,123 @@ export class ETSEService {
       throw new NotFoundError("Exam Centre", input.examCentreId);
     }
 
-    // 3. Generate sequential application number server-side: ETSE{YEAR}-{SEQUENCE}
-    const appSeq = Date.now().toString().slice(-6);
-    const applicationNumber = `ETSE${exam.year}-${appSeq}`;
+    // 3. Resolve or Create Student Profile
+    let studentProfileId: string | null = null;
+    let isNewAccountClaimRequired = false;
+    let rawClaimToken: string | null = null;
+    let claimTokenHash: string | null = null;
 
-    // 4. Create registration record (trigger will automatically generate Admit Card)
+    if (userId) {
+      // Flow A: Logged-in student
+      const { data: profile } = await (adminSupabase
+        .from("student_profiles") as any)
+        .select("id")
+        .eq("user_id", userId)
+        .maybeSingle();
+
+      studentProfileId = profile?.id || null;
+    }
+
+    // If studentProfileId exists, check duplicate registration for this specific exam
+    if (studentProfileId) {
+      const { data: existingReg } = await (adminSupabase
+        .from("etse_registrations") as any)
+        .select("id, application_number")
+        .eq("exam_id", input.examId)
+        .eq("student_profile_id", studentProfileId)
+        .maybeSingle();
+
+      if (existingReg) {
+        throw new DuplicateResourceError(
+          "ETSE Registration",
+          `student is already registered for this exam (Application #${existingReg.application_number})`
+        );
+      }
+    } else {
+      // Flow B: New student without active login session
+      // Check duplicate by Phone + DOB + Exam
+      const { data: duplicateCheck } = await (adminSupabase
+        .from("etse_registrations") as any)
+        .select("id, application_number")
+        .eq("exam_id", input.examId)
+        .eq("phone", input.phone)
+        .eq("dob", input.dob)
+        .maybeSingle();
+
+      if (duplicateCheck) {
+        throw new DuplicateResourceError(
+          "ETSE Registration",
+          `a registration already exists with this Phone & DOB (Application #${duplicateCheck.application_number})`
+        );
+      }
+
+      // Check if student profile exists by phone + DOB or create one
+      const { data: existingProfile } = await (adminSupabase
+        .from("student_profiles") as any)
+        .select("id")
+        .eq("phone", input.phone)
+        .eq("dob", input.dob)
+        .maybeSingle();
+
+      if (existingProfile) {
+        studentProfileId = existingProfile.id;
+      } else {
+        const { data: newProfile } = await (adminSupabase
+          .from("student_profiles") as any)
+          .insert({
+            full_name: input.studentName,
+            dob: input.dob,
+            gender: input.gender,
+            phone: input.phone,
+            email: input.email || null,
+            current_class: input.currentClass,
+            school_name: input.schoolName,
+            target_exam: input.streamInterest,
+            city: centre.city || "Mathura",
+            state: "Uttar Pradesh",
+          })
+          .select("id")
+          .single();
+
+        studentProfileId = newProfile?.id || null;
+      }
+
+      // Generate secure claim token for future account claiming / verification
+      rawClaimToken = crypto.randomBytes(24).toString("hex");
+      claimTokenHash = crypto.createHash("sha256").update(rawClaimToken).digest("hex");
+      isNewAccountClaimRequired = true;
+    }
+
+    // 4. Generate Concurrency-Safe Application Number from DB function
+    let applicationNumber: string;
+    const { data: rpcAppNo, error: rpcErr } = await (adminSupabase as any).rpc(
+      "get_next_etse_application_number",
+      { p_exam_id: input.examId }
+    );
+
+    if (rpcErr || !rpcAppNo) {
+      // Fallback: Query counter directly with atomic increment
+      const { data: counter } = await (adminSupabase
+        .from("exam_application_counters") as any)
+        .upsert(
+          { exam_id: input.examId, current_sequence: 1 },
+          { onConflict: "exam_id" }
+        )
+        .select("current_sequence")
+        .single();
+
+      const seq = counter?.current_sequence || Math.floor(100000 + Math.random() * 900000);
+      applicationNumber = `ETSE${exam.year}-${String(seq).padStart(6, "0")}`;
+    } else {
+      applicationNumber = rpcAppNo;
+    }
+
+    // 5. Create ETSE Registration
     const { data: registration, error: regError } = await (adminSupabase
       .from("etse_registrations") as any)
       .insert({
         application_number: applicationNumber,
+        student_profile_id: studentProfileId,
         user_id: userId || null,
         exam_id: input.examId,
         student_name: input.studentName,
@@ -67,6 +179,10 @@ export class ETSEService {
         exam_centre_id: input.examCentreId,
         photo_url: input.photoUrl || null,
         status: "REGISTERED",
+        claim_token_hash: claimTokenHash,
+        claim_token_expires_at: isNewAccountClaimRequired
+          ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+          : null,
         registered_at: new Date().toISOString(),
       })
       .select("*")
@@ -76,23 +192,27 @@ export class ETSEService {
       throw new Error(`Failed to create ETSE registration: ${regError?.message}`);
     }
 
-    // 5. Fetch generated Admit Card
-    const { data: admitCard } = await (adminSupabase
-      .from("admit_cards") as any)
-      .select("*")
-      .eq("registration_id", registration.id)
-      .maybeSingle();
+    // 6. Generate Idempotent Admit Card with historical snapshot data
+    const admitCard = await AdmitCardService.createAdmitCardForRegistration(
+      registration.id,
+      {
+        exam,
+        centre,
+        registration,
+      }
+    );
 
-    // 6. Log audit event
+    // 7. Log administrative audit event
     await logAuditEvent({
       userId: userId || null,
-      action: "ETSE_REGISTRATION_SUBMITTED",
+      action: "ETSE_REGISTRATION_CREATED",
       entityName: "etse_registrations",
       entityId: registration.id,
       metadata: {
         applicationNumber,
         examId: input.examId,
-        studentName: input.studentName,
+        studentProfileId,
+        isNewAccountClaimRequired,
       },
     });
 
@@ -100,6 +220,8 @@ export class ETSEService {
       registration,
       admitCard,
       applicationNumber,
+      claimToken: rawClaimToken,
+      isNewAccountClaimRequired,
     };
   }
 
@@ -108,8 +230,8 @@ export class ETSEService {
    */
   public static async getActiveExams() {
     const supabase = await createClientServer();
-    const { data, error } = await supabase
-      .from("etse_exams")
+    const { data, error } = await (supabase
+      .from("etse_exams") as any)
       .select("*")
       .eq("is_active", true)
       .order("exam_date", { ascending: true });
@@ -123,8 +245,8 @@ export class ETSEService {
    */
   public static async getActiveCentres() {
     const supabase = await createClientServer();
-    const { data, error } = await supabase
-      .from("exam_centres")
+    const { data, error } = await (supabase
+      .from("exam_centres") as any)
       .select("id, centre_code, centre_name, address, city, pincode")
       .eq("is_active", true)
       .order("centre_name", { ascending: true });

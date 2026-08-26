@@ -1,44 +1,72 @@
 /**
  * Emprise Academy Design Tokens & Brand System
- * Official Colors:
- * - Deep Navy (#0A192F, #0D2342, #132E59)
- * - Vibrant Orange (#FF6B00, #FA5A00, #EA580C)
- * - Neutral Slate & Off-White (#F8FAFC, #F1F5F9, #FFFFFF, #0F172A)
+ * Official Single Source of Truth
+ *
+ * Core Brand Pillars:
+ * - Deep Navy: Inspired by Emprise Logo (#0A192F, #0D2342, #132E59)
+ * - Vibrant Orange: Inspired by Emprise Logo (#FF6B00, #FA5A00, #EA580C)
+ * - Restrained Gold: For Academic Toppers & Achievements (#D97706, #B45309)
+ * - Off-White & Neutral Surfaces: (#F8FAFC, #FFFFFF, #F1F5F9)
  */
 
-export const brandColors = {
-  navy: {
-    DEFAULT: "#0A192F",
-    50: "#F0F4F8",
-    100: "#D9E2EC",
-    200: "#BCCCDC",
-    300: "#9FB3C8",
-    400: "#627D98",
-    500: "#486581",
-    600: "#334E68",
-    700: "#243B53",
-    800: "#132E59",
-    900: "#0D2342",
-    950: "#0A192F",
+export const brandTokens = {
+  colors: {
+    primary: {
+      DEFAULT: "#0A192F",
+      dark: "#0D2342",
+      light: "#132E59",
+      hover: "#1E3A8A",
+    },
+    accent: {
+      DEFAULT: "#FF6B00",
+      vibrant: "#FA5A00",
+      light: "#FF8533",
+      hover: "#EA580C",
+    },
+    gold: {
+      DEFAULT: "#D97706",
+      light: "#F59E0B",
+      dark: "#B45309",
+    },
+    neutral: {
+      background: "#F8FAFC",
+      surface: "#FFFFFF",
+      surfaceDark: "#0D2342",
+      text: "#0F172A",
+      textMuted: "#64748B",
+      border: "#E2E8F0",
+      borderDark: "#334155",
+    },
+    feedback: {
+      success: "#10B981",
+      warning: "#F59E0B",
+      danger: "#EF4444",
+      info: "#3B82F6",
+    },
   },
-  orange: {
-    DEFAULT: "#FF6B00",
-    50: "#FFF7ED",
-    100: "#FFEDD5",
-    200: "#FED7AA",
-    300: "#FDBA74",
-    400: "#FB923C",
-    500: "#FF6B00",
-    600: "#EA580C",
-    700: "#C2410C",
-    800: "#9A3412",
-    900: "#7C2D12",
-    950: "#431407",
+  typography: {
+    fontSans: "var(--font-sans)",
+    fontDisplay: "var(--font-display)",
   },
-  surface: {
-    light: "#F8FAFC",
-    card: "#FFFFFF",
-    dark: "#0A192F",
-    darkCard: "#0D2342",
+  cssVariables: {
+    "--brand-primary": "#0A192F",
+    "--brand-primary-dark": "#0D2342",
+    "--brand-primary-light": "#132E59",
+    "--brand-accent": "#FF6B00",
+    "--brand-accent-vibrant": "#FA5A00",
+    "--brand-accent-light": "#FF8533",
+    "--brand-gold": "#D97706",
+    "--brand-gold-light": "#F59E0B",
+    "--brand-background": "#F8FAFC",
+    "--brand-surface": "#FFFFFF",
+    "--brand-text": "#0F172A",
+    "--brand-muted": "#64748B",
+    "--brand-border": "#E2E8F0",
+    "--brand-success": "#10B981",
+    "--brand-warning": "#F59E0B",
+    "--brand-danger": "#EF4444",
   },
 } as const;
+
+export type BrandTokens = typeof brandTokens;
+export const brandColors = brandTokens.colors;

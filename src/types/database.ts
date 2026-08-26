@@ -1,5 +1,5 @@
 /**
- * Supabase Database Definitions & Type Contract
+ * Supabase Database Definitions & Type Contract (Phase 1.1 Hardened)
  * Matching PostgreSQL Schema for Emprise Academy
  */
 
@@ -191,192 +191,6 @@ export interface Database {
         };
         Relationships: [];
       };
-      directors: {
-        Row: {
-          id: string;
-          name: string;
-          designation: string;
-          message: string;
-          photo_url: string | null;
-          display_order: number;
-          is_active: boolean;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          name: string;
-          designation: string;
-          message: string;
-          photo_url?: string | null;
-          display_order?: number;
-          is_active?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          name?: string;
-          designation?: string;
-          message?: string;
-          photo_url?: string | null;
-          display_order?: number;
-          is_active?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Relationships: [];
-      };
-      faculty: {
-        Row: {
-          id: string;
-          name: string;
-          subject: string;
-          designation: string;
-          experience_years_text: string | null;
-          photo_url: string | null;
-          display_order: number;
-          is_active: boolean;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          name: string;
-          subject: string;
-          designation: string;
-          experience_years_text?: string | null;
-          photo_url?: string | null;
-          display_order?: number;
-          is_active?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          name?: string;
-          subject?: string;
-          designation?: string;
-          experience_years_text?: string | null;
-          photo_url?: string | null;
-          display_order?: number;
-          is_active?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Relationships: [];
-      };
-      courses: {
-        Row: {
-          id: string;
-          slug: string;
-          name: string;
-          target_exam: string;
-          eligible_classes: string[];
-          duration: string;
-          description: string;
-          features: string[];
-          syllabus_url: string | null;
-          is_active: boolean;
-          display_order: number;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          slug: string;
-          name: string;
-          target_exam: string;
-          eligible_classes?: string[];
-          duration: string;
-          description: string;
-          features?: string[];
-          syllabus_url?: string | null;
-          is_active?: boolean;
-          display_order?: number;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          slug?: string;
-          name?: string;
-          target_exam?: string;
-          eligible_classes?: string[];
-          duration?: string;
-          description?: string;
-          features?: string[];
-          syllabus_url?: string | null;
-          is_active?: boolean;
-          display_order?: number;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Relationships: [];
-      };
-      course_programs: {
-        Row: {
-          id: string;
-          course_id: string;
-          program_name: string;
-          mode: string;
-          is_active: boolean;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          course_id: string;
-          program_name: string;
-          mode?: string;
-          is_active?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          course_id?: string;
-          program_name?: string;
-          mode?: string;
-          is_active?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Relationships: [];
-      };
-      batches: {
-        Row: {
-          id: string;
-          course_id: string;
-          batch_name: string;
-          start_date: string;
-          timings: string | null;
-          is_enrolling: boolean;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          course_id: string;
-          batch_name: string;
-          start_date: string;
-          timings?: string | null;
-          is_enrolling?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          course_id?: string;
-          batch_name?: string;
-          start_date?: string;
-          timings?: string | null;
-          is_enrolling?: boolean;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Relationships: [];
-      };
       exam_centres: {
         Row: {
           id: string;
@@ -415,6 +229,24 @@ export interface Database {
           capacity?: number;
           is_active?: boolean;
           created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      exam_application_counters: {
+        Row: {
+          exam_id: string;
+          current_sequence: number;
+          updated_at: string;
+        };
+        Insert: {
+          exam_id: string;
+          current_sequence?: number;
+          updated_at?: string;
+        };
+        Update: {
+          exam_id?: string;
+          current_sequence?: number;
           updated_at?: string;
         };
         Relationships: [];
@@ -499,6 +331,9 @@ export interface Database {
           exam_centre_id: string;
           photo_url: string | null;
           status: string;
+          claim_token_hash: string | null;
+          claim_token_expires_at: string | null;
+          claimed_at: string | null;
           registered_at: string;
           created_at: string;
           updated_at: string;
@@ -522,6 +357,9 @@ export interface Database {
           exam_centre_id: string;
           photo_url?: string | null;
           status?: string;
+          claim_token_hash?: string | null;
+          claim_token_expires_at?: string | null;
+          claimed_at?: string | null;
           registered_at?: string;
           created_at?: string;
           updated_at?: string;
@@ -545,6 +383,9 @@ export interface Database {
           exam_centre_id?: string;
           photo_url?: string | null;
           status?: string;
+          claim_token_hash?: string | null;
+          claim_token_expires_at?: string | null;
+          claimed_at?: string | null;
           registered_at?: string;
           created_at?: string;
           updated_at?: string;
@@ -563,8 +404,21 @@ export interface Database {
           exam_time: string;
           reporting_time: string;
           exam_centre_id: string;
+          status: string;
+          student_name_snapshot: string | null;
+          father_name_snapshot: string | null;
+          mother_name_snapshot: string | null;
+          dob_snapshot: string | null;
+          class_snapshot: string | null;
+          school_name_snapshot: string | null;
+          centre_name_snapshot: string | null;
+          centre_address_snapshot: string | null;
+          instructions_snapshot: string[];
           is_generated: boolean;
           generated_at: string;
+          regenerated_at: string | null;
+          revoked_at: string | null;
+          revocation_reason: string | null;
           download_count: number;
           last_downloaded_at: string | null;
           created_at: string;
@@ -581,8 +435,21 @@ export interface Database {
           exam_time: string;
           reporting_time: string;
           exam_centre_id: string;
+          status?: string;
+          student_name_snapshot?: string | null;
+          father_name_snapshot?: string | null;
+          mother_name_snapshot?: string | null;
+          dob_snapshot?: string | null;
+          class_snapshot?: string | null;
+          school_name_snapshot?: string | null;
+          centre_name_snapshot?: string | null;
+          centre_address_snapshot?: string | null;
+          instructions_snapshot?: string[];
           is_generated?: boolean;
           generated_at?: string;
+          regenerated_at?: string | null;
+          revoked_at?: string | null;
+          revocation_reason?: string | null;
           download_count?: number;
           last_downloaded_at?: string | null;
           created_at?: string;
@@ -599,8 +466,21 @@ export interface Database {
           exam_time?: string;
           reporting_time?: string;
           exam_centre_id?: string;
+          status?: string;
+          student_name_snapshot?: string | null;
+          father_name_snapshot?: string | null;
+          mother_name_snapshot?: string | null;
+          dob_snapshot?: string | null;
+          class_snapshot?: string | null;
+          school_name_snapshot?: string | null;
+          centre_name_snapshot?: string | null;
+          centre_address_snapshot?: string | null;
+          instructions_snapshot?: string[];
           is_generated?: boolean;
           generated_at?: string;
+          regenerated_at?: string | null;
+          revoked_at?: string | null;
+          revocation_reason?: string | null;
           download_count?: number;
           last_downloaded_at?: string | null;
           created_at?: string;
@@ -639,6 +519,45 @@ export interface Database {
           exam_type?: string;
           is_published?: boolean;
           published_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      exam_subjects: {
+        Row: {
+          id: string;
+          exam_id: string;
+          subject_name: string;
+          subject_code: string;
+          maximum_marks: number;
+          pass_marks: number | null;
+          display_order: number;
+          is_optional: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          exam_id: string;
+          subject_name: string;
+          subject_code: string;
+          maximum_marks: number;
+          pass_marks?: number | null;
+          display_order?: number;
+          is_optional?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          exam_id?: string;
+          subject_name?: string;
+          subject_code?: string;
+          maximum_marks?: number;
+          pass_marks?: number | null;
+          display_order?: number;
+          is_optional?: boolean;
           created_at?: string;
           updated_at?: string;
         };
@@ -779,6 +698,321 @@ export interface Database {
           academic_year?: string;
           score_summary?: Json;
           created_at?: string;
+        };
+        Relationships: [];
+      };
+      courses: {
+        Row: {
+          id: string;
+          slug: string;
+          name: string;
+          target_exam: string;
+          eligible_classes: string[];
+          duration: string;
+          description: string;
+          features: string[];
+          syllabus_url: string | null;
+          is_active: boolean;
+          display_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          name: string;
+          target_exam: string;
+          eligible_classes?: string[];
+          duration: string;
+          description: string;
+          features?: string[];
+          syllabus_url?: string | null;
+          is_active?: boolean;
+          display_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          slug?: string;
+          name?: string;
+          target_exam?: string;
+          eligible_classes?: string[];
+          duration?: string;
+          description?: string;
+          features?: string[];
+          syllabus_url?: string | null;
+          is_active?: boolean;
+          display_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      course_programs: {
+        Row: {
+          id: string;
+          course_id: string;
+          program_name: string;
+          mode: string;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          course_id: string;
+          program_name: string;
+          mode?: string;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          course_id?: string;
+          program_name?: string;
+          mode?: string;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      batches: {
+        Row: {
+          id: string;
+          course_id: string;
+          batch_name: string;
+          start_date: string;
+          timings: string | null;
+          is_enrolling: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          course_id: string;
+          batch_name: string;
+          start_date: string;
+          timings?: string | null;
+          is_enrolling?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          course_id?: string;
+          batch_name?: string;
+          start_date?: string;
+          timings?: string | null;
+          is_enrolling?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      directors: {
+        Row: {
+          id: string;
+          name: string;
+          designation: string;
+          message: string;
+          photo_url: string | null;
+          display_order: number;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          designation: string;
+          message: string;
+          photo_url?: string | null;
+          display_order?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          designation?: string;
+          message?: string;
+          photo_url?: string | null;
+          display_order?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      faculty: {
+        Row: {
+          id: string;
+          name: string;
+          subject: string;
+          designation: string;
+          experience_years_text: string | null;
+          photo_url: string | null;
+          display_order: number;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          subject: string;
+          designation: string;
+          experience_years_text?: string | null;
+          photo_url?: string | null;
+          display_order?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          subject?: string;
+          designation?: string;
+          experience_years_text?: string | null;
+          photo_url?: string | null;
+          display_order?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      leads: {
+        Row: {
+          id: string;
+          student_name: string;
+          parent_name: string | null;
+          phone: string;
+          email: string | null;
+          class: string | null;
+          school: string | null;
+          course_interest: string | null;
+          source: string;
+          status: string;
+          assigned_counsellor_id: string | null;
+          notes: string | null;
+          next_followup_at: string | null;
+          created_at: string;
+          updated_at: string;
+          deleted_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          student_name: string;
+          parent_name?: string | null;
+          phone: string;
+          email?: string | null;
+          class?: string | null;
+          school?: string | null;
+          course_interest?: string | null;
+          source?: string;
+          status?: string;
+          assigned_counsellor_id?: string | null;
+          notes?: string | null;
+          next_followup_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+          deleted_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          student_name?: string;
+          parent_name?: string | null;
+          phone?: string;
+          email?: string | null;
+          class?: string | null;
+          school?: string | null;
+          course_interest?: string | null;
+          source?: string;
+          status?: string;
+          assigned_counsellor_id?: string | null;
+          notes?: string | null;
+          next_followup_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+          deleted_at?: string | null;
+        };
+        Relationships: [];
+      };
+      lead_followups: {
+        Row: {
+          id: string;
+          lead_id: string;
+          counsellor_id: string;
+          followup_type: string;
+          remarks: string;
+          next_action: string | null;
+          followup_date: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          lead_id: string;
+          counsellor_id: string;
+          followup_type: string;
+          remarks: string;
+          next_action?: string | null;
+          followup_date?: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          lead_id?: string;
+          counsellor_id?: string;
+          followup_type?: string;
+          remarks?: string;
+          next_action?: string | null;
+          followup_date?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      admissions: {
+        Row: {
+          id: string;
+          lead_id: string | null;
+          student_id: string;
+          course_id: string;
+          batch_id: string | null;
+          admission_number: string;
+          status: string;
+          enrolled_at: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          lead_id?: string | null;
+          student_id: string;
+          course_id: string;
+          batch_id?: string | null;
+          admission_number: string;
+          status?: string;
+          enrolled_at?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          lead_id?: string | null;
+          student_id?: string;
+          course_id?: string;
+          batch_id?: string | null;
+          admission_number?: string;
+          status?: string;
+          enrolled_at?: string;
+          created_at?: string;
+          updated_at?: string;
         };
         Relationships: [];
       };
@@ -1073,135 +1307,6 @@ export interface Database {
         };
         Relationships: [];
       };
-      admissions: {
-        Row: {
-          id: string;
-          lead_id: string | null;
-          student_id: string;
-          course_id: string;
-          batch_id: string | null;
-          admission_number: string;
-          status: string;
-          enrolled_at: string;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id?: string;
-          lead_id?: string | null;
-          student_id: string;
-          course_id: string;
-          batch_id?: string | null;
-          admission_number: string;
-          status?: string;
-          enrolled_at?: string;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: {
-          id?: string;
-          lead_id?: string | null;
-          student_id?: string;
-          course_id?: string;
-          batch_id?: string | null;
-          admission_number?: string;
-          status?: string;
-          enrolled_at?: string;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Relationships: [];
-      };
-      lead_followups: {
-        Row: {
-          id: string;
-          lead_id: string;
-          counsellor_id: string;
-          followup_type: string;
-          remarks: string;
-          next_action: string | null;
-          followup_date: string;
-          created_at: string;
-        };
-        Insert: {
-          id?: string;
-          lead_id: string;
-          counsellor_id: string;
-          followup_type: string;
-          remarks: string;
-          next_action?: string | null;
-          followup_date?: string;
-          created_at?: string;
-        };
-        Update: {
-          id?: string;
-          lead_id?: string;
-          counsellor_id?: string;
-          followup_type?: string;
-          remarks?: string;
-          next_action?: string | null;
-          followup_date?: string;
-          created_at?: string;
-        };
-        Relationships: [];
-      };
-      leads: {
-        Row: {
-          id: string;
-          student_name: string;
-          parent_name: string | null;
-          phone: string;
-          email: string | null;
-          class: string | null;
-          school: string | null;
-          course_interest: string | null;
-          source: string;
-          status: string;
-          assigned_counsellor_id: string | null;
-          notes: string | null;
-          next_followup_at: string | null;
-          created_at: string;
-          updated_at: string;
-          deleted_at: string | null;
-        };
-        Insert: {
-          id?: string;
-          student_name: string;
-          parent_name?: string | null;
-          phone: string;
-          email?: string | null;
-          class?: string | null;
-          school?: string | null;
-          course_interest?: string | null;
-          source?: string;
-          status?: string;
-          assigned_counsellor_id?: string | null;
-          notes?: string | null;
-          next_followup_at?: string | null;
-          created_at?: string;
-          updated_at?: string;
-          deleted_at?: string | null;
-        };
-        Update: {
-          id?: string;
-          student_name?: string;
-          parent_name?: string | null;
-          phone?: string;
-          email?: string | null;
-          class?: string | null;
-          school?: string | null;
-          course_interest?: string | null;
-          source?: string;
-          status?: string;
-          assigned_counsellor_id?: string | null;
-          notes?: string | null;
-          next_followup_at?: string | null;
-          created_at?: string;
-          updated_at?: string;
-          deleted_at?: string | null;
-        };
-        Relationships: [];
-      };
       audit_logs: {
         Row: {
           id: string;
@@ -1243,6 +1348,12 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
+      get_next_etse_application_number: {
+        Args: {
+          p_exam_id: string;
+        };
+        Returns: string;
+      };
       verify_admit_card_public: {
         Args: {
           p_token: string;
@@ -1257,10 +1368,6 @@ export interface Database {
         };
         Returns: Json;
       };
-      generate_application_sequence: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
     };
     Enums: {
       app_role_enum:
@@ -1272,6 +1379,7 @@ export interface Database {
         | "CONTENT_MANAGER"
         | "FACULTY"
         | "STUDENT";
+      admit_card_status_enum: "DRAFT" | "GENERATED" | "PUBLISHED" | "REVOKED";
       gender_enum: "MALE" | "FEMALE" | "OTHER";
       etse_status_enum:
         | "REGISTERED"

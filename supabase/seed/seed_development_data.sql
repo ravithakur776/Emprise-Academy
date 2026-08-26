@@ -1,7 +1,6 @@
 -- ==========================================================
 -- EMPRISE ACADEMY DIGITAL PLATFORM
 -- Technical Development Seed Data (Strictly for Local/Dev Verification)
--- NOTE: ALL RECORDS ARE DEVELOPMENT MOCKS ONLY.
 -- ==========================================================
 
 -- Insert verified Mathura Exam Centre
@@ -71,6 +70,14 @@ INSERT INTO public.result_exams (
     TRUE,
     NOW()
 ) ON CONFLICT (exam_code) DO NOTHING;
+
+-- Seed Dynamic Exam Subjects for ETSE-2025
+INSERT INTO public.exam_subjects (id, exam_id, subject_name, subject_code, maximum_marks, pass_marks, display_order)
+VALUES
+    ('s0000000-0000-0000-0000-000000000001', 'r0000000-0000-0000-0000-000000000001', 'Physics', 'PHY', 100, 35, 1),
+    ('s0000000-0000-0000-0000-000000000002', 'r0000000-0000-0000-0000-000000000001', 'Chemistry', 'CHEM', 100, 35, 2),
+    ('s0000000-0000-0000-0000-000000000003', 'r0000000-0000-0000-0000-000000000001', 'Mathematics', 'MATH', 100, 35, 3)
+ON CONFLICT (exam_id, subject_code) DO NOTHING;
 
 -- Insert Core Academic Courses (Verified Pillars)
 INSERT INTO public.courses (

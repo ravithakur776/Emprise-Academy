@@ -2,20 +2,38 @@
 
 @layer base {
   :root {
-    --brand-navy: #0A192F;
-    --brand-navy-dark: #0D2342;
-    --brand-navy-light: #132E59;
-    --brand-orange: #FF6B00;
-    --brand-orange-vibrant: #FA5A00;
-    --brand-orange-light: #FF8533;
-    --background: #F8FAFC;
-    --foreground: #0F172A;
+    /* Brand Primary & Secondary Tokens */
+    --brand-primary: #0A192F;
+    --brand-primary-dark: #0D2342;
+    --brand-primary-light: #132E59;
+    --brand-accent: #FF6B00;
+    --brand-accent-vibrant: #FA5A00;
+    --brand-accent-light: #FF8533;
+    
+    /* Academic Achievement / Gold */
+    --brand-gold: #D97706;
+    --brand-gold-light: #F59E0B;
+    
+    /* Surface & Background */
+    --brand-background: #F8FAFC;
+    --brand-surface: #FFFFFF;
+    --brand-text: #0F172A;
+    --brand-muted: #64748B;
+    --brand-border: #E2E8F0;
+    
+    /* Status Feedback */
+    --brand-success: #10B981;
+    --brand-warning: #F59E0B;
+    --brand-danger: #EF4444;
+
+    --background: var(--brand-background);
+    --foreground: var(--brand-text);
   }
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: var(--brand-background);
+  color: var(--brand-text);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
 }
 

@@ -5,46 +5,25 @@ import {
   ExcelImportRowError,
   ExcelImportPreviewReport,
   ExcelImportExecutionResult,
+  ExamSubject,
 } from "@/types/results";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { logAuditEvent } from "@/lib/audit";
 
 /**
- * Normalizes Excel column names to standard keys
+ * Normalizes Excel column headers for generic fields
  */
-function normalizeColumnKey(rawKey: string): string {
-  const clean = rawKey.trim().toLowerCase().replace(/[\s_-]+/g, "");
-  if (clean.includes("roll") || clean.includes("rollno")) return "roll_number";
-  if (clean.includes("candidate") || clean.includes("studentname") || clean === "name")
-    return "candidate_name";
-  if (clean.includes("father") || clean.includes("guardian")) return "father_name";
-  if (clean.includes("dob") || clean.includes("birth")) return "dob";
-  if (clean === "class" || clean.includes("standard")) return "class";
-  if (clean === "stream" || clean.includes("branch")) return "stream";
-  if (clean.includes("physics") || clean === "phy") return "physics_marks";
-  if (clean.includes("chemistry") || clean === "chem") return "chemistry_marks";
-  if (clean.includes("math") || clean === "mat") return "maths_marks";
-  if (clean.includes("bio") || clean.includes("biology")) return "biology_marks";
-  if (clean.includes("total") && clean.includes("mark")) return "total_marks";
-  if (clean.includes("max") && clean.includes("mark")) return "max_marks";
-  if (clean.includes("percentile")) return "percentile";
-  if (clean.includes("percent") || clean.includes("percentage") || clean === "%")
-    return "percentage";
-  if (clean === "rank" || clean.includes("air") || clean.includes("allindiarank")) return "rank";
-  if (clean.includes("categoryrank") || clean.includes("catrank")) return "category_rank";
-  if (clean.includes("scholarship")) return "scholarship_awarded";
-  if (clean.includes("status") || clean.includes("qualify")) return "qualifying_status";
-  if (clean.includes("remark")) return "remarks";
-  return clean;
+function normalizeHeader(rawKey: string): string {
+  return rawKey.trim().toLowerCase().replace(/[\s_-]+/g, "");
 }
 
 /**
  * Converts Excel Serial Date or Date string to YYYY-MM-DD
  */
-function parseExcelDate(val: unknown): string | null {
+export function parseExcelDate(val: unknown): string | null {
   if (!val) return null;
   if (typeof val === "number") {
-    // Excel serial date to JS Date
+    // Excel serial date (days since 1899-12-30)
     const utcDays = Math.floor(val - 25569);
     const utcValue = utcDays * 86400;
     const dateInfo = new Date(utcValue * 1000);
@@ -55,9 +34,7 @@ function parseExcelDate(val: unknown): string | null {
   }
   if (typeof val === "string") {
     const trimmed = val.trim();
-    // YYYY-MM-DD
     if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
-    // DD-MM-YYYY or DD/MM/YYYY
     const ddmmyyyy = trimmed.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})$/);
     if (ddmmyyyy) {
       const day = ddmmyyyy[1].padStart(2, "0");
@@ -71,13 +48,75 @@ function parseExcelDate(val: unknown): string | null {
 
 export class ResultImportEngine {
   /**
-   * Step 1: Parse Excel/CSV Buffer and generate a strict validation preview
+   * Fetches configured subjects for an examination from exam_subjects
    */
-  public static parseAndValidate(
+  public static async getExamSubjects(examId: string): Promise<ExamSubject[]> {
+    try {
+      if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        const adminSupabase = createAdminClient();
+        const { data: subjects, error } = await (adminSupabase
+          .from("exam_subjects") as any)
+          .select("*")
+          .eq("exam_id", examId)
+          .order("display_order", { ascending: true });
+
+        if (!error && subjects && subjects.length > 0) {
+          return subjects.map((s: any) => ({
+            id: s.id,
+            examId: s.exam_id,
+            subjectName: s.subject_name,
+            subjectCode: s.subject_code,
+            maximumMarks: Number(s.maximum_marks),
+            passMarks: s.pass_marks ? Number(s.pass_marks) : null,
+            displayOrder: s.display_order,
+            isOptional: s.is_optional,
+          }));
+        }
+      }
+    } catch {
+      // Fall back to default subjects
+    }
+
+    // Default fallback subjects if exam has no explicit configuration or offline
+    return [
+      { id: "def-1", examId, subjectName: "Physics", subjectCode: "PHY", maximumMarks: 100, displayOrder: 1, isOptional: false },
+      { id: "def-2", examId, subjectName: "Chemistry", subjectCode: "CHEM", maximumMarks: 100, displayOrder: 2, isOptional: false },
+      { id: "def-3", examId, subjectName: "Mathematics", subjectCode: "MATH", maximumMarks: 100, displayOrder: 3, isOptional: true },
+      { id: "def-4", examId, subjectName: "Biology", subjectCode: "BIO", maximumMarks: 100, displayOrder: 4, isOptional: true },
+    ];
+  }
+
+  /**
+   * Step 1: Parse Excel/CSV Buffer, validate against Dynamic Exam Subjects & match student identities cautiously
+   */
+  public static async parseAndValidate(
     fileBuffer: Buffer | ArrayBuffer,
     examId: string,
-    academicYear: string
-  ): ExcelImportPreviewReport {
+    academicYear: string,
+    existingProfilesCache?: any[]
+  ): Promise<ExcelImportPreviewReport> {
+    let examTitle = "Academic Examination";
+
+    try {
+      if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        const adminSupabase = createAdminClient();
+        const { data: exam } = await (adminSupabase
+          .from("result_exams") as any)
+          .select("id, exam_title")
+          .eq("id", examId)
+          .maybeSingle();
+
+        if (exam?.exam_title) {
+          examTitle = exam.exam_title;
+        }
+      }
+    } catch {
+      // Offline fallback
+    }
+
+    const configuredSubjects = await this.getExamSubjects(examId);
+
+    // 2. Read workbook
     const workbook = XLSX.read(fileBuffer, { type: "buffer", cellDates: true });
     const firstSheetName = workbook.SheetNames[0];
     if (!firstSheetName) {
@@ -90,25 +129,52 @@ export class ResultImportEngine {
       defval: "",
     });
 
+    // 3. Pre-fetch student profiles for identity matching if not cached
+    let studentProfiles: any[] = existingProfilesCache || [];
+    if (studentProfiles.length === 0 && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      try {
+        const adminSupabase = createAdminClient();
+        const { data: profiles } = await (adminSupabase
+          .from("student_profiles") as any)
+          .select("id, full_name, dob, phone, email, admission_number")
+          .is("deleted_at", null);
+        studentProfiles = profiles || [];
+      } catch {
+        studentProfiles = [];
+      }
+    }
+
     const errors: ExcelImportRowError[] = [];
     const validRows: ValidatedResultRow[] = [];
     const seenRollNumbersInBatch = new Set<string>();
     const duplicateRollNumbersInFile: string[] = [];
 
-    rawRows.forEach((row, index) => {
-      const rowNumber = index + 2; // 1-indexed header is row 1
+    let matchedCount = 0;
+    let newStudentCount = 0;
+    let reviewRequiredCount = 0;
+    let conflictCount = 0;
+    let warningCount = 0;
 
-      // Normalize row keys
-      const normalizedRow: RawExcelResultRow = {};
+    rawRows.forEach((row, index) => {
+      const rowNumber = index + 2; // Header is row 1
+      let rowHasErrors = false;
+
+      // Build case-insensitive normalized row map
+      const normalizedRowMap: Record<string, unknown> = {};
       Object.keys(row).forEach((key) => {
-        const normKey = normalizeColumnKey(key);
-        normalizedRow[normKey] = row[key];
+        normalizedRowMap[normalizeHeader(key)] = row[key];
       });
 
       // 1. Validate Roll Number
-      const rollNumberRaw = String(normalizedRow.roll_number || "").trim().toUpperCase();
+      const rollNumberRaw = String(
+        normalizedRowMap["rollnumber"] ||
+        normalizedRowMap["rollno"] ||
+        normalizedRowMap["roll"] ||
+        ""
+      ).trim().toUpperCase();
+
       if (!rollNumberRaw) {
-        errors.push({ rowNumber, column: "Roll Number", message: "Roll Number is required" });
+        errors.push({ rowNumber, column: "Roll Number", message: "Roll Number is required", severity: "ERROR" });
         return;
       }
 
@@ -118,6 +184,7 @@ export class ResultImportEngine {
           rollNumber: rollNumberRaw,
           column: "Roll Number",
           message: `Duplicate roll number '${rollNumberRaw}' in uploaded file`,
+          severity: "ERROR",
         });
         duplicateRollNumbersInFile.push(rollNumberRaw);
         return;
@@ -125,143 +192,261 @@ export class ResultImportEngine {
       seenRollNumbersInBatch.add(rollNumberRaw);
 
       // 2. Validate Candidate Name
-      const candidateName = String(normalizedRow.candidate_name || "").trim();
+      const candidateName = String(
+        normalizedRowMap["candidatename"] ||
+        normalizedRowMap["studentname"] ||
+        normalizedRowMap["name"] ||
+        ""
+      ).trim();
+
       if (!candidateName || candidateName.length < 2) {
         errors.push({
           rowNumber,
           rollNumber: rollNumberRaw,
           column: "Candidate Name",
           message: "Candidate name must be at least 2 characters",
+          severity: "ERROR",
         });
         return;
       }
 
       // 3. Validate Father Name
-      const fatherName = String(normalizedRow.father_name || "").trim();
+      const fatherName = String(
+        normalizedRowMap["fathername"] ||
+        normalizedRowMap["father"] ||
+        normalizedRowMap["guardian"] ||
+        ""
+      ).trim();
+
       if (!fatherName || fatherName.length < 2) {
         errors.push({
           rowNumber,
           rollNumber: rollNumberRaw,
           column: "Father Name",
           message: "Father's name is required",
+          severity: "ERROR",
         });
         return;
       }
 
       // 4. Validate DOB
-      const parsedDob = parseExcelDate(normalizedRow.dob);
+      const rawDob = normalizedRowMap["dob"] || normalizedRowMap["dateofbirth"] || normalizedRowMap["birthdate"];
+      const parsedDob = parseExcelDate(rawDob);
       if (!parsedDob) {
         errors.push({
           rowNumber,
           rollNumber: rollNumberRaw,
           column: "Date of Birth",
-          message: "Invalid DOB format. Use YYYY-MM-DD or DD/MM/YYYY",
-          value: normalizedRow.dob,
+          message: "Invalid DOB format. Expected YYYY-MM-DD or DD/MM/YYYY",
+          value: rawDob,
+          severity: "ERROR",
         });
         return;
       }
 
       // 5. Validate Class
-      const classEnrolled = String(normalizedRow.class || "").trim();
-      if (!classEnrolled) {
-        errors.push({
-          rowNumber,
-          rollNumber: rollNumberRaw,
-          column: "Class",
-          message: "Class enrolled is required",
-        });
-        return;
-      }
+      const classEnrolled = String(
+        normalizedRowMap["class"] ||
+        normalizedRowMap["classenrolled"] ||
+        normalizedRowMap["standard"] ||
+        "Class 11"
+      ).trim();
 
-      // 6. Validate Subject Marks
+      const stream = normalizedRowMap["stream"] ? String(normalizedRowMap["stream"]).trim() : undefined;
+      const phone = normalizedRowMap["phone"] || normalizedRowMap["mobile"] ? String(normalizedRowMap["phone"] || normalizedRowMap["mobile"]).trim() : undefined;
+      const email = normalizedRowMap["email"] ? String(normalizedRowMap["email"]).trim() : undefined;
+
+      // 6. Dynamic Subject Marks Validation
       const subjects: ValidatedResultRow["subjects"] = [];
-      const addSubjectIfPresent = (name: string, val: unknown, maxM = 100) => {
-        if (val !== undefined && val !== "") {
-          const num = Number(val);
-          if (isNaN(num) || num < 0 || num > maxM) {
+      let calculatedTotal = 0;
+      let calculatedMax = 0;
+
+      for (const subj of configuredSubjects) {
+        const subjNormName = normalizeHeader(subj.subjectName);
+        const subjNormCode = normalizeHeader(subj.subjectCode);
+
+        // Look for matching column (e.g., "Physics", "Physics Marks", "PHY", "Phy Marks")
+        let rawSubjectVal: unknown = undefined;
+        for (const key of Object.keys(normalizedRowMap)) {
+          if (
+            key === subjNormName ||
+            key === `${subjNormName}marks` ||
+            key === subjNormCode ||
+            key === `${subjNormCode}marks`
+          ) {
+            rawSubjectVal = normalizedRowMap[key];
+            break;
+          }
+        }
+
+        if (rawSubjectVal !== undefined && rawSubjectVal !== "") {
+          const numMarks = Number(rawSubjectVal);
+          if (isNaN(numMarks) || numMarks < 0 || numMarks > subj.maximumMarks) {
+            rowHasErrors = true;
             errors.push({
               rowNumber,
               rollNumber: rollNumberRaw,
-              column: name,
-              message: `${name} marks must be between 0 and ${maxM}`,
-              value: val,
+              column: subj.subjectName,
+              message: `${subj.subjectName} marks (${rawSubjectVal}) must be between 0 and ${subj.maximumMarks}`,
+              value: rawSubjectVal,
+              severity: "ERROR",
             });
           } else {
-            subjects.push({ name, marksObtained: num, maxMarks: maxM });
+            subjects.push({
+              name: subj.subjectName,
+              code: subj.subjectCode,
+              marksObtained: numMarks,
+              maxMarks: subj.maximumMarks,
+            });
+            calculatedTotal += numMarks;
+            calculatedMax += subj.maximumMarks;
           }
+        } else if (!subj.isOptional) {
+          // Required subject missing in file
+          rowHasErrors = true;
+          errors.push({
+            rowNumber,
+            rollNumber: rollNumberRaw,
+            column: subj.subjectName,
+            message: `Required subject column '${subj.subjectName}' is missing or empty`,
+            severity: "ERROR",
+          });
         }
-      };
+      }
 
-      addSubjectIfPresent("Physics", normalizedRow.physics_marks);
-      addSubjectIfPresent("Chemistry", normalizedRow.chemistry_marks);
-      addSubjectIfPresent("Mathematics", normalizedRow.maths_marks);
-      addSubjectIfPresent("Biology", normalizedRow.biology_marks);
-
-      // 7. Validate Total & Max Marks
-      let totalMarks = Number(normalizedRow.total_marks);
-      let maxMarks = Number(normalizedRow.max_marks || 300);
+      // 7. Validate Total & Maximum Marks
+      let totalMarks = Number(normalizedRowMap["totalmarks"] || normalizedRowMap["total"]);
+      let maxMarks = Number(normalizedRowMap["maxmarks"] || normalizedRowMap["maximummarks"]);
 
       if (isNaN(totalMarks)) {
         if (subjects.length > 0) {
-          totalMarks = subjects.reduce((sum, s) => sum + s.marksObtained, 0);
-          maxMarks = subjects.reduce((sum, s) => sum + s.maxMarks, 0);
+          totalMarks = calculatedTotal;
+          maxMarks = calculatedMax;
         } else {
+          rowHasErrors = true;
           errors.push({
             rowNumber,
             rollNumber: rollNumberRaw,
             column: "Total Marks",
-            message: "Total marks is required or must be calculable from subjects",
+            message: "Total marks could not be determined from columns or subjects",
+            severity: "ERROR",
           });
           return;
         }
       }
 
+      if (isNaN(maxMarks) || maxMarks <= 0) {
+        maxMarks = calculatedMax > 0 ? calculatedMax : 300;
+      }
+
       if (totalMarks < 0 || totalMarks > maxMarks) {
+        rowHasErrors = true;
         errors.push({
           rowNumber,
           rollNumber: rollNumberRaw,
           column: "Total Marks",
           message: `Total marks (${totalMarks}) cannot exceed max marks (${maxMarks}) or be negative`,
+          severity: "ERROR",
         });
         return;
       }
 
-      // Percentage calculation / validation
-      let percentage = Number(normalizedRow.percentage);
+      let percentage = Number(normalizedRowMap["percentage"] || normalizedRowMap["percent"]);
       if (isNaN(percentage)) {
         percentage = Number(((totalMarks / maxMarks) * 100).toFixed(2));
       }
 
-      // Ranks & Percentile
-      const percentile =
-        normalizedRow.percentile !== "" && !isNaN(Number(normalizedRow.percentile))
-          ? Number(normalizedRow.percentile)
-          : undefined;
-      const rank =
-        normalizedRow.rank !== "" && !isNaN(Number(normalizedRow.rank))
-          ? Number(normalizedRow.rank)
-          : undefined;
-      const categoryRank =
-        normalizedRow.category_rank !== "" && !isNaN(Number(normalizedRow.category_rank))
-          ? Number(normalizedRow.category_rank)
-          : undefined;
-      const scholarshipAwarded =
-        normalizedRow.scholarship_awarded !== "" &&
-        !isNaN(Number(normalizedRow.scholarship_awarded))
-          ? Number(normalizedRow.scholarship_awarded)
-          : 0;
+      const percentile = normalizedRowMap["percentile"] !== "" && !isNaN(Number(normalizedRowMap["percentile"]))
+        ? Number(normalizedRowMap["percentile"])
+        : undefined;
 
-      const rawStatus = String(normalizedRow.qualifying_status || "").toUpperCase();
-      const qualifyingStatus =
-        rawStatus === "NOT_QUALIFIED" || rawStatus === "AWAITING" ? rawStatus : "QUALIFIED";
+      const rank = normalizedRowMap["rank"] !== "" && !isNaN(Number(normalizedRowMap["rank"]))
+        ? Number(normalizedRowMap["rank"])
+        : undefined;
+
+      const categoryRank = normalizedRowMap["categoryrank"] !== "" && !isNaN(Number(normalizedRowMap["categoryrank"]))
+        ? Number(normalizedRowMap["categoryrank"])
+        : undefined;
+
+      const scholarshipAwarded = normalizedRowMap["scholarship"] !== "" && !isNaN(Number(normalizedRowMap["scholarship"]))
+        ? Number(normalizedRowMap["scholarship"])
+        : 0;
+
+      const rawStatus = String(normalizedRowMap["status"] || normalizedRowMap["qualifyingstatus"] || "").toUpperCase();
+      const qualifyingStatus = rawStatus === "NOT_QUALIFIED" || rawStatus === "AWAITING" ? rawStatus : "QUALIFIED";
+      const remarks = normalizedRowMap["remarks"] ? String(normalizedRowMap["remarks"]).trim() : undefined;
+
+      // 8. Cautious Student Identity Matching (Issue 5)
+      // 8. Cautious Student Identity Matching (Issue 5)
+      let matchStatus: ValidatedResultRow["matchStatus"] = "NEW_STUDENT";
+      let matchedStudentProfileId: string | null = null;
+      let matchDetails: string = "New student profile will be created on import.";
+
+      const trustedProfileId = normalizedRowMap["studentprofileid"] ? String(normalizedRowMap["studentprofileid"]).trim() : undefined;
+
+      if (trustedProfileId) {
+        const found = studentProfiles.find((p) => p.id === trustedProfileId);
+        if (found) {
+          matchStatus = "MATCHED";
+          matchedStudentProfileId = found.id;
+          matchDetails = `Matched via explicit Student Profile ID (${found.full_name})`;
+        }
+      }
+
+      if (!matchedStudentProfileId) {
+        // Find all profiles with identical Name & DOB
+        const matchesByNameDob = studentProfiles.filter(
+          (p) => p.dob === parsedDob && p.full_name.toLowerCase().trim() === candidateName.toLowerCase().trim()
+        );
+
+        if (matchesByNameDob.length > 1) {
+          // Multiple students share the exact same Name and DOB (e.g. two Rahul Sharmas)
+          matchStatus = "CONFLICT";
+          matchDetails = `Ambiguous student match: ${matchesByNameDob.length} existing profiles share name '${candidateName}' and DOB ${parsedDob}. Manual review required.`;
+          warningCount++;
+        } else if (matchesByNameDob.length === 1) {
+          const profile = matchesByNameDob[0];
+          if (!phone || profile.phone === phone) {
+            matchStatus = "MATCHED";
+            matchedStudentProfileId = profile.id;
+            matchDetails = `Exact match by Name & DOB (${profile.full_name})`;
+          } else {
+            matchStatus = "REVIEW_REQUIRED";
+            matchDetails = `Same Name & DOB found (${profile.full_name}), but phone (${phone}) differs from stored phone (${profile.phone}). Requires review.`;
+            warningCount++;
+          }
+        } else {
+          // No profile with this Name + DOB
+          if (phone) {
+            const matchesByPhone = studentProfiles.filter((p) => p.phone === phone);
+            if (matchesByPhone.length > 0) {
+              matchStatus = "REVIEW_REQUIRED";
+              matchDetails = `Phone ${phone} matches existing profile (${matchesByPhone[0].full_name}), but Name/DOB differs. Requires review.`;
+              warningCount++;
+            }
+          }
+        }
+      }
+
+      if (matchStatus === "MATCHED") matchedCount++;
+      else if (matchStatus === "NEW_STUDENT") newStudentCount++;
+      else if (matchStatus === "REVIEW_REQUIRED") reviewRequiredCount++;
+      else if (matchStatus === "CONFLICT") conflictCount++;
+
+      if (rowHasErrors) {
+        return;
+      }
 
       validRows.push({
+        rowNumber,
         rollNumber: rollNumberRaw,
         candidateName,
         fatherName,
         dob: parsedDob,
         classEnrolled,
-        stream: normalizedRow.stream ? String(normalizedRow.stream).trim() : undefined,
+        stream,
+        phone,
+        email,
         subjects,
         totalMarksObtained: totalMarks,
         maxMarks,
@@ -271,16 +456,26 @@ export class ResultImportEngine {
         categoryRank,
         scholarshipPercentageAwarded: scholarshipAwarded,
         qualifyingStatus,
-        remarks: normalizedRow.remarks ? String(normalizedRow.remarks).trim() : undefined,
+        remarks,
+        matchStatus,
+        matchedStudentProfileId,
+        matchDetails,
       });
     });
 
     return {
       examId,
+      examTitle,
       academicYear,
+      configuredSubjects,
       totalRows: rawRows.length,
       validRowsCount: validRows.length,
       invalidRowsCount: errors.length,
+      warningCount,
+      matchedCount,
+      newStudentCount,
+      reviewRequiredCount,
+      conflictCount,
       errors,
       validRows,
       duplicateRollNumbersInFile,
@@ -288,31 +483,63 @@ export class ResultImportEngine {
   }
 
   /**
-   * Step 2: Confirm and Bulk Upsert valid rows into PostgreSQL
+   * Step 2: Confirm and Bulk Upsert valid rows into PostgreSQL with Student Result History linking
    */
   public static async executeImport(
     validRows: ValidatedResultRow[],
     examId: string,
     academicYear: string,
-    adminUserId: string
+    adminUserId: string,
+    options?: { autoCreateNewStudents?: boolean }
   ): Promise<ExcelImportExecutionResult> {
     const supabase = createAdminClient();
     let insertedCount = 0;
     let updatedCount = 0;
     let failedCount = 0;
+    let reviewRequiredCount = 0;
     const errors: ExcelImportRowError[] = [];
+
+    const autoCreate = options?.autoCreateNewStudents ?? true;
 
     for (let i = 0; i < validRows.length; i++) {
       const row = validRows[i];
-      try {
-        // Attempt to find matching student profile by phone or name/dob
-        const { data: matchedStudent } = await (supabase
-          .from("student_profiles") as any)
-          .select("id")
-          .eq("dob", row.dob)
-          .ilike("full_name", row.candidateName)
-          .maybeSingle();
 
+      // Skip conflicted / review required rows unless manually reviewed
+      if (row.matchStatus === "CONFLICT" || row.matchStatus === "REVIEW_REQUIRED") {
+        reviewRequiredCount++;
+        errors.push({
+          rowNumber: row.rowNumber,
+          rollNumber: row.rollNumber,
+          message: `Skipped auto-import: ${row.matchDetails}`,
+          severity: "WARNING",
+        });
+        continue;
+      }
+
+      try {
+        let studentProfileId = row.matchedStudentProfileId;
+
+        // Create new student profile if NEW_STUDENT and autoCreate enabled
+        if (!studentProfileId && autoCreate) {
+          const { data: newProfile } = await (supabase
+            .from("student_profiles") as any)
+            .insert({
+              full_name: row.candidateName,
+              dob: row.dob,
+              gender: "OTHER",
+              phone: row.phone || "0000000000",
+              email: row.email || null,
+              current_class: row.classEnrolled,
+              city: "Mathura",
+              state: "Uttar Pradesh",
+            })
+            .select("id")
+            .single();
+
+          studentProfileId = newProfile?.id || null;
+        }
+
+        // Upsert Result on (exam_id, academic_year, roll_number)
         const { data: upsertedResult, error: upsertError } = await (supabase
           .from("results") as any)
           .upsert(
@@ -320,7 +547,7 @@ export class ResultImportEngine {
               exam_id: examId,
               academic_year: academicYear,
               roll_number: row.rollNumber,
-              student_profile_id: matchedStudent?.id || null,
+              student_profile_id: studentProfileId,
               candidate_name: row.candidateName,
               father_name: row.fatherName,
               dob: row.dob,
@@ -347,9 +574,10 @@ export class ResultImportEngine {
         if (upsertError) {
           failedCount++;
           errors.push({
-            rowNumber: i + 2,
+            rowNumber: row.rowNumber,
             rollNumber: row.rollNumber,
             message: `Database upsert error: ${upsertError.message}`,
+            severity: "ERROR",
           });
           continue;
         }
@@ -372,9 +600,10 @@ export class ResultImportEngine {
       } catch (err) {
         failedCount++;
         errors.push({
-          rowNumber: i + 2,
+          rowNumber: row.rowNumber,
           rollNumber: row.rollNumber,
           message: err instanceof Error ? err.message : "Unknown error during row import",
+          severity: "ERROR",
         });
       }
     }
@@ -389,6 +618,7 @@ export class ResultImportEngine {
         academicYear,
         totalSubmitted: validRows.length,
         insertedCount,
+        reviewRequiredCount,
         failedCount,
       },
     });
@@ -399,8 +629,44 @@ export class ResultImportEngine {
       insertedCount,
       updatedCount,
       failedCount,
+      reviewRequiredCount,
       totalProcessed: validRows.length,
       errors,
     };
+  }
+
+  /**
+   * Generates a downloadable Excel template configured with the exam's exact subjects
+   */
+  public static async generateExcelTemplate(examId: string): Promise<Buffer> {
+    const subjects = await this.getExamSubjects(examId);
+
+    // Build sample header and row
+    const templateRow: Record<string, string | number> = {
+      "Roll Number": "2026110001",
+      "Candidate Name": "Aarav Sharma",
+      "Father Name": "Rajesh Sharma",
+      "DOB": "2009-05-14",
+      "Class": "Class 11",
+      "Stream": "IIT_JEE",
+      "Phone": "9876543210",
+      "Email": "aarav@example.com",
+    };
+
+    // Append dynamic subject columns
+    subjects.forEach((subj) => {
+      templateRow[`${subj.subjectName} (Max: ${subj.maximumMarks})`] = Math.round(subj.maximumMarks * 0.85);
+    });
+
+    templateRow["Rank"] = 1;
+    templateRow["Scholarship %"] = 100;
+    templateRow["Status"] = "QUALIFIED";
+    templateRow["Remarks"] = "Exemplary Performance";
+
+    const worksheet = XLSX.utils.json_to_sheet([templateRow]);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "ResultTemplate");
+
+    return XLSX.write(workbook, { type: "buffer", bookType: "xlsx" }) as Buffer;
   }
 }
