@@ -7,12 +7,12 @@ import { Container } from "@/components/ui/layout/Container";
 import { Button } from "@/components/ui/button/Button";
 import { NavLink } from "@/components/ui/link/NavLink";
 import { Drawer } from "@/components/ui/modal/Drawer";
+import { HOMEPAGE_DATA } from "@/data/homepage";
 import {
   GraduationCap,
   Menu,
   ChevronDown,
   Sparkles,
-  PhoneCall,
   User,
   BookOpen,
   Trophy,
@@ -28,14 +28,15 @@ export const Navbar: React.FC = () => {
       <div className="bg-[var(--brand-primary)] text-white text-[11px] sm:text-xs py-1.5 px-4 text-center font-medium">
         <div className="flex items-center justify-center gap-2">
           <span className="flex items-center gap-1 text-[var(--brand-accent-light)] font-bold">
-            <Sparkles className="w-3.5 h-3.5" /> ETSE 2026:
+            <Sparkles className="w-3.5 h-3.5 shrink-0" /> {HOMEPAGE_DATA.announcement.badge}:
           </span>
-          <span>Emprise Talent Search Examination Registrations are Now Live!</span>
+          <span className="hidden sm:inline">{HOMEPAGE_DATA.announcement.text}</span>
+          <span className="sm:hidden">Exam: 6 Sept 2026 • Classes 7th–10th • FREE</span>
           <Link
-            href="/etse-2026"
-            className="underline text-orange-200 hover:text-white font-semibold ml-1 hidden sm:inline"
+            href={HOMEPAGE_DATA.announcement.ctaHref}
+            className="underline text-orange-200 hover:text-white font-semibold ml-1 shrink-0"
           >
-            Apply Now &rarr;
+            {HOMEPAGE_DATA.announcement.ctaText}
           </Link>
         </div>
       </div>
@@ -159,7 +160,7 @@ export const Navbar: React.FC = () => {
       <Drawer
         isOpen={isMobileOpen}
         onClose={() => setIsMobileOpen(false)}
-        title="Menu"
+        title="Navigation Menu"
         position="right"
       >
         <div className="flex flex-col gap-4">
@@ -176,7 +177,7 @@ export const Navbar: React.FC = () => {
               onClick={() => setIsMobileOpen(false)}
               className="block p-2.5 text-sm font-semibold text-[var(--brand-primary)] hover:bg-slate-50 rounded-lg"
             >
-              All Academic Courses (JEE / NEET / Foundation)
+              Academic Courses (JEE / NEET / Foundation)
             </Link>
             <Link
               href="/results"
@@ -186,11 +187,25 @@ export const Navbar: React.FC = () => {
               Results & Ranks
             </Link>
             <Link
+              href="/directors"
+              onClick={() => setIsMobileOpen(false)}
+              className="block p-2.5 text-sm font-semibold text-[var(--brand-primary)] hover:bg-slate-50 rounded-lg"
+            >
+              Meet Our Directors
+            </Link>
+            <Link
+              href="/faculty"
+              onClick={() => setIsMobileOpen(false)}
+              className="block p-2.5 text-sm font-semibold text-[var(--brand-primary)] hover:bg-slate-50 rounded-lg"
+            >
+              Faculty Mentors
+            </Link>
+            <Link
               href="/admissions"
               onClick={() => setIsMobileOpen(false)}
               className="block p-2.5 text-sm font-semibold text-[var(--brand-primary)] hover:bg-slate-50 rounded-lg"
             >
-              Admission Process
+              Admission Process & Counselling
             </Link>
             <Link
               href="/scholarship"
@@ -207,18 +222,11 @@ export const Navbar: React.FC = () => {
               ETSE 2026 Talent Search
             </Link>
             <Link
-              href="/faculty"
-              onClick={() => setIsMobileOpen(false)}
-              className="block p-2.5 text-sm font-semibold text-[var(--brand-primary)] hover:bg-slate-50 rounded-lg"
-            >
-              Faculty Mentors
-            </Link>
-            <Link
               href="/contact"
               onClick={() => setIsMobileOpen(false)}
               className="block p-2.5 text-sm font-semibold text-[var(--brand-primary)] hover:bg-slate-50 rounded-lg"
             >
-              Contact Campus
+              Contact Mathura Campus
             </Link>
           </div>
 

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Container } from "@/components/ui/layout/Container";
 import { GraduationCap, MapPin, Phone, Mail, Clock, ArrowUpRight } from "lucide-react";
 import { VERIFIED_BRAND_DATA } from "@/data/brand";
+import { HOMEPAGE_DATA } from "@/data/homepage";
 
 export const Footer: React.FC = () => {
   return (
@@ -27,7 +28,7 @@ export const Footer: React.FC = () => {
             </Link>
 
             <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-sm">
-              Empowering students in Mathura & Western UP for excellence in IIT-JEE, NEET-UG, and Olympiad Foundation since 2011.
+              Empowering students in Mathura & Western UP for excellence in IIT-JEE, NEET-UG, and Foundation (Classes 8–10) with concept-based pedagogy and structured mentorship since 2011.
             </p>
 
             <div className="pt-2">
@@ -43,17 +44,17 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2 text-xs sm:text-sm text-slate-400">
               <li>
                 <Link href="/courses#iit-jee" className="hover:text-[var(--brand-accent)] transition-colors">
-                  IIT-JEE (Main + Adv)
+                  IIT-JEE (Main + Advanced)
                 </Link>
               </li>
               <li>
                 <Link href="/courses#neet-ug" className="hover:text-[var(--brand-accent)] transition-colors">
-                  NEET-UG Medical
+                  NEET-UG Medical Entrance
                 </Link>
               </li>
               <li>
                 <Link href="/courses#foundation" className="hover:text-[var(--brand-accent)] transition-colors">
-                  Foundation (Classes 8–10)
+                  Foundation (Classes 8, 9 & 10)
                 </Link>
               </li>
               <li>
@@ -75,22 +76,27 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <Link href="/results" className="hover:text-[var(--brand-accent)] transition-colors">
-                  Results & Scorecard Search
+                  Results & Scorecards
                 </Link>
               </li>
               <li>
-                <Link href="/scholarship" className="hover:text-[var(--brand-accent)] transition-colors">
-                  Scholarship Slabs
-                </Link>
-              </li>
-              <li>
-                <Link href="/student/login" className="hover:text-[var(--brand-accent)] transition-colors">
-                  Student Portal Login
+                <Link href="/directors" className="hover:text-[var(--brand-accent)] transition-colors">
+                  Meet the Directors
                 </Link>
               </li>
               <li>
                 <Link href="/faculty" className="hover:text-[var(--brand-accent)] transition-colors">
                   Faculty Mentors
+                </Link>
+              </li>
+              <li>
+                <Link href="/scholarship" className="hover:text-[var(--brand-accent)] transition-colors">
+                  Scholarship Programme
+                </Link>
+              </li>
+              <li>
+                <Link href="/student/login" className="hover:text-[var(--brand-accent)] transition-colors">
+                  Student Portal Login
                 </Link>
               </li>
             </ul>
@@ -102,19 +108,23 @@ export const Footer: React.FC = () => {
             <div className="space-y-2.5 text-xs text-slate-400">
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-[var(--brand-accent)] shrink-0 mt-0.5" />
-                <span>Emprise Academy, Main Academic Block, Mathura, Uttar Pradesh - 281001</span>
+                <span>{HOMEPAGE_DATA.contactCampus.address}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-[var(--brand-accent)] shrink-0" />
-                <span>+91 98765 43210</span>
+                <a href={HOMEPAGE_DATA.contactCampus.phoneHref} className="hover:text-white transition-colors">
+                  {HOMEPAGE_DATA.contactCampus.phoneDisplay}
+                </a>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-[var(--brand-accent)] shrink-0" />
-                <span>admissions@empriseacademy.com</span>
+                <a href={`mailto:${HOMEPAGE_DATA.contactCampus.email}`} className="hover:text-white transition-colors">
+                  {HOMEPAGE_DATA.contactCampus.email}
+                </a>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-[var(--brand-accent)] shrink-0" />
-                <span>Mon–Sat: 9:00 AM – 7:00 PM</span>
+                <span>{HOMEPAGE_DATA.contactCampus.hours}</span>
               </div>
             </div>
           </div>
@@ -132,9 +142,15 @@ export const Footer: React.FC = () => {
             <Link href="/about" className="hover:text-slate-300 transition-colors">
               Terms of Admission
             </Link>
-            <Link href="/contact" className="hover:text-slate-300 transition-colors">
-              Campus Map
-            </Link>
+            <a
+              href={HOMEPAGE_DATA.contactCampus.directionsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-slate-300 transition-colors flex items-center gap-1"
+            >
+              <span>Google Maps Directions</span>
+              <ArrowUpRight className="w-3 h-3" />
+            </a>
           </div>
         </div>
       </Container>
@@ -147,14 +163,14 @@ export const MobileBottomCTA: React.FC = () => {
     <div className="fixed bottom-0 inset-x-0 z-30 lg:hidden bg-white/95 backdrop-blur-md border-t border-[var(--brand-border)] p-2.5 shadow-lg">
       <div className="grid grid-cols-3 gap-2">
         <a
-          href="tel:+919876543210"
+          href={HOMEPAGE_DATA.contactCampus.phoneHref}
           className="flex flex-col items-center justify-center p-2 rounded-lg bg-slate-50 text-[var(--brand-primary)] border border-slate-200 active:scale-95 transition-transform"
         >
           <Phone className="w-4 h-4 text-[var(--brand-primary)] mb-0.5" />
           <span className="text-[11px] font-bold">Call Campus</span>
         </a>
         <a
-          href="https://wa.me/919876543210?text=Hello%20Emprise%20Academy,%20I%20want%20to%20inquire%20about%20admissions."
+          href={HOMEPAGE_DATA.admissionsCta.whatsappAction.href}
           target="_blank"
           rel="noopener noreferrer"
           className="flex flex-col items-center justify-center p-2 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 active:scale-95 transition-transform"
@@ -167,7 +183,7 @@ export const MobileBottomCTA: React.FC = () => {
           className="flex flex-col items-center justify-center p-2 rounded-lg bg-[var(--brand-accent)] text-white font-bold active:scale-95 transition-transform shadow-xs"
         >
           <span className="text-[11px] font-extrabold uppercase">ETSE 2026</span>
-          <span className="text-[9px] opacity-90">Apply Now</span>
+          <span className="text-[9px] opacity-90">Apply Free</span>
         </Link>
       </div>
     </div>
