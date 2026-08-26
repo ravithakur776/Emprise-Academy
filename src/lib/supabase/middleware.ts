@@ -48,7 +48,9 @@ export async function updateSession(request: NextRequest) {
   if (
     path.startsWith("/student") &&
     !path.startsWith("/student/login") &&
-    !path.startsWith("/student/register")
+    !path.startsWith("/student/register") &&
+    !path.startsWith("/student/forgot-password") &&
+    !path.startsWith("/student/reset-password")
   ) {
     if (!user) {
       const url = request.nextUrl.clone();
