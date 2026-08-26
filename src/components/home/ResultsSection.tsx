@@ -6,9 +6,13 @@ import { Heading } from "@/components/ui/typography/Heading";
 import { Text } from "@/components/ui/typography/Text";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
+import { PublicResultCard } from "@/components/results/PublicResultCard";
+import { VERIFIED_RESULTS } from "@/data/results";
 import { Trophy, Award, Search, ArrowRight, ShieldCheck } from "lucide-react";
 
 export const ResultsSection: React.FC = () => {
+  const featuredResults = VERIFIED_RESULTS.filter((r) => r.isFeatured).slice(0, 3);
+
   return (
     <Section variant="default" spacing="lg" id="results">
       <Container size="xl">
@@ -23,6 +27,13 @@ export const ResultsSection: React.FC = () => {
           <Text variant="body-large" color="muted" align="center">
             Real achievements. Real students. Real journeys. Built through conceptual clarity and relentless practice in Mathura.
           </Text>
+        </div>
+
+        {/* Featured Result Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {featuredResults.map((result) => (
+            <PublicResultCard key={result.id} result={result} />
+          ))}
         </div>
 
         {/* Results Showcase / Search Gateway Card */}
