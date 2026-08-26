@@ -43,7 +43,7 @@ export const Footer: React.FC = () => {
             <h4 className="text-sm font-bold text-white uppercase tracking-wider">Academic Pillars</h4>
             <ul className="space-y-2 text-xs sm:text-sm text-slate-400">
               <li>
-                <Link href="/courses#iit-jee" className="hover:text-[var(--brand-accent)] transition-colors">
+                <Link href="/iit-jee-coaching-mathura" className="hover:text-[var(--brand-accent)] transition-colors">
                   IIT-JEE (Main + Advanced)
                 </Link>
               </li>

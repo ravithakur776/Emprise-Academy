@@ -82,7 +82,7 @@ export const HOMEPAGE_DATA = {
     supportingLine: "JEE Main | JEE Advanced | NEET-UG | Foundation Classes 8–10",
     paragraph:
       "Established in 2011, Emprise Academy provides structured academic preparation, experienced faculty, personalised mentorship and regular testing for students preparing for IIT-JEE, NEET-UG and future competitive examinations.",
-    primaryCta1: { label: "Explore JEE Programs", href: "/courses#iit-jee" },
+    primaryCta1: { label: "Explore JEE Programs", href: "/iit-jee-coaching-mathura" },
     primaryCta2: { label: "Explore NEET Programs", href: "/courses#neet-ug" },
     secondaryCta: { label: "Explore Foundation", href: "/courses#foundation" },
     counsellingCta: { label: "Book Free Counselling", href: "#counselling" },
@@ -129,7 +129,7 @@ export const HOMEPAGE_DATA = {
         "Personalized strategy sessions for speed, accuracy & negative marking",
       ],
       ctaLabel: "Explore JEE →",
-      ctaHref: "/courses#iit-jee",
+      ctaHref: "/iit-jee-coaching-mathura",
       accentColor: "navy",
     },
     {

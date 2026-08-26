@@ -79,7 +79,7 @@ export const Navbar: React.FC = () => {
             {isCoursesOpen && (
               <div className="absolute top-full left-0 w-64 bg-white rounded-xl shadow-xl border border-[var(--brand-border)] p-2 mt-1 animate-slide-down z-50">
                 <Link
-                  href="/courses#iit-jee"
+                  href="/iit-jee-coaching-mathura"
                   className="flex items-start gap-2.5 p-2.5 rounded-lg hover:bg-orange-50/50 transition-colors"
                 >
                   <div className="w-8 h-8 rounded-md bg-blue-50 text-[var(--brand-primary)] flex items-center justify-center shrink-0">
