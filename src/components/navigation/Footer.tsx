@@ -53,7 +53,7 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/courses#foundation" className="hover:text-[var(--brand-accent)] transition-colors">
+                <Link href="/foundation-coaching-mathura" className="hover:text-[var(--brand-accent)] transition-colors">
                   Foundation (Classes 8, 9 & 10)
                 </Link>
               </li>

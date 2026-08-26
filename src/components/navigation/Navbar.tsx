@@ -103,7 +103,7 @@ export const Navbar: React.FC = () => {
                   </div>
                 </Link>
                 <Link
-                  href="/courses#foundation"
+                  href="/foundation-coaching-mathura"
                   className="flex items-start gap-2.5 p-2.5 rounded-lg hover:bg-orange-50/50 transition-colors"
                 >
                   <div className="w-8 h-8 rounded-md bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
