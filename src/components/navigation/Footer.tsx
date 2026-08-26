@@ -48,7 +48,7 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/courses#neet-ug" className="hover:text-[var(--brand-accent)] transition-colors">
+                <Link href="/neet-coaching-mathura" className="hover:text-[var(--brand-accent)] transition-colors">
                   NEET-UG Medical Entrance
                 </Link>
               </li>
