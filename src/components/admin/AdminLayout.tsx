@@ -20,9 +20,15 @@ import {
   Menu,
   X,
   Search,
-  Shield,
   ChevronRight,
   Sparkles,
+  Trophy,
+  CreditCard,
+  Globe,
+  FileText,
+  ShieldCheck,
+  HelpCircle,
+  Image,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -98,13 +104,90 @@ const navSections = [
     ],
   },
   {
-    title: "CAMPAIGNS",
+    title: "EXAMINATION",
     items: [
+      {
+        label: "Results & Import",
+        href: "/admin/results",
+        icon: Trophy,
+        roles: ["SUPER_ADMIN", "DIRECTOR", "EXAM_ADMIN"],
+      },
+      {
+        label: "Admit Cards",
+        href: "/admin/admit-cards",
+        icon: CreditCard,
+        roles: ["SUPER_ADMIN", "DIRECTOR", "EXAM_ADMIN"],
+      },
       {
         label: "ETSE 2026",
         href: "/admin/etse",
         icon: Award,
         roles: ["SUPER_ADMIN", "DIRECTOR", "ADMISSION_ADMIN", "COUNSELLOR"],
+      },
+    ],
+  },
+  {
+    title: "CONTENT & CMS",
+    items: [
+      {
+        label: "CMS Hub",
+        href: "/admin/cms",
+        icon: Globe,
+        roles: ["SUPER_ADMIN", "DIRECTOR", "CONTENT_MANAGER"],
+      },
+      {
+        label: "Homepage",
+        href: "/admin/cms/homepage",
+        icon: FileText,
+        roles: ["SUPER_ADMIN", "DIRECTOR", "CONTENT_MANAGER"],
+      },
+      {
+        label: "Faculty",
+        href: "/admin/cms/faculty",
+        icon: Users,
+        roles: ["SUPER_ADMIN", "DIRECTOR", "CONTENT_MANAGER"],
+      },
+      {
+        label: "Directors",
+        href: "/admin/cms/directors",
+        icon: ShieldCheck,
+        roles: ["SUPER_ADMIN", "DIRECTOR"],
+      },
+      {
+        label: "Testimonials",
+        href: "/admin/cms/testimonials",
+        icon: Sparkles,
+        roles: ["SUPER_ADMIN", "DIRECTOR", "CONTENT_MANAGER"],
+      },
+      {
+        label: "FAQ",
+        href: "/admin/cms/faq",
+        icon: HelpCircle,
+        roles: ["SUPER_ADMIN", "DIRECTOR", "CONTENT_MANAGER"],
+      },
+      {
+        label: "Blog Posts",
+        href: "/admin/cms/blog",
+        icon: BookOpen,
+        roles: ["SUPER_ADMIN", "DIRECTOR", "CONTENT_MANAGER"],
+      },
+      {
+        label: "Gallery & Media",
+        href: "/admin/cms/gallery",
+        icon: Image,
+        roles: ["SUPER_ADMIN", "DIRECTOR", "CONTENT_MANAGER"],
+      },
+      {
+        label: "Announcements",
+        href: "/admin/cms/announcements",
+        icon: Bell,
+        roles: ["SUPER_ADMIN", "DIRECTOR", "CONTENT_MANAGER"],
+      },
+      {
+        label: "SEO & Settings",
+        href: "/admin/cms/seo",
+        icon: Settings,
+        roles: ["SUPER_ADMIN", "DIRECTOR"],
       },
     ],
   },
