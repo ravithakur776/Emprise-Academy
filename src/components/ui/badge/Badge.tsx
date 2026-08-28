@@ -97,7 +97,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   const norm = status.toUpperCase().trim();
 
   let variant: BadgeVariant = "muted";
-  let dot = true;
+  const dot = true;
 
   if (norm === "PUBLISHED" || norm === "QUALIFIED" || norm === "ACTIVE" || norm === "APPROVED" || norm === "CONVERTED") {
     variant = "success";

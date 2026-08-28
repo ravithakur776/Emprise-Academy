@@ -494,7 +494,7 @@ export class ResultImportEngine {
   ): Promise<ExcelImportExecutionResult> {
     const supabase = createAdminClient();
     let insertedCount = 0;
-    let updatedCount = 0;
+    const updatedCount = 0;
     let failedCount = 0;
     let reviewRequiredCount = 0;
     const errors: ExcelImportRowError[] = [];
