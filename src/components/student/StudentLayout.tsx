@@ -60,8 +60,7 @@ export const StudentLayout: React.FC<StudentLayoutProps> = ({
   };
 
   return (
-    <ToastProvider>
-      <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row text-slate-800">
+    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row text-slate-800">
         {/* Desktop Sidebar */}
         <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 shrink-0 sticky top-0 h-screen overflow-y-auto">
           {/* Logo & Portal Badge */}
@@ -295,6 +294,5 @@ export const StudentLayout: React.FC<StudentLayoutProps> = ({
           </Link>
         </nav>
       </div>
-    </ToastProvider>
   );
 };
