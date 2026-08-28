@@ -40,6 +40,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/about", priority: 0.6, changeFrequency: "monthly" as const },
     { path: "/blog", priority: 0.7, changeFrequency: "weekly" as const },
     { path: "/contact", priority: 0.8, changeFrequency: "monthly" as const },
+    { path: "/privacy-policy", priority: 0.4, changeFrequency: "monthly" as const },
+    { path: "/terms", priority: 0.4, changeFrequency: "monthly" as const },
   ];
 
   return routes.map((r) => ({
