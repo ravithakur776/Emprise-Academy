@@ -41,8 +41,8 @@ export const VERIFIED_BRAND_DATA = {
   etse: {
     name: "Emprise Talent Search Examination",
     shortName: "ETSE 2026",
-    eligibleClasses: ["Class 7", "Class 8", "Class 9", "Class 10", "Class 11"],
-    scholarshipUpTo: "100%", // Pending exact scholarship matrix configuration
+    eligibleClasses: ["Class 7", "Class 8", "Class 9", "Class 10"],
+    scholarshipUpTo: "100%", // Up to 100% tuition waiver
     examMode: "Offline (Pen & Paper)",
   },
   roles: {

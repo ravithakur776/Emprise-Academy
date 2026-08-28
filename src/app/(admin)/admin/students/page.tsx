@@ -1,60 +1,70 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
-import { Input, Select } from "@/components/ui/form/Input";
 import {
   Users,
   Search,
   Download,
   Eye,
-  GraduationCap,
-  Building,
-  CheckCircle2,
+  RefreshCw,
 } from "lucide-react";
+import { useToast } from "@/components/ui/toast/ToastProvider";
+
+interface StudentItem {
+  id: string;
+  admissionNo: string;
+  fullName: string;
+  currentClass: string;
+  schoolName: string;
+  phone: string;
+  email: string;
+  status: string;
+  enrolledProgramme: string;
+}
 
 export default function AdminStudentsPage() {
+  const toast = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [classFilter, setClassFilter] = useState("ALL");
+  const [students, setStudents] = useState<StudentItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const students = [
-    {
-      id: "std-1",
-      admissionNo: "ADM-2026-00104",
-      fullName: "Tanmay Singhal",
-      currentClass: "Dropper",
-      schoolName: "Brij Modern School, Mathura",
-      phone: "+91 98765 44332",
-      email: "tanmay.singhal@example.com",
-      status: "ACTIVE",
-      enrolledProgramme: "IIT-JEE Dropper Rankers",
-    },
-    {
-      id: "std-2",
-      admissionNo: "ADM-2026-00088",
-      fullName: "Kavya Goyal",
-      currentClass: "Class 11",
-      schoolName: "Kanha Makhan Public School",
-      phone: "+91 98765 55667",
-      email: "kavya.goyal@example.com",
-      status: "ACTIVE",
-      enrolledProgramme: "NEET-UG 2-Year Classroom",
-    },
-    {
-      id: "std-3",
-      admissionNo: "ADM-2026-00054",
-      fullName: "Aarav Verma",
-      currentClass: "Class 8",
-      schoolName: "St. Dominic's Senior Secondary",
-      phone: "+91 98765 43210",
-      email: "aarav.verma@example.com",
-      status: "ACTIVE",
-      enrolledProgramme: "Foundation Junior Olympiad",
-    },
-  ];
+  const fetchStudents = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      // In production, fetch from student_profiles
+      setStudents([]);
+    } catch {
+      setStudents([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchStudents();
+  }, [fetchStudents]);
+
+  const handleExportCSV = () => {
+    if (students.length === 0) {
+      toast.error("Export Empty", "No student records available to export.");
+      return;
+    }
+    const headers = ["Admission No", "Student Name", "Class", "School", "Phone", "Programme", "Status"];
+    const rows = students.map((s) => [s.admissionNo, s.fullName, s.currentClass, s.schoolName, s.phone, s.enrolledProgramme, s.status]);
+    const csvContent = [headers.join(","), ...rows.map((r) => r.map((f) => `"${f || ""}"`).join(","))].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `Emprise_Students_${new Date().toISOString().split("T")[0]}.csv`;
+    link.click();
+    toast.success("CSV Exported", "Student directory exported.");
+  };
 
   const filtered = students.filter((s) => {
     const matchesSearch =
@@ -82,6 +92,26 @@ export default function AdminStudentsPage() {
               Student Directory
             </h1>
           </div>
+
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={fetchStudents}
+              isLoading={isLoading}
+              leftIcon={<RefreshCw className="w-3.5 h-3.5" />}
+            >
+              Refresh
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleExportCSV}
+              leftIcon={<Download className="w-4 h-4" />}
+            >
+              Export Directory
+            </Button>
+          </div>
         </div>
 
         {/* Filters */}
@@ -98,80 +128,87 @@ export default function AdminStudentsPage() {
           </div>
 
           <div className="w-full sm:w-56">
-            <Select
-              id="std-class-filter"
+            <select
               value={classFilter}
               onChange={(e) => setClassFilter(e.target.value)}
-              options={[
-                { value: "ALL", label: "All Classes" },
-                { value: "Class 8", label: "Class 8" },
-                { value: "Class 9", label: "Class 9" },
-                { value: "Class 10", label: "Class 10" },
-                { value: "Class 11", label: "Class 11" },
-                { value: "Class 12", label: "Class 12" },
-                { value: "Dropper", label: "Dropper" },
-              ]}
-            />
+              className="w-full h-10 px-3 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-[var(--brand-accent)]/20 focus:border-[var(--brand-accent)] bg-white"
+            >
+              <option value="ALL">All Enrolled Classes</option>
+              <option value="Class 8">Class 8</option>
+              <option value="Class 9">Class 9</option>
+              <option value="Class 10">Class 10</option>
+              <option value="Class 11">Class 11</option>
+              <option value="Class 12">Class 12</option>
+              <option value="Dropper">Dropper Batch</option>
+            </select>
           </div>
         </div>
 
-        {/* Table */}
+        {/* Student Directory Table */}
         <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
-                <tr>
-                  <th className="p-3.5 pl-6">Student / Admission No</th>
-                  <th className="p-3.5">Enrolled Programme</th>
-                  <th className="p-3.5">Class & School</th>
-                  <th className="p-3.5">Phone Number</th>
-                  <th className="p-3.5">Status</th>
-                  <th className="p-3.5 pr-6 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {filtered.map((s) => (
-                  <tr key={s.id} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="p-3.5 pl-6">
-                      <strong className="block text-slate-900 font-bold">{s.fullName}</strong>
-                      <span className="font-mono text-[11px] text-slate-400">{s.admissionNo}</span>
-                    </td>
-
-                    <td className="p-3.5">
-                      <span className="text-slate-900 font-semibold">{s.enrolledProgramme}</span>
-                    </td>
-
-                    <td className="p-3.5">
-                      <span className="text-slate-800 font-semibold block">{s.currentClass}</span>
-                      <span className="text-[11px] text-slate-500 block truncate max-w-[160px]">{s.schoolName}</span>
-                    </td>
-
-                    <td className="p-3.5">
-                      <span className="text-slate-700 font-mono">{s.phone}</span>
-                    </td>
-
-                    <td className="p-3.5">
-                      <Badge variant="success" size="sm">
-                        {s.status}
-                      </Badge>
-                    </td>
-
-                    <td className="p-3.5 pr-6 text-right">
-                      <Link href={`/admin/students/${s.id}`}>
-                        <Button variant="ghost" size="sm" leftIcon={<Eye className="w-3.5 h-3.5" />}>
-                          Profile
-                        </Button>
-                      </Link>
-                    </td>
+            {filtered.length === 0 ? (
+              <div className="py-16 text-center text-slate-400 space-y-2">
+                <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+                  <Users className="w-6 h-6" />
+                </div>
+                <p className="text-sm font-bold text-slate-700">No students found</p>
+                <p className="text-xs text-slate-400">
+                  {searchQuery || classFilter !== "ALL"
+                    ? "Try adjusting your search query or filter criteria."
+                    : "Enrolled student profiles linked to active admissions will appear here."}
+                </p>
+              </div>
+            ) : (
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-slate-100 bg-slate-50/75 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
+                    <th className="py-3.5 px-4">Admission No</th>
+                    <th className="py-3.5 px-4">Student Name</th>
+                    <th className="py-3.5 px-4">Class & School</th>
+                    <th className="py-3.5 px-4">Enrolled Programme</th>
+                    <th className="py-3.5 px-4">Contact</th>
+                    <th className="py-3.5 px-4">Status</th>
+                    <th className="py-3.5 px-4 text-right">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between text-xs text-slate-500">
-            <span>Showing {filtered.length} active students</span>
-            <span>RLS isolated database records</span>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {filtered.map((s) => (
+                    <tr key={s.id} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="py-3.5 px-4 font-mono font-bold text-slate-900">
+                        {s.admissionNo}
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <strong className="text-slate-900 block">{s.fullName}</strong>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className="text-slate-800 font-semibold block">{s.currentClass}</span>
+                        <span className="text-[11px] text-slate-500">{s.schoolName}</span>
+                      </td>
+                      <td className="py-3.5 px-4 text-slate-700">
+                        {s.enrolledProgramme}
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className="text-slate-800 block">{s.phone}</span>
+                        <span className="text-[11px] text-slate-500">{s.email}</span>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <Badge variant={s.status === "ACTIVE" ? "success" : "muted"} size="sm">
+                          {s.status}
+                        </Badge>
+                      </td>
+                      <td className="py-3.5 px-4 text-right">
+                        <Link href={`/admin/students/${s.id}`}>
+                          <Button variant="ghost" size="sm" leftIcon={<Eye className="w-3.5 h-3.5" />}>
+                            Profile
+                          </Button>
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>

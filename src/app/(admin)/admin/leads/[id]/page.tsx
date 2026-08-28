@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, use } from "react";
 import Link from "next/link";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { LeadStatusBadge } from "@/components/admin/LeadStatusBadge";
@@ -21,64 +21,141 @@ import {
   Sparkles,
   CheckCircle2,
   FileText,
+  AlertCircle,
 } from "lucide-react";
+
+interface LeadDetail {
+  id: string;
+  reference: string;
+  studentName: string;
+  parentName: string;
+  phone: string;
+  email: string;
+  class: string;
+  school: string;
+  programme: string;
+  targetExam: string;
+  source: string;
+  preferredMode: string;
+  preferredDate: string;
+  createdAt: string;
+  status: string;
+  notes: Array<{ id: string; author: string; date: string; text: string }>;
+  timeline: Array<{ action: string; time: string; user: string }>;
+}
 
 export default function AdminLeadDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const resolvedParams = use(params);
   const toast = useToast();
 
+  const [lead, setLead] = useState<LeadDetail | null>(null);
   const [status, setStatus] = useState("NEW");
-  const [counsellor, setCounsellor] = useState("Unassigned");
   const [newNote, setNewNote] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isNotFound, setIsNotFound] = useState(false);
 
-  const lead = {
-    id: "lead-1",
-    reference: "ENQ-2026-891240",
-    studentName: "Devansh Rajput",
-    parentName: "Vikram Rajput",
-    phone: "+91 98765 11223",
-    email: "devansh.rajput@example.com",
-    class: "Class 11",
-    school: "Kanha Makhan Public School, Mathura",
-    programme: "IIT-JEE 2-Year Target Batch",
-    targetExam: "JEE (Advanced) 2028",
-    source: "ADMISSIONS",
-    preferredMode: "Classroom (Offline)",
-    preferredDate: "2026-08-30",
-    createdAt: "28 August 2026, 11:30 AM",
-    notes: [
-      {
-        id: "n-1",
-        author: "System Intake",
-        date: "28 August 2026, 11:30 AM",
-        text: "Enquiry submitted via Online Admissions Portal. Parent requested weekend counselling session for Class 11 IIT-JEE.",
-      },
-    ],
-    timeline: [
-      { action: "Lead Captured", time: "28 Aug 2026, 11:30 AM", user: "Website Intake" },
-      { action: "Notification Dispatched", time: "28 Aug 2026, 11:31 AM", user: "CRM Engine" },
-    ],
-  };
+  useEffect(() => {
+    const fetchLead = async () => {
+      setIsLoading(true);
+      try {
+        const res = await fetch(`/api/leads/${resolvedParams.id}`);
+        if (!res.ok) {
+          setIsNotFound(true);
+          return;
+        }
+        const json = await res.json();
+        if (json.success && json.data) {
+          setLead(json.data);
+          setStatus(json.data.status);
+        } else {
+          setIsNotFound(true);
+        }
+      } catch {
+        setIsNotFound(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const handleUpdateStatus = () => {
+    fetchLead();
+  }, [resolvedParams.id]);
+
+  const handleUpdateStatus = async () => {
+    if (!lead) return;
     setIsSaving(true);
-    setTimeout(() => {
+    try {
+      const res = await fetch(`/api/leads/${lead.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      if (res.ok) {
+        toast.success("Lead Updated", `Status updated to ${status}.`);
+      } else {
+        toast.error("Update Failed", "Could not save status change.");
+      }
+    } catch {
+      toast.error("Update Failed", "Network error.");
+    } finally {
       setIsSaving(false);
-      toast.success("Lead Updated", `Status updated to ${status}.`);
-    }, 500);
+    }
   };
 
   const handleAddNote = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newNote.trim()) return;
+    if (!newNote.trim() || !lead) return;
 
-    toast.success("Note Added", "Counsellor interaction note logged.");
+    toast.success("Note Logged", "Counsellor interaction note logged.");
+    setLead({
+      ...lead,
+      notes: [
+        ...lead.notes,
+        {
+          id: `n-${Date.now()}`,
+          author: "Counsellor",
+          date: new Date().toLocaleDateString("en-IN"),
+          text: newNote,
+        },
+      ],
+    });
     setNewNote("");
   };
+
+  if (isLoading) {
+    return (
+      <AdminLayout staffName="Admissions Officer" staffRole="ADMISSION_ADMIN">
+        <div className="p-12 text-center text-slate-400">
+          <p className="text-sm font-semibold">Loading lead record...</p>
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  if (isNotFound || !lead) {
+    return (
+      <AdminLayout staffName="Admissions Officer" staffRole="ADMISSION_ADMIN">
+        <div className="max-w-md mx-auto my-12 bg-white p-8 rounded-3xl border border-slate-200 text-center space-y-4 shadow-sm">
+          <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto">
+            <AlertCircle className="w-6 h-6" />
+          </div>
+          <h2 className="text-lg font-bold text-slate-900">Lead Record Not Found</h2>
+          <p className="text-xs text-slate-500">
+            The requested lead ID does not exist in the database or has been deleted.
+          </p>
+          <Link href="/admin/leads">
+            <Button variant="primary" size="sm">
+              Return to Leads CRM
+            </Button>
+          </Link>
+        </div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout staffName="Admissions Officer" staffRole="ADMISSION_ADMIN">
@@ -100,183 +177,138 @@ export default function AdminLeadDetailPage({
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="font-mono text-xs text-slate-400 font-bold">{lead.reference}</span>
-                <span className="text-slate-300">•</span>
-                <span className="text-xs font-bold text-[var(--brand-accent)]">{lead.source} SOURCE</span>
+                <span className="text-[10px] font-mono font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded">
+                  {lead.reference}
+                </span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700">
+                  {lead.source}
+                </span>
               </div>
-              <h1 className="text-2xl font-extrabold text-slate-900">{lead.studentName}</h1>
+              <h1 className="text-xl sm:text-2xl font-black text-slate-900">
+                {lead.studentName}
+              </h1>
+              <p className="text-xs text-slate-500">
+                Enquiry captured on {lead.createdAt}
+              </p>
             </div>
 
             <div className="flex items-center gap-3">
-              <LeadStatusBadge status={status} size="md" />
-              <a
-                href={`tel:${lead.phone.replace(/\s+/g, "")}`}
-                className="p-2.5 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors"
-                title="Call Lead"
-              >
-                <Phone className="w-4 h-4" />
-              </a>
-              <a
-                href={`https://wa.me/${lead.phone.replace(/\D/g, "")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2.5 rounded-xl bg-green-50 text-green-700 hover:bg-green-100 transition-colors"
-                title="WhatsApp Message"
-              >
-                <MessageSquare className="w-4 h-4" />
-              </a>
-            </div>
-          </div>
-
-          {/* Quick Particulars Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
-            <div>
-              <span className="text-slate-400 block mb-0.5">Parent Name</span>
-              <strong className="text-slate-900">{lead.parentName}</strong>
-            </div>
-            <div>
-              <span className="text-slate-400 block mb-0.5">Phone Number</span>
-              <strong className="text-slate-900">{lead.phone}</strong>
-            </div>
-            <div>
-              <span className="text-slate-400 block mb-0.5">Current Class</span>
-              <strong className="text-slate-900">{lead.class}</strong>
-            </div>
-            <div>
-              <span className="text-slate-400 block mb-0.5">Target Exam</span>
-              <strong className="text-[var(--brand-primary)]">{lead.targetExam}</strong>
-            </div>
-          </div>
-
-          {/* Enquiry Particulars */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-            <div className="p-4 rounded-2xl bg-white border border-slate-200 space-y-2">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                Academic Details
-              </span>
-              <div className="space-y-1.5 text-slate-700">
-                <div className="flex justify-between">
-                  <span className="text-slate-500">School:</span>
-                  <strong className="text-slate-900">{lead.school}</strong>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Programme:</span>
-                  <strong className="text-slate-900">{lead.programme}</strong>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Mode:</span>
-                  <strong className="text-slate-900">{lead.preferredMode}</strong>
-                </div>
-              </div>
-            </div>
-
-            {/* Counsellor Actions & Status Controls */}
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                CRM Controls & Assignment
-              </span>
-
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="text-[10px] font-bold text-slate-500 block mb-1">Status</label>
-                  <Select
-                    id="lead-status"
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
-                    options={[
-                      { value: "NEW", label: "New Lead" },
-                      { value: "CONTACTED", label: "Contacted" },
-                      { value: "INTERESTED", label: "Interested" },
-                      { value: "COUNSELLING_SCHEDULED", label: "Counselling Scheduled" },
-                      { value: "CAMPUS_VISIT", label: "Campus Visit" },
-                      { value: "CONVERTED", label: "Converted / Admitted" },
-                      { value: "NOT_INTERESTED", label: "Not Interested" },
-                      { value: "LOST", label: "Lost" },
-                    ]}
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[10px] font-bold text-slate-500 block mb-1">Assign Counsellor</label>
-                  <Select
-                    id="lead-counsellor"
-                    value={counsellor}
-                    onChange={(e) => setCounsellor(e.target.value)}
-                    options={[
-                      { value: "Unassigned", label: "Unassigned" },
-                      { value: "Rahul Sharma", label: "Rahul Sharma" },
-                      { value: "Pooja Sharma", label: "Pooja Sharma" },
-                      { value: "Admissions Head", label: "Admissions Head" },
-                    ]}
-                  />
-                </div>
-              </div>
-
-              <Button
-                variant="primary"
-                size="sm"
-                fullWidth
-                isLoading={isSaving}
-                onClick={handleUpdateStatus}
-              >
-                Save CRM Updates
-              </Button>
-            </div>
-          </div>
-
-          {/* Notes Log & Activity Timeline */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4 border-t border-slate-100">
-            {/* Notes Section */}
-            <div className="space-y-3">
-              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                <FileText className="w-4 h-4 text-[var(--brand-accent)]" />
-                <span>Counsellor Interaction Notes</span>
-              </h3>
-
-              <div className="space-y-2">
-                {lead.notes.map((n) => (
-                  <div key={n.id} className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1">
-                    <div className="flex justify-between text-slate-400 text-[10px] font-semibold">
-                      <span>{n.author}</span>
-                      <span>{n.date}</span>
-                    </div>
-                    <p className="text-slate-700">{n.text}</p>
-                  </div>
-                ))}
-              </div>
-
-              <form onSubmit={handleAddNote} className="space-y-2 pt-2">
-                <Textarea
-                  placeholder="Record call discussion, counselling outcome, or follow-up note..."
-                  value={newNote}
-                  onChange={(e) => setNewNote(e.target.value)}
-                  rows={2}
-                />
-                <Button type="submit" variant="outline" size="sm" rightIcon={<Send className="w-3.5 h-3.5" />}>
-                  Post Note
+              <LeadStatusBadge status={lead.status} />
+              <Link href={`tel:${lead.phone}`}>
+                <Button variant="outline" size="sm" leftIcon={<Phone className="w-3.5 h-3.5" />}>
+                  Call Candidate
                 </Button>
-              </form>
+              </Link>
+            </div>
+          </div>
+
+          {/* Details Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 text-xs">
+            <div>
+              <span className="text-slate-400 font-medium block">Parent Name</span>
+              <strong className="text-slate-800 font-semibold">{lead.parentName}</strong>
+            </div>
+            <div>
+              <span className="text-slate-400 font-medium block">Contact Mobile</span>
+              <strong className="text-slate-800 font-semibold">{lead.phone}</strong>
+            </div>
+            <div>
+              <span className="text-slate-400 font-medium block">Current Class</span>
+              <strong className="text-slate-800 font-semibold">{lead.class}</strong>
+            </div>
+            <div>
+              <span className="text-slate-400 font-medium block">School</span>
+              <strong className="text-slate-800 font-semibold">{lead.school}</strong>
+            </div>
+          </div>
+
+          {/* Academic Interest & Target */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-4 rounded-2xl border border-slate-200 space-y-1 text-xs">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                PROGRAMME INTEREST
+              </span>
+              <p className="font-bold text-slate-900 text-sm">{lead.programme}</p>
+              <p className="text-slate-500">Target Goal: {lead.targetExam}</p>
             </div>
 
-            {/* Audit History Timeline */}
-            <div className="space-y-3">
-              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                <Clock className="w-4 h-4 text-purple-600" />
-                <span>Activity & Audit Trail</span>
-              </h3>
+            <div className="p-4 rounded-2xl border border-slate-200 space-y-1 text-xs">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                COUNSELLING PREFERENCE
+              </span>
+              <p className="font-bold text-slate-900 text-sm">{lead.preferredMode}</p>
+              <p className="text-slate-500">Preferred Date: {lead.preferredDate}</p>
+            </div>
+          </div>
 
-              <div className="space-y-3 relative pl-4 border-l-2 border-slate-200 text-xs">
-                {lead.timeline.map((item, idx) => (
-                  <div key={idx} className="relative space-y-0.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-[var(--brand-accent)] absolute -left-[21px] top-1" />
-                    <strong className="block text-slate-900 font-bold">{item.action}</strong>
-                    <span className="text-[11px] text-slate-500 block">
-                      {item.time} • by {item.user}
-                    </span>
+          {/* Counsellor Actions & Status Update */}
+          <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-end gap-3">
+            <div className="flex-1 w-full space-y-1">
+              <label className="text-xs font-bold text-slate-700">Update Lead Lifecycle Status</label>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="w-full text-xs h-10 px-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[var(--brand-accent)]/20 focus:border-[var(--brand-accent)] bg-white"
+              >
+                <option value="NEW">New Lead</option>
+                <option value="CONTACTED">Contacted</option>
+                <option value="INTERESTED">Interested</option>
+                <option value="COUNSELLING_SCHEDULED">Counselling Scheduled</option>
+                <option value="CAMPUS_VISIT">Campus Visit</option>
+                <option value="CONVERTED">Admitted / Converted</option>
+                <option value="LOST">Lost</option>
+              </select>
+            </div>
+
+            <Button
+              variant="primary"
+              onClick={handleUpdateStatus}
+              isLoading={isSaving}
+            >
+              Save Lifecycle Status
+            </Button>
+          </div>
+        </div>
+
+        {/* Counsellor Notes & Activity Stream */}
+        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
+          <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+            <MessageSquare className="w-4 h-4 text-[var(--brand-accent)]" />
+            <span>Counsellor Interaction Notes</span>
+          </h3>
+
+          <form onSubmit={handleAddNote} className="space-y-3">
+            <Textarea
+              placeholder="Enter remarks from phone call, in-person counselling, or fee discussion..."
+              value={newNote}
+              onChange={(e) => setNewNote(e.target.value)}
+              rows={3}
+              className="text-xs"
+            />
+            <Button
+              type="submit"
+              variant="primary"
+              size="sm"
+              leftIcon={<Send className="w-3.5 h-3.5" />}
+            >
+              Add Interaction Note
+            </Button>
+          </form>
+
+          <div className="space-y-3 pt-2">
+            {lead.notes.length === 0 ? (
+              <p className="text-xs text-slate-400 italic">No notes logged yet.</p>
+            ) : (
+              lead.notes.map((note) => (
+                <div key={note.id} className="p-4 rounded-2xl bg-slate-50 border border-slate-100 space-y-1">
+                  <div className="flex justify-between items-center text-[11px] font-bold text-slate-500">
+                    <span>{note.author}</span>
+                    <span>{note.date}</span>
                   </div>
-                ))}
-              </div>
-            </div>
+                  <p className="text-xs text-slate-700 whitespace-pre-wrap">{note.text}</p>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>

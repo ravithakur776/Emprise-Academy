@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { LeadStatusBadge } from "@/components/admin/LeadStatusBadge";
-import { AdmissionStatusBadge } from "@/components/admin/AdmissionStatusBadge";
-import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
 import {
   Users,
@@ -16,76 +14,49 @@ import {
   ArrowRight,
   Sparkles,
   Award,
-  Filter,
-  CheckCircle2,
-  Clock,
-  ArrowUpRight,
   BarChart3,
-  ExternalLink,
+  RefreshCw,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { DashboardMetrics, DashboardRecentLead, LeadSourceStat } from "@/services/dashboard.service";
 
 export default function AdminDashboardPage() {
   const [timeRange, setTimeRange] = useState<"TODAY" | "WEEK" | "MONTH" | "QUARTER">("MONTH");
+  const [isLoading, setIsLoading] = useState(true);
 
-  // In production, these metrics are computed server-side via Supabase RPC/Aggregates
-  const metrics = {
-    totalLeads: 142,
-    newLeads: 18,
-    todaysFollowups: 7,
-    pendingCounselling: 12,
-    admissionsThisPeriod: 34,
-    conversionRate: 23.9,
+  const [metrics, setMetrics] = useState<DashboardMetrics>({
+    totalLeads: 0,
+    newLeads: 0,
+    todaysFollowups: 0,
+    pendingCounselling: 0,
+    admissionsThisPeriod: 0,
+    etseRegistrations: 0,
+    conversionRate: 0,
+  });
+
+  const [recentLeads, setRecentLeads] = useState<DashboardRecentLead[]>([]);
+  const [sourceBreakdown, setSourceBreakdown] = useState<LeadSourceStat[]>([]);
+
+  const fetchDashboardData = async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/admin/dashboard");
+      const json = await res.json();
+      if (json.success && json.data) {
+        setMetrics(json.data.metrics);
+        setRecentLeads(json.data.recentLeads);
+        setSourceBreakdown(json.data.sourceBreakdown);
+      }
+    } catch {
+      // Safe zero state
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const recentLeads = [
-    {
-      id: "lead-1",
-      reference: "ENQ-2026-891240",
-      studentName: "Devansh Rajput",
-      parentName: "Vikram Rajput",
-      phone: "+91 98765 11223",
-      class: "Class 11",
-      programme: "IIT-JEE 2-Year Target",
-      source: "ADMISSIONS",
-      status: "NEW",
-      createdAt: "Today, 11:30 AM",
-      counsellor: "Unassigned",
-    },
-    {
-      id: "lead-2",
-      reference: "ENQ-2026-773412",
-      studentName: "Ananya Dixit",
-      parentName: "Sanjay Dixit",
-      phone: "+91 98765 33445",
-      class: "Class 8",
-      programme: "Foundation Junior",
-      source: "ETSE",
-      status: "COUNSELLING_SCHEDULED",
-      createdAt: "Today, 09:15 AM",
-      counsellor: "Pooja Sharma",
-    },
-    {
-      id: "lead-3",
-      reference: "ENQ-2026-554210",
-      studentName: "Rohan Agrawal",
-      parentName: "Manoj Agrawal",
-      phone: "+91 98765 66778",
-      class: "Class 12",
-      programme: "NEET-UG 1-Year Fast-Track",
-      source: "WEBSITE",
-      status: "CAMPUS_VISIT",
-      createdAt: "Yesterday, 04:45 PM",
-      counsellor: "Rahul Sharma",
-    },
-  ];
-
-  const sourceBreakdown = [
-    { source: "Admissions Form & Portal", count: 54, percentage: 38 },
-    { source: "ETSE 2026 Campaign", count: 42, percentage: 30 },
-    { source: "Direct Website Enquiries", count: 26, percentage: 18 },
-    { source: "WhatsApp & Campus Desk", count: 20, percentage: 14 },
-  ];
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
 
   return (
     <AdminLayout staffName="Admissions Officer" staffRole="ADMISSION_ADMIN">
@@ -101,21 +72,33 @@ export default function AdminDashboardPage() {
             </h1>
           </div>
 
-          <div className="flex items-center gap-1.5 p-1 bg-white border border-slate-200 rounded-xl shadow-xs text-xs font-semibold">
-            {(["TODAY", "WEEK", "MONTH", "QUARTER"] as const).map((range) => (
-              <button
-                key={range}
-                onClick={() => setTimeRange(range)}
-                className={cn(
-                  "px-3 py-1.5 rounded-lg transition-all",
-                  timeRange === range
-                    ? "bg-slate-900 text-white shadow-xs"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                )}
-              >
-                {range === "TODAY" ? "Today" : range === "WEEK" ? "This Week" : range === "MONTH" ? "This Month" : "This Quarter"}
-              </button>
-            ))}
+          <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={fetchDashboardData}
+              isLoading={isLoading}
+              leftIcon={<RefreshCw className="w-3.5 h-3.5" />}
+            >
+              Refresh
+            </Button>
+
+            <div className="flex items-center gap-1.5 p-1 bg-white border border-slate-200 rounded-xl shadow-xs text-xs font-semibold">
+              {(["TODAY", "WEEK", "MONTH", "QUARTER"] as const).map((range) => (
+                <button
+                  key={range}
+                  onClick={() => setTimeRange(range)}
+                  className={cn(
+                    "px-3 py-1.5 rounded-lg transition-all",
+                    timeRange === range
+                      ? "bg-slate-900 text-white shadow-xs"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  )}
+                >
+                  {range === "TODAY" ? "Today" : range === "WEEK" ? "This Week" : range === "MONTH" ? "This Month" : "This Quarter"}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -150,11 +133,11 @@ export default function AdminDashboardPage() {
 
           <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-1">
             <div className="flex items-center justify-between text-slate-400">
-              <span className="text-[11px] font-bold uppercase tracking-wider">Counselling</span>
-              <Users className="w-4 h-4 text-indigo-600" />
+              <span className="text-[11px] font-bold uppercase tracking-wider">ETSE Passes</span>
+              <Award className="w-4 h-4 text-indigo-600" />
             </div>
-            <div className="text-2xl font-black text-slate-900">{metrics.pendingCounselling}</div>
-            <span className="text-[10px] text-slate-500">Sessions Booked</span>
+            <div className="text-2xl font-black text-slate-900">{metrics.etseRegistrations}</div>
+            <span className="text-[10px] text-slate-500">Candidates</span>
           </div>
 
           <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-1">
@@ -187,7 +170,7 @@ export default function AdminDashboardPage() {
                 ETSE 2026 Registrations (Classes 7–10)
               </h3>
               <p className="text-xs text-slate-400 mt-1">
-                Exam on 6 Sept 2026. 42 candidate applications recorded. Free registration is active.
+                Exam on 6 Sept 2026. {metrics.etseRegistrations} candidate applications recorded.
               </p>
             </div>
             <Link href="/admin/etse">
@@ -206,7 +189,7 @@ export default function AdminDashboardPage() {
                 Pending Follow-up Calls & Reminders
               </h3>
               <p className="text-xs text-slate-500 mt-1">
-                7 counselling follow-ups scheduled for today. Review notes and update interaction status.
+                {metrics.todaysFollowups} counselling follow-ups scheduled. Review notes and update interaction status.
               </p>
             </div>
             <Link href="/admin/follow-ups">
@@ -225,7 +208,7 @@ export default function AdminDashboardPage() {
                 New Admission Applications
               </h3>
               <p className="text-xs text-slate-500 mt-1">
-                34 students admitted this session. Check batch allocation and student profile links.
+                {metrics.admissionsThisPeriod} students admitted. Check batch allocation and student profile links.
               </p>
             </div>
             <Link href="/admin/admissions">
@@ -248,20 +231,24 @@ export default function AdminDashboardPage() {
             </div>
 
             <div className="space-y-3">
-              {sourceBreakdown.map((item, idx) => (
-                <div key={idx} className="space-y-1 text-xs">
-                  <div className="flex justify-between font-semibold text-slate-700">
-                    <span>{item.source}</span>
-                    <span className="text-slate-900 font-bold">{item.count} ({item.percentage}%)</span>
+              {sourceBreakdown.length === 0 ? (
+                <p className="text-xs text-slate-400 italic py-4 text-center">No acquisition data available yet.</p>
+              ) : (
+                sourceBreakdown.map((item, idx) => (
+                  <div key={idx} className="space-y-1 text-xs">
+                    <div className="flex justify-between font-semibold text-slate-700">
+                      <span>{item.source}</span>
+                      <span className="text-slate-900 font-bold">{item.count} ({item.percentage}%)</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                      <div
+                        className="bg-[var(--brand-accent)] h-2 rounded-full transition-all"
+                        style={{ width: `${item.percentage}%` }}
+                      />
+                    </div>
                   </div>
-                  <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                    <div
-                      className="bg-[var(--brand-accent)] h-2 rounded-full transition-all"
-                      style={{ width: `${item.percentage}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
 
@@ -282,46 +269,53 @@ export default function AdminDashboardPage() {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead>
-                  <tr className="border-b border-slate-100 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
-                    <th className="pb-2.5">Lead / Student</th>
-                    <th className="pb-2.5">Class / Target</th>
-                    <th className="pb-2.5">Source</th>
-                    <th className="pb-2.5">Status</th>
-                    <th className="pb-2.5 text-right">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {recentLeads.map((lead) => (
-                    <tr key={lead.id} className="hover:bg-slate-50/80 transition-colors">
-                      <td className="py-3">
-                        <strong className="block text-slate-900">{lead.studentName}</strong>
-                        <span className="text-[11px] font-mono text-slate-400">{lead.reference}</span>
-                      </td>
-                      <td className="py-3">
-                        <span className="text-slate-800 font-semibold">{lead.class}</span>
-                        <span className="block text-[11px] text-slate-500">{lead.programme}</span>
-                      </td>
-                      <td className="py-3">
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-medium text-[10px]">
-                          {lead.source}
-                        </span>
-                      </td>
-                      <td className="py-3">
-                        <LeadStatusBadge status={lead.status} />
-                      </td>
-                      <td className="py-3 text-right">
-                        <Link href={`/admin/leads/${lead.id}`}>
-                          <Button variant="ghost" size="sm">
-                            Manage
-                          </Button>
-                        </Link>
-                      </td>
+              {recentLeads.length === 0 ? (
+                <div className="py-8 text-center text-slate-400 space-y-1">
+                  <p className="text-xs font-semibold">No recent enquiries recorded in CRM.</p>
+                  <p className="text-[11px] text-slate-400">New leads captured from public forms will appear here.</p>
+                </div>
+              ) : (
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr className="border-b border-slate-100 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                      <th className="pb-2.5">Lead / Student</th>
+                      <th className="pb-2.5">Class / Target</th>
+                      <th className="pb-2.5">Source</th>
+                      <th className="pb-2.5">Status</th>
+                      <th className="pb-2.5 text-right">Action</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {recentLeads.map((lead) => (
+                      <tr key={lead.id} className="hover:bg-slate-50/80 transition-colors">
+                        <td className="py-3">
+                          <strong className="block text-slate-900">{lead.studentName}</strong>
+                          <span className="text-[11px] font-mono text-slate-400">{lead.reference}</span>
+                        </td>
+                        <td className="py-3">
+                          <span className="text-slate-800 font-semibold">{lead.class}</span>
+                          <span className="block text-[11px] text-slate-500">{lead.programme}</span>
+                        </td>
+                        <td className="py-3">
+                          <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-medium text-[10px]">
+                            {lead.source}
+                          </span>
+                        </td>
+                        <td className="py-3">
+                          <LeadStatusBadge status={lead.status} />
+                        </td>
+                        <td className="py-3 text-right">
+                          <Link href={`/admin/leads/${lead.id}`}>
+                            <Button variant="ghost" size="sm">
+                              Manage
+                            </Button>
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
           </div>
         </div>

@@ -333,10 +333,10 @@ function DesignSystemContent() {
               id: "e1",
               title: "Emprise Talent Search Examination (ETSE) 2026",
               year: 2026,
-              examDate: "18 October 2026",
+              examDate: "6 September 2026",
               examTime: "10:00 AM - 01:00 PM",
               reportingTime: "09:15 AM",
-              eligibleClasses: ["Class 8", "Class 9", "Class 10", "Class 11"],
+              eligibleClasses: ["Class 7", "Class 8", "Class 9", "Class 10"],
               instructions: ["Bring printed Admit Card", "Use blue/black ballpoint pen"],
             }}
             onRegister={() => toast.success("ETSE Registration", "Opening registration form modal")}
@@ -575,7 +575,7 @@ function DesignSystemContent() {
           <p><span className="font-bold">Candidate Name:</span> Aarav Sharma</p>
           <p><span className="font-bold">Roll Number:</span> 2026100001</p>
           <p><span className="font-bold">Exam Centre:</span> Emprise Academy Main Campus, Mathura</p>
-          <p><span className="font-bold">Exam Date:</span> 18 October 2026 (10:00 AM)</p>
+          <p><span className="font-bold">Exam Date:</span> 6 September 2026 (10:00 AM)</p>
         </div>
       </Modal>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Badge } from "@/components/ui/badge/Badge";
@@ -14,58 +14,70 @@ import {
   MessageSquare,
   AlertTriangle,
   ArrowRight,
-  Filter,
+  RefreshCw,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+interface FollowupItem {
+  id: string;
+  leadId: string;
+  reference: string;
+  studentName: string;
+  phone: string;
+  class: string;
+  programme: string;
+  scheduledDate: string;
+  counsellor: string;
+  status: "TODAY" | "OVERDUE" | "UPCOMING" | "COMPLETED";
+  note: string;
+}
 
 export default function AdminFollowupsPage() {
   const toast = useToast();
   const [activeTab, setActiveTab] = useState<"TODAY" | "OVERDUE" | "UPCOMING" | "COMPLETED">("TODAY");
+  const [followups, setFollowups] = useState<FollowupItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [followups, setFollowups] = useState([
-    {
-      id: "f-1",
-      leadId: "lead-3",
-      reference: "ENQ-2026-554210",
-      studentName: "Rohan Agrawal",
-      phone: "+91 98765 66778",
-      class: "Class 12",
-      programme: "NEET-UG Target",
-      scheduledDate: "Today, 04:00 PM",
-      counsellor: "Rahul Sharma",
-      status: "TODAY",
-      note: "Confirm campus visit timing for parent and student.",
-    },
-    {
-      id: "f-2",
-      leadId: "lead-2",
-      reference: "ENQ-2026-773412",
-      studentName: "Ananya Dixit",
-      phone: "+91 98765 33445",
-      class: "Class 8",
-      programme: "Foundation Junior",
-      scheduledDate: "Tomorrow, 11:00 AM",
-      counsellor: "Pooja Sharma",
-      status: "UPCOMING",
-      note: "Discuss ETSE 2026 test pattern and syllabus breakdown.",
-    },
-    {
-      id: "f-3",
-      leadId: "lead-1",
-      reference: "ENQ-2026-891240",
-      studentName: "Devansh Rajput",
-      phone: "+91 98765 11223",
-      class: "Class 11",
-      programme: "IIT-JEE 2-Year Target",
-      scheduledDate: "27 Aug 2026 (Yesterday)",
-      counsellor: "Unassigned",
-      status: "OVERDUE",
-      note: "Callback requested on fee concession criteria.",
-    },
-  ]);
+  const fetchFollowups = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      // In production, load from lead_followups
+      const res = await fetch("/api/leads");
+      const json = await res.json();
+      if (json.success && Array.isArray(json.data)) {
+        // Map leads with next followup dates
+        const items: FollowupItem[] = json.data
+          .filter((l: any) => l.nextFollowup && l.nextFollowup !== "-")
+          .map((l: any) => ({
+            id: `f-${l.id}`,
+            leadId: l.id,
+            reference: l.reference,
+            studentName: l.studentName,
+            phone: l.phone,
+            class: l.class,
+            programme: l.programme,
+            scheduledDate: l.nextFollowup,
+            counsellor: l.assignedCounsellor,
+            status: "TODAY",
+            note: "Scheduled follow-up enquiry call.",
+          }));
+        setFollowups(items);
+      } else {
+        setFollowups([]);
+      }
+    } catch {
+      setFollowups([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchFollowups();
+  }, [fetchFollowups]);
 
   const markComplete = (id: string) => {
-    setFollowups(followups.map((f) => (f.id === id ? { ...f, status: "COMPLETED" } : f)));
+    setFollowups((prev) => prev.map((f) => (f.id === id ? { ...f, status: "COMPLETED" } : f)));
     toast.success("Follow-up Completed", "Interaction logged in CRM activity.");
   };
 
@@ -84,111 +96,71 @@ export default function AdminFollowupsPage() {
               Follow-up & Counselling Calls
             </h1>
           </div>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={fetchFollowups}
+            isLoading={isLoading}
+            leftIcon={<RefreshCw className="w-3.5 h-3.5" />}
+          >
+            Refresh Queue
+          </Button>
         </div>
 
         {/* Tab Controls */}
         <div className="flex items-center gap-2 p-1.5 bg-white border border-slate-200 rounded-2xl shadow-xs text-xs font-bold overflow-x-auto">
-          <button
-            onClick={() => setActiveTab("TODAY")}
-            className={cn(
-              "px-4 py-2 rounded-xl transition-all flex items-center gap-1.5",
-              activeTab === "TODAY"
-                ? "bg-slate-900 text-white shadow-xs"
-                : "text-slate-600 hover:bg-slate-50"
-            )}
-          >
-            <Clock className="w-3.5 h-3.5" />
-            <span>Today&apos;s Calls ({followups.filter((f) => f.status === "TODAY").length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab("OVERDUE")}
-            className={cn(
-              "px-4 py-2 rounded-xl transition-all flex items-center gap-1.5",
-              activeTab === "OVERDUE"
-                ? "bg-rose-600 text-white shadow-xs"
-                : "text-rose-600 hover:bg-rose-50"
-            )}
-          >
-            <AlertTriangle className="w-3.5 h-3.5" />
-            <span>Overdue ({followups.filter((f) => f.status === "OVERDUE").length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab("UPCOMING")}
-            className={cn(
-              "px-4 py-2 rounded-xl transition-all flex items-center gap-1.5",
-              activeTab === "UPCOMING"
-                ? "bg-slate-900 text-white shadow-xs"
-                : "text-slate-600 hover:bg-slate-50"
-            )}
-          >
-            <Calendar className="w-3.5 h-3.5" />
-            <span>Upcoming ({followups.filter((f) => f.status === "UPCOMING").length})</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab("COMPLETED")}
-            className={cn(
-              "px-4 py-2 rounded-xl transition-all flex items-center gap-1.5",
-              activeTab === "COMPLETED"
-                ? "bg-emerald-700 text-white shadow-xs"
-                : "text-emerald-700 hover:bg-emerald-50"
-            )}
-          >
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            <span>Completed ({followups.filter((f) => f.status === "COMPLETED").length})</span>
-          </button>
+          {(["TODAY", "OVERDUE", "UPCOMING", "COMPLETED"] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={cn(
+                "px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 whitespace-nowrap",
+                activeTab === tab
+                  ? "bg-slate-900 text-white shadow-xs"
+                  : "text-slate-600 hover:bg-slate-50"
+              )}
+            >
+              {tab === "TODAY" && <Clock className="w-3.5 h-3.5" />}
+              {tab === "OVERDUE" && <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />}
+              {tab === "UPCOMING" && <Calendar className="w-3.5 h-3.5" />}
+              {tab === "COMPLETED" && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />}
+              <span>{tab.charAt(0) + tab.slice(1).toLowerCase()}</span>
+            </button>
+          ))}
         </div>
 
         {/* Follow-up Cards */}
-        {filteredList.length > 0 ? (
-          <div className="space-y-3">
-            {filteredList.map((item) => (
+        <div className="space-y-3">
+          {filteredList.length === 0 ? (
+            <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center text-slate-400 space-y-2">
+              <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+                <Calendar className="w-6 h-6" />
+              </div>
+              <p className="text-sm font-bold text-slate-700">No follow-ups in this queue</p>
+              <p className="text-xs text-slate-400">
+                Scheduled callbacks and counselling visits will appear here automatically.
+              </p>
+            </div>
+          ) : (
+            filteredList.map((item) => (
               <div
                 key={item.id}
-                className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4"
               >
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-bold text-slate-400">{item.reference}</span>
-                    <span className="text-slate-300">•</span>
-                    <span className="text-xs font-bold text-slate-800">{item.class}</span>
-                    <span className="text-slate-300">•</span>
-                    <span className="text-xs text-[var(--brand-accent)] font-semibold">{item.programme}</span>
+                    <strong className="text-sm font-bold text-slate-900">{item.studentName}</strong>
+                    <span className="text-xs text-slate-500 font-mono">({item.reference})</span>
+                    <Badge variant="primary" size="sm">{item.class}</Badge>
                   </div>
-
-                  <h3 className="text-base font-bold text-slate-900">{item.studentName}</h3>
-
                   <p className="text-xs text-slate-600">
-                    <strong>Note:</strong> {item.note}
+                    <span className="font-semibold text-slate-800">Phone:</span> {item.phone} | <span className="font-semibold text-slate-800">Target:</span> {item.programme}
                   </p>
-
-                  <div className="flex items-center gap-3 text-[11px] text-slate-400 pt-1">
-                    <span>Scheduled: <strong className="text-slate-700">{item.scheduledDate}</strong></span>
-                    <span>•</span>
-                    <span>Counsellor: <strong className="text-slate-700">{item.counsellor}</strong></span>
-                  </div>
+                  <p className="text-xs text-slate-500 italic">"{item.note}"</p>
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
-                  <a
-                    href={`tel:${item.phone.replace(/\s+/g, "")}`}
-                    className="p-2 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors"
-                    title="Call"
-                  >
-                    <Phone className="w-4 h-4" />
-                  </a>
-                  <a
-                    href={`https://wa.me/${item.phone.replace(/\D/g, "")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-xl bg-green-50 text-green-700 hover:bg-green-100 transition-colors"
-                    title="WhatsApp"
-                  >
-                    <MessageSquare className="w-4 h-4" />
-                  </a>
-
                   {item.status !== "COMPLETED" && (
                     <Button
                       variant="primary"
@@ -196,28 +168,19 @@ export default function AdminFollowupsPage() {
                       onClick={() => markComplete(item.id)}
                       leftIcon={<CheckCircle2 className="w-4 h-4" />}
                     >
-                      Done
+                      Mark Completed
                     </Button>
                   )}
-
                   <Link href={`/admin/leads/${item.leadId}`}>
                     <Button variant="outline" size="sm">
-                      Lead 360°
+                      Open Lead
                     </Button>
                   </Link>
                 </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="p-12 text-center bg-white rounded-3xl border border-slate-200 space-y-2">
-            <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto" />
-            <h3 className="text-base font-bold text-slate-800">No Pending Follow-ups</h3>
-            <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              There are no calls scheduled under this category right now.
-            </p>
-          </div>
-        )}
+            ))
+          )}
+        </div>
       </div>
     </AdminLayout>
   );

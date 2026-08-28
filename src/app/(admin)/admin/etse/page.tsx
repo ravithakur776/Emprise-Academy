@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Badge } from "@/components/ui/badge/Badge";
@@ -14,56 +14,64 @@ import {
   Building,
   CheckCircle2,
   Clock,
+  RefreshCw,
 } from "lucide-react";
+import { useToast } from "@/components/ui/toast/ToastProvider";
+
+interface EtseRegistrationItem {
+  id: string;
+  applicationNo: string;
+  rollNumber: string;
+  candidateName: string;
+  fatherName: string;
+  currentClass: string;
+  schoolName: string;
+  phone: string;
+  stream: string;
+  registrationDate: string;
+  status: string;
+  admitCardStatus: string;
+}
 
 export default function AdminEtsePage() {
+  const toast = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [classFilter, setClassFilter] = useState("ALL");
+  const [registrations, setRegistrations] = useState<EtseRegistrationItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const registrations = [
-    {
-      id: "reg-1",
-      applicationNo: "ETSE2026-000100",
-      rollNumber: "26080100",
-      candidateName: "Aarav Verma",
-      fatherName: "Sunil Verma",
-      currentClass: "Class 8",
-      schoolName: "St. Dominic's Senior Secondary",
-      phone: "+91 98765 43210",
-      stream: "Foundation (Science & Math)",
-      registrationDate: "26 August 2026",
-      status: "CONFIRMED",
-      admitCardStatus: "PUBLISHED",
-    },
-    {
-      id: "reg-2",
-      applicationNo: "ETSE2026-000099",
-      rollNumber: "26100099",
-      candidateName: "Ishita Agarwal",
-      fatherName: "Deepak Agarwal",
-      currentClass: "Class 10",
-      schoolName: "Kanha Makhan Public School",
-      phone: "+91 98765 22334",
-      stream: "IIT-JEE Foundation",
-      registrationDate: "26 August 2026",
-      status: "CONFIRMED",
-      admitCardStatus: "PUBLISHED",
-    },
-    {
-      id: "reg-3",
-      applicationNo: "ETSE2026-000098",
-      rollNumber: "Pending",
-      candidateName: "Yuvraj Singh",
-      fatherName: "Rajendra Singh",
-      currentClass: "Class 9",
-      schoolName: "Delhi Public School, Mathura",
-      phone: "+91 98765 77889",
-      stream: "NEET Foundation",
-      registrationDate: "25 August 2026",
-      status: "CONFIRMED",
-      admitCardStatus: "PENDING_RELEASE",
-    },
-  ];
+  const fetchRegistrations = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      // In production, fetch etse_registrations from database
+      setRegistrations([]);
+    } catch {
+      setRegistrations([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchRegistrations();
+  }, [fetchRegistrations]);
+
+  const handleExportCSV = () => {
+    if (registrations.length === 0) {
+      toast.error("Export Empty", "No ETSE registration records available to export.");
+      return;
+    }
+    const headers = ["Application No", "Roll Number", "Candidate Name", "Father Name", "Class", "School", "Phone", "Stream", "Status", "Date"];
+    const rows = registrations.map((r) => [r.applicationNo, r.rollNumber, r.candidateName, r.fatherName, r.currentClass, r.schoolName, r.phone, r.stream, r.status, r.registrationDate]);
+    const csvContent = [headers.join(","), ...rows.map((row) => row.map((f) => `"${f || ""}"`).join(","))].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `ETSE_2026_Registrations_${new Date().toISOString().split("T")[0]}.csv`;
+    link.click();
+    toast.success("CSV Exported", "ETSE registration roster exported.");
+  };
 
   const filtered = registrations.filter((r) => {
     const matchesSearch =
@@ -92,102 +100,121 @@ export default function AdminEtsePage() {
             </h1>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <span className="text-xs px-3 py-1.5 rounded-xl bg-amber-100 text-amber-900 font-bold border border-amber-200">
               Exam Date: 6 September 2026
             </span>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={fetchRegistrations}
+              isLoading={isLoading}
+              leftIcon={<RefreshCw className="w-3.5 h-3.5" />}
+            >
+              Refresh
+            </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleExportCSV}
+              leftIcon={<Download className="w-4 h-4" />}
+            >
+              Export CSV
+            </Button>
           </div>
         </div>
 
         {/* Filters */}
         <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
-            <input
-              type="text"
-              placeholder="Search candidate name, application number, school..."
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Input
+              placeholder="Search by candidate name, application number, school, mobile..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-10 pl-9 pr-3 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-[var(--brand-accent)]/20 focus:border-[var(--brand-accent)]"
+              className="pl-9 text-xs"
             />
           </div>
 
-          <div className="w-full sm:w-56">
-            <Select
-              id="etse-class-filter"
-              value={classFilter}
-              onChange={(e) => setClassFilter(e.target.value)}
-              options={[
-                { value: "ALL", label: "All Eligible Classes (7–10)" },
-                { value: "Class 7", label: "Class 7" },
-                { value: "Class 8", label: "Class 8" },
-                { value: "Class 9", label: "Class 9" },
-                { value: "Class 10", label: "Class 10" },
-              ]}
-            />
-          </div>
+          <select
+            value={classFilter}
+            onChange={(e) => setClassFilter(e.target.value)}
+            className="sm:w-56 text-xs h-10 px-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[var(--brand-accent)]/20 focus:border-[var(--brand-accent)] bg-white"
+          >
+            <option value="ALL">All Eligible Classes</option>
+            <option value="Class 7">Class 7</option>
+            <option value="Class 8">Class 8</option>
+            <option value="Class 9">Class 9</option>
+            <option value="Class 10">Class 10</option>
+          </select>
         </div>
 
-        {/* Table */}
+        {/* Registrations Table */}
         <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
-                <tr>
-                  <th className="p-3.5 pl-6">Application ID / Candidate</th>
-                  <th className="p-3.5">Class & School</th>
-                  <th className="p-3.5">Stream Interest</th>
-                  <th className="p-3.5">Contact Phone</th>
-                  <th className="p-3.5">Roll Number</th>
-                  <th className="p-3.5">Admit Card</th>
-                  <th className="p-3.5 pr-6">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {filtered.map((r) => (
-                  <tr key={r.id} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="p-3.5 pl-6">
-                      <strong className="block text-slate-900 font-bold">{r.candidateName}</strong>
-                      <span className="font-mono text-[11px] text-[var(--brand-primary)] font-semibold">{r.applicationNo}</span>
-                    </td>
-
-                    <td className="p-3.5">
-                      <span className="text-slate-800 font-semibold block">{r.currentClass}</span>
-                      <span className="text-[11px] text-slate-500 block truncate max-w-[160px]">{r.schoolName}</span>
-                    </td>
-
-                    <td className="p-3.5">
-                      <span className="text-slate-700">{r.stream}</span>
-                    </td>
-
-                    <td className="p-3.5">
-                      <span className="text-slate-700 font-mono">{r.phone}</span>
-                    </td>
-
-                    <td className="p-3.5">
-                      <span className="font-mono font-bold text-slate-900">{r.rollNumber}</span>
-                    </td>
-
-                    <td className="p-3.5">
-                      <Badge variant={r.admitCardStatus === "PUBLISHED" ? "success" : "muted"} size="sm">
-                        {r.admitCardStatus === "PUBLISHED" ? "Issued" : "Pending"}
-                      </Badge>
-                    </td>
-
-                    <td className="p-3.5 pr-6">
-                      <Badge variant="primary" size="sm">
-                        {r.status}
-                      </Badge>
-                    </td>
+            {filtered.length === 0 ? (
+              <div className="py-16 text-center text-slate-400 space-y-2">
+                <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+                  <Award className="w-6 h-6" />
+                </div>
+                <p className="text-sm font-bold text-slate-700">No ETSE registrations found</p>
+                <p className="text-xs text-slate-400">
+                  {searchQuery || classFilter !== "ALL"
+                    ? "Try adjusting your search query or filter criteria."
+                    : "Candidate applications submitted for ETSE 2026 will appear here."}
+                </p>
+              </div>
+            ) : (
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-slate-100 bg-slate-50/75 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
+                    <th className="py-3.5 px-4">Application No</th>
+                    <th className="py-3.5 px-4">Candidate & Father</th>
+                    <th className="py-3.5 px-4">Class & School</th>
+                    <th className="py-3.5 px-4">Roll Number</th>
+                    <th className="py-3.5 px-4">Stream Track</th>
+                    <th className="py-3.5 px-4">Pass Status</th>
+                    <th className="py-3.5 px-4 text-right">Date</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between text-xs text-slate-500">
-            <span>Showing {filtered.length} candidate applications</span>
-            <span>ETSE Examination Date: 6 September 2026</span>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {filtered.map((r) => (
+                    <tr key={r.id} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="py-3.5 px-4 font-mono font-bold text-slate-900">
+                        {r.applicationNo}
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <strong className="text-slate-900 block">{r.candidateName}</strong>
+                        <span className="text-[11px] text-slate-500">Father: {r.fatherName}</span>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className="text-slate-800 font-semibold block">{r.currentClass}</span>
+                        <span className="text-[11px] text-slate-500">{r.schoolName}</span>
+                      </td>
+                      <td className="py-3.5 px-4 font-mono text-slate-800">
+                        {r.rollNumber}
+                      </td>
+                      <td className="py-3.5 px-4 text-slate-700">
+                        {r.stream}
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <Badge
+                          variant={r.admitCardStatus === "PUBLISHED" ? "success" : "warning"}
+                          size="sm"
+                        >
+                          {r.admitCardStatus}
+                        </Badge>
+                      </td>
+                      <td className="py-3.5 px-4 text-slate-500 text-right">
+                        {r.registrationDate}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>

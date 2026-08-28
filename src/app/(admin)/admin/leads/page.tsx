@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { LeadStatusBadge } from "@/components/admin/LeadStatusBadge";
-import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
 import { Input, Select } from "@/components/ui/form/Input";
 import { useToast } from "@/components/ui/toast/ToastProvider";
@@ -16,12 +15,29 @@ import {
   Plus,
   ArrowUpDown,
   Eye,
-  CheckCircle2,
+  RefreshCw,
   Calendar,
   MessageSquare,
   UserCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+interface LeadItem {
+  id: string;
+  reference: string;
+  studentName: string;
+  parentName: string;
+  phone: string;
+  email: string;
+  class: string;
+  school: string;
+  programme: string;
+  source: string;
+  status: string;
+  assignedCounsellor: string;
+  nextFollowup: string;
+  createdAt: string;
+}
 
 export default function AdminLeadsPage() {
   const toast = useToast();
@@ -30,138 +46,62 @@ export default function AdminLeadsPage() {
   const [selectedStatus, setSelectedStatus] = useState("ALL");
   const [selectedProgramme, setSelectedProgramme] = useState("ALL");
   const [selectedSource, setSelectedSource] = useState("ALL");
+  const [leads, setLeads] = useState<LeadItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const leads = [
-    {
-      id: "lead-1",
-      reference: "ENQ-2026-891240",
-      studentName: "Devansh Rajput",
-      parentName: "Vikram Rajput",
-      phone: "+91 98765 11223",
-      email: "devansh.rajput@example.com",
-      class: "Class 11",
-      school: "Kanha Makhan Public School",
-      programme: "IIT-JEE 2-Year Target",
-      source: "ADMISSIONS",
-      status: "NEW",
-      assignedCounsellor: "Unassigned",
-      nextFollowup: "29 Aug 2026",
-      createdAt: "28 Aug 2026",
-    },
-    {
-      id: "lead-2",
-      reference: "ENQ-2026-773412",
-      studentName: "Ananya Dixit",
-      parentName: "Sanjay Dixit",
-      phone: "+91 98765 33445",
-      email: "ananya.dixit@example.com",
-      class: "Class 8",
-      school: "St. Dominic's Senior Secondary",
-      programme: "Foundation Junior",
-      source: "ETSE",
-      status: "COUNSELLING_SCHEDULED",
-      assignedCounsellor: "Pooja Sharma",
-      nextFollowup: "30 Aug 2026",
-      createdAt: "28 Aug 2026",
-    },
-    {
-      id: "lead-3",
-      reference: "ENQ-2026-554210",
-      studentName: "Rohan Agrawal",
-      parentName: "Manoj Agrawal",
-      phone: "+91 98765 66778",
-      email: "rohan.agrawal@example.com",
-      class: "Class 12",
-      school: "Delhi Public School, Mathura",
-      programme: "NEET-UG 1-Year Fast-Track",
-      source: "WEBSITE",
-      status: "CAMPUS_VISIT",
-      assignedCounsellor: "Rahul Sharma",
-      nextFollowup: "28 Aug 2026",
-      createdAt: "27 Aug 2026",
-    },
-    {
-      id: "lead-4",
-      reference: "ENQ-2026-339811",
-      studentName: "Mehak Sharma",
-      parentName: "Ramesh Sharma",
-      phone: "+91 98765 99001",
-      email: "mehak.sharma@example.com",
-      class: "Class 9",
-      school: "Sacred Heart Convent",
-      programme: "Foundation Pacing",
-      source: "WHATSAPP",
-      status: "INTERESTED",
-      assignedCounsellor: "Pooja Sharma",
-      nextFollowup: "01 Sep 2026",
-      createdAt: "26 Aug 2026",
-    },
-    {
-      id: "lead-5",
-      reference: "ENQ-2026-118742",
-      studentName: "Tanmay Singhal",
-      parentName: "Gopal Singhal",
-      phone: "+91 98765 44332",
-      email: "tanmay.singhal@example.com",
-      class: "Dropper",
-      school: "Brij Modern School",
-      programme: "IIT-JEE Dropper Rankers",
-      source: "SCHOLARSHIP",
-      status: "CONVERTED",
-      assignedCounsellor: "Rahul Sharma",
-      nextFollowup: "-",
-      createdAt: "25 Aug 2026",
-    },
-  ];
+  const fetchLeads = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (selectedStatus !== "ALL") params.set("status", selectedStatus);
+      if (searchQuery) params.set("q", searchQuery);
 
-  const filteredLeads = leads.filter((l) => {
-    const matchesSearch =
-      searchQuery === "" ||
-      l.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      l.parentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      l.phone.includes(searchQuery) ||
-      l.reference.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      l.school.toLowerCase().includes(searchQuery.toLowerCase());
+      const res = await fetch(`/api/leads?${params.toString()}`);
+      const json = await res.json();
+      if (json.success && Array.isArray(json.data)) {
+        setLeads(json.data);
+      } else {
+        setLeads([]);
+      }
+    } catch {
+      setLeads([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [selectedStatus, searchQuery]);
 
-    const matchesStatus = selectedStatus === "ALL" || l.status === selectedStatus;
-    const matchesProgramme = selectedProgramme === "ALL" || l.programme.includes(selectedProgramme);
-    const matchesSource = selectedSource === "ALL" || l.source === selectedSource;
+  useEffect(() => {
+    fetchLeads();
+  }, [fetchLeads]);
 
-    return matchesSearch && matchesStatus && matchesProgramme && matchesSource;
-  });
-
-  const exportCSV = () => {
-    const headers = "Reference,Student Name,Parent Name,Phone,Email,Class,Programme,Source,Status,Counsellor,Next Followup,Created At\n";
-    const rows = filteredLeads
-      .map(
-        (l) =>
-          `"${l.reference}","${l.studentName}","${l.parentName}","${l.phone}","${l.email}","${l.class}","${l.programme}","${l.source}","${l.status}","${l.assignedCounsellor}","${l.nextFollowup}","${l.createdAt}"`
-      )
-      .join("\n");
-
-    const blob = new Blob([headers + rows], { type: "text/csv;charset=utf-8;" });
+  const handleExportCSV = () => {
+    if (leads.length === 0) {
+      toast.error("Export Empty", "No lead records available to export.");
+      return;
+    }
+    const headers = ["Reference", "Student Name", "Parent Name", "Phone", "Email", "Class", "Programme", "Source", "Status", "Date"];
+    const rows = leads.map((l) => [l.reference, l.studentName, l.parentName, l.phone, l.email, l.class, l.programme, l.source, l.status, l.createdAt]);
+    const csvContent = [headers.join(","), ...rows.map((r) => r.map((f) => `"${f || ""}"`).join(","))].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", `emprise-leads-${new Date().toISOString().split("T")[0]}.csv`);
-    document.body.appendChild(link);
+    link.href = url;
+    link.download = `Emprise_Leads_${new Date().toISOString().split("T")[0]}.csv`;
     link.click();
-    document.body.removeChild(link);
-
-    toast.success("Export Complete", `Exported ${filteredLeads.length} leads to CSV.`);
+    toast.success("CSV Exported", "Filtered leads exported successfully.");
   };
 
   return (
     <AdminLayout staffName="Admissions Officer" staffRole="ADMISSION_ADMIN">
       <div className="space-y-6">
-        {/* Header & Controls */}
+        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--brand-accent)] block mb-0.5">
-              ADMISSIONS PIPELINE
+              LEAD PIPELINE & CRM
             </span>
             <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">
-              Lead & Enquiry Management
+              Student Enquiries & Leads
             </h1>
           </div>
 
@@ -169,7 +109,16 @@ export default function AdminLeadsPage() {
             <Button
               variant="outline"
               size="sm"
-              onClick={exportCSV}
+              onClick={fetchLeads}
+              isLoading={isLoading}
+              leftIcon={<RefreshCw className="w-3.5 h-3.5" />}
+            >
+              Refresh
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleExportCSV}
               leftIcon={<Download className="w-4 h-4" />}
             >
               Export CSV
@@ -177,155 +126,125 @@ export default function AdminLeadsPage() {
           </div>
         </div>
 
-        {/* Filters Bar */}
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+        {/* Filters */}
+        <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {/* Search */}
             <div className="relative">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
-              <input
-                type="text"
-                placeholder="Search name, phone, school..."
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Input
+                placeholder="Search by student name or mobile..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-10 pl-9 pr-3 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-[var(--brand-accent)]/20 focus:border-[var(--brand-accent)]"
+                className="pl-9 text-xs"
               />
             </div>
 
-            {/* Status Filter */}
-            <Select
-              id="status-filter"
+            <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              options={[
-                { value: "ALL", label: "All Statuses" },
-                { value: "NEW", label: "New Lead" },
-                { value: "CONTACTED", label: "Contacted" },
-                { value: "INTERESTED", label: "Interested" },
-                { value: "COUNSELLING_SCHEDULED", label: "Counselling Scheduled" },
-                { value: "CAMPUS_VISIT", label: "Campus Visit" },
-                { value: "CONVERTED", label: "Converted / Admitted" },
-                { value: "NOT_INTERESTED", label: "Not Interested" },
-                { value: "LOST", label: "Lost" },
-              ]}
-            />
+              className="text-xs h-10 px-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[var(--brand-accent)]/20 focus:border-[var(--brand-accent)] bg-white"
+            >
+              <option value="ALL">All Lead Statuses</option>
+              <option value="NEW">New Enquiries</option>
+              <option value="CONTACTED">Contacted</option>
+              <option value="INTERESTED">Interested</option>
+              <option value="COUNSELLING_SCHEDULED">Counselling Scheduled</option>
+              <option value="CAMPUS_VISIT">Campus Visit</option>
+              <option value="CONVERTED">Admitted / Converted</option>
+              <option value="LOST">Lost</option>
+            </select>
 
-            {/* Programme Filter */}
-            <Select
-              id="programme-filter"
+            <select
               value={selectedProgramme}
               onChange={(e) => setSelectedProgramme(e.target.value)}
-              options={[
-                { value: "ALL", label: "All Programmes" },
-                { value: "IIT-JEE", label: "IIT-JEE Target Batches" },
-                { value: "NEET", label: "NEET-UG Target Batches" },
-                { value: "Foundation", label: "Foundation (Classes 8–10)" },
-              ]}
-            />
+              className="text-xs h-10 px-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[var(--brand-accent)]/20 focus:border-[var(--brand-accent)] bg-white"
+            >
+              <option value="ALL">All Target Programmes</option>
+              <option value="IIT-JEE">IIT-JEE (Main & Advanced)</option>
+              <option value="NEET-UG">NEET-UG (Medical)</option>
+              <option value="FOUNDATION">Foundation (Classes 8-10)</option>
+            </select>
 
-            {/* Source Filter */}
-            <Select
-              id="source-filter"
+            <select
               value={selectedSource}
               onChange={(e) => setSelectedSource(e.target.value)}
-              options={[
-                { value: "ALL", label: "All Sources" },
-                { value: "ADMISSIONS", label: "Admissions Form" },
-                { value: "ETSE", label: "ETSE 2026 Campaign" },
-                { value: "WEBSITE", label: "Website Enquiry" },
-                { value: "WHATSAPP", label: "WhatsApp Desk" },
-                { value: "SCHOLARSHIP", label: "Scholarship Test" },
-              ]}
-            />
+              className="text-xs h-10 px-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[var(--brand-accent)]/20 focus:border-[var(--brand-accent)] bg-white"
+            >
+              <option value="ALL">All Acquisition Sources</option>
+              <option value="WEBSITE">Direct Website</option>
+              <option value="ADMISSIONS">Admissions Form</option>
+              <option value="ETSE">ETSE Campaign</option>
+              <option value="WHATSAPP">WhatsApp</option>
+            </select>
           </div>
         </div>
 
-        {/* Leads CRM Table */}
+        {/* Leads Table */}
         <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
-                <tr>
-                  <th className="p-3.5 pl-6">Reference / Student</th>
-                  <th className="p-3.5">Contact Details</th>
-                  <th className="p-3.5">Class / School</th>
-                  <th className="p-3.5">Programme Interest</th>
-                  <th className="p-3.5">Source</th>
-                  <th className="p-3.5">Counsellor</th>
-                  <th className="p-3.5">Status</th>
-                  <th className="p-3.5">Next Follow-up</th>
-                  <th className="p-3.5 pr-6 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {filteredLeads.map((lead) => (
-                  <tr key={lead.id} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="p-3.5 pl-6">
-                      <strong className="block text-slate-900 font-bold">{lead.studentName}</strong>
-                      <span className="font-mono text-[11px] text-slate-400">{lead.reference}</span>
-                    </td>
-
-                    <td className="p-3.5">
-                      <span className="text-slate-800 font-semibold block">{lead.phone}</span>
-                      <span className="text-[11px] text-slate-400 block truncate max-w-[140px]">{lead.email}</span>
-                    </td>
-
-                    <td className="p-3.5">
-                      <span className="text-slate-800 font-semibold block">{lead.class}</span>
-                      <span className="text-[11px] text-slate-500 block truncate max-w-[140px]">{lead.school}</span>
-                    </td>
-
-                    <td className="p-3.5">
-                      <span className="text-slate-900 font-medium">{lead.programme}</span>
-                    </td>
-
-                    <td className="p-3.5">
-                      <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-medium text-[10px]">
-                        {lead.source}
-                      </span>
-                    </td>
-
-                    <td className="p-3.5">
-                      <span className={cn(
-                        "text-xs font-semibold",
-                        lead.assignedCounsellor === "Unassigned" ? "text-amber-600 italic" : "text-slate-700"
-                      )}>
-                        {lead.assignedCounsellor}
-                      </span>
-                    </td>
-
-                    <td className="p-3.5">
-                      <LeadStatusBadge status={lead.status} />
-                    </td>
-
-                    <td className="p-3.5">
-                      <span className="text-slate-600">{lead.nextFollowup}</span>
-                    </td>
-
-                    <td className="p-3.5 pr-6 text-right">
-                      <Link href={`/admin/leads/${lead.id}`}>
-                        <Button variant="ghost" size="sm" leftIcon={<Eye className="w-3.5 h-3.5" />}>
-                          View
-                        </Button>
-                      </Link>
-                    </td>
+            {leads.length === 0 ? (
+              <div className="py-16 text-center text-slate-400 space-y-2">
+                <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+                  <PhoneCall className="w-6 h-6" />
+                </div>
+                <p className="text-sm font-bold text-slate-700">No leads found</p>
+                <p className="text-xs text-slate-400">
+                  {searchQuery || selectedStatus !== "ALL"
+                    ? "Try adjusting your search query or filter criteria."
+                    : "New inquiries from website forms, ETSE, and WhatsApp will appear here."}
+                </p>
+              </div>
+            ) : (
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-slate-100 bg-slate-50/75 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
+                    <th className="py-3.5 px-4">Ref / Student</th>
+                    <th className="py-3.5 px-4">Parent / Contact</th>
+                    <th className="py-3.5 px-4">Class & Programme</th>
+                    <th className="py-3.5 px-4">Source</th>
+                    <th className="py-3.5 px-4">Status</th>
+                    <th className="py-3.5 px-4">Date</th>
+                    <th className="py-3.5 px-4 text-right">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {filteredLeads.length === 0 && (
-            <div className="p-8 text-center space-y-2">
-              <Search className="w-8 h-8 text-slate-300 mx-auto" />
-              <p className="text-sm font-bold text-slate-700">No leads matched your search or filters.</p>
-              <p className="text-xs text-slate-400">Try adjusting your filters or search keywords.</p>
-            </div>
-          )}
-
-          <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between text-xs text-slate-500">
-            <span>Showing {filteredLeads.length} of {leads.length} recorded leads</span>
-            <span>Server-side pagination active</span>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {leads.map((lead) => (
+                    <tr key={lead.id} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="py-3.5 px-4">
+                        <strong className="block text-slate-900">{lead.studentName}</strong>
+                        <span className="text-[11px] font-mono text-slate-400">{lead.reference}</span>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className="text-slate-800 font-medium block">{lead.phone}</span>
+                        <span className="text-[11px] text-slate-500">{lead.parentName}</span>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className="text-slate-800 font-semibold block">{lead.class}</span>
+                        <span className="text-[11px] text-slate-500">{lead.programme}</span>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-medium text-[10px]">
+                          {lead.source}
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <LeadStatusBadge status={lead.status} />
+                      </td>
+                      <td className="py-3.5 px-4 text-slate-500">
+                        {lead.createdAt}
+                      </td>
+                      <td className="py-3.5 px-4 text-right">
+                        <Link href={`/admin/leads/${lead.id}`}>
+                          <Button variant="ghost" size="sm" leftIcon={<Eye className="w-3.5 h-3.5" />}>
+                            Manage
+                          </Button>
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </div>
