@@ -23,8 +23,8 @@ export default function AdminExamCentresPage() {
     {
       id: "ctr-1",
       centreCode: "MTH-MAIN-01",
-      centreName: "Main Academic Block, Emprise Academy",
-      address: "Near Highway Crossing, Mathura, Uttar Pradesh - 281001",
+      centreName: "Emprise Academy Campus",
+      address: "Mathura, Uttar Pradesh",
       city: "Mathura",
       capacity: 300,
       assignedCandidates: 38,

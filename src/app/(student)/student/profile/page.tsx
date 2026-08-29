@@ -25,9 +25,9 @@ function StudentProfileContent() {
     gender: "MALE",
     currentClass: "Class 8",
     schoolName: "St. Dominic's Senior Secondary School",
-    phone: "9876543210",
-    email: "aarav.verma@example.com",
-    address: "Sector 3, Mathura, Uttar Pradesh - 281001",
+    phone: "98XXXXXXXX",
+    email: "student@example.com",
+    address: "Mathura, Uttar Pradesh",
     applicationNo: "ETSE2026-000100",
     accountStatus: "ACTIVE",
   });

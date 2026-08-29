@@ -29,26 +29,28 @@ export default function AdminAdmitCardGeneratePage() {
 
   const pendingCandidates = [
     {
-      id: "reg-3",
-      applicationNo: "ETSE2026-000098",
-      name: "Yuvraj Singh",
-      class: "Class 9",
-      school: "Delhi Public School, Mathura",
-      phone: "+91 98765 77889",
+      id: "reg-1",
+      applicationNo: "ETSE2026-000101",
+      name: "Aarav Sharma",
+      fatherName: "Rajesh Sharma",
+      class: "Class 8",
+      school: "St. Dominic's Senior Secondary",
+      phone: "98XXXXXXXX",
     },
     {
-      id: "reg-4",
-      applicationNo: "ETSE2026-000097",
-      name: "Divyansh Soni",
-      class: "Class 8",
+      id: "reg-2",
+      applicationNo: "ETSE2026-000102",
+      name: "Ishita Agarwal",
+      fatherName: "Deepak Agarwal",
+      class: "Class 10",
       school: "Kanha Makhan Public School",
-      phone: "+91 98765 11223",
+      phone: "98XXXXXXXX",
     },
   ];
 
   const centres = [
-    { value: "ctr-1", label: "Main Academic Block, Emprise Academy, Mathura (Capacity: 300)" },
-    { value: "ctr-2", label: "Krishna Nagar City Campus, Mathura (Capacity: 150)" },
+    { value: "ctr-1", label: "Emprise Academy Campus, Mathura (Capacity: 300)" },
+    { value: "ctr-2", label: "City Campus Partner, Mathura (Capacity: 150)" },
   ];
 
   const handleGenerate = (e: React.FormEvent) => {

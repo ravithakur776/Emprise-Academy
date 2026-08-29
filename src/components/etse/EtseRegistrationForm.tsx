@@ -118,7 +118,7 @@ export const EtseRegistrationForm: React.FC = () => {
         toast.success("ETSE 2026 Registration Recorded", `Application ID: ${fallbackAppNo}`);
       }
     } catch (err: any) {
-      setErrorMessage(err.message || "Could not complete registration. Please call our helpdesk at +91 98765 43210.");
+      setErrorMessage(err.message || "Could not complete registration. Please try again or visit our campus.");
       toast.error("Registration Error", "Please try again or contact our Mathura desk.");
     } finally {
       setIsSubmitting(false);
@@ -167,7 +167,7 @@ export const EtseRegistrationForm: React.FC = () => {
                 </div>
                 <div className="flex items-center justify-between border-b border-white/10 pb-2">
                   <span className="font-bold text-slate-300">Exam Center</span>
-                  <span>Main Academic Block, Mathura</span>
+                  <span>Emprise Academy Campus, Mathura</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-emerald-400">Application Fee</span>
@@ -384,7 +384,7 @@ export const EtseRegistrationForm: React.FC = () => {
 
                   <div className="p-3 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-600 flex items-center gap-2">
                     <Building className="w-4 h-4 text-[var(--brand-accent)] shrink-0" />
-                    <span>Designated Exam Centre: <strong>Emprise Academy Main Academic Block, Mathura</strong></span>
+                    <span>Designated Exam Centre: <strong>Emprise Academy Campus, Mathura</strong></span>
                   </div>
 
                   <p className="text-[11px] text-slate-400">

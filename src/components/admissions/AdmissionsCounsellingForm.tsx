@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Container } from "@/components/ui/layout/Container";
 import { Section } from "@/components/ui/layout/Section";
@@ -128,7 +129,7 @@ export const AdmissionsCounsellingForm: React.FC<AdmissionsCounsellingFormProps>
       setIsSubmitted(true);
       toast.success("Enquiry Logged", "Your academic consultation request has been registered.");
     } catch (err: any) {
-      setErrorMessage(err.message || "Failed to submit enquiry. Please call us directly at +91 98765 43210.");
+      setErrorMessage(err.message || "Failed to submit enquiry. Please try again or visit our campus.");
       toast.error("Submission Error", "Could not submit enquiry right now.");
     } finally {
       setIsSubmitting(false);
@@ -173,32 +174,23 @@ export const AdmissionsCounsellingForm: React.FC<AdmissionsCounsellingFormProps>
               <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2">
                 <div className="flex items-center gap-2 font-bold text-[var(--brand-primary)]">
                   <Building2 className="w-4 h-4 text-[var(--brand-accent)]" />
-                  <span>Campus Address</span>
+                  <span>Campus Location</span>
                 </div>
-                <p>Main Academic Block, Mathura, Uttar Pradesh - 281001</p>
-                <p className="text-slate-400">Open 7 Days: 9:00 AM – 7:00 PM</p>
+                <p>Mathura, Uttar Pradesh</p>
+                <p className="text-slate-500">In-person guidance available at our Mathura campus.</p>
               </div>
 
               <div className="pt-2 flex flex-wrap items-center gap-3">
-                <a href="tel:+919876543210">
-                  <Button variant="outline" size="sm" leftIcon={<Phone className="w-4 h-4" />}>
-                    Call: +91 98765 43210
+                <Link href="/admissions">
+                  <Button variant="outline" size="sm">
+                    View Admissions Guide
                   </Button>
-                </a>
-                <a
-                  href="https://wa.me/919876543210?text=Hello%20Emprise%20Academy,%20I%20want%20to%20schedule%20an%20admissions%20counselling%20session."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button
-                    variant="success"
-                    size="sm"
-                    className="bg-emerald-600 hover:bg-emerald-700"
-                    leftIcon={<MessageSquare className="w-4 h-4" />}
-                  >
-                    Chat on WhatsApp
+                </Link>
+                <Link href="/etse-2026">
+                  <Button variant="primary" size="sm">
+                    Apply for ETSE 2026
                   </Button>
-                </a>
+                </Link>
               </div>
             </div>
 

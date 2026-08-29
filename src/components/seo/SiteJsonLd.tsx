@@ -1,4 +1,5 @@
 import React from "react";
+import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
 
 export interface SiteJsonLdProps {
   type?: "EducationalOrganization" | "Course" | "Person" | "Article" | "FAQPage";
@@ -41,33 +42,37 @@ export const SiteJsonLd: React.FC<SiteJsonLdProps> = ({
   faqItems,
   articleDetails,
 }) => {
-  const orgSchema = {
-    "@type": ["EducationalOrganization", "LocalBusiness"],
-    name: "Emprise Academy",
-    alternateName: "Emprise Academy Mathura",
-    url: "https://empriseacademy.com",
-    logo: "https://empriseacademy.com/images/emprise-logo.png",
-    telephone: "+91-98765-43210",
-    email: "admissions@empriseacademy.com",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Near Highway Crossing",
-      addressLocality: "Mathura",
-      addressRegion: "Uttar Pradesh",
-      postalCode: "281001",
-      addressCountry: "IN",
-    },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: "27.4924",
-      longitude: "77.6737",
-    },
-    sameAs: [
-      "https://www.facebook.com/empriseacademy",
-      "https://www.instagram.com/empriseacademy",
-      "https://www.youtube.com/@empriseacademy",
-    ],
+  const business = CANONICAL_BUSINESS_CONFIG;
+
+  const postalAddress: Record<string, string> = {
+    "@type": "PostalAddress",
+    addressLocality: business.address.city,
+    addressRegion: business.address.state,
+    addressCountry: business.address.country_code,
   };
+
+  if (business.address.street_address) {
+    postalAddress.streetAddress = business.address.street_address;
+  }
+  if (business.address.postal_code) {
+    postalAddress.postalCode = business.address.postal_code;
+  }
+
+  const orgSchema: Record<string, any> = {
+    "@type": ["EducationalOrganization", "LocalBusiness"],
+    name: business.academy_name,
+    alternateName: `${business.academy_name} Mathura`,
+    url: business.website_url,
+    logo: `${business.website_url}/images/emprise-logo.png`,
+    address: postalAddress,
+  };
+
+  if (business.contact.phone_primary) {
+    orgSchema.telephone = business.contact.phone_primary;
+  }
+  if (business.contact.email) {
+    orgSchema.email = business.contact.email;
+  }
 
   const graph: any[] = [orgSchema];
 
@@ -92,21 +97,16 @@ export const SiteJsonLd: React.FC<SiteJsonLdProps> = ({
       description: courseDetails.description,
       provider: {
         "@type": "EducationalOrganization",
-        name: "Emprise Academy",
-        url: "https://empriseacademy.com",
+        name: business.academy_name,
+        url: business.website_url,
       },
       hasCourseInstance: {
         "@type": "CourseInstance",
         courseMode: "OnSite",
         location: {
           "@type": "Place",
-          name: "Emprise Academy Mathura Campus",
-          address: {
-            "@type": "PostalAddress",
-            addressLocality: "Mathura",
-            addressRegion: "Uttar Pradesh",
-            addressCountry: "IN",
-          },
+          name: `${business.academy_name} Mathura Campus`,
+          address: postalAddress,
         },
       },
     });
@@ -120,9 +120,9 @@ export const SiteJsonLd: React.FC<SiteJsonLdProps> = ({
       jobTitle: personDetails.jobTitle,
       worksFor: {
         "@type": "EducationalOrganization",
-        name: "Emprise Academy",
+        name: business.academy_name,
       },
-      description: `${personDetails.qualification || ""} - ${personDetails.specialization || ""}`,
+      description: `${personDetails.qualification || ""} - ${personDetails.specialization || ""}`.trim(),
     });
   }
 
@@ -153,8 +153,8 @@ export const SiteJsonLd: React.FC<SiteJsonLdProps> = ({
       },
       publisher: {
         "@type": "EducationalOrganization",
-        name: "Emprise Academy",
-        url: "https://empriseacademy.com",
+        name: business.academy_name,
+        url: business.website_url,
       },
       datePublished: articleDetails.datePublished || new Date().toISOString(),
     });

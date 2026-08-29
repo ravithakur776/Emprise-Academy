@@ -57,7 +57,7 @@ export const ContactForm: React.FC = () => {
       setIsSubmitted(true);
       toast.success("Enquiry Logged", "We have received your message and will reach out shortly.");
     } catch (err: any) {
-      setErrorMessage(err.message || "Failed to submit enquiry. Please call us directly at +91 98765 43210.");
+      setErrorMessage(err.message || "Failed to submit enquiry. Please try again or visit our Mathura campus.");
       toast.error("Submission Failed", "Could not send your enquiry right now.");
     } finally {
       setIsSubmitting(false);

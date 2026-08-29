@@ -44,7 +44,7 @@ export default function AdminAdmissionDetailPage({
     status: "ADMITTED",
     scholarshipConcession: "35% Merit Concession (Diagnostic Score)",
     feeReceiptNo: "REC-2026-00441",
-    centre: "Main Academic Block, Mathura",
+    centre: "Emprise Academy Campus, Mathura",
   };
 
   const handleUpdate = () => {

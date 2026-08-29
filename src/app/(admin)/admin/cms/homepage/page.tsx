@@ -27,7 +27,7 @@ export default function AdminHomepageCmsPage() {
   // Editable homepage content state
   const [heroContent, setHeroContent] = useState({
     eyebrow: "MATHURA'S PREMIER IIT-JEE, NEET & FOUNDATION INSTITUTE",
-    h1: "Serious Preparation. Proven Mentorship. Rank-Driven Results.",
+    h1: "Premier IIT-JEE, NEET-UG & Foundation Coaching in Mathura",
     paragraph:
       "Emprise Academy delivers systematic, conceptual classroom coaching for JEE Main, JEE Advanced, NEET-UG, and Olympiad Foundation right here in Mathura, guided directly by experienced directors.",
     primaryCtaText: "Explore Programmes",
@@ -37,10 +37,10 @@ export default function AdminHomepageCmsPage() {
   });
 
   const [statsContent, setStatsContent] = useState([
-    { label: "Faculty Mentorship", value: "15+ Years", note: "Direct IIT & Medical teaching pedigree" },
-    { label: "Batch Size", value: "Strict 35:1", note: "Individual attention and doubt resolution" },
+    { label: "Faculty Mentorship", value: "15+ Years", note: "Direct academic guidance and teaching pedigree" },
+    { label: "Batch Size", value: "Optimal", note: "Individual attention and doubt resolution" },
     { label: "Selection Focus", value: "Top Ranks", note: "Proven ranker tracking and testing rigour" },
-    { label: "Campus Facility", value: "Mathura", note: "Centrally located highway-connected campus" },
+    { label: "Campus Facility", value: "Mathura", note: "Dedicated academic campus in Mathura, Uttar Pradesh" },
   ]);
 
   const handleSave = () => {

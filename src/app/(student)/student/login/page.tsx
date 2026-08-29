@@ -110,7 +110,7 @@ function StudentLoginContent() {
             <FormField label="Email Address or Mobile Number" required htmlFor="student-id">
               <Input
                 id="student-id"
-                placeholder="e.g. student@example.com or 9876543210"
+                placeholder="e.g. yourname@email.com or 10-digit mobile"
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 required

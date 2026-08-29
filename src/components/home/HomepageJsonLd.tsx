@@ -1,53 +1,34 @@
 import React from "react";
-import { HOMEPAGE_DATA } from "@/data/homepage";
+import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
 
 export const HomepageJsonLd: React.FC = () => {
-  const schema = {
+  const business = CANONICAL_BUSINESS_CONFIG;
+
+  const postalAddress: Record<string, string> = {
+    "@type": "PostalAddress",
+    addressLocality: business.address.city,
+    addressRegion: business.address.state,
+    addressCountry: business.address.country_code,
+  };
+
+  if (business.address.street_address) {
+    postalAddress.streetAddress = business.address.street_address;
+  }
+  if (business.address.postal_code) {
+    postalAddress.postalCode = business.address.postal_code;
+  }
+
+  const schema: Record<string, any> = {
     "@context": "https://schema.org",
     "@type": ["EducationalOrganization", "LocalBusiness"],
-    name: "Emprise Academy",
-    alternateName: "Emprise Academy Mathura",
+    name: business.academy_name,
+    alternateName: `${business.academy_name} Mathura`,
     description:
       "Premier coaching institute in Mathura for IIT-JEE (Main & Advanced), NEET-UG, and Foundation (Classes 8-10). Established in 2011 with concept-based learning and expert mentorship.",
-    url: "https://empriseacademy.com",
-    logo: "https://empriseacademy.com/images/emprise-logo.png",
-    foundingDate: "2011",
-    telephone: HOMEPAGE_DATA.contactCampus.phoneDisplay,
-    email: HOMEPAGE_DATA.contactCampus.email,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "Main Academic Block",
-      addressLocality: "Mathura",
-      addressRegion: "Uttar Pradesh",
-      postalCode: "281001",
-      addressCountry: "IN",
-    },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: "27.4924",
-      longitude: "77.6737",
-    },
-    openingHoursSpecification: [
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ],
-        opens: "09:00",
-        closes: "19:00",
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: ["Sunday"],
-        opens: "10:00",
-        closes: "14:00",
-      },
-    ],
+    url: business.website_url,
+    logo: `${business.website_url}/images/emprise-logo.png`,
+    foundingDate: String(business.established_year),
+    address: postalAddress,
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Coaching Programmes",
@@ -59,7 +40,7 @@ export const HomepageJsonLd: React.FC = () => {
             "Comprehensive engineering entrance preparation for Class 11, 12, and Droppers in Mathura.",
           provider: {
             "@type": "EducationalOrganization",
-            name: "Emprise Academy",
+            name: business.academy_name,
           },
         },
         {
@@ -69,7 +50,7 @@ export const HomepageJsonLd: React.FC = () => {
             "NCERT-focused medical entrance coaching with physics, chemistry, and biology test series in Mathura.",
           provider: {
             "@type": "EducationalOrganization",
-            name: "Emprise Academy",
+            name: business.academy_name,
           },
         },
         {
@@ -79,12 +60,19 @@ export const HomepageJsonLd: React.FC = () => {
             "Science and Mathematics conceptual foundation for Olympiads and early JEE/NEET competitive preparation.",
           provider: {
             "@type": "EducationalOrganization",
-            name: "Emprise Academy",
+            name: business.academy_name,
           },
         },
       ],
     },
   };
+
+  if (business.contact.phone_primary) {
+    schema.telephone = business.contact.phone_primary;
+  }
+  if (business.contact.email) {
+    schema.email = business.contact.email;
+  }
 
   return (
     <script

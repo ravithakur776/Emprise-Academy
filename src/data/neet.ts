@@ -324,7 +324,7 @@ export const MAIN_NEET_DATA = {
     {
       question: "Where is Emprise Academy located in Mathura?",
       answer:
-        "Emprise Academy is located at the Main Academic Block, Mathura, Uttar Pradesh - 281001. Contact our admissions desk at +91 98765 43210 or admissions@empriseacademy.com for campus directions and consultation.",
+        "Emprise Academy is located in Mathura, Uttar Pradesh. Prospective students and parents can visit our campus or request a free counselling session on this website.",
     },
   ] as NeetFaqItem[],
 } as const;

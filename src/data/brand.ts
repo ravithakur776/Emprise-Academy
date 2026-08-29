@@ -1,7 +1,11 @@
 /**
  * Verified Brand & Academic Constants for Emprise Academy
- * NOTE: DO NOT invent fake data. Fields marked with `pending_configuration` must be set via CMS/Admin.
+ * Single source of truth referencing canonical business configuration.
  */
+
+import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
+
+export { CANONICAL_BUSINESS_CONFIG };
 
 export interface AcademicPillar {
   id: string;
@@ -12,9 +16,9 @@ export interface AcademicPillar {
 }
 
 export const VERIFIED_BRAND_DATA = {
-  institutionName: "Emprise Academy",
-  headquarters: "Mathura, Uttar Pradesh",
-  yearEstablished: 2011,
+  institutionName: CANONICAL_BUSINESS_CONFIG.academy_name,
+  headquarters: CANONICAL_BUSINESS_CONFIG.address.display_location,
+  yearEstablished: CANONICAL_BUSINESS_CONFIG.established_year,
   primaryPillars: [
     {
       id: "jee",
@@ -39,11 +43,11 @@ export const VERIFIED_BRAND_DATA = {
     },
   ] as AcademicPillar[],
   etse: {
-    name: "Emprise Talent Search Examination",
-    shortName: "ETSE 2026",
-    eligibleClasses: ["Class 7", "Class 8", "Class 9", "Class 10"],
-    scholarshipUpTo: "100%", // Up to 100% tuition waiver
-    examMode: "Offline (Pen & Paper)",
+    name: CANONICAL_BUSINESS_CONFIG.etse.name,
+    shortName: CANONICAL_BUSINESS_CONFIG.etse.short_name,
+    eligibleClasses: CANONICAL_BUSINESS_CONFIG.etse.eligible_classes,
+    scholarshipUpTo: "100%",
+    examMode: CANONICAL_BUSINESS_CONFIG.etse.mode,
   },
   roles: {
     SUPER_ADMIN: "Super Administrator",

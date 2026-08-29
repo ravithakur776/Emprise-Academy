@@ -59,7 +59,7 @@ export const MAIN_ETSE_DATA = {
     registrationFee: "FREE (Zero Application Fee)",
     mode: "Offline (Pen & Paper OMR Format)",
     location: "Mathura, Uttar Pradesh",
-    venue: "Main Academic Block, Mathura & Designated City Partner Centres",
+    venue: "Emprise Academy Campus, Mathura & Designated City Partner Centres",
     admitCardReleaseDate: "To be announced 10 days prior to examination",
     isAdmitCardPublished: false,
     heroParagraph:
@@ -206,7 +206,7 @@ export const MAIN_ETSE_DATA = {
     {
       question: "Where will the examination centres be located?",
       answer:
-        "The primary examination center is located at the Emprise Academy Main Academic Block in Mathura, with additional authorized city school partner centers in Mathura district.",
+        "The primary examination center is located at the Emprise Academy campus in Mathura, with additional authorized city partner centers in Mathura district.",
     },
     {
       question: "What are the prizes and recognition for top performers?",
@@ -221,7 +221,7 @@ export const MAIN_ETSE_DATA = {
     {
       question: "How can I contact the ETSE helpdesk for queries?",
       answer:
-        "You can reach the ETSE desk directly by calling +91 98765 43210 or messaging on WhatsApp for immediate registration assistance.",
+        "You can reach the ETSE desk by submitting an enquiry on this website or visiting our Mathura campus for registration assistance.",
     },
   ] as EtseFaqItem[],
 };

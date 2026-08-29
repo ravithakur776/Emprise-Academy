@@ -649,8 +649,8 @@ export class ResultImportEngine {
       "DOB": "2009-05-14",
       "Class": "Class 11",
       "Stream": "IIT_JEE",
-      "Phone": "9876543210",
-      "Email": "aarav@example.com",
+      "Phone": "9800000001",
+      "Email": "candidate@example.com",
     };
 
     // Append dynamic subject columns

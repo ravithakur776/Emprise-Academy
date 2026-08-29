@@ -1,5 +1,6 @@
 import React from "react";
 import { MAIN_ETSE_DATA } from "@/data/etse";
+import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
 
 export interface EtseJsonLdProps {
   pageTitle?: string;
@@ -15,25 +16,38 @@ export const EtseJsonLd: React.FC<EtseJsonLdProps> = ({
   breadcrumbs,
 }) => {
   const { campaign, faqs } = MAIN_ETSE_DATA;
+  const business = CANONICAL_BUSINESS_CONFIG;
+
+  const postalAddress: Record<string, string> = {
+    "@type": "PostalAddress",
+    addressLocality: business.address.city,
+    addressRegion: business.address.state,
+    addressCountry: business.address.country_code,
+  };
+
+  if (business.address.street_address) {
+    postalAddress.streetAddress = business.address.street_address;
+  }
+  if (business.address.postal_code) {
+    postalAddress.postalCode = business.address.postal_code;
+  }
+
+  const orgSchema: Record<string, any> = {
+    "@type": "EducationalOrganization",
+    "@id": `${business.website_url}/#organization`,
+    name: business.academy_name,
+    url: business.website_url,
+    address: postalAddress,
+  };
+
+  if (business.contact.phone_primary) {
+    orgSchema.telephone = business.contact.phone_primary;
+  }
 
   const schema = {
     "@context": "https://schema.org",
     "@graph": [
-      {
-        "@type": "EducationalOrganization",
-        "@id": "https://empriseacademy.com/#organization",
-        name: "Emprise Academy",
-        url: "https://empriseacademy.com",
-        telephone: "+91 98765 43210",
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "Main Academic Block",
-          addressLocality: "Mathura",
-          addressRegion: "Uttar Pradesh",
-          postalCode: "281001",
-          addressCountry: "IN",
-        },
-      },
+      orgSchema,
       {
         "@type": "Event",
         name: campaign.title,
@@ -43,15 +57,8 @@ export const EtseJsonLd: React.FC<EtseJsonLdProps> = ({
         eventStatus: "https://schema.org/EventScheduled",
         location: {
           "@type": "Place",
-          name: "Emprise Academy Main Academic Block",
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "Main Academic Block",
-            addressLocality: "Mathura",
-            addressRegion: "Uttar Pradesh",
-            postalCode: "281001",
-            addressCountry: "IN",
-          },
+          name: `${business.academy_name} Campus`,
+          address: postalAddress,
         },
         offers: {
           "@type": "Offer",
@@ -63,8 +70,8 @@ export const EtseJsonLd: React.FC<EtseJsonLdProps> = ({
         },
         organizer: {
           "@type": "Organization",
-          name: "Emprise Academy",
-          url: "https://empriseacademy.com",
+          name: business.academy_name,
+          url: business.website_url,
         },
       },
       {

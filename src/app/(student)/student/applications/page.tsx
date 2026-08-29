@@ -22,7 +22,7 @@ export default function StudentApplicationsPage() {
       status: "CONFIRMED",
       classEnrolled: "Class 8",
       stream: "Foundation (Science & Mathematics)",
-      centre: "Main Academic Block, Mathura",
+      centre: "Emprise Academy Campus, Mathura",
       admitCardStatus: "PENDING_RELEASE",
     },
   ];

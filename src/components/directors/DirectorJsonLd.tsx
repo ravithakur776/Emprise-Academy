@@ -1,4 +1,5 @@
 import React from "react";
+import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
 
 export interface DirectorJsonLdProps {
   name: string;
@@ -19,6 +20,22 @@ export const DirectorJsonLd: React.FC<DirectorJsonLdProps> = ({
   knowsAbout = ["IIT-JEE Coaching", "Mathematics", "Physics", "Engineering Education"],
   breadcrumbs,
 }) => {
+  const business = CANONICAL_BUSINESS_CONFIG;
+
+  const postalAddress: Record<string, string> = {
+    "@type": "PostalAddress",
+    addressLocality: business.address.city,
+    addressRegion: business.address.state,
+    addressCountry: business.address.country_code,
+  };
+
+  if (business.address.street_address) {
+    postalAddress.streetAddress = business.address.street_address;
+  }
+  if (business.address.postal_code) {
+    postalAddress.postalCode = business.address.postal_code;
+  }
+
   const schema = {
     "@context": "https://schema.org",
     "@graph": [
@@ -34,16 +51,9 @@ export const DirectorJsonLd: React.FC<DirectorJsonLdProps> = ({
         },
         worksFor: {
           "@type": "EducationalOrganization",
-          name: "Emprise Academy",
-          url: "https://empriseacademy.com",
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "Main Academic Block",
-            addressLocality: "Mathura",
-            addressRegion: "Uttar Pradesh",
-            postalCode: "281001",
-            addressCountry: "IN",
-          },
+          name: business.academy_name,
+          url: business.website_url,
+          address: postalAddress,
         },
         knowsAbout: knowsAbout,
       },

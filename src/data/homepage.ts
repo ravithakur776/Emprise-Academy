@@ -356,11 +356,8 @@ export const HOMEPAGE_DATA = {
       "Talk to our experienced academic counsellors to understand the optimal batch, syllabus schedule, and preparation strategy for your academic journey.",
     primaryCta: { label: "Book Free Counselling", href: "#counselling" },
     secondaryCta: { label: "Explore Admissions", href: "/admissions" },
-    callAction: { label: "Call Campus Desk", href: "tel:+919876543210" },
-    whatsappAction: {
-      label: "WhatsApp Query",
-      href: "https://wa.me/919876543210?text=Hello%20Emprise%20Academy,%20I%20want%20to%20inquire%20about%20IIT-JEE/NEET%20admissions.",
-    },
+    callAction: null,
+    whatsappAction: null,
   },
   faqs: [
     {
@@ -401,17 +398,17 @@ export const HOMEPAGE_DATA = {
     {
       question: "Where is Emprise Academy located in Mathura and how can I take admission?",
       answer:
-        "Emprise Academy is located at the Main Academic Block in Mathura, Uttar Pradesh. Admissions can be initiated by visiting the campus, registering for ETSE 2026, or booking a free academic counselling session through our website.",
+        "Emprise Academy is located in Mathura, Uttar Pradesh. Admissions can be initiated by submitting an enquiry on our website, registering for ETSE 2026, or booking a free academic counselling session.",
     },
   ] as HomepageFAQ[],
   contactCampus: {
     institution: "Emprise Academy",
     city: "Mathura, Uttar Pradesh",
-    address: "Emprise Academy, Main Academic Block, Mathura, Uttar Pradesh - 281001",
-    phoneDisplay: "+91 98765 43210",
-    phoneHref: "tel:+919876543210",
-    email: "admissions@empriseacademy.com",
-    hours: "Monday – Saturday: 9:00 AM – 7:00 PM (Sunday: 10:00 AM – 2:00 PM)",
-    directionsUrl: "https://maps.google.com/?q=Emprise+Academy+Mathura",
+    address: "Mathura, Uttar Pradesh",
+    phoneDisplay: null as string | null,
+    phoneHref: null as string | null,
+    email: null as string | null,
+    hours: null as string | null,
+    directionsUrl: null as string | null,
   },
 } as const;

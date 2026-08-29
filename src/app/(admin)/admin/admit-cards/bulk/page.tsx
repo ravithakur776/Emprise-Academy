@@ -105,8 +105,8 @@ export default function AdminAdmitCardsBulkPage() {
                 value={centreId}
                 onChange={(e) => setCentreId(e.target.value)}
                 options={[
-                  { value: "ctr-1", label: "Main Academic Block, Mathura" },
-                  { value: "ctr-2", label: "City Campus, Krishna Nagar" },
+                  { value: "ctr-1", label: "Emprise Academy Campus, Mathura" },
+                  { value: "ctr-2", label: "City Campus Partner, Mathura" },
                 ]}
               />
             </FormField>
@@ -119,7 +119,7 @@ export default function AdminAdmitCardsBulkPage() {
               <div className="text-xl font-black text-slate-900">
                 {candidateCount} Candidates Qualified for Generation
               </div>
-              <span className="text-xs text-slate-500">Venue: Main Academic Block, Mathura</span>
+              <span className="text-xs text-slate-500">Venue: Emprise Academy Campus, Mathura</span>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
@@ -149,7 +149,7 @@ export default function AdminAdmitCardsBulkPage() {
                 <div>Exam: <strong>ETSE 2026</strong></div>
                 <div>Cohort: <strong>{classFilter === "ALL" ? "Classes 7, 8, 9, 10" : classFilter}</strong></div>
                 <div>Total Admit Cards: <strong className="text-[var(--brand-accent)] font-bold">{candidateCount} Passes</strong></div>
-                <div>Centre: <strong>Main Academic Block, Mathura</strong></div>
+                <div>Centre: <strong>Emprise Academy Campus, Mathura</strong></div>
               </div>
 
               <p className="text-xs text-slate-500 leading-relaxed">

@@ -120,7 +120,7 @@ export const MAIN_ADMISSIONS_DATA = {
     {
       step: "05",
       title: "Campus Visit & Consultation",
-      description: "Visit our Main Academic Block in Mathura to meet department faculties and inspect classroom facilities.",
+      description: "Visit our Mathura campus to meet academic faculties and discuss preparation pathways.",
     },
     {
       step: "06",
@@ -180,7 +180,7 @@ export const MAIN_ADMISSIONS_DATA = {
     {
       question: "How can parents schedule a campus visit?",
       answer:
-        "You can schedule a campus visit by calling our desk at +91 98765 43210, messaging us on WhatsApp, or submitting the counselling form on this page.",
+        "Parents can schedule a campus visit by submitting the academic counselling form on this website or visiting our campus in Mathura.",
     },
     {
       question: "What is the batch size at Emprise Academy?",
@@ -190,7 +190,7 @@ export const MAIN_ADMISSIONS_DATA = {
     {
       question: "Where is Emprise Academy located in Mathura?",
       answer:
-        "Our campus is located at the Main Academic Block, Mathura, Uttar Pradesh - 281001. We are open Monday through Sunday from 9:00 AM to 7:00 PM.",
+        "Our campus is located in Mathura, Uttar Pradesh. Admissions counselling and classroom programs operate throughout the academic session.",
     },
   ] as AdmissionFaqItem[],
 };
@@ -199,13 +199,12 @@ export const MAIN_CONTACT_DATA = {
   meta: {
     title: "Contact Emprise Academy | IIT-JEE & NEET Coaching in Mathura",
     description:
-      "Get in touch with Emprise Academy Mathura. Main Academic Block, Mathura, UP - 281001. Call +91 98765 43210 or email admissions@empriseacademy.com for batch enquiries and admissions.",
+      "Get in touch with Emprise Academy Mathura. Explore IIT-JEE, NEET-UG, and Foundation courses or schedule an in-person academic counselling session.",
     keywords: [
       "Contact Emprise Academy",
       "Emprise Academy Mathura Address",
-      "Emprise Academy Phone Number",
-      "Emprise Academy WhatsApp",
       "IIT JEE Coaching in Mathura Contact",
+      "NEET Coaching in Mathura Admissions",
       "Mathura Coaching Centre Location",
     ],
     canonical: "https://empriseacademy.com/contact",
@@ -213,27 +212,28 @@ export const MAIN_CONTACT_DATA = {
   hero: {
     eyebrow: "GET IN TOUCH",
     h1: "Contact Emprise Academy",
-    subheading: "Main Academic Block, Mathura • Dedicated Academic Guidance Desk",
+    subheading: "Mathura Campus • Dedicated Academic Guidance Desk",
     paragraph:
       "Have questions about batch schedules, course syllabi, scholarship eligibility, or admission formalities? Speak directly with our academic counsellors or visit our Mathura campus.",
   },
   contactDetails: {
     institutionName: "Emprise Academy",
     address: {
-      line1: "Main Academic Block",
+      line1: "Mathura Campus",
       city: "Mathura",
       state: "Uttar Pradesh",
       pincode: "281001",
       country: "India",
-      fullAddress: "Main Academic Block, Mathura, Uttar Pradesh - 281001",
+      fullAddress: "Mathura, Uttar Pradesh",
     },
-    phone: "+91 98765 43210",
-    phoneTel: "+919876543210",
-    email: "admissions@empriseacademy.com",
-    whatsapp: "+91 98765 43210",
-    whatsappLink: "https://wa.me/919876543210?text=Hello%20Emprise%20Academy,%20I%20want%20to%20inquire%20about%20admissions.",
-    workingHours: "Monday to Sunday: 9:00 AM – 7:00 PM",
-    googleMapsEmbedUrl: "https://maps.google.com/maps?q=Mathura,+Uttar+Pradesh+281001&t=&z=14&ie=UTF8&iwloc=&output=embed",
-    googleMapsDirectionsUrl: "https://www.google.com/maps/search/?api=1&query=Emprise+Academy+Mathura+Uttar+Pradesh+281001",
+    phone: null as string | null,
+    phoneTel: null as string | null,
+    email: null as string | null,
+    whatsapp: null as string | null,
+    whatsappLink: null as string | null,
+    workingHours: null as string | null,
+    googleMapsEmbedUrl: null as string | null,
+    googleMapsDirectionsUrl: null as string | null,
   },
 };
+

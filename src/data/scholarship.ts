@@ -248,7 +248,7 @@ export const MAIN_SCHOLARSHIP_DATA = {
     {
       question: "How can parents speak with an academic counsellor about fees?",
       answer:
-        "Parents are welcome to visit our Mathura campus at the Main Academic Block, call our desk directly at +91 98765 43210, or fill out the counselling request form on this page.",
+        "Parents are welcome to visit our Mathura campus or submit the academic counselling form on this website to discuss batch fees and merit concessions.",
     },
   ] as ScholarshipFaqItem[],
 };

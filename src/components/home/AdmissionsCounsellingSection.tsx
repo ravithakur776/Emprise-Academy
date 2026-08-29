@@ -108,27 +108,18 @@ export const AdmissionsCounsellingSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* Direct Communication Channels */}
+              {/* Direct Navigation Channels */}
               <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-3">
-                <a href={contactCampus.phoneHref}>
-                  <Button variant="outline" size="sm" leftIcon={<Phone className="w-4 h-4" />}>
-                    Call Campus: {contactCampus.phoneDisplay}
+                <Link href="/admissions">
+                  <Button variant="outline" size="sm">
+                    Admissions Guide
                   </Button>
-                </a>
-                <a
-                  href={admissionsCta.whatsappAction.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button
-                    variant="success"
-                    size="sm"
-                    className="bg-emerald-600 hover:bg-emerald-700"
-                    leftIcon={<MessageSquare className="w-4 h-4" />}
-                  >
-                    Chat on WhatsApp
+                </Link>
+                <Link href="/etse-2026">
+                  <Button variant="primary" size="sm">
+                    ETSE 2026 Registration
                   </Button>
-                </a>
+                </Link>
               </div>
             </div>
 

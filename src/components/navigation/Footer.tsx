@@ -4,8 +4,18 @@ import { Container } from "@/components/ui/layout/Container";
 import { GraduationCap, MapPin, Phone, Mail, Clock, ArrowUpRight } from "lucide-react";
 import { VERIFIED_BRAND_DATA } from "@/data/brand";
 import { HOMEPAGE_DATA } from "@/data/homepage";
+import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
 
 export const Footer: React.FC = () => {
+  const business = CANONICAL_BUSINESS_CONFIG;
+  const contact = HOMEPAGE_DATA.contactCampus;
+
+  const phone = business.contact.phone_primary || contact.phoneDisplay;
+  const phoneHref = business.contact.phone_primary ? `tel:${business.contact.phone_primary}` : contact.phoneHref;
+  const email = business.contact.email || contact.email;
+  const hours = business.contact.business_hours || contact.hours;
+  const directionsUrl = business.contact.google_maps_url || contact.directionsUrl;
+
   return (
     <footer className="bg-[var(--brand-primary)] text-slate-300 border-t border-slate-800">
       {/* Main Footer Links */}
@@ -22,7 +32,7 @@ export const Footer: React.FC = () => {
                   EMPRISE <span className="text-[var(--brand-accent)]">ACADEMY</span>
                 </span>
                 <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
-                  Established {VERIFIED_BRAND_DATA.yearEstablished} • Mathura
+                  Established {VERIFIED_BRAND_DATA.yearEstablished} • {business.address.city}
                 </span>
               </div>
             </Link>
@@ -33,7 +43,7 @@ export const Footer: React.FC = () => {
 
             <div className="pt-2">
               <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-300 bg-amber-950/60 border border-amber-800/60 px-3 py-1.5 rounded-md">
-                ★ 15+ Years of Academic Excellence
+                ★ {business.years_of_excellence}
               </span>
             </div>
           </div>
@@ -108,24 +118,30 @@ export const Footer: React.FC = () => {
             <div className="space-y-2.5 text-xs text-slate-400">
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-[var(--brand-accent)] shrink-0 mt-0.5" />
-                <span>{HOMEPAGE_DATA.contactCampus.address}</span>
+                <span>{business.address.display_location}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-[var(--brand-accent)] shrink-0" />
-                <a href={HOMEPAGE_DATA.contactCampus.phoneHref} className="hover:text-white transition-colors">
-                  {HOMEPAGE_DATA.contactCampus.phoneDisplay}
-                </a>
-              </div>
-              <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-[var(--brand-accent)] shrink-0" />
-                <a href={`mailto:${HOMEPAGE_DATA.contactCampus.email}`} className="hover:text-white transition-colors">
-                  {HOMEPAGE_DATA.contactCampus.email}
-                </a>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-[var(--brand-accent)] shrink-0" />
-                <span>{HOMEPAGE_DATA.contactCampus.hours}</span>
-              </div>
+              {phone && phoneHref && (
+                <div className="flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-[var(--brand-accent)] shrink-0" />
+                  <a href={phoneHref} className="hover:text-white transition-colors">
+                    {phone}
+                  </a>
+                </div>
+              )}
+              {email && (
+                <div className="flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-[var(--brand-accent)] shrink-0" />
+                  <a href={`mailto:${email}`} className="hover:text-white transition-colors">
+                    {email}
+                  </a>
+                </div>
+              )}
+              {hours && (
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-[var(--brand-accent)] shrink-0" />
+                  <span>{hours}</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -136,21 +152,23 @@ export const Footer: React.FC = () => {
             &copy; 2011–{new Date().getFullYear()} Emprise Academy. All rights reserved.
           </div>
           <div className="flex items-center gap-4">
-            <Link href="/about" className="hover:text-slate-300 transition-colors">
+            <Link href="/privacy-policy" className="hover:text-slate-300 transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/about" className="hover:text-slate-300 transition-colors">
+            <Link href="/terms" className="hover:text-slate-300 transition-colors">
               Terms of Admission
             </Link>
-            <a
-              href={HOMEPAGE_DATA.contactCampus.directionsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-slate-300 transition-colors flex items-center gap-1"
-            >
-              <span>Google Maps Directions</span>
-              <ArrowUpRight className="w-3 h-3" />
-            </a>
+            {directionsUrl && (
+              <a
+                href={directionsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-slate-300 transition-colors flex items-center gap-1"
+              >
+                <span>Google Maps Directions</span>
+                <ArrowUpRight className="w-3 h-3" />
+              </a>
+            )}
           </div>
         </div>
       </Container>
@@ -159,25 +177,51 @@ export const Footer: React.FC = () => {
 };
 
 export const MobileBottomCTA: React.FC = () => {
+  const business = CANONICAL_BUSINESS_CONFIG;
+  const phone = business.contact.phone_primary;
+  const whatsapp = business.contact.whatsapp;
+
   return (
     <div className="fixed bottom-0 inset-x-0 z-30 lg:hidden bg-white/95 backdrop-blur-md border-t border-[var(--brand-border)] p-2.5 shadow-lg">
       <div className="grid grid-cols-3 gap-2">
-        <a
-          href={HOMEPAGE_DATA.contactCampus.phoneHref}
-          className="flex flex-col items-center justify-center p-2 rounded-lg bg-slate-50 text-[var(--brand-primary)] border border-slate-200 active:scale-95 transition-transform"
-        >
-          <Phone className="w-4 h-4 text-[var(--brand-primary)] mb-0.5" />
-          <span className="text-[11px] font-bold">Call Campus</span>
-        </a>
-        <a
-          href={HOMEPAGE_DATA.admissionsCta.whatsappAction.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex flex-col items-center justify-center p-2 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 active:scale-95 transition-transform"
-        >
-          <span className="text-xs mb-0.5">💬</span>
-          <span className="text-[11px] font-bold">WhatsApp</span>
-        </a>
+        {phone ? (
+          <a
+            href={`tel:${phone}`}
+            className="flex flex-col items-center justify-center p-2 rounded-lg bg-slate-50 text-[var(--brand-primary)] border border-slate-200 active:scale-95 transition-transform"
+          >
+            <Phone className="w-4 h-4 text-[var(--brand-primary)] mb-0.5" />
+            <span className="text-[11px] font-bold">Call Campus</span>
+          </a>
+        ) : (
+          <Link
+            href="/contact"
+            className="flex flex-col items-center justify-center p-2 rounded-lg bg-slate-50 text-[var(--brand-primary)] border border-slate-200 active:scale-95 transition-transform"
+          >
+            <MapPin className="w-4 h-4 text-[var(--brand-primary)] mb-0.5" />
+            <span className="text-[11px] font-bold">Enquire</span>
+          </Link>
+        )}
+
+        {whatsapp ? (
+          <a
+            href={`https://wa.me/${whatsapp.replace(/[^0-9]/g, "")}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col items-center justify-center p-2 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 active:scale-95 transition-transform"
+          >
+            <span className="text-xs mb-0.5">💬</span>
+            <span className="text-[11px] font-bold">WhatsApp</span>
+          </a>
+        ) : (
+          <Link
+            href="/admissions"
+            className="flex flex-col items-center justify-center p-2 rounded-lg bg-indigo-50 text-indigo-800 border border-indigo-200 active:scale-95 transition-transform"
+          >
+            <span className="text-xs mb-0.5">🎓</span>
+            <span className="text-[11px] font-bold">Admissions</span>
+          </Link>
+        )}
+
         <Link
           href="/etse-2026"
           className="flex flex-col items-center justify-center p-2 rounded-lg bg-[var(--brand-accent)] text-white font-bold active:scale-95 transition-transform shadow-xs"

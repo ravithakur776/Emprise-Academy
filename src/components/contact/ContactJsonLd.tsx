@@ -1,5 +1,5 @@
 import React from "react";
-import { MAIN_CONTACT_DATA } from "@/data/admissions";
+import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
 
 export interface ContactJsonLdProps {
   pageTitle?: string;
@@ -14,43 +14,57 @@ export const ContactJsonLd: React.FC<ContactJsonLdProps> = ({
   url,
   breadcrumbs,
 }) => {
-  const { contactDetails } = MAIN_CONTACT_DATA;
+  const business = CANONICAL_BUSINESS_CONFIG;
+
+  const postalAddress: Record<string, string> = {
+    "@type": "PostalAddress",
+    addressLocality: business.address.city,
+    addressRegion: business.address.state,
+    addressCountry: business.address.country_code,
+  };
+
+  if (business.address.street_address) {
+    postalAddress.streetAddress = business.address.street_address;
+  }
+  if (business.address.postal_code) {
+    postalAddress.postalCode = business.address.postal_code;
+  }
+
+  const orgSchema: Record<string, any> = {
+    "@type": "EducationalOrganization",
+    "@id": `${business.website_url}/#organization`,
+    name: business.academy_name,
+    url: business.website_url,
+    address: postalAddress,
+  };
+
+  if (business.contact.phone_primary) {
+    orgSchema.telephone = business.contact.phone_primary;
+  }
+  if (business.contact.email) {
+    orgSchema.email = business.contact.email;
+  }
+
+  const localBusinessSchema: Record<string, any> = {
+    "@type": "LocalBusiness",
+    name: `${business.academy_name} - ${business.primary_positioning}`,
+    image: `${business.website_url}/logo.png`,
+    url: business.website_url,
+    address: postalAddress,
+  };
+
+  if (business.contact.phone_primary) {
+    localBusinessSchema.telephone = business.contact.phone_primary;
+  }
+  if (business.contact.email) {
+    localBusinessSchema.email = business.contact.email;
+  }
 
   const schema = {
     "@context": "https://schema.org",
     "@graph": [
-      {
-        "@type": "EducationalOrganization",
-        "@id": "https://empriseacademy.com/#organization",
-        name: "Emprise Academy",
-        url: "https://empriseacademy.com",
-        telephone: contactDetails.phone,
-        email: contactDetails.email,
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: contactDetails.address.line1,
-          addressLocality: contactDetails.address.city,
-          addressRegion: contactDetails.address.state,
-          postalCode: contactDetails.address.pincode,
-          addressCountry: contactDetails.address.country,
-        },
-      },
-      {
-        "@type": "LocalBusiness",
-        name: "Emprise Academy - IIT-JEE & NEET Coaching",
-        image: "https://empriseacademy.com/logo.png",
-        telephone: contactDetails.phone,
-        email: contactDetails.email,
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: contactDetails.address.line1,
-          addressLocality: contactDetails.address.city,
-          addressRegion: contactDetails.address.state,
-          postalCode: contactDetails.address.pincode,
-          addressCountry: contactDetails.address.country,
-        },
-        openingHours: "Mo-Su 09:00-19:00",
-      },
+      orgSchema,
+      localBusinessSchema,
       {
         "@type": "BreadcrumbList",
         itemListElement: breadcrumbs.map((bc, idx) => ({

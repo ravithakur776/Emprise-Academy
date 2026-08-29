@@ -1,5 +1,6 @@
 import React from "react";
 import { AdmissionFaqItem } from "@/data/admissions";
+import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
 
 export interface AdmissionsJsonLdProps {
   pageTitle?: string;
@@ -16,20 +17,35 @@ export const AdmissionsJsonLd: React.FC<AdmissionsJsonLdProps> = ({
   breadcrumbs,
   faqs,
 }) => {
+  const business = CANONICAL_BUSINESS_CONFIG;
+
+  const postalAddress: Record<string, string> = {
+    "@type": "PostalAddress",
+    addressLocality: business.address.city,
+    addressRegion: business.address.state,
+    addressCountry: business.address.country_code,
+  };
+
+  if (business.address.street_address) {
+    postalAddress.streetAddress = business.address.street_address;
+  }
+  if (business.address.postal_code) {
+    postalAddress.postalCode = business.address.postal_code;
+  }
+
+  const orgElement: Record<string, any> = {
+    "@type": "EducationalOrganization",
+    name: business.academy_name,
+    url: business.website_url,
+    address: postalAddress,
+  };
+
+  if (business.contact.phone_primary) {
+    orgElement.telephone = business.contact.phone_primary;
+  }
+
   const graphElements: any[] = [
-    {
-      "@type": "EducationalOrganization",
-      name: "Emprise Academy",
-      url: "https://empriseacademy.com",
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: "Main Academic Block",
-        addressLocality: "Mathura",
-        addressRegion: "Uttar Pradesh",
-        postalCode: "281001",
-        addressCountry: "IN",
-      },
-    },
+    orgElement,
     {
       "@type": "BreadcrumbList",
       itemListElement: breadcrumbs.map((bc, idx) => ({

@@ -94,25 +94,16 @@ export const ScholarshipCtaSection: React.FC = () => {
               </div>
 
               <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-3">
-                <a href="tel:+919876543210">
-                  <Button variant="outline" size="sm" leftIcon={<Phone className="w-4 h-4" />}>
-                    Call Desk: +91 98765 43210
+                <Link href="/admissions">
+                  <Button variant="outline" size="sm">
+                    Admissions Guide
                   </Button>
-                </a>
-                <a
-                  href="https://wa.me/919876543210?text=Hello%20Emprise%20Academy,%20I%20want%20to%20inquire%20about%20the%20Scholarship%20Programme."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button
-                    variant="success"
-                    size="sm"
-                    className="bg-emerald-600 hover:bg-emerald-700"
-                    leftIcon={<MessageSquare className="w-4 h-4" />}
-                  >
-                    Chat on WhatsApp
+                </Link>
+                <Link href="/etse-2026">
+                  <Button variant="primary" size="sm">
+                    ETSE 2026 Registration
                   </Button>
-                </a>
+                </Link>
               </div>
             </div>
 

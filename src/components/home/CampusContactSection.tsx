@@ -6,11 +6,16 @@ import { Heading } from "@/components/ui/typography/Heading";
 import { Text } from "@/components/ui/typography/Text";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
-import { HOMEPAGE_DATA } from "@/data/homepage";
-import { MapPin, Phone, Mail, Clock, ArrowUpRight, Navigation, PhoneCall } from "lucide-react";
+import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
+import { MapPin, Phone, Mail, Clock, ArrowUpRight, Navigation } from "lucide-react";
 
 export const CampusContactSection: React.FC = () => {
-  const { contactCampus } = HOMEPAGE_DATA;
+  const business = CANONICAL_BUSINESS_CONFIG;
+
+  const phone = business.contact.phone_primary;
+  const email = business.contact.email;
+  const hours = business.contact.business_hours;
+  const directionsUrl = business.contact.google_maps_url;
 
   return (
     <Section variant="surface" spacing="lg" id="contact">
@@ -24,10 +29,10 @@ export const CampusContactSection: React.FC = () => {
                   VISIT OUR CAMPUS
                 </Badge>
                 <Heading as="h2" variant="h1" color="white">
-                  Emprise Academy, Mathura
+                  {business.academy_name}, Mathura
                 </Heading>
                 <Text variant="body-large" color="white" className="opacity-90 mt-2">
-                  Visit our academic block for personal course guidance, syllabus discussion, and classroom tours.
+                  Visit our academic campus in Mathura for personal course guidance, syllabus discussion, and classroom tours.
                 </Text>
               </div>
 
@@ -35,62 +40,79 @@ export const CampusContactSection: React.FC = () => {
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-[var(--brand-accent)] shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-bold text-white block">Campus Address:</span>
-                    <span>{contactCampus.address}</span>
+                    <span className="font-bold text-white block">Campus Location:</span>
+                    <span>{business.address.display_location}</span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <Phone className="w-5 h-5 text-[var(--brand-accent)] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold text-white block">Admissions Helpdesk:</span>
-                    <a href={contactCampus.phoneHref} className="hover:text-white underline font-semibold">
-                      {contactCampus.phoneDisplay}
-                    </a>
+                {phone && (
+                  <div className="flex items-start gap-3">
+                    <Phone className="w-5 h-5 text-[var(--brand-accent)] shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-white block">Admissions Desk:</span>
+                      <a href={`tel:${phone}`} className="hover:text-white underline font-semibold">
+                        {phone}
+                      </a>
+                    </div>
                   </div>
-                </div>
+                )}
 
-                <div className="flex items-start gap-3">
-                  <Mail className="w-5 h-5 text-[var(--brand-accent)] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold text-white block">Email Inquiries:</span>
-                    <a href={`mailto:${contactCampus.email}`} className="hover:text-white underline">
-                      {contactCampus.email}
-                    </a>
+                {email && (
+                  <div className="flex items-start gap-3">
+                    <Mail className="w-5 h-5 text-[var(--brand-accent)] shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-white block">Official Email:</span>
+                      <a href={`mailto:${email}`} className="hover:text-white underline">
+                        {email}
+                      </a>
+                    </div>
                   </div>
-                </div>
+                )}
 
-                <div className="flex items-start gap-3">
-                  <Clock className="w-5 h-5 text-[var(--brand-accent)] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold text-white block">Consultation Hours:</span>
-                    <span>{contactCampus.hours}</span>
+                {hours && (
+                  <div className="flex items-start gap-3">
+                    <Clock className="w-5 h-5 text-[var(--brand-accent)] shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-white block">Consultation Hours:</span>
+                      <span>{hours}</span>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               <div className="pt-2 flex flex-wrap items-center gap-3">
-                <a
-                  href={contactCampus.directionsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Button
-                    variant="primary"
-                    size="md"
-                    leftIcon={<Navigation className="w-4 h-4" />}
-                    rightIcon={<ArrowUpRight className="w-3.5 h-3.5" />}
+                {directionsUrl ? (
+                  <a
+                    href={directionsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    Get Campus Directions
-                  </Button>
-                </a>
-                <Link href="/contact">
+                    <Button
+                      variant="primary"
+                      size="md"
+                      leftIcon={<Navigation className="w-4 h-4" />}
+                      rightIcon={<ArrowUpRight className="w-3.5 h-3.5" />}
+                    >
+                      Get Campus Directions
+                    </Button>
+                  </a>
+                ) : (
+                  <Link href="/contact">
+                    <Button
+                      variant="primary"
+                      size="md"
+                    >
+                      Contact Campus Desk
+                    </Button>
+                  </Link>
+                )}
+                <Link href="/admissions">
                   <Button
                     variant="outline"
                     size="md"
                     className="text-white border-white/20 hover:bg-white/10"
                   >
-                    View Campus Info
+                    Admissions Process
                   </Button>
                 </Link>
               </div>
@@ -111,15 +133,15 @@ export const CampusContactSection: React.FC = () => {
                 <div className="space-y-2 text-xs text-slate-300">
                   <div className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                    <span>Dedicated student transport guidance available</span>
+                    <span>Dedicated student academic mentorship</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                    <span>Quiet, distraction-free academic environment</span>
+                    <span>Quiet, distraction-free study environment</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                    <span>Parent & student consultation lounges</span>
+                    <span>Parent & student consultation desk</span>
                   </div>
                 </div>
               </div>
