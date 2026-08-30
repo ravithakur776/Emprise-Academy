@@ -2,11 +2,7 @@
  * CANONICAL BUSINESS CONFIGURATION — Emprise Academy
  * Single Source of Truth for all official institutional data.
  *
- * Status Classifications:
- * - VERIFIED_OFFICIAL: Confirmed institutional facts (Academy Name, Established 2011, Mathura, UP, Core Pillars).
- * - PENDING_CONFIGURATION: Fields that require official administrative input before rendering publicly.
- *
- * Public components MUST consume this configuration and hide optional unverified fields when null.
+ * Official verified data provided for Phase 5.2B.
  */
 
 export interface CanonicalBusinessConfig {
@@ -15,34 +11,40 @@ export interface CanonicalBusinessConfig {
   tagline: string | null;
   established_year: number;
   years_of_excellence: string;
+  years_of_excellence_enabled: boolean;
   primary_positioning: string;
   secondary_pillar: string;
   website_url: string;
 
   address: {
+    street_address: string;
     city: string;
     state: string;
+    postal_code: string;
     country: string;
     country_code: string;
-    street_address: string | null;
-    postal_code: string | null;
     display_location: string;
+    short_location: string;
   };
 
   contact: {
-    phone_primary: string | null;
-    phone_secondary: string | null;
-    whatsapp: string | null;
-    email: string | null;
-    google_maps_url: string | null;
-    business_hours: string | null;
+    phone_primary: string;
+    phone_primary_tel: string;
+    phone_secondary: string;
+    phone_secondary_tel: string;
+    whatsapp: string;
+    whatsapp_link: string;
+    email: string;
+    email_mailto: string;
+    google_maps_url: string;
+    business_hours: string;
   };
 
   social: {
-    instagram: string | null;
-    facebook: string | null;
-    youtube: string | null;
-    linkedin: string | null;
+    instagram: string;
+    facebook: string;
+    youtube: string;
+    linkedin: null;
   };
 
   etse: {
@@ -58,37 +60,43 @@ export interface CanonicalBusinessConfig {
 export const CANONICAL_BUSINESS_CONFIG: CanonicalBusinessConfig = {
   academy_name: "Emprise Academy",
   short_name: "Emprise",
-  tagline: null, // PENDING_CONFIGURATION — Do not render unverified marketing taglines
+  tagline: null, // N/A — Official Tagline is not provided. Do NOT render unverified taglines.
   established_year: 2011,
-  years_of_excellence: "15+ Years of Academic Excellence", // Configurable brand statement
+  years_of_excellence: "15+ Years of Academic Excellence",
+  years_of_excellence_enabled: true,
   primary_positioning: "IIT-JEE & NEET Coaching in Mathura",
   secondary_pillar: "Foundation Classes 8–10",
-  website_url: "https://empriseacademy.com",
+  website_url: "https://www.empriseacademy.com/",
 
   address: {
+    street_address: "Near Tera Tower, Bhuteshwar Road",
     city: "Mathura",
     state: "Uttar Pradesh",
+    postal_code: "281004",
     country: "India",
     country_code: "IN",
-    street_address: null, // PENDING_CONFIGURATION — Official campus street address not yet finalized
-    postal_code: null, // PENDING_CONFIGURATION
-    display_location: "Mathura, Uttar Pradesh",
+    display_location: "Near Tera Tower, Bhuteshwar Road, Mathura, Uttar Pradesh - 281004",
+    short_location: "Near Tera Tower, Bhuteshwar Road, Mathura",
   },
 
   contact: {
-    phone_primary: null, // PENDING_CONFIGURATION — Official desk phone pending confirmation
-    phone_secondary: null,
-    whatsapp: null, // PENDING_CONFIGURATION — Official WhatsApp number pending confirmation
-    email: null, // PENDING_CONFIGURATION — Official email address pending confirmation
-    google_maps_url: null, // PENDING_CONFIGURATION — Official Google Maps link pending confirmation
-    business_hours: null, // PENDING_CONFIGURATION — Official working hours pending confirmation
+    phone_primary: "+91 7247889955",
+    phone_primary_tel: "tel:+917247889955",
+    phone_secondary: "+91 9634448800",
+    phone_secondary_tel: "tel:+919634448800",
+    whatsapp: "+91 7247889955",
+    whatsapp_link: "https://wa.me/917247889955?text=Hello%20Emprise%20Academy,%20I%20want%20to%20inquire%20about%20admissions.",
+    email: "info@empriseacademy.com",
+    email_mailto: "mailto:info@empriseacademy.com",
+    google_maps_url: "https://maps.app.goo.gl/P3E6GLnWqrdZfNcn7",
+    business_hours: "9AM to 7PM",
   },
 
   social: {
-    instagram: null,
-    facebook: null,
-    youtube: null,
-    linkedin: null,
+    instagram: "https://www.instagram.com/empriseacademy/",
+    facebook: "https://www.facebook.com/EmpriseAcademy",
+    youtube: "https://youtube.com/@emprisemathura?si=mQONprDb6PzOAGuB",
+    linkedin: null, // N/A — No LinkedIn profile provided.
   },
 
   etse: {

@@ -10,15 +10,10 @@ import { Input } from "@/components/ui/form/Input";
 import { useToast } from "@/components/ui/toast/ToastProvider";
 import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
 import {
-  Settings,
   ArrowLeft,
   Save,
-  CheckCircle2,
   AlertCircle,
-  Phone,
-  Mail,
-  MapPin,
-  Clock,
+  Building2,
 } from "lucide-react";
 
 export default function AdminSiteSettingsCmsPage() {
@@ -33,11 +28,18 @@ export default function AdminSiteSettingsCmsPage() {
     address: business.address.street_address || "",
     city: business.address.city,
     state: business.address.state,
-    phone: business.contact.phone_primary || "",
+    postalCode: business.address.postal_code || "",
+    phonePrimary: business.contact.phone_primary || "",
+    phoneSecondary: business.contact.phone_secondary || "",
     email: business.contact.email || "",
     whatsapp: business.contact.whatsapp || "",
     businessHours: business.contact.business_hours || "",
     googleMapsUrl: business.contact.google_maps_url || "",
+    instagram: business.social.instagram || "",
+    facebook: business.social.facebook || "",
+    youtube: business.social.youtube || "",
+    establishedYear: String(business.established_year),
+    yearsOfExcellence: business.years_of_excellence,
   });
 
   const handleSave = () => {
@@ -80,19 +82,8 @@ export default function AdminSiteSettingsCmsPage() {
           </Button>
         </div>
 
-        {/* Status Callout */}
-        <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-start gap-3 text-xs text-amber-900">
-          <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-          <div className="space-y-1">
-            <strong className="block font-bold">Data Integrity Policy</strong>
-            <p>
-              Fields left blank remain in <code className="bg-amber-100 px-1 py-0.5 rounded font-mono font-bold">PENDING_CONFIGURATION</code> state and are safely hidden on the public website. Never enter sample/demo values into production settings.
-            </p>
-          </div>
-        </div>
-
         {/* Form */}
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-5">
+        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
           <div className="border-b border-slate-100 pb-3 flex items-center justify-between">
             <div>
               <h2 className="text-base font-bold text-slate-900">Institution Identity & Campus Location</h2>
@@ -103,7 +94,7 @@ export default function AdminSiteSettingsCmsPage() {
             </Badge>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <FormField label="Official Academy Name" required htmlFor="set-name">
               <Input
                 id="set-name"
@@ -112,12 +103,19 @@ export default function AdminSiteSettingsCmsPage() {
               />
             </FormField>
 
-            <FormField label="Official Tagline (Optional)" htmlFor="set-tagline">
+            <FormField label="Established Year" required htmlFor="set-year">
               <Input
-                id="set-tagline"
-                placeholder="Leave blank if pending official confirmation"
-                value={settings.tagline}
-                onChange={(e) => setSettings({ ...settings, tagline: e.target.value })}
+                id="set-year"
+                value={settings.establishedYear}
+                onChange={(e) => setSettings({ ...settings, establishedYear: e.target.value })}
+              />
+            </FormField>
+
+            <FormField label="Excellence Statement" required htmlFor="set-years">
+              <Input
+                id="set-years"
+                value={settings.yearsOfExcellence}
+                onChange={(e) => setSettings({ ...settings, yearsOfExcellence: e.target.value })}
               />
             </FormField>
           </div>
@@ -126,7 +124,6 @@ export default function AdminSiteSettingsCmsPage() {
             <FormField label="Campus Street Address" htmlFor="set-addr">
               <Input
                 id="set-addr"
-                placeholder="Pending official address configuration"
                 value={settings.address}
                 onChange={(e) => setSettings({ ...settings, address: e.target.value })}
               />
@@ -140,62 +137,100 @@ export default function AdminSiteSettingsCmsPage() {
               />
             </FormField>
 
-            <FormField label="State" required htmlFor="set-state">
+            <FormField label="State & PIN" required htmlFor="set-state">
               <Input
                 id="set-state"
-                value={settings.state}
+                value={`${settings.state} - ${settings.postalCode}`}
                 onChange={(e) => setSettings({ ...settings, state: e.target.value })}
               />
             </FormField>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <FormField label="Primary Phone Desk" htmlFor="set-phone">
-              <Input
-                id="set-phone"
-                placeholder="Pending official phone number"
-                value={settings.phone}
-                onChange={(e) => setSettings({ ...settings, phone: e.target.value })}
-              />
-            </FormField>
+          <div className="border-t border-slate-100 pt-4">
+            <h3 className="text-sm font-bold text-slate-900 mb-3">Contact Helplines & Desks</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <FormField label="Primary Phone" htmlFor="set-phone">
+                <Input
+                  id="set-phone"
+                  value={settings.phonePrimary}
+                  onChange={(e) => setSettings({ ...settings, phonePrimary: e.target.value })}
+                />
+              </FormField>
 
-            <FormField label="Official Email" htmlFor="set-email">
-              <Input
-                id="set-email"
-                placeholder="Pending official email address"
-                value={settings.email}
-                onChange={(e) => setSettings({ ...settings, email: e.target.value })}
-              />
-            </FormField>
+              <FormField label="Secondary Phone" htmlFor="set-phone-sec">
+                <Input
+                  id="set-phone-sec"
+                  value={settings.phoneSecondary}
+                  onChange={(e) => setSettings({ ...settings, phoneSecondary: e.target.value })}
+                />
+              </FormField>
 
-            <FormField label="WhatsApp Helpline" htmlFor="set-wa">
-              <Input
-                id="set-wa"
-                placeholder="Pending official WhatsApp number"
-                value={settings.whatsapp}
-                onChange={(e) => setSettings({ ...settings, whatsapp: e.target.value })}
-              />
-            </FormField>
+              <FormField label="Official Email" htmlFor="set-email">
+                <Input
+                  id="set-email"
+                  value={settings.email}
+                  onChange={(e) => setSettings({ ...settings, email: e.target.value })}
+                />
+              </FormField>
+
+              <FormField label="WhatsApp Helpline" htmlFor="set-wa">
+                <Input
+                  id="set-wa"
+                  value={settings.whatsapp}
+                  onChange={(e) => setSettings({ ...settings, whatsapp: e.target.value })}
+                />
+              </FormField>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <FormField label="Campus Working Hours" htmlFor="set-hours">
-              <Input
-                id="set-hours"
-                placeholder="Pending official hours configuration"
-                value={settings.businessHours}
-                onChange={(e) => setSettings({ ...settings, businessHours: e.target.value })}
-              />
-            </FormField>
+          <div className="border-t border-slate-100 pt-4">
+            <h3 className="text-sm font-bold text-slate-900 mb-3">Working Hours & Map Coordinates</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FormField label="Campus Working Hours" htmlFor="set-hours">
+                <Input
+                  id="set-hours"
+                  value={settings.businessHours}
+                  onChange={(e) => setSettings({ ...settings, businessHours: e.target.value })}
+                />
+              </FormField>
 
-            <FormField label="Google Maps URL" htmlFor="set-maps">
-              <Input
-                id="set-maps"
-                placeholder="Pending official Google Maps link"
-                value={settings.googleMapsUrl}
-                onChange={(e) => setSettings({ ...settings, googleMapsUrl: e.target.value })}
-              />
-            </FormField>
+              <FormField label="Google Maps URL" htmlFor="set-maps">
+                <Input
+                  id="set-maps"
+                  value={settings.googleMapsUrl}
+                  onChange={(e) => setSettings({ ...settings, googleMapsUrl: e.target.value })}
+                />
+              </FormField>
+            </div>
+          </div>
+
+          <div className="border-t border-slate-100 pt-4">
+            <h3 className="text-sm font-bold text-slate-900 mb-3">Official Social Media Profiles</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <FormField label="Instagram Profile" htmlFor="set-ig">
+                <Input
+                  id="set-ig"
+                  value={settings.instagram}
+                  onChange={(e) => setSettings({ ...settings, instagram: e.target.value })}
+                />
+              </FormField>
+
+              <FormField label="Facebook Page" htmlFor="set-fb">
+                <Input
+                  id="set-fb"
+                  value={settings.facebook}
+                  onChange={(e) => setSettings({ ...settings, facebook: e.target.value })}
+                />
+              </FormField>
+
+              <FormField label="YouTube Channel" htmlFor="set-yt">
+                <Input
+                  id="set-yt"
+                  value={settings.youtube}
+                  onChange={(e) => setSettings({ ...settings, youtube: e.target.value })}
+                />
+              </FormField>
+            </div>
           </div>
         </div>
       </div>

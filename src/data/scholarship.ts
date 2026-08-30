@@ -248,7 +248,7 @@ export const MAIN_SCHOLARSHIP_DATA = {
     {
       question: "How can parents speak with an academic counsellor about fees?",
       answer:
-        "Parents are welcome to visit our Mathura campus or submit the academic counselling form on this website to discuss batch fees and merit concessions.",
+        "Parents are welcome to visit our Mathura campus Near Tera Tower, Bhuteshwar Road, Mathura, Uttar Pradesh - 281004 or submit the academic counselling form on this website to discuss batch fees and merit concessions.",
     },
   ] as ScholarshipFaqItem[],
 };

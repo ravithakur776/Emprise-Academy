@@ -1,6 +1,6 @@
 # Verified Data Registry & Single-Source Configuration
 
-> **Phase 5.2A — Data Integrity, Source Hardening & Purification**
+> **Phase 5.2B — Official Institute Data Population & Canonical Business Configuration**
 > Authoritative register of all institutional data, classification statuses, single sources of truth, and public rendering policies for the Emprise Academy digital platform.
 
 ---
@@ -8,37 +8,38 @@
 ## 1. Architectural Principles
 
 1. **One Verified Source**: All institutional business identity data flows strictly through `CANONICAL_BUSINESS_CONFIG` (`src/config/business.ts`) and CMS tables.
-2. **Safe Null State**: When a field has status `PENDING_CONFIGURATION`, its value is `null` or empty.
-3. **Zero Fake Fallbacks**: Public components hide optional unverified contact fields (e.g. Call CTA, WhatsApp CTA, Maps embed) instead of rendering placeholder text or unverified numbers.
+2. **Safe Null State**: When a field is unprovided (e.g. `tagline`, `linkedin`), its value is stored as `null` and safely hidden in the UI.
+3. **Zero Placeholder Fallbacks**: No synthetic addresses, mock emails, or placeholder numbers appear in public production UI.
 4. **No Demo Leakage**: Demo datasets are isolated to `src/app/design-system` and automated test fixtures.
 
 ---
 
 ## 2. Institutional Brand & Business Registry
 
-| Field Name | Status | Authoritative Source | Can Render Publicly? | Current Value / Safe Behavior |
+| Field Name | Status | Authoritative Source | Can Render Publicly? | Canonical Value / Active Behavior |
 | :--- | :--- | :--- | :---: | :--- |
-| `academy_name` | **VERIFIED_OFFICIAL** | Project Brief / `CANONICAL_BUSINESS_CONFIG` | **YES** | `"Emprise Academy"` |
-| `established_year` | **VERIFIED_OFFICIAL** | Institutional History / `CANONICAL_BUSINESS_CONFIG` | **YES** | `2011` |
-| `years_of_excellence` | **VERIFIED_OFFICIAL** | Brand Brief (Configurable) | **YES** | `"15+ Years of Academic Excellence"` |
+| `academy_name` | **VERIFIED_OFFICIAL** | Project Owner / `CANONICAL_BUSINESS_CONFIG` | **YES** | `"Emprise Academy"` |
+| `established_year` | **VERIFIED_OFFICIAL** | Project Owner / `CANONICAL_BUSINESS_CONFIG` | **YES** | `2011` |
+| `years_of_excellence` | **VERIFIED_OFFICIAL** | Brand Brief (`years_of_excellence_enabled: true`) | **YES** | `"15+ Years of Academic Excellence"` |
 | `primary_positioning` | **VERIFIED_OFFICIAL** | Project Brief | **YES** | `"IIT-JEE & NEET Coaching in Mathura"` |
 | `secondary_pillar` | **VERIFIED_OFFICIAL** | Project Brief | **YES** | `"Foundation Classes 8–10"` |
-| `website_url` | **VERIFIED_OFFICIAL** | Canonical Production Domain | **YES** | `"https://empriseacademy.com"` |
-| `tagline` | **PENDING_CONFIGURATION** | `CANONICAL_BUSINESS_CONFIG.tagline` | **NO** | `null` (Omitted until official board approval) |
-| `city` | **VERIFIED_OFFICIAL** | Campus Location | **YES** | `"Mathura"` |
-| `state` | **VERIFIED_OFFICIAL** | Campus Location | **YES** | `"Uttar Pradesh"` |
-| `street_address` | **PENDING_CONFIGURATION** | `CANONICAL_BUSINESS_CONFIG.address.street_address` | **NO** | `null` (Only displays `"Mathura, Uttar Pradesh"`) |
-| `postal_code` | **PENDING_CONFIGURATION** | `CANONICAL_BUSINESS_CONFIG.address.postal_code` | **NO** | `null` |
-| `phone_primary` | **PENDING_CONFIGURATION** | `CANONICAL_BUSINESS_CONFIG.contact.phone_primary` | **NO** | `null` (Call CTAs hidden on public pages) |
-| `phone_secondary` | **PENDING_CONFIGURATION** | `CANONICAL_BUSINESS_CONFIG.contact.phone_secondary` | **NO** | `null` |
-| `whatsapp` | **PENDING_CONFIGURATION** | `CANONICAL_BUSINESS_CONFIG.contact.whatsapp` | **NO** | `null` (WhatsApp CTAs hidden on public pages) |
-| `email` | **PENDING_CONFIGURATION** | `CANONICAL_BUSINESS_CONFIG.contact.email` | **NO** | `null` (Email links hidden on public pages) |
-| `google_maps_url` | **PENDING_CONFIGURATION** | `CANONICAL_BUSINESS_CONFIG.contact.google_maps_url` | **NO** | `null` (Directions link hidden on public pages) |
-| `business_hours` | **PENDING_CONFIGURATION** | `CANONICAL_BUSINESS_CONFIG.contact.business_hours` | **NO** | `null` (Hours block hidden on public pages) |
-| `social.instagram` | **PENDING_CONFIGURATION** | `CANONICAL_BUSINESS_CONFIG.social.instagram` | **NO** | `null` |
-| `social.facebook` | **PENDING_CONFIGURATION** | `CANONICAL_BUSINESS_CONFIG.social.facebook` | **NO** | `null` |
-| `social.youtube` | **PENDING_CONFIGURATION** | `CANONICAL_BUSINESS_CONFIG.social.youtube` | **NO** | `null` |
-| `social.linkedin` | **PENDING_CONFIGURATION** | `CANONICAL_BUSINESS_CONFIG.social.linkedin` | **NO** | `null` |
+| `website_url` | **VERIFIED_OFFICIAL** | Production URL | **YES** | `"https://www.empriseacademy.com/"` |
+| `tagline` | **NOT PROVIDED** | `CANONICAL_BUSINESS_CONFIG.tagline` | **NO** | `null` (Safely hidden in UI) |
+| `street_address` | **VERIFIED_OFFICIAL** | Official Address | **YES** | `"Near Tera Tower, Bhuteshwar Road"` |
+| `city` | **VERIFIED_OFFICIAL** | Official Address | **YES** | `"Mathura"` |
+| `state` | **VERIFIED_OFFICIAL** | Official Address | **YES** | `"Uttar Pradesh"` |
+| `postal_code` | **VERIFIED_OFFICIAL** | Official Address | **YES** | `"281004"` |
+| `display_location` | **VERIFIED_OFFICIAL** | `CANONICAL_BUSINESS_CONFIG.address.display_location` | **YES** | `"Near Tera Tower, Bhuteshwar Road, Mathura, Uttar Pradesh - 281004"` |
+| `phone_primary` | **VERIFIED_OFFICIAL** | Official Helpline | **YES** | `"+91 7247889955"` (`tel:+917247889955`) |
+| `phone_secondary` | **VERIFIED_OFFICIAL** | Official Secondary Helpline | **YES** | `"+91 9634448800"` (`tel:+919634448800`) |
+| `whatsapp` | **VERIFIED_OFFICIAL** | Official WhatsApp Desk | **YES** | `"+91 7247889955"` (`https://wa.me/917247889955...`) |
+| `email` | **VERIFIED_OFFICIAL** | Official Email Desk | **YES** | `"info@empriseacademy.com"` (`mailto:info@empriseacademy.com`) |
+| `google_maps_url` | **VERIFIED_OFFICIAL** | Official Maps Location | **YES** | `"https://maps.app.goo.gl/P3E6GLnWqrdZfNcn7"` |
+| `business_hours` | **VERIFIED_OFFICIAL** | Official Working Hours | **YES** | `"9AM to 7PM"` |
+| `social.instagram` | **VERIFIED_OFFICIAL** | Official Instagram Profile | **YES** | `"https://www.instagram.com/empriseacademy/"` |
+| `social.facebook` | **VERIFIED_OFFICIAL** | Official Facebook Page | **YES** | `"https://www.facebook.com/EmpriseAcademy"` |
+| `social.youtube` | **VERIFIED_OFFICIAL** | Official YouTube Channel | **YES** | `"https://youtube.com/@emprisemathura?si=mQONprDb6PzOAGuB"` |
+| `social.linkedin` | **NOT PROVIDED** | `CANONICAL_BUSINESS_CONFIG.social.linkedin` | **NO** | `null` (LinkedIn icon/link not rendered) |
 
 ---
 
@@ -72,15 +73,6 @@
 
 | Entity / Fixture | Status | Location | Public Access Policy |
 | :--- | :--- | :--- | :--- |
-| `/design-system` | **DEVELOPMENT_ONLY** | `src/app/design-system` | `noindex, nofollow` metadata; isolated sandbox |
+| `/design-system` | **DEVELOPMENT_ONLY** | `src/app/design-system` | Isolated sandbox route |
 | Mock Candidate Names (`Aarav Sharma`, `Ishita Agarwal`) | **TEST_ONLY** | `src/services/result-import.service.ts` / Admin preview | Only inside sample CSV template and admin preview modals |
 | Legacy Dates (`21 Sep 2025`, `23 Aug 2026`, `18 Oct 2026`) | **ARCHIVED** | Purged from all production and active campaign files | Zero occurrences in `src/` |
-
----
-
-## 6. Verification Checklist for Administrators
-
-When official contact information is approved for launch:
-1. Update `src/config/business.ts` with confirmed values (`phone_primary`, `email`, `whatsapp`, `street_address`, `google_maps_url`).
-2. Alternatively, configure the fields via `/admin/cms/site-settings`.
-3. All components (Navbar, Footer, Contact Page, CTA sections, JSON-LD schemas, and Admit Cards) automatically reflect the new official data without code edits.

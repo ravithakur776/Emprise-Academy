@@ -3,6 +3,8 @@
  * Single source of truth for Phase 4.7 Admissions & Lead Conversion Ecosystem
  */
 
+import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
+
 export interface AdmissionProgrammeChoice {
   id: string;
   title: string;
@@ -190,7 +192,7 @@ export const MAIN_ADMISSIONS_DATA = {
     {
       question: "Where is Emprise Academy located in Mathura?",
       answer:
-        "Our campus is located in Mathura, Uttar Pradesh. Admissions counselling and classroom programs operate throughout the academic session.",
+        "Our campus is located Near Tera Tower, Bhuteshwar Road, Mathura, Uttar Pradesh - 281004. Admissions counselling and classroom programs operate throughout the academic session.",
     },
   ] as AdmissionFaqItem[],
 };
@@ -207,33 +209,35 @@ export const MAIN_CONTACT_DATA = {
       "NEET Coaching in Mathura Admissions",
       "Mathura Coaching Centre Location",
     ],
-    canonical: "https://empriseacademy.com/contact",
+    canonical: "https://www.empriseacademy.com/contact",
   },
   hero: {
     eyebrow: "GET IN TOUCH",
     h1: "Contact Emprise Academy",
-    subheading: "Mathura Campus • Dedicated Academic Guidance Desk",
+    subheading: "Near Tera Tower, Bhuteshwar Road, Mathura • Dedicated Academic Guidance Desk",
     paragraph:
       "Have questions about batch schedules, course syllabi, scholarship eligibility, or admission formalities? Speak directly with our academic counsellors or visit our Mathura campus.",
   },
   contactDetails: {
-    institutionName: "Emprise Academy",
+    institutionName: CANONICAL_BUSINESS_CONFIG.academy_name,
     address: {
-      line1: "Mathura Campus",
-      city: "Mathura",
-      state: "Uttar Pradesh",
-      pincode: "281001",
-      country: "India",
-      fullAddress: "Mathura, Uttar Pradesh",
+      line1: CANONICAL_BUSINESS_CONFIG.address.street_address,
+      city: CANONICAL_BUSINESS_CONFIG.address.city,
+      state: CANONICAL_BUSINESS_CONFIG.address.state,
+      pincode: CANONICAL_BUSINESS_CONFIG.address.postal_code,
+      country: CANONICAL_BUSINESS_CONFIG.address.country,
+      fullAddress: CANONICAL_BUSINESS_CONFIG.address.display_location,
     },
-    phone: null as string | null,
-    phoneTel: null as string | null,
-    email: null as string | null,
-    whatsapp: null as string | null,
-    whatsappLink: null as string | null,
-    workingHours: null as string | null,
+    phone: CANONICAL_BUSINESS_CONFIG.contact.phone_primary,
+    phoneTel: CANONICAL_BUSINESS_CONFIG.contact.phone_primary_tel,
+    phoneSecondary: CANONICAL_BUSINESS_CONFIG.contact.phone_secondary,
+    phoneSecondaryTel: CANONICAL_BUSINESS_CONFIG.contact.phone_secondary_tel,
+    email: CANONICAL_BUSINESS_CONFIG.contact.email,
+    whatsapp: CANONICAL_BUSINESS_CONFIG.contact.whatsapp,
+    whatsappLink: CANONICAL_BUSINESS_CONFIG.contact.whatsapp_link,
+    workingHours: CANONICAL_BUSINESS_CONFIG.contact.business_hours,
     googleMapsEmbedUrl: null as string | null,
-    googleMapsDirectionsUrl: null as string | null,
+    googleMapsDirectionsUrl: CANONICAL_BUSINESS_CONFIG.contact.google_maps_url,
   },
 };
 

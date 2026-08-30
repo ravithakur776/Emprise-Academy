@@ -1,20 +1,20 @@
 import React from "react";
-import { MAIN_CONTACT_DATA } from "@/data/admissions";
 import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
-import { MapPin, Phone, Mail, MessageSquare, Clock, ExternalLink } from "lucide-react";
+import { MapPin, Phone, Mail, MessageSquare, Clock, ExternalLink, Navigation } from "lucide-react";
 import { Button } from "@/components/ui/button/Button";
-import Link from "next/link";
 
 export const ContactDetailsCard: React.FC = () => {
-  const { contactDetails } = MAIN_CONTACT_DATA;
   const business = CANONICAL_BUSINESS_CONFIG;
 
-  const phone = business.contact.phone_primary || contactDetails.phone;
-  const whatsapp = business.contact.whatsapp || contactDetails.whatsapp;
-  const email = business.contact.email || contactDetails.email;
-  const workingHours = business.contact.business_hours || contactDetails.workingHours;
-  const directionsUrl = business.contact.google_maps_url || contactDetails.googleMapsDirectionsUrl;
-  const embedUrl = contactDetails.googleMapsEmbedUrl;
+  const phonePrimary = business.contact.phone_primary;
+  const phonePrimaryTel = business.contact.phone_primary_tel;
+  const phoneSecondary = business.contact.phone_secondary;
+  const phoneSecondaryTel = business.contact.phone_secondary_tel;
+  const whatsapp = business.contact.whatsapp;
+  const whatsappLink = business.contact.whatsapp_link;
+  const email = business.contact.email;
+  const workingHours = business.contact.business_hours;
+  const mapsUrl = business.contact.google_maps_url;
 
   return (
     <div className="space-y-6">
@@ -37,29 +37,47 @@ export const ContactDetailsCard: React.FC = () => {
             </div>
             <div>
               <strong className="block text-slate-900 mb-0.5">Campus Location</strong>
-              <p className="text-slate-600">{business.address.display_location}</p>
+              <p className="text-slate-600 leading-relaxed">{business.address.display_location}</p>
             </div>
           </div>
 
-          {/* Phone (Render only if verified & configured) */}
-          {phone && (
+          {/* Primary Phone */}
+          {phonePrimary && (
             <div className="flex items-start gap-3.5">
               <div className="w-9 h-9 rounded-xl bg-slate-100 text-[var(--brand-primary)] flex items-center justify-center shrink-0 mt-0.5">
                 <Phone className="w-4 h-4 text-sky-600" />
               </div>
               <div>
-                <strong className="block text-slate-900 mb-0.5">Admissions Desk</strong>
+                <strong className="block text-slate-900 mb-0.5">Admissions Desk (Primary)</strong>
                 <a
-                  href={`tel:${phone}`}
+                  href={phonePrimaryTel}
                   className="font-bold text-[var(--brand-accent)] hover:underline"
                 >
-                  {phone}
+                  {phonePrimary}
                 </a>
               </div>
             </div>
           )}
 
-          {/* WhatsApp (Render only if verified & configured) */}
+          {/* Secondary Phone */}
+          {phoneSecondary && (
+            <div className="flex items-start gap-3.5">
+              <div className="w-9 h-9 rounded-xl bg-slate-100 text-[var(--brand-primary)] flex items-center justify-center shrink-0 mt-0.5">
+                <Phone className="w-4 h-4 text-sky-600" />
+              </div>
+              <div>
+                <strong className="block text-slate-900 mb-0.5">Admissions Helpline (Secondary)</strong>
+                <a
+                  href={phoneSecondaryTel}
+                  className="font-bold text-[var(--brand-accent)] hover:underline"
+                >
+                  {phoneSecondary}
+                </a>
+              </div>
+            </div>
+          )}
+
+          {/* WhatsApp */}
           {whatsapp && (
             <div className="flex items-start gap-3.5">
               <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
@@ -68,7 +86,7 @@ export const ContactDetailsCard: React.FC = () => {
               <div>
                 <strong className="block text-slate-900 mb-0.5">Official WhatsApp Desk</strong>
                 <a
-                  href={`https://wa.me/${whatsapp.replace(/[^0-9]/g, "")}`}
+                  href={whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-bold text-emerald-600 hover:underline"
@@ -79,7 +97,7 @@ export const ContactDetailsCard: React.FC = () => {
             </div>
           )}
 
-          {/* Email (Render only if verified & configured) */}
+          {/* Email */}
           {email && (
             <div className="flex items-start gap-3.5">
               <div className="w-9 h-9 rounded-xl bg-slate-100 text-[var(--brand-primary)] flex items-center justify-center shrink-0 mt-0.5">
@@ -97,14 +115,14 @@ export const ContactDetailsCard: React.FC = () => {
             </div>
           )}
 
-          {/* Working Hours (Render only if verified & configured) */}
+          {/* Working Hours */}
           {workingHours && (
             <div className="flex items-start gap-3.5">
               <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 mt-0.5">
                 <Clock className="w-4 h-4" />
               </div>
               <div>
-                <strong className="block text-slate-900 mb-0.5">Campus Hours</strong>
+                <strong className="block text-slate-900 mb-0.5">Campus Consultation Hours</strong>
                 <p className="text-slate-600">{workingHours}</p>
               </div>
             </div>
@@ -112,15 +130,15 @@ export const ContactDetailsCard: React.FC = () => {
         </div>
       </div>
 
-      {/* Embedded Google Maps Container (Render only if verified & configured) */}
-      {embedUrl && directionsUrl ? (
-        <div className="rounded-3xl bg-white border border-slate-200 shadow-sm p-4 sm:p-6 space-y-4">
+      {/* Google Maps Directions Card */}
+      {mapsUrl && (
+        <div className="rounded-3xl bg-white border border-slate-200 shadow-sm p-6 space-y-4">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-              Location Map
+              Campus Location & Directions
             </span>
             <a
-              href={directionsUrl}
+              href={mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--brand-accent)] hover:underline"
@@ -130,43 +148,26 @@ export const ContactDetailsCard: React.FC = () => {
             </a>
           </div>
 
-          <div className="relative w-full h-64 rounded-2xl overflow-hidden border border-slate-200 bg-slate-100">
-            <iframe
-              title="Emprise Academy Location Map"
-              src={embedUrl}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
+          <p className="text-xs text-slate-600 leading-relaxed">
+            Near Tera Tower, Bhuteshwar Road, Mathura. Centrally located and easily accessible from all parts of Mathura & Vrindavan.
+          </p>
 
           <a
-            href={directionsUrl}
+            href={mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="block"
           >
-            <Button variant="outline" size="sm" fullWidth rightIcon={<ExternalLink className="w-3.5 h-3.5" />}>
-              Get Driving Directions
+            <Button
+              variant="outline"
+              size="md"
+              fullWidth
+              leftIcon={<Navigation className="w-4 h-4" />}
+              rightIcon={<ExternalLink className="w-3.5 h-3.5" />}
+            >
+              Get Directions on Google Maps
             </Button>
           </a>
-        </div>
-      ) : (
-        <div className="rounded-3xl bg-white border border-slate-200 shadow-sm p-6 space-y-3 text-xs text-slate-600">
-          <h4 className="text-sm font-bold text-slate-900">In-Person Academic Counselling</h4>
-          <p>
-            Visit our campus in Mathura, Uttar Pradesh to meet our academic directors, discuss batch schedules, or complete admission formalities.
-          </p>
-          <div className="pt-2">
-            <Link href="#counselling-form">
-              <Button variant="primary" size="sm" fullWidth>
-                Request Counselling Session
-              </Button>
-            </Link>
-          </div>
         </div>
       )}
     </div>

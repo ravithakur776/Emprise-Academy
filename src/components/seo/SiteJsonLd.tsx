@@ -46,33 +46,29 @@ export const SiteJsonLd: React.FC<SiteJsonLdProps> = ({
 
   const postalAddress: Record<string, string> = {
     "@type": "PostalAddress",
+    streetAddress: business.address.street_address,
     addressLocality: business.address.city,
     addressRegion: business.address.state,
+    postalCode: business.address.postal_code,
     addressCountry: business.address.country_code,
   };
 
-  if (business.address.street_address) {
-    postalAddress.streetAddress = business.address.street_address;
-  }
-  if (business.address.postal_code) {
-    postalAddress.postalCode = business.address.postal_code;
-  }
+  const sameAs = [
+    business.social.facebook,
+    business.social.instagram,
+    business.social.youtube,
+  ].filter(Boolean) as string[];
 
   const orgSchema: Record<string, any> = {
     "@type": ["EducationalOrganization", "LocalBusiness"],
     name: business.academy_name,
     alternateName: `${business.academy_name} Mathura`,
     url: business.website_url,
-    logo: `${business.website_url}/images/emprise-logo.png`,
+    telephone: business.contact.phone_primary,
+    email: business.contact.email,
     address: postalAddress,
+    sameAs,
   };
-
-  if (business.contact.phone_primary) {
-    orgSchema.telephone = business.contact.phone_primary;
-  }
-  if (business.contact.email) {
-    orgSchema.email = business.contact.email;
-  }
 
   const graph: any[] = [orgSchema];
 

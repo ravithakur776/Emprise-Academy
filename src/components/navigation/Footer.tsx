@@ -11,7 +11,7 @@ export const Footer: React.FC = () => {
   const contact = HOMEPAGE_DATA.contactCampus;
 
   const phone = business.contact.phone_primary || contact.phoneDisplay;
-  const phoneHref = business.contact.phone_primary ? `tel:${business.contact.phone_primary}` : contact.phoneHref;
+  const phoneHref = business.contact.phone_primary_tel || contact.phoneHref;
   const email = business.contact.email || contact.email;
   const hours = business.contact.business_hours || contact.hours;
   const directionsUrl = business.contact.google_maps_url || contact.directionsUrl;
@@ -41,10 +41,47 @@ export const Footer: React.FC = () => {
               Empowering students in Mathura & Western UP for excellence in IIT-JEE, NEET-UG, and Foundation (Classes 8–10) with concept-based pedagogy and structured mentorship since 2011.
             </p>
 
-            <div className="pt-2">
+            <div className="pt-2 flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-300 bg-amber-950/60 border border-amber-800/60 px-3 py-1.5 rounded-md">
                 ★ {business.years_of_excellence}
               </span>
+            </div>
+
+            {/* Official Social Media Links */}
+            <div className="pt-2 flex items-center gap-3">
+              {business.social.instagram && (
+                <a
+                  href={business.social.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Emprise Academy on Instagram"
+                  className="w-8 h-8 rounded-lg bg-slate-800/80 hover:bg-pink-600/20 hover:text-pink-400 text-slate-400 flex items-center justify-center transition-colors border border-slate-700/60 text-xs font-bold"
+                >
+                  IG
+                </a>
+              )}
+              {business.social.facebook && (
+                <a
+                  href={business.social.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Emprise Academy on Facebook"
+                  className="w-8 h-8 rounded-lg bg-slate-800/80 hover:bg-blue-600/20 hover:text-blue-400 text-slate-400 flex items-center justify-center transition-colors border border-slate-700/60 text-xs font-bold"
+                >
+                  FB
+                </a>
+              )}
+              {business.social.youtube && (
+                <a
+                  href={business.social.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Emprise Academy on YouTube"
+                  className="w-8 h-8 rounded-lg bg-slate-800/80 hover:bg-red-600/20 hover:text-red-400 text-slate-400 flex items-center justify-center transition-colors border border-slate-700/60 text-xs font-bold"
+                >
+                  YT
+                </a>
+              )}
             </div>
           </div>
 
@@ -179,55 +216,36 @@ export const Footer: React.FC = () => {
 export const MobileBottomCTA: React.FC = () => {
   const business = CANONICAL_BUSINESS_CONFIG;
   const phone = business.contact.phone_primary;
-  const whatsapp = business.contact.whatsapp;
+  const phoneTel = business.contact.phone_primary_tel;
+  const whatsappLink = business.contact.whatsapp_link;
 
   return (
     <div className="fixed bottom-0 inset-x-0 z-30 lg:hidden bg-white/95 backdrop-blur-md border-t border-[var(--brand-border)] p-2.5 shadow-lg">
       <div className="grid grid-cols-3 gap-2">
-        {phone ? (
-          <a
-            href={`tel:${phone}`}
-            className="flex flex-col items-center justify-center p-2 rounded-lg bg-slate-50 text-[var(--brand-primary)] border border-slate-200 active:scale-95 transition-transform"
-          >
-            <Phone className="w-4 h-4 text-[var(--brand-primary)] mb-0.5" />
-            <span className="text-[11px] font-bold">Call Campus</span>
-          </a>
-        ) : (
-          <Link
-            href="/contact"
-            className="flex flex-col items-center justify-center p-2 rounded-lg bg-slate-50 text-[var(--brand-primary)] border border-slate-200 active:scale-95 transition-transform"
-          >
-            <MapPin className="w-4 h-4 text-[var(--brand-primary)] mb-0.5" />
-            <span className="text-[11px] font-bold">Enquire</span>
-          </Link>
-        )}
+        <a
+          href={phoneTel}
+          className="flex flex-col items-center justify-center p-2 rounded-lg bg-slate-50 text-[var(--brand-primary)] border border-slate-200 active:scale-95 transition-transform"
+        >
+          <Phone className="w-4 h-4 text-[var(--brand-primary)] mb-0.5" />
+          <span className="text-[11px] font-bold">Call Campus</span>
+        </a>
 
-        {whatsapp ? (
-          <a
-            href={`https://wa.me/${whatsapp.replace(/[^0-9]/g, "")}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-col items-center justify-center p-2 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 active:scale-95 transition-transform"
-          >
-            <span className="text-xs mb-0.5">💬</span>
-            <span className="text-[11px] font-bold">WhatsApp</span>
-          </a>
-        ) : (
-          <Link
-            href="/admissions"
-            className="flex flex-col items-center justify-center p-2 rounded-lg bg-indigo-50 text-indigo-800 border border-indigo-200 active:scale-95 transition-transform"
-          >
-            <span className="text-xs mb-0.5">🎓</span>
-            <span className="text-[11px] font-bold">Admissions</span>
-          </Link>
-        )}
+        <a
+          href={whatsappLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-col items-center justify-center p-2 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 active:scale-95 transition-transform"
+        >
+          <span className="text-xs mb-0.5">💬</span>
+          <span className="text-[11px] font-bold">WhatsApp</span>
+        </a>
 
         <Link
-          href="/etse-2026"
+          href="/admissions#counselling"
           className="flex flex-col items-center justify-center p-2 rounded-lg bg-[var(--brand-accent)] text-white font-bold active:scale-95 transition-transform shadow-xs"
         >
-          <span className="text-[11px] font-extrabold uppercase">ETSE 2026</span>
-          <span className="text-[9px] opacity-90">Apply Free</span>
+          <span className="text-[11px] font-extrabold uppercase">Counselling</span>
+          <span className="text-[9px] opacity-90">Book Free</span>
         </Link>
       </div>
     </div>

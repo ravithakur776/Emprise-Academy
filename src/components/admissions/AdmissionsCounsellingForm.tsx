@@ -23,6 +23,7 @@ import {
   AlertCircle,
   Building2,
 } from "lucide-react";
+import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
 
 export interface AdmissionsCounsellingFormProps {
   initialProgramme?: "IIT-JEE" | "NEET-UG" | "FOUNDATION" | "GENERAL";
@@ -176,21 +177,30 @@ export const AdmissionsCounsellingForm: React.FC<AdmissionsCounsellingFormProps>
                   <Building2 className="w-4 h-4 text-[var(--brand-accent)]" />
                   <span>Campus Location</span>
                 </div>
-                <p>Mathura, Uttar Pradesh</p>
-                <p className="text-slate-500">In-person guidance available at our Mathura campus.</p>
+                <p>{CANONICAL_BUSINESS_CONFIG.address.display_location}</p>
+                <p className="text-slate-500">In-person guidance available at our Mathura campus ({CANONICAL_BUSINESS_CONFIG.contact.business_hours}).</p>
               </div>
 
               <div className="pt-2 flex flex-wrap items-center gap-3">
-                <Link href="/admissions">
-                  <Button variant="outline" size="sm">
-                    View Admissions Guide
+                <a href={CANONICAL_BUSINESS_CONFIG.contact.phone_primary_tel}>
+                  <Button variant="outline" size="sm" leftIcon={<Phone className="w-4 h-4" />}>
+                    Call: {CANONICAL_BUSINESS_CONFIG.contact.phone_primary}
                   </Button>
-                </Link>
-                <Link href="/etse-2026">
-                  <Button variant="primary" size="sm">
-                    Apply for ETSE 2026
+                </a>
+                <a
+                  href={CANONICAL_BUSINESS_CONFIG.contact.whatsapp_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button
+                    variant="success"
+                    size="sm"
+                    className="bg-emerald-600 hover:bg-emerald-700"
+                    leftIcon={<MessageSquare className="w-4 h-4" />}
+                  >
+                    Chat on WhatsApp
                   </Button>
-                </Link>
+                </a>
               </div>
             </div>
 

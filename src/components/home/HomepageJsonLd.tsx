@@ -6,17 +6,18 @@ export const HomepageJsonLd: React.FC = () => {
 
   const postalAddress: Record<string, string> = {
     "@type": "PostalAddress",
+    streetAddress: business.address.street_address,
     addressLocality: business.address.city,
     addressRegion: business.address.state,
+    postalCode: business.address.postal_code,
     addressCountry: business.address.country_code,
   };
 
-  if (business.address.street_address) {
-    postalAddress.streetAddress = business.address.street_address;
-  }
-  if (business.address.postal_code) {
-    postalAddress.postalCode = business.address.postal_code;
-  }
+  const sameAs = [
+    business.social.facebook,
+    business.social.instagram,
+    business.social.youtube,
+  ].filter(Boolean) as string[];
 
   const schema: Record<string, any> = {
     "@context": "https://schema.org",
@@ -26,9 +27,12 @@ export const HomepageJsonLd: React.FC = () => {
     description:
       "Premier coaching institute in Mathura for IIT-JEE (Main & Advanced), NEET-UG, and Foundation (Classes 8-10). Established in 2011 with concept-based learning and expert mentorship.",
     url: business.website_url,
-    logo: `${business.website_url}/images/emprise-logo.png`,
+    logo: `${business.website_url}images/emprise-logo.png`,
     foundingDate: String(business.established_year),
+    telephone: business.contact.phone_primary,
+    email: business.contact.email,
     address: postalAddress,
+    sameAs,
     hasOfferCatalog: {
       "@type": "OfferCatalog",
       name: "Coaching Programmes",
@@ -66,13 +70,6 @@ export const HomepageJsonLd: React.FC = () => {
       ],
     },
   };
-
-  if (business.contact.phone_primary) {
-    schema.telephone = business.contact.phone_primary;
-  }
-  if (business.contact.email) {
-    schema.email = business.contact.email;
-  }
 
   return (
     <script

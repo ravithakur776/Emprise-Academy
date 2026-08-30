@@ -316,7 +316,7 @@ export const MAIN_FOUNDATION_DATA = {
     {
       question: "Where is Emprise Academy located in Mathura?",
       answer:
-        "Emprise Academy is located in Mathura, Uttar Pradesh. Parents and students are welcome to visit our campus or submit an online enquiry for batch schedules.",
+        "Emprise Academy is located Near Tera Tower, Bhuteshwar Road, Mathura, Uttar Pradesh - 281004. Parents and students are welcome to visit our campus or submit an online enquiry for batch schedules.",
     },
   ] as FoundationFaqItem[],
 } as const;

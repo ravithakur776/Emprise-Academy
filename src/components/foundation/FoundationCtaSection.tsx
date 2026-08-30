@@ -13,6 +13,7 @@ import { Input, Select } from "@/components/ui/form/Input";
 import { PhoneField } from "@/components/ui/form/SpecializedFields";
 import { useToast } from "@/components/ui/toast/ToastProvider";
 import { Phone, MessageSquare, Send, CheckCircle2, UserCheck } from "lucide-react";
+import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
 
 export interface FoundationCtaSectionProps {
   title?: string;
@@ -104,16 +105,25 @@ export const FoundationCtaSection: React.FC<FoundationCtaSectionProps> = ({
               </div>
 
               <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center gap-3">
-                <Link href="/admissions">
-                  <Button variant="outline" size="sm">
-                    Admissions Guide
+                <a href={CANONICAL_BUSINESS_CONFIG.contact.phone_primary_tel}>
+                  <Button variant="outline" size="sm" leftIcon={<Phone className="w-4 h-4" />}>
+                    Call: {CANONICAL_BUSINESS_CONFIG.contact.phone_primary}
                   </Button>
-                </Link>
-                <Link href="/etse-2026">
-                  <Button variant="primary" size="sm">
-                    ETSE 2026 Registration
+                </a>
+                <a
+                  href={CANONICAL_BUSINESS_CONFIG.contact.whatsapp_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button
+                    variant="success"
+                    size="sm"
+                    className="bg-emerald-600 hover:bg-emerald-700"
+                    leftIcon={<MessageSquare className="w-4 h-4" />}
+                  >
+                    WhatsApp Counsellor
                   </Button>
-                </Link>
+                </a>
               </div>
             </div>
 

@@ -9,6 +9,8 @@
  * - Leadership: Sushil Dagur & Rakesh Kumar (Univ. of Derby UK, Rolls-Royce, Ford, Kota experience)
  */
 
+import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
+
 export interface TrustMetric {
   value: string;
   label: string;
@@ -356,8 +358,14 @@ export const HOMEPAGE_DATA = {
       "Talk to our experienced academic counsellors to understand the optimal batch, syllabus schedule, and preparation strategy for your academic journey.",
     primaryCta: { label: "Book Free Counselling", href: "#counselling" },
     secondaryCta: { label: "Explore Admissions", href: "/admissions" },
-    callAction: null,
-    whatsappAction: null,
+    callAction: {
+      label: "Call Campus Desk",
+      href: CANONICAL_BUSINESS_CONFIG.contact.phone_primary_tel,
+    },
+    whatsappAction: {
+      label: "WhatsApp Query",
+      href: CANONICAL_BUSINESS_CONFIG.contact.whatsapp_link,
+    },
   },
   faqs: [
     {
@@ -398,17 +406,19 @@ export const HOMEPAGE_DATA = {
     {
       question: "Where is Emprise Academy located in Mathura and how can I take admission?",
       answer:
-        "Emprise Academy is located in Mathura, Uttar Pradesh. Admissions can be initiated by submitting an enquiry on our website, registering for ETSE 2026, or booking a free academic counselling session.",
+        "Emprise Academy is located Near Tera Tower, Bhuteshwar Road, Mathura, Uttar Pradesh - 281004. Admissions can be initiated by visiting the campus, registering for ETSE 2026, or booking a free academic counselling session through our website.",
     },
   ] as HomepageFAQ[],
   contactCampus: {
-    institution: "Emprise Academy",
+    institution: CANONICAL_BUSINESS_CONFIG.academy_name,
     city: "Mathura, Uttar Pradesh",
-    address: "Mathura, Uttar Pradesh",
-    phoneDisplay: null as string | null,
-    phoneHref: null as string | null,
-    email: null as string | null,
-    hours: null as string | null,
-    directionsUrl: null as string | null,
+    address: CANONICAL_BUSINESS_CONFIG.address.display_location,
+    phoneDisplay: CANONICAL_BUSINESS_CONFIG.contact.phone_primary,
+    phoneHref: CANONICAL_BUSINESS_CONFIG.contact.phone_primary_tel,
+    phoneSecondaryDisplay: CANONICAL_BUSINESS_CONFIG.contact.phone_secondary,
+    phoneSecondaryHref: CANONICAL_BUSINESS_CONFIG.contact.phone_secondary_tel,
+    email: CANONICAL_BUSINESS_CONFIG.contact.email,
+    hours: CANONICAL_BUSINESS_CONFIG.contact.business_hours,
+    directionsUrl: CANONICAL_BUSINESS_CONFIG.contact.google_maps_url,
   },
 } as const;
