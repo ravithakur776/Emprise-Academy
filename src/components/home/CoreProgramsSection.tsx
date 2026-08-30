@@ -5,13 +5,12 @@ import { Section } from "@/components/ui/layout/Section";
 import { Heading } from "@/components/ui/typography/Heading";
 import { Text } from "@/components/ui/typography/Text";
 import { Badge } from "@/components/ui/badge/Badge";
-import { ArrowLink } from "@/components/ui/link/TextLink";
-import { HOMEPAGE_DATA, CoreProgram } from "@/data/homepage";
-import { CheckCircle2, BookOpen, Clock, Users, ArrowRight } from "lucide-react";
+import { getCoreProgramPillars } from "@/data/courses";
+import { CheckCircle2, BookOpen, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const CoreProgramsSection: React.FC = () => {
-  const { corePrograms } = HOMEPAGE_DATA;
+  const corePrograms = getCoreProgramPillars();
 
   return (
     <Section variant="default" spacing="lg" id="courses">
@@ -32,8 +31,8 @@ export const CoreProgramsSection: React.FC = () => {
         {/* Three Large Program Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {corePrograms.map((prog) => {
-            const isJEE = prog.id === "iit-jee";
-            const isNEET = prog.id === "neet-ug";
+            const isJEE = prog.programmeId === "JEE";
+            const isNEET = prog.programmeId === "NEET";
 
             return (
               <div

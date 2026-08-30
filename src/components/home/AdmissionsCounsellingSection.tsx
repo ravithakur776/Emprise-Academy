@@ -22,7 +22,7 @@ export const AdmissionsCounsellingSection: React.FC = () => {
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
-  const [courseInterest, setCourseInterest] = useState("IIT_JEE");
+  const [courseInterest, setCourseInterest] = useState("JEE");
   const [currentClass, setCurrentClass] = useState("Class 11");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -195,9 +195,9 @@ export const AdmissionsCounsellingSection: React.FC = () => {
                         value={courseInterest}
                         onChange={(e) => setCourseInterest(e.target.value)}
                         options={[
-                          { value: "IIT_JEE", label: "IIT-JEE (Main + Adv)" },
-                          { value: "NEET_UG", label: "NEET-UG (Medical)" },
-                          { value: "FOUNDATION", label: "Foundation (Class 8–10)" },
+                          { value: "JEE", label: "IIT-JEE (Main & Advanced)" },
+                          { value: "NEET", label: "NEET-UG (Medical)" },
+                          { value: "FOUNDATION", label: "Foundation (Classes 8–10)" },
                           { value: "OTHER", label: "General Inquiry" },
                         ]}
                       />

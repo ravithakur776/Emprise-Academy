@@ -26,11 +26,11 @@ import {
 import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
 
 export interface AdmissionsCounsellingFormProps {
-  initialProgramme?: "IIT-JEE" | "NEET-UG" | "FOUNDATION" | "GENERAL";
+  initialProgramme?: "JEE" | "NEET" | "FOUNDATION" | "GENERAL";
 }
 
 export const AdmissionsCounsellingForm: React.FC<AdmissionsCounsellingFormProps> = ({
-  initialProgramme = "IIT-JEE",
+  initialProgramme = "JEE",
 }) => {
   const searchParams = useSearchParams();
   const toast = useToast();
@@ -60,17 +60,17 @@ export const AdmissionsCounsellingForm: React.FC<AdmissionsCounsellingFormProps>
     const progParam = searchParams.get("programme") || searchParams.get("course");
     if (progParam) {
       const upper = progParam.toUpperCase();
-      if (upper.includes("JEE")) setProgramme("IIT-JEE");
-      else if (upper.includes("NEET")) setProgramme("NEET-UG");
+      if (upper.includes("JEE")) setProgramme("JEE");
+      else if (upper.includes("NEET")) setProgramme("NEET");
       else if (upper.includes("FOUNDATION")) setProgramme("FOUNDATION");
     }
   }, [searchParams]);
 
   // Adjust target exam options based on programme
   useEffect(() => {
-    if (programme === "IIT-JEE") {
+    if (programme === "JEE") {
       setTargetExam("JEE Main & Advanced");
-    } else if (programme === "NEET-UG") {
+    } else if (programme === "NEET") {
       setTargetExam("NEET-UG Medical");
     } else if (programme === "FOUNDATION") {
       setTargetExam("Foundation / Future JEE & NEET");
@@ -323,8 +323,8 @@ export const AdmissionsCounsellingForm: React.FC<AdmissionsCounsellingFormProps>
                         value={programme}
                         onChange={(e) => setProgramme(e.target.value as any)}
                         options={[
-                          { value: "IIT-JEE", label: "IIT-JEE (Engineering)" },
-                          { value: "NEET-UG", label: "NEET-UG (Medical)" },
+                          { value: "JEE", label: "IIT-JEE (Main & Advanced)" },
+                          { value: "NEET", label: "NEET-UG (Medical)" },
                           { value: "FOUNDATION", label: "Foundation (Classes 8, 9 & 10)" },
                         ]}
                       />

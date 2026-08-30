@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "npx tsx tests/phase1-foundation.test.ts && npx tsx tests/unit/zod-schemas.test.ts && npx tsx tests/integration/etse-concurrency.test.ts && npx tsx tests/integration/admit-card-lifecycle.test.ts && npx tsx tests/integration/dynamic-result-import.test.ts && npx tsx tests/security/auth-rbac.test.ts && npx tsx tests/seo/seo-audit.test.ts && npx tsx tests/qa/production-hardening.test.ts && npx tsx tests/qa/data-integration.test.ts && npx tsx tests/qa/data-purification.test.ts && npx tsx tests/qa/directors-integration.test.ts && npx tsx tests/launch/production-launch.test.ts && npx tsx tests/launch/go-live-smoke.test.ts",
+    "test": "npx tsx tests/phase1-foundation.test.ts && npx tsx tests/unit/zod-schemas.test.ts && npx tsx tests/integration/etse-concurrency.test.ts && npx tsx tests/integration/admit-card-lifecycle.test.ts && npx tsx tests/integration/dynamic-result-import.test.ts && npx tsx tests/security/auth-rbac.test.ts && npx tsx tests/seo/seo-audit.test.ts && npx tsx tests/qa/production-hardening.test.ts && npx tsx tests/qa/data-integration.test.ts && npx tsx tests/qa/data-purification.test.ts && npx tsx tests/qa/directors-integration.test.ts && npx tsx tests/qa/courses-integration.test.ts && npx tsx tests/launch/production-launch.test.ts && npx tsx tests/launch/go-live-smoke.test.ts",
     "test:unit": "npx tsx tests/unit/zod-schemas.test.ts",
     "test:integration": "npx tsx tests/integration/etse-concurrency.test.ts && npx tsx tests/integration/admit-card-lifecycle.test.ts && npx tsx tests/integration/dynamic-result-import.test.ts",
     "test:security": "npx tsx tests/security/auth-rbac.test.ts",

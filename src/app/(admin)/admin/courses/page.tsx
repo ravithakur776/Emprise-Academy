@@ -1,63 +1,29 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
 import { useToast } from "@/components/ui/toast/ToastProvider";
-import { BookOpen, Plus, CheckCircle2, Edit, Eye, Search } from "lucide-react";
+import { CANONICAL_COURSES, CanonicalCourseItem, CanonicalProgrammeId } from "@/data/courses";
+import { BookOpen, CheckCircle2, Eye, Filter, Sparkles } from "lucide-react";
 
 export default function AdminCoursesPage() {
   const toast = useToast();
-  const [courses, setCourses] = useState([
-    {
-      id: "crs-1",
-      slug: "iit-jee-coaching-mathura",
-      name: "IIT-JEE 2-Year Classroom Integrated Programme",
-      targetExam: "JEE (Main & Advanced)",
-      eligibleClasses: ["Class 11"],
-      duration: "2 Academic Years",
-      isActive: true,
-      displayOrder: 1,
-    },
-    {
-      id: "crs-2",
-      slug: "iit-jee-coaching-mathura/dropper",
-      name: "IIT-JEE 1-Year Dropper / Repeater Rankers Target",
-      targetExam: "JEE (Main & Advanced)",
-      eligibleClasses: ["Dropper"],
-      duration: "1 Academic Year",
-      isActive: true,
-      displayOrder: 2,
-    },
-    {
-      id: "crs-3",
-      slug: "neet-coaching-mathura",
-      name: "NEET-UG 2-Year Comprehensive Classroom Programme",
-      targetExam: "NEET-UG",
-      eligibleClasses: ["Class 11"],
-      duration: "2 Academic Years",
-      isActive: true,
-      displayOrder: 3,
-    },
-    {
-      id: "crs-4",
-      slug: "foundation-coaching-mathura",
-      name: "Foundation Olympiad & Science Aptitude (Classes 8–10)",
-      targetExam: "School Boards & Olympiads (NSEJS, PRMO)",
-      eligibleClasses: ["Class 8", "Class 9", "Class 10"],
-      duration: "1 to 3 Academic Years",
-      isActive: true,
-      displayOrder: 4,
-    },
-  ]);
+  const [courses, setCourses] = useState<CanonicalCourseItem[]>(CANONICAL_COURSES);
+  const [filterProgramme, setFilterProgramme] = useState<"ALL" | CanonicalProgrammeId>("ALL");
 
   const toggleCourseStatus = (id: string) => {
     setCourses(
-      courses.map((c) => (c.id === id ? { ...c, isActive: !c.isActive } : c))
+      courses.map((c) => (c.id === id ? { ...c, isPublished: !c.isPublished } : c))
     );
-    toast.success("Course Updated", "Course visibility updated.");
+    toast.success("Course Visibility Updated", "Course publication state toggled.");
   };
+
+  const filteredCourses = filterProgramme === "ALL"
+    ? courses
+    : courses.filter((c) => c.programmeId === filterProgramme);
 
   return (
     <AdminLayout staffName="Academic Administrator" staffRole="ADMISSION_ADMIN">
@@ -69,9 +35,49 @@ export default function AdminCoursesPage() {
               ACADEMIC OFFERINGS
             </span>
             <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">
-              Course Management
+              Course & Programme Management
             </h1>
           </div>
+
+          <div className="flex items-center gap-2">
+            <Link href="/courses" target="_blank">
+              <Button variant="outline" size="sm" leftIcon={<Eye className="w-4 h-4" />}>
+                View Public Courses Directory
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Filter Bar */}
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            variant={filterProgramme === "ALL" ? "primary" : "outline"}
+            size="sm"
+            onClick={() => setFilterProgramme("ALL")}
+          >
+            All Programmes ({courses.length})
+          </Button>
+          <Button
+            variant={filterProgramme === "JEE" ? "primary" : "outline"}
+            size="sm"
+            onClick={() => setFilterProgramme("JEE")}
+          >
+            IIT-JEE ({courses.filter((c) => c.programmeId === "JEE").length})
+          </Button>
+          <Button
+            variant={filterProgramme === "NEET" ? "primary" : "outline"}
+            size="sm"
+            onClick={() => setFilterProgramme("NEET")}
+          >
+            NEET-UG ({courses.filter((c) => c.programmeId === "NEET").length})
+          </Button>
+          <Button
+            variant={filterProgramme === "FOUNDATION" ? "primary" : "outline"}
+            size="sm"
+            onClick={() => setFilterProgramme("FOUNDATION")}
+          >
+            Foundation ({courses.filter((c) => c.programmeId === "FOUNDATION").length})
+          </Button>
         </div>
 
         {/* Courses Table */}
@@ -80,38 +86,44 @@ export default function AdminCoursesPage() {
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
                 <tr>
-                  <th className="p-3.5 pl-6">Course Name</th>
-                  <th className="p-3.5">Target Exam</th>
-                  <th className="p-3.5">Eligible Classes</th>
-                  <th className="p-3.5">Duration</th>
+                  <th className="p-3.5 pl-6">Order / Course Name</th>
+                  <th className="p-3.5">Programme Stream</th>
+                  <th className="p-3.5">Eligible Class</th>
+                  <th className="p-3.5">Core Subjects</th>
                   <th className="p-3.5">Status</th>
                   <th className="p-3.5 pr-6 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {courses.map((c) => (
+                {filteredCourses.map((c) => (
                   <tr key={c.id} className="hover:bg-slate-50/80 transition-colors">
                     <td className="p-3.5 pl-6">
+                      <span className="text-slate-400 font-mono text-[10px] block">#{c.displayOrder}</span>
                       <strong className="block text-slate-900 font-bold">{c.name}</strong>
-                      <span className="text-[11px] font-mono text-slate-400">/{c.slug}</span>
+                      <span className="text-[11px] font-mono text-slate-400">{c.publicUrl}</span>
                     </td>
 
                     <td className="p-3.5">
-                      <span className="text-slate-800 font-semibold">{c.targetExam}</span>
+                      <Badge
+                        variant={c.programmeId === "JEE" ? "primary" : c.programmeId === "NEET" ? "accent" : "gold"}
+                        size="sm"
+                      >
+                        {c.programmeName}
+                      </Badge>
+                    </td>
+
+                    <td className="p-3.5">
+                      <span className="font-semibold text-slate-800">{c.targetClass}</span>
                     </td>
 
                     <td className="p-3.5">
                       <div className="flex flex-wrap gap-1">
-                        {c.eligibleClasses.map((cls, idx) => (
+                        {c.subjects.map((sub, idx) => (
                           <span key={idx} className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 text-[10px] font-medium">
-                            {cls}
+                            {sub}
                           </span>
                         ))}
                       </div>
-                    </td>
-
-                    <td className="p-3.5">
-                      <span className="text-slate-600">{c.duration}</span>
                     </td>
 
                     <td className="p-3.5">
@@ -120,19 +132,25 @@ export default function AdminCoursesPage() {
                         className="cursor-pointer"
                         title="Toggle status"
                       >
-                        <Badge variant={c.isActive ? "success" : "muted"} size="sm">
-                          {c.isActive ? "Published" : "Draft"}
+                        <Badge variant={c.isPublished ? "success" : "muted"} size="sm">
+                          {c.isPublished ? "Published" : "Draft"}
                         </Badge>
                       </button>
                     </td>
 
-                    <td className="p-3.5 pr-6 text-right">
+                    <td className="p-3.5 pr-6 text-right space-x-2">
+                      <Link href={c.publicUrl} target="_blank">
+                        <Button variant="ghost" size="sm">
+                          View Page
+                        </Button>
+                      </Link>
+
                       <Button
-                        variant="ghost"
+                        variant="outline"
                         size="sm"
                         onClick={() => toggleCourseStatus(c.id)}
                       >
-                        {c.isActive ? "Unpublish" : "Publish"}
+                        {c.isPublished ? "Unpublish" : "Publish"}
                       </Button>
                     </td>
                   </tr>
