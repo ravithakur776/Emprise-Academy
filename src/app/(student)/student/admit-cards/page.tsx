@@ -5,6 +5,7 @@ import Link from "next/link";
 import { StudentLayout } from "@/components/student/StudentLayout";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
+import { EmpriseLogo } from "@/components/brand/EmpriseLogo";
 import {
   CreditCard,
   Calendar,
@@ -69,15 +70,16 @@ export default function StudentAdmitCardsPage() {
 
                 {/* Card Top Header */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--brand-accent)]">
+                  <div className="flex items-center gap-4">
+                    <EmpriseLogo size="md" />
+                    <div>
+                      <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[var(--brand-accent)] block">
                         OFFICIAL EXAMINATION PASS
                       </span>
+                      <h2 className="text-lg sm:text-xl font-bold text-[var(--brand-primary)]">
+                        {card.examTitle}
+                      </h2>
                     </div>
-                    <h2 className="text-xl sm:text-2xl font-bold text-[var(--brand-primary)]">
-                      {card.examTitle}
-                    </h2>
                   </div>
 
                   <div className="flex items-center gap-2">

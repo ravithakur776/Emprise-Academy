@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Container } from "@/components/ui/layout/Container";
+import { EmpriseLogo } from "@/components/brand/EmpriseLogo";
 import { GraduationCap, MapPin, Phone, Mail, Clock, ArrowUpRight } from "lucide-react";
 import { VERIFIED_BRAND_DATA } from "@/data/brand";
 import { HOMEPAGE_DATA } from "@/data/homepage";
@@ -23,18 +24,8 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
           {/* Col 1: Brand Info */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center gap-3 select-none">
-              <div className="w-10 h-10 rounded-xl bg-[var(--brand-accent)] text-white flex items-center justify-center shadow-sm">
-                <GraduationCap className="w-6 h-6" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-extrabold tracking-tight text-white">
-                  EMPRISE <span className="text-[var(--brand-accent)]">ACADEMY</span>
-                </span>
-                <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
-                  Established {VERIFIED_BRAND_DATA.yearEstablished} • {business.address.city}
-                </span>
-              </div>
+            <Link href="/" className="inline-block select-none group" aria-label="Emprise Academy — Home">
+              <EmpriseLogo variant="on-dark" size="lg" className="group-hover:opacity-95 transition-opacity" />
             </Link>
 
             <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-sm">

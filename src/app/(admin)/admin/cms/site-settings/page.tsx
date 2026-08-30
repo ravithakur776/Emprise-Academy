@@ -9,6 +9,7 @@ import { FormField } from "@/components/ui/form/FormField";
 import { Input } from "@/components/ui/form/Input";
 import { useToast } from "@/components/ui/toast/ToastProvider";
 import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
+import { EmpriseLogo } from "@/components/brand/EmpriseLogo";
 import {
   ArrowLeft,
   Save,
@@ -92,6 +93,24 @@ export default function AdminSiteSettingsCmsPage() {
             <Badge variant="outline" size="sm">
               Single Source of Truth
             </Badge>
+          </div>
+
+          {/* Canonical Official Logo */}
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <span className="text-xs font-bold text-slate-900 block">
+                Official Institutional Logo (Single Source of Truth)
+              </span>
+              <p className="text-[11px] text-slate-500">
+                Rendered across desktop/mobile navbar, footer, student portal, admin desk, and PDF admit cards.
+              </p>
+              <code className="text-[10px] font-mono text-[var(--brand-primary)] bg-slate-200/80 px-2 py-0.5 rounded">
+                /images/emprise-academy-logo.png
+              </code>
+            </div>
+            <div className="p-3 bg-white rounded-xl border border-slate-200 shadow-2xs inline-flex items-center shrink-0">
+              <EmpriseLogo size="md" />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

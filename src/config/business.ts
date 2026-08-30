@@ -15,6 +15,7 @@ export interface CanonicalBusinessConfig {
   primary_positioning: string;
   secondary_pillar: string;
   website_url: string;
+  logo_url: string;
 
   address: {
     street_address: string;
@@ -67,6 +68,7 @@ export const CANONICAL_BUSINESS_CONFIG: CanonicalBusinessConfig = {
   primary_positioning: "IIT-JEE & NEET Coaching in Mathura",
   secondary_pillar: "Foundation Classes 8–10",
   website_url: "https://www.empriseacademy.com/",
+  logo_url: "/images/emprise-academy-logo.png",
 
   address: {
     street_address: "Near Tera Tower, Bhuteshwar Road",

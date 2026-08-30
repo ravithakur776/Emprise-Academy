@@ -45,7 +45,7 @@ export const ContactJsonLd: React.FC<ContactJsonLdProps> = ({
   const localBusinessSchema: Record<string, any> = {
     "@type": "LocalBusiness",
     name: `${business.academy_name} - ${business.primary_positioning}`,
-    image: `${business.website_url}images/emprise-logo.png`,
+    image: `${business.website_url}images/emprise-academy-logo.png`,
     url: business.website_url,
     telephone: business.contact.phone_primary,
     email: business.contact.email,

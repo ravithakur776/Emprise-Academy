@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ToastProvider } from "@/components/ui/toast/ToastProvider";
 import { createClientBrowser } from "@/lib/supabase/client";
+import { EmpriseLogo } from "@/components/brand/EmpriseLogo";
 import {
   LayoutDashboard,
   Users,
@@ -249,20 +250,13 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
         {/* Desktop Left Sidebar */}
         <aside className="hidden md:flex flex-col w-64 bg-slate-900 text-slate-300 shrink-0 sticky top-0 h-screen overflow-y-auto border-r border-slate-800">
           {/* Brand Header */}
-          <div className="p-5 border-b border-slate-800 flex items-center justify-between">
-            <Link href="/admin" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-linear-to-br from-[var(--brand-accent)] to-amber-500 flex items-center justify-center text-white font-black text-sm shadow-xs">
-                E
-              </div>
-              <div>
-                <span className="font-extrabold text-sm text-white block leading-tight tracking-tight">
-                  EMPRISE CRM
-                </span>
-                <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest">
-                  ADMIN DESK
-                </span>
-              </div>
+          <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+            <Link href="/admin" className="flex items-center gap-2 select-none" aria-label="Emprise Academy Admin Dashboard">
+              <EmpriseLogo variant="on-dark" size="sm" />
             </Link>
+            <span className="text-[9px] font-bold text-amber-400 uppercase tracking-wider bg-amber-950/60 border border-amber-800/40 px-2 py-0.5 rounded-md">
+              ADMIN
+            </span>
           </div>
 
           {/* Staff Info Banner */}
@@ -335,18 +329,8 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
 
         {/* Mobile Header */}
         <header className="md:hidden bg-slate-900 text-white px-4 py-3 sticky top-0 z-30 flex items-center justify-between border-b border-slate-800">
-          <Link href="/admin" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-[var(--brand-accent)] flex items-center justify-center text-white font-black text-xs">
-              E
-            </div>
-            <div>
-              <span className="font-bold text-xs text-white block leading-tight">
-                Emprise CRM
-              </span>
-              <span className="text-[10px] text-slate-400 block">
-                {staffName} ({staffRole.replace("_", " ")})
-              </span>
-            </div>
+          <Link href="/admin" className="flex items-center gap-2 select-none" aria-label="Emprise Academy Admin Dashboard">
+            <EmpriseLogo variant="on-dark" size="xs" />
           </Link>
 
           <button

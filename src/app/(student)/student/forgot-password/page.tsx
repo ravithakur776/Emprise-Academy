@@ -7,6 +7,7 @@ import { FormField } from "@/components/ui/form/FormField";
 import { Input } from "@/components/ui/form/Input";
 import { Button } from "@/components/ui/button/Button";
 import { createClientBrowser } from "@/lib/supabase/client";
+import { EmpriseLogo } from "@/components/brand/EmpriseLogo";
 import { KeyRound, ArrowLeft, Send, CheckCircle2, AlertCircle } from "lucide-react";
 
 function ForgotPasswordContent() {
@@ -53,18 +54,8 @@ function ForgotPasswordContent() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-3">
-        <Link href="/" className="inline-flex items-center gap-2">
-          <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-[var(--brand-primary)] to-[var(--brand-accent)] flex items-center justify-center text-white font-black text-lg shadow-sm">
-            E
-          </div>
-          <div className="text-left">
-            <span className="font-extrabold text-base text-[var(--brand-primary)] block leading-tight">
-              EMPRISE ACADEMY
-            </span>
-            <span className="text-[10px] font-bold text-[var(--brand-accent)] uppercase tracking-wider">
-              STUDENT PORTAL
-            </span>
-          </div>
+        <Link href="/" className="inline-block select-none" aria-label="Emprise Academy — Home">
+          <EmpriseLogo size="lg" />
         </Link>
 
         <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">

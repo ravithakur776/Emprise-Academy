@@ -42,6 +42,11 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  icons: {
+    icon: "/images/emprise-academy-logo.png",
+    shortcut: "/images/emprise-academy-logo.png",
+    apple: "/images/emprise-academy-logo.png",
+  },
 };
 
 export default function RootLayout({

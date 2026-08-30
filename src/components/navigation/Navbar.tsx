@@ -8,6 +8,7 @@ import { Container } from "@/components/ui/layout/Container";
 import { Button } from "@/components/ui/button/Button";
 import { NavLink } from "@/components/ui/link/NavLink";
 import { Drawer } from "@/components/ui/modal/Drawer";
+import { EmpriseLogo } from "@/components/brand/EmpriseLogo";
 import { HOMEPAGE_DATA } from "@/data/homepage";
 import {
   GraduationCap,
@@ -46,18 +47,8 @@ export const Navbar: React.FC = () => {
       {/* Main Navigation Bar */}
       <Container size="xl" className="flex items-center justify-between h-16 sm:h-20">
         {/* Logo & Brand Identity (Clicking Logo returns to /) */}
-        <Link href="/" className="flex items-center gap-3 group select-none" aria-label="Emprise Academy Home">
-          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-linear-to-br from-[var(--brand-primary)] to-[var(--brand-primary-light)] text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform border border-slate-700/50">
-            <GraduationCap className="w-6 h-6 text-[var(--brand-accent)]" />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-lg sm:text-xl font-extrabold tracking-tight text-[var(--brand-primary)] leading-tight">
-              EMPRISE <span className="text-[var(--brand-accent)]">ACADEMY</span>
-            </span>
-            <span className="text-[10px] sm:text-[11px] font-semibold text-[var(--brand-muted)] tracking-wider uppercase">
-              IIT-JEE • NEET • Foundation • Mathura
-            </span>
-          </div>
+        <Link href="/" className="flex items-center gap-2 group select-none py-1" aria-label="Emprise Academy — Home">
+          <EmpriseLogo size="md" priority className="group-hover:opacity-90 transition-opacity" />
         </Link>
 
         {/* Desktop Navigation Links (with prominent Home link) */}

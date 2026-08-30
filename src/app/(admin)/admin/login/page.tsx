@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/form/Input";
 import { PasswordField } from "@/components/ui/form/SpecializedFields";
 import { Button } from "@/components/ui/button/Button";
 import { createClientBrowser } from "@/lib/supabase/client";
+import { EmpriseLogo } from "@/components/brand/EmpriseLogo";
 import { ShieldCheck, LogIn, AlertCircle, Lock } from "lucide-react";
 
 function AdminLoginContent() {
@@ -65,18 +66,8 @@ function AdminLoginContent() {
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 text-slate-100">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-3">
-        <Link href="/" className="inline-flex items-center gap-2.5">
-          <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-[var(--brand-accent)] to-amber-500 flex items-center justify-center text-white font-black text-lg shadow-md">
-            E
-          </div>
-          <div className="text-left">
-            <span className="font-extrabold text-base text-white block leading-tight tracking-tight">
-              EMPRISE ACADEMY
-            </span>
-            <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest">
-              ADMINISTRATION & CRM
-            </span>
-          </div>
+        <Link href="/" className="inline-block select-none" aria-label="Emprise Academy — Home">
+          <EmpriseLogo variant="on-dark" size="lg" />
         </Link>
 
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">

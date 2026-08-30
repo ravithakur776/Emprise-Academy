@@ -64,6 +64,7 @@ export const SiteJsonLd: React.FC<SiteJsonLdProps> = ({
     name: business.academy_name,
     alternateName: `${business.academy_name} Mathura`,
     url: business.website_url,
+    logo: `${business.website_url}images/emprise-academy-logo.png`,
     telephone: business.contact.phone_primary,
     email: business.contact.email,
     address: postalAddress,

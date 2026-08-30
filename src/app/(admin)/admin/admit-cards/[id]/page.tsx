@@ -6,6 +6,7 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
 import { useToast } from "@/components/ui/toast/ToastProvider";
+import { EmpriseLogo } from "@/components/brand/EmpriseLogo";
 import {
   ArrowLeft,
   Printer,
@@ -132,17 +133,17 @@ export default function AdminAdmitCardDetailPage({
           {/* Printable Official Admit Card Canvas */}
           <div className="p-6 sm:p-8 rounded-3xl border-2 border-slate-800 bg-white space-y-6 text-slate-900 shadow-sm">
             {/* Header */}
-            <div className="flex items-center justify-between border-b-2 border-slate-800 pb-4">
-              <div>
-                <span className="text-xs font-black uppercase tracking-widest text-[var(--brand-accent)] block">
-                  EMPRISE ACADEMY MATHURA
-                </span>
-                <h2 className="text-lg sm:text-xl font-black text-slate-900">
-                  ETSE 2026 OFFICIAL ADMIT CARD
-                </h2>
-                <span className="text-[11px] text-slate-500 font-semibold">
-                  Talent Search & Scholarship Examination (Session 2026–27)
-                </span>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b-2 border-slate-800 pb-4 gap-4">
+              <div className="flex items-center gap-4">
+                <EmpriseLogo size="md" />
+                <div>
+                  <h2 className="text-base sm:text-lg font-black text-slate-900 leading-tight">
+                    ETSE 2026 OFFICIAL ADMIT CARD
+                  </h2>
+                  <span className="text-[10px] sm:text-[11px] text-slate-500 font-semibold">
+                    Talent Search & Scholarship Examination (Session 2026–27) • Mathura
+                  </span>
+                </div>
               </div>
 
               <div className="text-right">

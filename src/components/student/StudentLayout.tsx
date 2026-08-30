@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ToastProvider } from "@/components/ui/toast/ToastProvider";
 import { createClientBrowser } from "@/lib/supabase/client";
+import { EmpriseLogo } from "@/components/brand/EmpriseLogo";
 import {
   LayoutDashboard,
   FileText,
@@ -64,20 +65,13 @@ export const StudentLayout: React.FC<StudentLayoutProps> = ({
         {/* Desktop Sidebar */}
         <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 shrink-0 sticky top-0 h-screen overflow-y-auto">
           {/* Logo & Portal Badge */}
-          <div className="p-6 border-b border-slate-100 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-linear-to-br from-[var(--brand-primary)] to-[var(--brand-accent)] flex items-center justify-center text-white font-black text-sm">
-                E
-              </div>
-              <div>
-                <span className="font-extrabold text-sm text-[var(--brand-primary)] block leading-tight">
-                  EMPRISE ACADEMY
-                </span>
-                <span className="text-[10px] font-bold text-[var(--brand-accent)] uppercase tracking-wider">
-                  STUDENT PORTAL
-                </span>
-              </div>
+          <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2 select-none" aria-label="Emprise Academy Student Portal">
+              <EmpriseLogo size="sm" />
             </Link>
+            <span className="text-[9px] font-bold text-[var(--brand-accent)] uppercase tracking-wider bg-orange-50 border border-orange-200/60 px-2 py-0.5 rounded-md">
+              STUDENT
+            </span>
           </div>
 
           {/* Student Profile Snapshot */}
@@ -139,18 +133,8 @@ export const StudentLayout: React.FC<StudentLayoutProps> = ({
 
         {/* Mobile Header */}
         <header className="md:hidden bg-white border-b border-slate-200 px-4 py-3 sticky top-0 z-30 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-[var(--brand-primary)] flex items-center justify-center text-white font-black text-xs">
-              E
-            </div>
-            <div>
-              <span className="font-bold text-xs text-[var(--brand-primary)] block leading-tight">
-                Emprise Student Portal
-              </span>
-              <span className="text-[10px] text-slate-500 block">
-                {studentName}
-              </span>
-            </div>
+          <Link href="/" className="flex items-center gap-2 select-none" aria-label="Emprise Academy Student Portal">
+            <EmpriseLogo size="xs" />
           </Link>
 
           <button

@@ -27,7 +27,7 @@ export const HomepageJsonLd: React.FC = () => {
     description:
       "Premier coaching institute in Mathura for IIT-JEE (Main & Advanced), NEET-UG, and Foundation (Classes 8-10). Established in 2011 with concept-based learning and expert mentorship.",
     url: business.website_url,
-    logo: `${business.website_url}images/emprise-logo.png`,
+    logo: `${business.website_url}images/emprise-academy-logo.png`,
     foundingDate: String(business.established_year),
     telephone: business.contact.phone_primary,
     email: business.contact.email,
