@@ -96,16 +96,16 @@ export const HOMEPAGE_DATA = {
       isVerified: true,
     },
     {
-      value: "XXXX+",
+      value: "5000+",
       label: "Students Mentored",
-      sublabel: "In engineering & medical foundation",
-      isVerified: false,
+      sublabel: "Students guided through structured academic and competitive preparation.",
+      isVerified: true,
     },
     {
-      value: "XXXX+",
+      value: "700+",
       label: "JEE & NEET Selections",
-      sublabel: "Qualified in premier competitive exams",
-      isVerified: false,
+      sublabel: "Students who have successfully qualified through focused preparation and academic guidance.",
+      isVerified: true,
     },
   ] as TrustMetric[],
   corePrograms: [

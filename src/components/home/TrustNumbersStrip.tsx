@@ -15,7 +15,7 @@ export const TrustNumbersStrip: React.FC = () => {
   const { trustMetrics } = HOMEPAGE_DATA;
 
   return (
-    <section className="bg-linear-to-b from-white via-slate-50/50 to-white border-b border-[var(--brand-border)] py-8 sm:py-12 relative z-20">
+    <section className="bg-linear-to-b from-white via-slate-50/50 to-white border-b border-[var(--brand-border)] py-8 sm:py-12 relative z-20" aria-label="Institutional Record">
       <Container size="xl">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {trustMetrics.map((stat, idx) => (
@@ -31,7 +31,7 @@ export const TrustNumbersStrip: React.FC = () => {
 
               <div className="flex items-center justify-between mb-3 relative z-10">
                 <span className="text-[10px] sm:text-[11px] uppercase tracking-wider font-bold text-slate-500">
-                  {stat.isVerified ? "Verified Track Record" : "Institutional Record"}
+                  Institutional Record
                 </span>
                 <div className="w-9 h-9 rounded-xl bg-slate-100/80 group-hover:bg-white flex items-center justify-center shadow-xs transition-colors">
                   {statIcons[idx]}
@@ -39,13 +39,16 @@ export const TrustNumbersStrip: React.FC = () => {
               </div>
 
               <div className="relative z-10">
-                <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[var(--brand-primary)] tracking-tight mb-1 group-hover:text-[var(--brand-accent)] transition-colors">
+                {/* Dominant Number Element */}
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[var(--brand-primary)] tracking-tight mb-1 group-hover:text-[var(--brand-accent)] transition-colors font-display">
                   {stat.value}
                 </div>
+                {/* Primary Descriptive Label */}
                 <h4 className="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
                   {stat.label}
                 </h4>
-                <p className="text-[11px] text-slate-500 mt-1 font-medium">
+                {/* Smaller Muted Supporting Description */}
+                <p className="text-[11px] text-slate-500 mt-1 font-medium leading-relaxed">
                   {stat.sublabel}
                 </p>
               </div>

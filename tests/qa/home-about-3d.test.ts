@@ -123,8 +123,27 @@ async function runHomeAbout3dTests() {
   }
   console.log("✓ Verified / and /about indexability in sitemap.ts.");
 
+  // [TEST 9] Auditing Institutional Record Copy & Metrics
+  console.log("\n[TEST 9] Auditing Institutional Record Copy & Metrics...");
+  const homepageDataPath = path.resolve(process.cwd(), "src/data/homepage.ts");
+  const homepageDataContent = fs.readFileSync(homepageDataPath, "utf-8");
+
+  if (!homepageDataContent.includes('"5000+"') || !homepageDataContent.includes("Students Mentored")) {
+    throw new Error("Missing 5000+ Students Mentored in homepage.ts trustMetrics");
+  }
+  if (!homepageDataContent.includes("Students guided through structured academic and competitive preparation.")) {
+    throw new Error("Missing exact sublabel for Students Mentored");
+  }
+  if (!homepageDataContent.includes('"700+"') || !homepageDataContent.includes("JEE & NEET Selections")) {
+    throw new Error("Missing 700+ JEE & NEET Selections in homepage.ts trustMetrics");
+  }
+  if (!homepageDataContent.includes("Students who have successfully qualified through focused preparation and academic guidance.")) {
+    throw new Error("Missing exact sublabel for JEE & NEET Selections");
+  }
+  console.log("✓ Verified exact Institutional Record copy for 5000+ and 700+ metrics.");
+
   console.log("\n==================================================");
-  console.log("ALL HOME, ABOUT & 3D QA TESTS PASSED (8/8)");
+  console.log("ALL HOME, ABOUT & 3D QA TESTS PASSED (9/9)");
   console.log("==================================================");
 }
 
