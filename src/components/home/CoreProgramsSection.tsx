@@ -28,7 +28,7 @@ export const CoreProgramsSection: React.FC = () => {
           </Text>
         </div>
 
-        {/* Three Large Program Cards */}
+        {/* Three Large 3D Enhanced Program Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {corePrograms.map((prog) => {
             const isJEE = prog.programmeId === "JEE";
@@ -38,18 +38,19 @@ export const CoreProgramsSection: React.FC = () => {
               <div
                 key={prog.id}
                 className={cn(
-                  "flex flex-col justify-between bg-white rounded-2xl border-2 p-6 sm:p-8 transition-all duration-200 hover:shadow-xl relative overflow-hidden",
+                  "flex flex-col justify-between bg-white rounded-3xl border-2 p-6 sm:p-8 transition-all duration-300 relative overflow-hidden group shadow-sm",
+                  "hover:-translate-y-2.5 hover:shadow-2xl",
                   isJEE
-                    ? "border-[var(--brand-primary)]/40 hover:border-[var(--brand-primary)]"
+                    ? "border-[var(--brand-primary)]/30 hover:border-[var(--brand-primary)] hover:shadow-blue-900/10"
                     : isNEET
-                    ? "border-[var(--brand-accent)]/40 hover:border-[var(--brand-accent)]"
-                    : "border-amber-400/50 hover:border-amber-500"
+                    ? "border-[var(--brand-accent)]/30 hover:border-[var(--brand-accent)] hover:shadow-orange-500/10"
+                    : "border-amber-400/40 hover:border-amber-500 hover:shadow-amber-500/10"
                 )}
               >
-                {/* Top Accent Bar */}
+                {/* Top 3D Accent Bar */}
                 <div
                   className={cn(
-                    "absolute top-0 left-0 right-0 h-2",
+                    "absolute top-0 left-0 right-0 h-2.5 transition-all duration-300 group-hover:h-3",
                     isJEE
                       ? "bg-[var(--brand-primary)]"
                       : isNEET
@@ -58,7 +59,15 @@ export const CoreProgramsSection: React.FC = () => {
                   )}
                 />
 
-                <div>
+                {/* Subtle Ambient Background Corner Glow */}
+                <div
+                  className={cn(
+                    "absolute top-0 right-0 w-32 h-32 rounded-full blur-2xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+                    isJEE ? "bg-blue-500/10" : isNEET ? "bg-orange-500/10" : "bg-amber-500/10"
+                  )}
+                />
+
+                <div className="relative z-10">
                   {/* Badge & Target Classes */}
                   <div className="flex items-center justify-between gap-2 mb-4 pt-1">
                     <Badge
@@ -67,18 +76,18 @@ export const CoreProgramsSection: React.FC = () => {
                     >
                       {prog.badge}
                     </Badge>
-                    <span className="text-xs font-semibold text-slate-500">
+                    <span className="text-xs font-bold text-slate-500">
                       {prog.targetClasses}
                     </span>
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-2xl sm:text-3xl font-extrabold text-[var(--brand-primary)] tracking-tight mb-2">
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-[var(--brand-primary)] tracking-tight mb-2 group-hover:text-[var(--brand-accent)] transition-colors">
                     {prog.title}
                   </h3>
 
                   {/* Target Exam Tag */}
-                  <div className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-700 bg-slate-100/80 px-2.5 py-1 rounded-md mb-4 border border-slate-200/60">
+                  <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-slate-100/90 px-3 py-1.5 rounded-lg mb-4 border border-slate-200/80 shadow-xs">
                     <BookOpen className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
                     <span>{prog.targetExams}</span>
                   </div>
@@ -112,11 +121,11 @@ export const CoreProgramsSection: React.FC = () => {
                 </div>
 
                 {/* Footer CTA */}
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-between relative z-10">
                   <Link
                     href={prog.ctaHref}
                     className={cn(
-                      "inline-flex items-center gap-2 text-sm font-bold transition-colors group",
+                      "inline-flex items-center gap-2 text-sm font-bold transition-colors group/btn",
                       isJEE
                         ? "text-[var(--brand-primary)] hover:text-blue-700"
                         : isNEET
@@ -125,7 +134,7 @@ export const CoreProgramsSection: React.FC = () => {
                     )}
                   >
                     <span>{prog.ctaLabel}</span>
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1.5" />
                   </Link>
 
                   <a

@@ -6,15 +6,12 @@ import { Text } from "@/components/ui/typography/Text";
 import { Button } from "@/components/ui/button/Button";
 import { Badge } from "@/components/ui/badge/Badge";
 import { HOMEPAGE_DATA } from "@/data/homepage";
+import { Hero3DVisual } from "./Hero3DVisual";
 import {
   ArrowRight,
-  GraduationCap,
   Sparkles,
-  BookOpen,
-  Trophy,
-  CheckCircle2,
-  Calendar,
-  Phone,
+  Compass,
+  Atom,
 } from "lucide-react";
 
 export const HeroSection: React.FC = () => {
@@ -22,16 +19,20 @@ export const HeroSection: React.FC = () => {
 
   return (
     <section className="relative overflow-hidden bg-linear-to-b from-[var(--brand-primary)] via-[#0D2342] to-[#0A192F] text-white py-12 sm:py-16 lg:py-24 border-b border-slate-800">
-      {/* Subtle Background Glows */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[var(--brand-accent)]/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+      {/* 3D Atmospheric Background Layering */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[var(--brand-accent)]/12 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
+
+      {/* Subtle Geometric Background Vector Accents */}
+      <div className="absolute top-12 right-1/3 w-64 h-64 border border-white/5 rounded-full pointer-events-none opacity-40 animate-pulse hidden lg:block" />
+      <div className="absolute bottom-12 left-10 w-48 h-48 border border-orange-500/10 rounded-full pointer-events-none hidden lg:block" />
 
       <Container size="xl" className="relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left Column: Core Positioning & Messaging */}
           <div className="lg:col-span-7 space-y-6 text-left">
             {/* Top Verified Institutional Tag */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-xs border border-white/15 text-xs text-slate-200">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs text-slate-200 shadow-sm">
               <span className="w-2 h-2 rounded-full bg-[var(--brand-accent)] animate-pulse" />
               <span className="font-semibold tracking-wider uppercase text-[11px]">
                 {hero.badge}
@@ -101,9 +102,9 @@ export const HeroSection: React.FC = () => {
             </div>
 
             {/* ETSE Campaign Highlight Box */}
-            <div className="mt-4 p-4 rounded-xl bg-white/5 border border-orange-500/30 backdrop-blur-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="mt-4 p-4 rounded-2xl bg-white/[0.07] border border-orange-500/30 backdrop-blur-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-lg">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-[var(--brand-accent)] text-white flex items-center justify-center shrink-0 shadow-xs">
+                <div className="w-10 h-10 rounded-xl bg-linear-to-br from-[var(--brand-accent)] to-orange-600 text-white flex items-center justify-center shrink-0 shadow-md">
                   <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
@@ -123,66 +124,9 @@ export const HeroSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Column: High-Impact Editorial Academic Card */}
-          <div className="lg:col-span-5">
-            <div className="relative rounded-2xl bg-linear-to-b from-slate-800/90 to-slate-900/95 border border-slate-700/80 p-6 sm:p-8 shadow-2xl backdrop-blur-md">
-              {/* Card Header Badge */}
-              <div className="flex items-center justify-between border-b border-slate-700/60 pb-4 mb-6">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-lg bg-[var(--brand-accent)] text-white flex items-center justify-center">
-                    <GraduationCap className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-bold text-white leading-tight">
-                      Emprise Academic System
-                    </h3>
-                    <p className="text-[11px] text-slate-400">
-                      Mathura Campus • Est. 2011
-                    </p>
-                  </div>
-                </div>
-                <span className="text-[11px] font-semibold text-amber-300 bg-amber-950/60 border border-amber-800/80 px-2.5 py-1 rounded-md">
-                  ★ 15+ Years
-                </span>
-              </div>
-
-              {/* Core Pedagogical Value Points */}
-              <div className="space-y-3.5 mb-6 text-xs text-slate-300">
-                <div className="flex items-start gap-3 p-2.5 rounded-lg bg-white/5 border border-white/5">
-                  <BookOpen className="w-4 h-4 text-[var(--brand-accent)] shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold text-white block">Concept-First Pedagogy</span>
-                    <span className="text-slate-400">Deep conceptual derivation instead of superficial memorization.</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 p-2.5 rounded-lg bg-white/5 border border-white/5">
-                  <Trophy className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold text-white block">Engineering & Medical Mentorship</span>
-                    <span className="text-slate-400">Guided by University of Derby (UK) alumni & Kota mentors.</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 p-2.5 rounded-lg bg-white/5 border border-white/5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <div>
-                    <span className="font-bold text-white block">Strict Testing & Doubt Cycles</span>
-                    <span className="text-slate-400">Weekly chapter-wise tests with personalized error feedback.</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Counselling Anchor CTA */}
-              <div className="pt-4 border-t border-slate-700/60 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                <a
-                  href="#counselling"
-                  className="w-full text-center py-2.5 px-4 rounded-lg bg-[var(--brand-accent)] hover:bg-[var(--brand-accent-hover)] text-white text-xs font-bold transition-colors shadow-xs"
-                >
-                  Book Free Academic Counselling
-                </a>
-              </div>
-            </div>
+          {/* Right Column: Interactive 3D Perspective Academic Visual */}
+          <div className="lg:col-span-5 flex justify-center">
+            <Hero3DVisual />
           </div>
         </div>
       </Container>

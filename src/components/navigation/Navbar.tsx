@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/layout/Container";
 import { Button } from "@/components/ui/button/Button";
@@ -19,6 +20,7 @@ import {
 } from "lucide-react";
 
 export const Navbar: React.FC = () => {
+  const pathname = usePathname();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isCoursesOpen, setIsCoursesOpen] = useState(false);
 
@@ -43,8 +45,8 @@ export const Navbar: React.FC = () => {
 
       {/* Main Navigation Bar */}
       <Container size="xl" className="flex items-center justify-between h-16 sm:h-20">
-        {/* Logo & Brand Identity */}
-        <Link href="/" className="flex items-center gap-3 group select-none">
+        {/* Logo & Brand Identity (Clicking Logo returns to /) */}
+        <Link href="/" className="flex items-center gap-3 group select-none" aria-label="Emprise Academy Home">
           <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-linear-to-br from-[var(--brand-primary)] to-[var(--brand-primary-light)] text-white flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform border border-slate-700/50">
             <GraduationCap className="w-6 h-6 text-[var(--brand-accent)]" />
           </div>
@@ -58,8 +60,9 @@ export const Navbar: React.FC = () => {
           </div>
         </Link>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
+        {/* Desktop Navigation Links (with prominent Home link) */}
+        <nav className="hidden lg:flex items-center gap-1 xl:gap-2" aria-label="Main Navigation">
+          <NavLink href="/">Home</NavLink>
           <NavLink href="/about">About Us</NavLink>
 
           {/* Courses Dropdown */}
@@ -119,6 +122,7 @@ export const Navbar: React.FC = () => {
           </div>
 
           <NavLink href="/results">Results</NavLink>
+          <NavLink href="/directors">Directors</NavLink>
           <NavLink href="/admissions">Admissions</NavLink>
           <NavLink href="/scholarship">Scholarship</NavLink>
           <NavLink href="/etse-2026">ETSE 2026</NavLink>
@@ -166,44 +170,86 @@ export const Navbar: React.FC = () => {
         <div className="flex flex-col gap-4">
           <div className="space-y-1 pb-4 border-b border-slate-100">
             <Link
+              href="/"
+              onClick={() => setIsMobileOpen(false)}
+              className={cn(
+                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
+                pathname === "/"
+                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
+                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+              )}
+            >
+              Home
+            </Link>
+            <Link
               href="/about"
               onClick={() => setIsMobileOpen(false)}
-              className="block p-2.5 text-sm font-semibold text-[var(--brand-primary)] hover:bg-slate-50 rounded-lg"
+              className={cn(
+                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
+                pathname === "/about"
+                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
+                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+              )}
             >
               About Emprise
             </Link>
             <Link
               href="/courses"
               onClick={() => setIsMobileOpen(false)}
-              className="block p-2.5 text-sm font-semibold text-[var(--brand-primary)] hover:bg-slate-50 rounded-lg"
+              className={cn(
+                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
+                pathname?.startsWith("/courses") || pathname?.includes("coaching-mathura")
+                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
+                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+              )}
             >
               Academic Courses (JEE / NEET / Foundation)
             </Link>
             <Link
               href="/results"
               onClick={() => setIsMobileOpen(false)}
-              className="block p-2.5 text-sm font-semibold text-[var(--brand-primary)] hover:bg-slate-50 rounded-lg"
+              className={cn(
+                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
+                pathname?.startsWith("/results")
+                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
+                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+              )}
             >
               Results & Ranks
             </Link>
             <Link
               href="/directors"
               onClick={() => setIsMobileOpen(false)}
-              className="block p-2.5 text-sm font-semibold text-[var(--brand-primary)] hover:bg-slate-50 rounded-lg"
+              className={cn(
+                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
+                pathname?.startsWith("/directors")
+                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
+                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+              )}
             >
               Meet Our Directors
             </Link>
             <Link
               href="/admissions"
               onClick={() => setIsMobileOpen(false)}
-              className="block p-2.5 text-sm font-semibold text-[var(--brand-primary)] hover:bg-slate-50 rounded-lg"
+              className={cn(
+                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
+                pathname?.startsWith("/admissions")
+                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
+                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+              )}
             >
               Admission Process & Counselling
             </Link>
             <Link
               href="/scholarship"
               onClick={() => setIsMobileOpen(false)}
-              className="block p-2.5 text-sm font-semibold text-[var(--brand-primary)] hover:bg-slate-50 rounded-lg"
+              className={cn(
+                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
+                pathname?.startsWith("/scholarship")
+                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
+                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+              )}
             >
               Scholarship Slabs
             </Link>
@@ -217,7 +263,12 @@ export const Navbar: React.FC = () => {
             <Link
               href="/contact"
               onClick={() => setIsMobileOpen(false)}
-              className="block p-2.5 text-sm font-semibold text-[var(--brand-primary)] hover:bg-slate-50 rounded-lg"
+              className={cn(
+                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
+                pathname === "/contact"
+                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
+                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+              )}
             >
               Contact Mathura Campus
             </Link>
