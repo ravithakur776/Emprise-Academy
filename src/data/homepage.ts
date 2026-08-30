@@ -10,6 +10,7 @@
  */
 
 import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
+import { DIRECTORS_DATA } from "@/data/directors";
 
 export interface TrustMetric {
   value: string;
@@ -53,14 +54,6 @@ export interface VerifiedDirector {
   institution: string;
   highlights: string[];
   messageSnippet: string;
-}
-
-export interface VerifiedFacultyPreview {
-  name: string;
-  subject: string;
-  role: string;
-  experience: string;
-  specialization: string;
 }
 
 export interface HomepageFAQ {
@@ -280,66 +273,28 @@ export const HOMEPAGE_DATA = {
   },
   directors: [
     {
-      id: "sushil-dagur",
-      name: "Sushil Dagur",
-      role: "Director | Educationist | Academic Entrepreneur",
-      qualification: "B.E. (Hons.) Mechanical Engineering",
-      institution: "University of Derby, England, U.K.",
-      highlights: [
-        "Professional engineering background with Ford Group, UK",
-        "Extensive managerial & project engineering experience",
-        "Rich teaching experience with premier coaching institutes in Kota",
-        "Author of recognized academic & professional publications",
-      ],
-      messageSnippet:
-        "Our objective at Emprise Academy is to provide Mathura students with the exact caliber of academic rigor and conceptual depth traditionally sought in distant coaching hubs.",
+      id: DIRECTORS_DATA.sushilDagur.id,
+      name: DIRECTORS_DATA.sushilDagur.name,
+      role: DIRECTORS_DATA.sushilDagur.designation,
+      qualification: DIRECTORS_DATA.sushilDagur.qualification,
+      institution: DIRECTORS_DATA.sushilDagur.institution,
+      highlights: DIRECTORS_DATA.sushilDagur.professionalJourney.map(
+        (p) => `${p.companyOrContext}: ${p.roleSummary}`
+      ),
+      messageSnippet: DIRECTORS_DATA.sushilDagur.quote,
     },
     {
-      id: "rakesh-kumar",
-      name: "Rakesh Kumar",
-      role: "Director | Mathematics Mentor | IIT-JEE Faculty",
-      qualification: "B.E. (Hons.) Mechanical Engineering",
-      institution: "University of Derby, England, U.K.",
-      highlights: [
-        "Professional engineering tenure with Rolls-Royce Limited",
-        "Expertise in mechanical design & complex project management",
-        "Dedicated IIT-JEE advanced mathematics mentor",
-        "Passionate advocate of logical visualization in problem-solving",
-      ],
-      messageSnippet:
-        "Mathematics in competitive exams is not about memorizing tricks; it is about recognizing patterns and executing solutions with disciplined logical clarity.",
+      id: DIRECTORS_DATA.rakeshKumar.id,
+      name: DIRECTORS_DATA.rakeshKumar.name,
+      role: DIRECTORS_DATA.rakeshKumar.designation,
+      qualification: DIRECTORS_DATA.rakeshKumar.qualification,
+      institution: DIRECTORS_DATA.rakeshKumar.institution,
+      highlights: DIRECTORS_DATA.rakeshKumar.professionalJourney.map(
+        (p) => `${p.companyOrContext}: ${p.roleSummary}`
+      ),
+      messageSnippet: DIRECTORS_DATA.rakeshKumar.quote,
     },
   ] as VerifiedDirector[],
-  facultyPreview: [
-    {
-      name: "Rakesh Kumar",
-      subject: "Mathematics",
-      role: "Director & Head of Mathematics",
-      experience: "Senior IIT-JEE Faculty",
-      specialization: "Calculus, Coordinate Geometry & Algebra for JEE Advanced",
-    },
-    {
-      name: "Sushil Dagur",
-      subject: "Physics",
-      role: "Director & Head of Academic Direction",
-      experience: "Senior Academic Mentor & Author",
-      specialization: "Classical Mechanics, Engineering Principles & Pedagogy",
-    },
-    {
-      name: "Chemistry Faculty Team",
-      subject: "Chemistry",
-      role: "Physical, Organic & Inorganic Mentors",
-      experience: "Experienced Competitive Mentors",
-      specialization: "Organic Reaction Mechanisms & NCERT Inorganic Chemistry",
-    },
-    {
-      name: "Biology Faculty Team",
-      subject: "Biology",
-      role: "Botany & Zoology Mentors",
-      experience: "Experienced Medical Mentors",
-      specialization: "NCERT Line-by-Line Mastery, Human Physiology & Genetics",
-    },
-  ] as VerifiedFacultyPreview[],
   scholarship: {
     heading: "Scholarships for Aspiring Achievers",
     subheading:

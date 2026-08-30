@@ -3,8 +3,7 @@ import { VERIFIED_BRAND_DATA } from "@/data/brand";
 import { HOMEPAGE_DATA } from "@/data/homepage";
 import { MAIN_ETSE_DATA } from "@/data/etse";
 import { VERIFIED_RESULTS } from "@/data/results";
-import { FACULTY_DATA } from "@/data/faculty";
-import { DIRECTORS_DATA } from "@/data/directors";
+import { DIRECTORS_DATA, getCanonicalDirectorsList } from "@/data/directors";
 
 console.log("==================================================");
 console.log("TEST SUITE: PHASE 5.1 PRODUCTION DATA INTEGRATION & DEMO DATA ELIMINATION");
@@ -48,12 +47,13 @@ async function runDataIntegrationTests() {
   }
   console.log(`✓ Verified Authoritative ETSE 2026 Campaign: Exam on 6 September 2026, Eligibility: Classes 7–10, Fee: FREE.`);
 
-  // [TEST 4] Auditing Verified Faculty & Leadership Single Source
-  console.log("\n[TEST 4] Auditing Verified Faculty & Leadership Single Source...");
-  if (FACULTY_DATA.length !== 2) {
-    throw new Error(`Faculty data must only contain verified founding faculty, found ${FACULTY_DATA.length}`);
+  // [TEST 4] Auditing Verified Founding Leadership Single Source
+  console.log("\n[TEST 4] Auditing Verified Founding Leadership Single Source...");
+  const canonicalDirectors = getCanonicalDirectorsList();
+  if (canonicalDirectors.length !== 2) {
+    throw new Error(`Directors data must only contain 2 verified founding directors, found ${canonicalDirectors.length}`);
   }
-  const directorNames = Object.values(DIRECTORS_DATA).map((d) => d.name);
+  const directorNames = canonicalDirectors.map((d) => d.name);
   if (!directorNames.includes("Sushil Dagur") || !directorNames.includes("Rakesh Kumar")) {
     throw new Error("Directors data missing verified founding directors");
   }

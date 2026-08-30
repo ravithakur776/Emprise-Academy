@@ -146,7 +146,7 @@ export default function DirectorsMainPage() {
             </Container>
           </Section>
 
-          {/* 5. Faculty & Programme Gateway Banner */}
+          {/* 5. Academic Programmes & Admissions Gateway Banner */}
           <Section variant="surface" spacing="md">
             <Container size="xl">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -155,21 +155,21 @@ export default function DirectorsMainPage() {
                     <div className="flex items-center gap-2 mb-2">
                       <GraduationCap className="w-5 h-5 text-[var(--brand-accent)]" />
                       <span className="text-xs font-bold uppercase tracking-wider text-[var(--brand-primary)]">
-                        Faculty Mentors
+                        Admissions & Mentorship
                       </span>
                     </div>
                     <h3 className="text-lg sm:text-xl font-bold text-[var(--brand-primary)] mb-2">
-                      Meet Our Dedicated Subject Faculty
+                      Direct Academic Counselling & Roadmap
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-600 mb-4">
-                      Experienced subject specialists in Physics, Chemistry, Mathematics, and Biology who work with students daily.
+                      Schedule a 1-on-1 academic consultation with our senior counsellors and mentors at our Mathura campus.
                     </p>
                   </div>
                   <Link
-                    href="/faculty"
+                    href="/admissions#counselling"
                     className="inline-flex items-center gap-2 text-xs font-bold text-[var(--brand-accent)] hover:underline"
                   >
-                    <span>View Faculty Directory</span>
+                    <span>Book Free Counselling Session</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>

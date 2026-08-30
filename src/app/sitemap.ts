@@ -22,13 +22,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/foundation-coaching-mathura/class-8", priority: 0.8, changeFrequency: "weekly" as const },
     { path: "/foundation-coaching-mathura/class-9", priority: 0.8, changeFrequency: "weekly" as const },
     { path: "/foundation-coaching-mathura/class-10", priority: 0.8, changeFrequency: "weekly" as const },
-    // Academic Leadership & Faculty
+    // Academic Leadership
     { path: "/directors", priority: 0.7, changeFrequency: "monthly" as const },
     { path: "/directors/rakesh-kumar", priority: 0.6, changeFrequency: "monthly" as const },
     { path: "/directors/sushil-dagur", priority: 0.6, changeFrequency: "monthly" as const },
-    { path: "/faculty", priority: 0.7, changeFrequency: "monthly" as const },
-    { path: "/faculty/rakesh-kumar", priority: 0.6, changeFrequency: "monthly" as const },
-    { path: "/faculty/sushil-dagur", priority: 0.6, changeFrequency: "monthly" as const },
     // Results & Stories
     { path: "/results", priority: 0.8, changeFrequency: "weekly" as const },
     { path: "/results/atul-dagur-jee-advanced-2026", priority: 0.6, changeFrequency: "monthly" as const },

@@ -194,13 +194,6 @@ export const Navbar: React.FC = () => {
               Meet Our Directors
             </Link>
             <Link
-              href="/faculty"
-              onClick={() => setIsMobileOpen(false)}
-              className="block p-2.5 text-sm font-semibold text-[var(--brand-primary)] hover:bg-slate-50 rounded-lg"
-            >
-              Faculty Mentors
-            </Link>
-            <Link
               href="/admissions"
               onClick={() => setIsMobileOpen(false)}
               className="block p-2.5 text-sm font-semibold text-[var(--brand-primary)] hover:bg-slate-50 rounded-lg"

@@ -17,11 +17,11 @@ if (!targetDomain.startsWith("https://") || targetDomain.includes("localhost")) 
 }
 console.log(`✓ Verified Canonical Host: ${targetDomain} (HTTPS Enforced).`);
 
-// 2. All 30 Canonical Public Routes Audit
-console.log("\n[TEST 2] Auditing All 30 Canonical Public Sitemap Routes...");
+// 2. All 27 Canonical Public Routes Audit
+console.log("\n[TEST 2] Auditing All 27 Canonical Public Sitemap Routes...");
 const publicRoutes = sitemap();
-if (publicRoutes.length !== 30) {
-  throw new Error(`Expected exactly 30 canonical public routes, found ${publicRoutes.length}`);
+if (publicRoutes.length !== 27) {
+  throw new Error(`Expected exactly 27 canonical public routes, found ${publicRoutes.length}`);
 }
 const essentialPaths = [
   "",
@@ -40,9 +40,6 @@ const essentialPaths = [
   "/directors",
   "/directors/rakesh-kumar",
   "/directors/sushil-dagur",
-  "/faculty",
-  "/faculty/rakesh-kumar",
-  "/faculty/sushil-dagur",
   "/results",
   "/results/atul-dagur-jee-advanced-2026",
   "/scholarship",
@@ -62,7 +59,7 @@ for (const path of essentialPaths) {
     throw new Error(`Missing expected canonical public route: ${targetDomain}${path}`);
   }
 }
-console.log("✓ All 30 essential public routes verified in canonical sitemap.");
+console.log("✓ All 27 essential public routes verified in canonical sitemap.");
 
 // 3. Private Workspace Protection Audit
 console.log("\n[TEST 3] Auditing Private Workspace Protection in Robots.txt...");

@@ -217,18 +217,18 @@ export default function MainJeePage() {
                     <div className="flex items-center gap-2 mb-2">
                       <GraduationCap className="w-5 h-5 text-[var(--brand-accent)]" />
                       <span className="text-xs font-bold uppercase tracking-wider text-[var(--brand-primary)]">
-                        Faculty Mentorship
+                        Academic Leadership
                       </span>
                     </div>
                     <h3 className="text-lg sm:text-xl font-bold text-[var(--brand-primary)] mb-2">
-                      Meet Our Experienced JEE Mentors
+                      Leadership & Advanced JEE Pedagogy
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-600 mb-4">
-                      Guided by University of Derby engineering alumni and veteran faculty specializing in Physics, Chemistry, and Advanced Mathematics.
+                      Curriculum and problem-solving methodology designed and mentored by University of Derby engineering alumni.
                     </p>
                   </div>
-                  <Link href="/faculty" className="inline-flex items-center gap-2 text-xs font-bold text-[var(--brand-accent)] hover:underline">
-                    <span>Meet Our JEE Faculty Mentors</span>
+                  <Link href="/directors" className="inline-flex items-center gap-2 text-xs font-bold text-[var(--brand-accent)] hover:underline">
+                    <span>Meet Our Academic Directors</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>

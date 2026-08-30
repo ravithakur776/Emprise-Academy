@@ -5,19 +5,17 @@ import { Section } from "@/components/ui/layout/Section";
 import { Heading } from "@/components/ui/typography/Heading";
 import { Text } from "@/components/ui/typography/Text";
 import { Badge } from "@/components/ui/badge/Badge";
-import { Button } from "@/components/ui/button/Button";
 import { Breadcrumbs } from "@/components/ui/link/TextLink";
 import { DirectorFullProfile } from "@/data/directors";
+import { DirectorPhoto } from "@/components/directors/DirectorPhoto";
 import {
   GraduationCap,
   Briefcase,
-  BookOpen,
-  Quote,
   CheckCircle2,
   Trophy,
   Compass,
   ArrowRight,
-  ShieldCheck,
+  Sparkles,
 } from "lucide-react";
 
 export interface DirectorDetailProfileProps {
@@ -69,20 +67,24 @@ export const DirectorDetailProfile: React.FC<DirectorDetailProfileProps> = ({
                 </div>
                 <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
                   <Briefcase className="w-4 h-4 text-sky-400" />
-                  <span>{director.almaMater}</span>
+                  <span>{director.institution}</span>
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-white/5 border-l-4 border-[var(--brand-accent)] text-xs sm:text-sm text-slate-200 italic leading-relaxed max-w-2xl mt-4">
+              <div className="p-4 sm:p-5 rounded-2xl bg-white/5 border-l-4 border-[var(--brand-accent)] text-xs sm:text-sm text-slate-200 italic leading-relaxed max-w-2xl mt-4">
                 &ldquo;{director.quote}&rdquo;
               </div>
             </div>
 
-            {/* Right: Avatar / Portrait Box */}
+            {/* Right: Photo / Placeholder */}
             <div className="lg:col-span-4 flex justify-center lg:justify-end">
-              <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-3xl bg-linear-to-br from-slate-700 to-slate-800 border-2 border-slate-600 flex items-center justify-center shadow-2xl">
-                <GraduationCap className="w-24 h-24 text-[var(--brand-accent-light)] opacity-70" />
-              </div>
+              <DirectorPhoto
+                photoUrl={director.photoUrl}
+                name={director.name}
+                designation={director.designation}
+                aspectRatio="portrait"
+                size="lg"
+              />
             </div>
           </div>
         </Container>
@@ -107,7 +109,7 @@ export const DirectorDetailProfile: React.FC<DirectorDetailProfileProps> = ({
             {director.professionalJourney.map((item, idx) => (
               <div
                 key={idx}
-                className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex flex-col justify-between"
+                className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex flex-col justify-between"
               >
                 <div>
                   <div className="w-8 h-8 rounded-lg bg-orange-50 text-[var(--brand-accent)] font-bold text-xs flex items-center justify-center mb-3">
@@ -129,7 +131,7 @@ export const DirectorDetailProfile: React.FC<DirectorDetailProfileProps> = ({
         </Container>
       </Section>
 
-      {/* 3. Teaching Philosophy & Academic Experience */}
+      {/* 3. Teaching Philosophy & Academic Domains */}
       <Section variant="surface" spacing="lg">
         <Container size="xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
@@ -154,7 +156,7 @@ export const DirectorDetailProfile: React.FC<DirectorDetailProfileProps> = ({
               </div>
             </div>
 
-            {/* Right: Academic Experience */}
+            {/* Right: Academic Domains */}
             <div className="lg:col-span-6 space-y-6">
               <div>
                 <Badge variant="primary" size="sm" className="mb-2">
@@ -166,7 +168,7 @@ export const DirectorDetailProfile: React.FC<DirectorDetailProfileProps> = ({
               </div>
 
               <div className="space-y-4">
-                {director.academicExperience.map((exp, idx) => (
+                {director.academicDomains.map((exp, idx) => (
                   <div key={idx} className="p-5 rounded-xl bg-white border border-slate-200 shadow-2xs">
                     <h3 className="text-sm sm:text-base font-bold text-[var(--brand-primary)] mb-1">
                       {exp.area}
@@ -191,7 +193,7 @@ export const DirectorDetailProfile: React.FC<DirectorDetailProfileProps> = ({
                 DIRECTOR&apos;S PERSPECTIVE
               </Badge>
               <Heading as="h2" variant="h1" color="white">
-                Vision for Students & Emprise Academy
+                Leadership Perspective & Vision
               </Heading>
             </div>
 
@@ -234,7 +236,7 @@ export const DirectorDetailProfile: React.FC<DirectorDetailProfileProps> = ({
         </Container>
       </Section>
 
-      {/* 5. Courses Guided & Sibling Profile Link */}
+      {/* 5. Academic Programmes Guided & Sibling Profile Link */}
       <Section variant="surface" spacing="md">
         <Container size="xl">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6 p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-xs">
@@ -243,12 +245,12 @@ export const DirectorDetailProfile: React.FC<DirectorDetailProfileProps> = ({
                 Academic Programmes Guided
               </span>
               <div className="flex flex-wrap gap-2 pt-1">
-                {director.coursesTaughtOrGuided.map((course, idx) => (
+                {director.programmesGuided.map((prog, idx) => (
                   <span
                     key={idx}
                     className="text-xs font-semibold text-slate-700 bg-slate-100 border border-slate-200 px-3 py-1 rounded-lg"
                   >
-                    {course}
+                    {prog}
                   </span>
                 ))}
               </div>

@@ -238,17 +238,17 @@ export default function MainNeetPage() {
                       </span>
                     </div>
                     <h3 className="text-lg sm:text-xl font-bold text-[var(--brand-primary)] mb-2">
-                      Meet Our Experienced Medical Mentors
+                      Academic Leadership & Mentorship
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-600 mb-4">
-                      Experienced subject specialists in Botany, Zoology, Organic/Inorganic Chemistry, and Numerical Physics.
+                      Direct academic supervision, structured test series, and mentorship led by our founding directors.
                     </p>
                   </div>
                   <Link
-                    href="/faculty"
+                    href="/directors"
                     className="inline-flex items-center gap-2 text-xs font-bold text-[var(--brand-accent)] hover:underline"
                   >
-                    <span>Meet Our NEET Faculty Mentors</span>
+                    <span>Meet Our Academic Directors</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>

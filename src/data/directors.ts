@@ -1,7 +1,20 @@
 /**
- * Official Verified Directors Data for Emprise Academy
- * Single source of truth for Phase 4.4 Directors & Academic Leadership
+ * Official Authoritative Directors Data for Emprise Academy
+ * Single Source of Truth for Phase 5.3 Directors & Academic Leadership
  */
+
+import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
+
+export interface ProfessionalStep {
+  companyOrContext: string;
+  roleSummary: string;
+  description: string;
+}
+
+export interface AcademicDomain {
+  area: string;
+  description: string;
+}
 
 export interface DirectorFullProfile {
   id: string;
@@ -9,23 +22,21 @@ export interface DirectorFullProfile {
   name: string;
   designation: string;
   qualification: string;
+  institution: string;
   almaMater: string;
   photoUrl: string | null;
   quote: string;
-  professionalJourney: {
-    companyOrContext: string;
-    roleSummary: string;
-    description: string;
-  }[];
-  academicExperience: {
-    area: string;
-    description: string;
-  }[];
+  shortBio: string;
+  displayOrder: number;
+  isFeatured: boolean;
+  isPublished: boolean;
+  professionalJourney: ProfessionalStep[];
+  academicDomains: AcademicDomain[];
   teachingPhilosophy: string[];
   leadershipPerspective: string;
   visionForStudents: string;
   contributionToEmprise: string[];
-  coursesTaughtOrGuided: string[];
+  programmesGuided: string[];
 }
 
 export const DIRECTORS_DATA: {
@@ -38,10 +49,16 @@ export const DIRECTORS_DATA: {
     name: "Sushil Dagur",
     designation: "Director | Educationist | Academic Entrepreneur",
     qualification: "B.E. (Hons.) Mechanical Engineering",
+    institution: "University of Derby, England, U.K.",
     almaMater: "University of Derby, England, U.K.",
-    photoUrl: null, // Professional SVG / Avatar placeholder used until official media sync
+    photoUrl: null, // Initialized to null; photo placeholder renders until real photo uploaded
     quote:
       "True education is not about memorising formulas; it is about building the intellectual endurance to think independently, analyze critically, and solve real challenges.",
+    shortBio:
+      "Co-founder and Director of Emprise Academy. Engineering graduate from the University of Derby (UK) with project engineering experience at Ford Group UK and extensive competitive coaching mentorship.",
+    displayOrder: 1,
+    isFeatured: true,
+    isPublished: true,
     professionalJourney: [
       {
         companyOrContext: "University of Derby, England, U.K.",
@@ -68,7 +85,7 @@ export const DIRECTORS_DATA: {
           "Co-founded Emprise Academy in Mathura to establish a structured, transparent, and student-first competitive coaching institution with national-standard academic rigor.",
       },
     ],
-    academicExperience: [
+    academicDomains: [
       {
         area: "Academic Direction & Curriculum Strategy",
         description:
@@ -101,10 +118,11 @@ export const DIRECTORS_DATA: {
       "Created transparent academic reporting and diagnostic test analysis protocols for parents and students.",
       "Continuous faculty mentoring and pedagogical quality assurance across all academic departments.",
     ],
-    coursesTaughtOrGuided: [
+    programmesGuided: [
       "IIT-JEE (Main & Advanced) Academic Strategy",
+      "NEET-UG Foundation & Biology Rigor",
       "Foundation (Classes 8–10) Scientific Inquiry",
-      "Competitive Entrance Exam Mentorship",
+      "ETSE 2026 Scholarship Mentorship",
     ],
   },
   rakeshKumar: {
@@ -113,10 +131,16 @@ export const DIRECTORS_DATA: {
     name: "Rakesh Kumar",
     designation: "Director | Mathematics Mentor | IIT-JEE Faculty",
     qualification: "B.E. (Hons.) Mechanical Engineering",
+    institution: "University of Derby, England, U.K.",
     almaMater: "University of Derby, England, U.K.",
-    photoUrl: null,
+    photoUrl: null, // Initialized to null; photo placeholder renders until real photo uploaded
     quote:
       "Mathematics is not a subject of rules; it is the art of logical deduction. When a student learns to visualize a problem geometrically and algebraically, fear turns into confidence.",
+    shortBio:
+      "Co-founder, Director and Head of Mathematics at Emprise Academy. Engineering graduate from the University of Derby (UK) with precision engineering background at Rolls-Royce Limited.",
+    displayOrder: 2,
+    isFeatured: true,
+    isPublished: true,
     professionalJourney: [
       {
         companyOrContext: "University of Derby, England, U.K.",
@@ -143,7 +167,7 @@ export const DIRECTORS_DATA: {
           "Co-founded Emprise Academy, personally heading the Mathematics department and shaping the institute's problem-solving and testing methodologies.",
       },
     ],
-    academicExperience: [
+    academicDomains: [
       {
         area: "IIT-JEE Advanced Mathematics Pedagogy",
         description:
@@ -176,7 +200,7 @@ export const DIRECTORS_DATA: {
       "Formulated the 'Measure. Analyse. Improve.' testing and question-level diagnostic review framework.",
       "Direct one-on-one doubt resolution desks and personalized academic roadmap sessions for JEE aspirants.",
     ],
-    coursesTaughtOrGuided: [
+    programmesGuided: [
       "IIT-JEE Advanced Mathematics (Classes 11, 12 & Droppers)",
       "JEE Main Speed & Accuracy Workshops",
       "Foundation Mathematics & Olympiad Reasoning (Classes 8–10)",
@@ -184,11 +208,23 @@ export const DIRECTORS_DATA: {
   },
 };
 
+export const getCanonicalDirectorsList = (): DirectorFullProfile[] => {
+  return [DIRECTORS_DATA.sushilDagur, DIRECTORS_DATA.rakeshKumar].sort(
+    (a, b) => a.displayOrder - b.displayOrder
+  );
+};
+
+export const getDirectorBySlug = (slug: string): DirectorFullProfile | undefined => {
+  if (slug === "sushil-dagur") return DIRECTORS_DATA.sushilDagur;
+  if (slug === "rakesh-kumar") return DIRECTORS_DATA.rakeshKumar;
+  return undefined;
+};
+
 export const MAIN_DIRECTORS_DATA = {
   meta: {
     title: "Directors of Emprise Academy | Academic Leadership in Mathura",
     description:
-      "Meet the Directors of Emprise Academy Mathura: Sushil Dagur and Rakesh Kumar (Univ. of Derby UK alumni with Rolls-Royce & Ford UK experience). Concept-based leadership established 2011.",
+      "Meet the Directors of Emprise Academy Mathura: Sushil Dagur and Rakesh Kumar (University of Derby UK engineering graduates with Ford UK & Rolls-Royce background). Structured concept-based leadership established 2011.",
     keywords: [
       "Directors of Emprise Academy",
       "Sushil Dagur Emprise Academy",
@@ -197,7 +233,7 @@ export const MAIN_DIRECTORS_DATA = {
       "Emprise Academy Founders",
       "IIT JEE Faculty Mathura",
     ],
-    canonical: "https://empriseacademy.com/directors",
+    canonical: "https://www.empriseacademy.com/directors",
   },
   hero: {
     eyebrow: "ACADEMIC LEADERSHIP",
@@ -206,7 +242,7 @@ export const MAIN_DIRECTORS_DATA = {
     paragraph:
       "Emprise Academy was founded in 2011 by University of Derby (UK) engineering alumni Sushil Dagur and Rakesh Kumar. Combining international industrial engineering experience at Ford UK and Rolls-Royce Limited with extensive competitive teaching backgrounds, they bring structured pedagogy, academic discipline, and student-first mentorship to Mathura.",
     primaryCta: { label: "Explore Our Academic Approach", href: "#leadership-synergy" },
-    secondaryCta: { label: "Meet Our Faculty Team", href: "/faculty" },
+    secondaryCta: { label: "Explore Programmes", href: "/courses" },
   },
   leadershipSynergy: {
     heading: "Industrial Engineering Precision Meets Classroom Pedagogy",
@@ -242,7 +278,7 @@ export const MAIN_DIRECTORS_DATA = {
     },
     {
       title: "Accessible Faculty Mentorship",
-      desc: "Directors and senior faculty remain directly accessible to students every single day for doubt clearance.",
+      desc: "Directors and senior mentors remain directly accessible to students every single day for doubt clearance.",
     },
     {
       title: "Transparent Parent Communication",

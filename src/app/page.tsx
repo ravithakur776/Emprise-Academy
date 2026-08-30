@@ -9,7 +9,6 @@ import { WhyChooseSection } from "@/components/home/WhyChooseSection";
 import { MethodologySection } from "@/components/home/MethodologySection";
 import { DirectorsSection } from "@/components/home/DirectorsSection";
 import { ResultsSection } from "@/components/home/ResultsSection";
-import { FacultyPreviewSection } from "@/components/home/FacultyPreviewSection";
 import { CampusEnvironmentSection } from "@/components/home/CampusEnvironmentSection";
 import { ScholarshipSection } from "@/components/home/ScholarshipSection";
 import { AdmissionsCounsellingSection } from "@/components/home/AdmissionsCounsellingSection";
@@ -85,10 +84,7 @@ export default function HomePage() {
           {/* 7. Results Section */}
           <ResultsSection />
 
-          {/* 8. Faculty Mentors Preview */}
-          <FacultyPreviewSection />
-
-          {/* 9. Campus & Learning Environment */}
+          {/* 8. Campus & Learning Environment */}
           <CampusEnvironmentSection />
 
           {/* 10. Scholarship Section */}

@@ -6,12 +6,12 @@ import { Heading } from "@/components/ui/typography/Heading";
 import { Text } from "@/components/ui/typography/Text";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
-import { DIRECTORS_DATA } from "@/data/directors";
-import { GraduationCap, Briefcase, BookOpen, ArrowRight, Quote, CheckCircle2 } from "lucide-react";
+import { getCanonicalDirectorsList } from "@/data/directors";
+import { DirectorPhoto } from "@/components/directors/DirectorPhoto";
+import { GraduationCap, ArrowRight, CheckCircle2 } from "lucide-react";
 
 export const DirectorsDualGrid: React.FC = () => {
-  const { sushilDagur, rakeshKumar } = DIRECTORS_DATA;
-  const directors = [sushilDagur, rakeshKumar];
+  const directors = getCanonicalDirectorsList();
 
   return (
     <Section variant="default" spacing="lg" id="leadership">
@@ -42,30 +42,34 @@ export const DirectorsDualGrid: React.FC = () => {
               />
 
               <div className="space-y-6">
-                {/* Director Header: Avatar & Credentials */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 border-b border-slate-100 pb-6">
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-linear-to-br from-slate-100 to-slate-200 border-2 border-[var(--brand-primary)]/20 flex items-center justify-center shrink-0 shadow-xs">
-                    <GraduationCap className="w-10 h-10 text-[var(--brand-primary)] opacity-70" />
-                  </div>
+                {/* Director Header: Photo Placeholder & Identity */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 border-b border-slate-100 pb-6">
+                  <DirectorPhoto
+                    photoUrl={dir.photoUrl}
+                    name={dir.name}
+                    designation={dir.designation}
+                    aspectRatio="square"
+                    className="w-24 h-24 sm:w-28 sm:h-28 shrink-0 !rounded-2xl"
+                  />
 
-                  <div>
-                    <Badge variant={idx === 0 ? "primary" : "accent"} size="sm" className="mb-1.5">
+                  <div className="space-y-1">
+                    <Badge variant={idx === 0 ? "primary" : "accent"} size="sm" className="mb-1">
                       {idx === 0 ? "Academic Entrepreneur" : "Mathematics Mentor"}
                     </Badge>
                     <h3 className="text-2xl font-bold text-[var(--brand-primary)] tracking-tight">
                       {dir.name}
                     </h3>
-                    <p className="text-xs font-semibold text-[var(--brand-accent)] mb-1">
+                    <p className="text-xs font-semibold text-[var(--brand-accent)]">
                       {dir.designation}
                     </p>
-                    <p className="text-xs text-slate-500 flex items-center gap-1.5">
+                    <p className="text-xs text-slate-500 flex items-center gap-1.5 pt-0.5">
                       <GraduationCap className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                      <span>{dir.qualification} • {dir.almaMater}</span>
+                      <span>{dir.qualification} • {dir.institution}</span>
                     </p>
                   </div>
                 </div>
 
-                {/* Director Quote */}
+                {/* Director Perspective Quote */}
                 <div className="p-4 rounded-xl bg-slate-50 border-l-4 border-[var(--brand-accent)] text-xs sm:text-sm text-slate-700 italic leading-relaxed">
                   &ldquo;{dir.quote}&rdquo;
                 </div>
@@ -73,7 +77,7 @@ export const DirectorsDualGrid: React.FC = () => {
                 {/* Verified Professional Background Highlights */}
                 <div className="space-y-3 pt-2">
                   <span className="text-xs font-bold text-[var(--brand-primary)] uppercase tracking-wider block">
-                    Verified Experience & Leadership
+                    Professional Journey & Pedagogy
                   </span>
                   {dir.professionalJourney.slice(0, 3).map((item, pIdx) => (
                     <div key={pIdx} className="flex items-start gap-2.5 text-xs text-slate-600">
@@ -93,7 +97,7 @@ export const DirectorsDualGrid: React.FC = () => {
                   href={`/directors/${dir.slug}`}
                   className="inline-flex items-center gap-2 text-sm font-bold text-[var(--brand-accent)] hover:text-[var(--brand-accent-hover)] transition-colors group"
                 >
-                  <span>Read Full Profile & Academic Journey</span>
+                  <span>Read Full Profile →</span>
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>

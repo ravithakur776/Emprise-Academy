@@ -93,8 +93,8 @@ console.log(`✓ Journey H: Counsellor follow-up & conversion workflow validated
 // 4. Sitemap & Robots Final Audit
 console.log("\n[TEST 4] Testing Production Sitemap & Robots Final Status...");
 const sitemapUrls = sitemap();
-if (sitemapUrls.length < 30) {
-  throw new Error(`Expected at least 30 canonical routes in sitemap, got ${sitemapUrls.length}`);
+if (sitemapUrls.length < 27) {
+  throw new Error(`Expected at least 27 canonical routes in sitemap, got ${sitemapUrls.length}`);
 }
 const hasPrivacy = sitemapUrls.some((s) => s.url.endsWith("/privacy-policy"));
 const hasTerms = sitemapUrls.some((s) => s.url.endsWith("/terms"));

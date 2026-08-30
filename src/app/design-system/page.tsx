@@ -12,7 +12,7 @@ import { Badge, StatusBadge } from "@/components/ui/badge/Badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card/Card";
 import { CourseCard } from "@/components/ui/card/CourseCard";
 import { ResultCard } from "@/components/ui/card/ResultCard";
-import { FacultyCard, DirectorCard } from "@/components/ui/card/FacultyCard";
+import { DirectorCard } from "@/components/ui/card/FacultyCard";
 import { TestimonialCard, StatCard, FeatureCard, AnnouncementCard, ExamCard } from "@/components/ui/card/TestimonialCard";
 import { FormField } from "@/components/ui/form/FormField";
 import { Input, Select, Textarea, Checkbox, RadioGroup } from "@/components/ui/form/Input";
@@ -284,14 +284,17 @@ function DesignSystemContent() {
               }}
             />
 
-            {/* Faculty Card */}
-            <FacultyCard
-              faculty={{
-                id: "f1",
-                name: "Er. Senior Physics Faculty",
-                subject: "Physics",
-                designation: "Head of Physics Department",
-                experienceYearsText: "14+ Years",
+            {/* Course Card 2 */}
+            <CourseCard
+              course={{
+                id: "c2",
+                name: "Foundation Class 10",
+                targetExam: "FOUNDATION",
+                duration: "1 Year",
+                eligibleClasses: ["Class 10"],
+                description: "Concept-first coaching building analytical foundations for future competitive entrance.",
+                features: ["Daily Practice Papers", "Concept Modules", "Olympiad Workshops"],
+                slug: "foundation",
               }}
             />
           </Grid>

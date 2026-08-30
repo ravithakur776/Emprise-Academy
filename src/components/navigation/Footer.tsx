@@ -132,11 +132,6 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/faculty" className="hover:text-[var(--brand-accent)] transition-colors">
-                  Faculty Mentors
-                </Link>
-              </li>
-              <li>
                 <Link href="/scholarship" className="hover:text-[var(--brand-accent)] transition-colors">
                   Scholarship Programme
                 </Link>
