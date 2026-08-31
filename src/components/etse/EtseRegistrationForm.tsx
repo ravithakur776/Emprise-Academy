@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Container } from "@/components/ui/layout/Container";
 import { Section } from "@/components/ui/layout/Section";
@@ -12,17 +12,31 @@ import { FormField } from "@/components/ui/form/FormField";
 import { Input, Select } from "@/components/ui/form/Input";
 import { PhoneField } from "@/components/ui/form/SpecializedFields";
 import { useToast } from "@/components/ui/toast/ToastProvider";
+import { createClientBrowser } from "@/lib/supabase/client";
 import {
   Send,
   UserCheck,
   CheckCircle2,
   AlertCircle,
   FileCheck,
-  ShieldCheck,
-  Sparkles,
-  Calendar,
   Building,
+  Calendar,
+  Clock,
+  MapPin,
+  Sparkles,
 } from "lucide-react";
+
+function normalizeClassOption(raw?: string | number | null): string {
+  if (!raw) return "Class 8";
+  const str = String(raw).trim();
+  const digits = str.replace(/\D/g, "");
+  if (digits === "7") return "Class 7";
+  if (digits === "8") return "Class 8";
+  if (digits === "9") return "Class 9";
+  if (digits === "10") return "Class 10";
+  if (["Class 7", "Class 8", "Class 9", "Class 10"].includes(str)) return str;
+  return "Class 8";
+}
 
 export const EtseRegistrationForm: React.FC = () => {
   const toast = useToast();
@@ -31,7 +45,7 @@ export const EtseRegistrationForm: React.FC = () => {
   const [studentName, setStudentName] = useState("");
   const [fatherName, setFatherName] = useState("");
   const [motherName, setMotherName] = useState("");
-  const [dob, setDob] = useState("2011-05-15");
+  const [dob, setDob] = useState("");
   const [gender, setGender] = useState<"MALE" | "FEMALE" | "OTHER">("MALE");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -39,13 +53,155 @@ export const EtseRegistrationForm: React.FC = () => {
   const [schoolName, setSchoolName] = useState("");
   const [streamInterest, setStreamInterest] = useState<"FOUNDATION" | "IIT_JEE" | "NEET_UG">("FOUNDATION");
 
-  // Submission States
+  // Dynamic Exam & Centre Config (Resolved from live DB)
+  const [examId, setExamId] = useState<string | null>(null);
+  const [examCentreId, setExamCentreId] = useState<string | null>(null);
+  const [examInfo, setExamInfo] = useState({
+    title: "Emprise Talent Search Examination (ETSE) 2026",
+    examDate: "Sunday, 6 September 2026",
+    reportingTime: "09:30 AM",
+    examTime: "10:00 AM – 12:00 PM",
+    centreName: "Emprise Academy Mathura",
+    centreAddress: "Near Tera Tower, Bhuteshwar Road, Mathura",
+    pincode: "281004",
+  });
+
+  // State Management
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+  const [isAuthenticatedStudent, setIsAuthenticatedStudent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [applicationNumber, setApplicationNumber] = useState<string | null>(null);
   const [admitCardReady, setAdmitCardReady] = useState(false);
   const [admitCardToken, setAdmitCardToken] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // Load authenticated student profile and active exam config on mount
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadInitialData() {
+      try {
+        const supabase = createClientBrowser();
+
+        // 1. Fetch active exam configuration from database
+        const { data: activeExams } = await (supabase
+          .from("etse_exams") as any)
+          .select("*")
+          .eq("is_active", true)
+          .order("exam_date", { ascending: true })
+          .limit(1);
+
+        if (activeExams && activeExams.length > 0 && isMounted) {
+          const ex = activeExams[0];
+          setExamId(ex.id);
+          setExamInfo((prev) => ({
+            ...prev,
+            title: ex.title || prev.title,
+            examDate: ex.exam_date
+              ? new Date(ex.exam_date).toLocaleDateString("en-IN", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              : prev.examDate,
+            reportingTime: ex.reporting_time || "09:30 AM",
+            examTime: ex.exam_time || "10:00 AM – 12:00 PM",
+          }));
+        }
+
+        // 2. Fetch active centre configuration from database
+        const { data: activeCentres } = await (supabase
+          .from("exam_centres") as any)
+          .select("*")
+          .eq("is_active", true)
+          .limit(1);
+
+        if (activeCentres && activeCentres.length > 0 && isMounted) {
+          const ctr = activeCentres[0];
+          setExamCentreId(ctr.id);
+          setExamInfo((prev) => ({
+            ...prev,
+            centreName: ctr.centre_name || "Emprise Academy Mathura",
+            centreAddress: ctr.address || "Near Tera Tower, Bhuteshwar Road, Mathura",
+            pincode: ctr.pincode || "281004",
+          }));
+        }
+
+        // 3. Resolve authenticated user session and student profile
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (user && isMounted) {
+          setIsAuthenticatedStudent(true);
+          setEmail(user.email || "");
+
+          // Query linked student_profile
+          const { data: studentProf } = await (supabase
+            .from("student_profiles") as any)
+            .select("*")
+            .eq("user_id", user.id)
+            .maybeSingle();
+
+          // Query linked user_profile
+          const { data: userProf } = await (supabase
+            .from("user_profiles") as any)
+            .select("*")
+            .eq("id", user.id)
+            .maybeSingle();
+
+          const resolvedName =
+            studentProf?.full_name ||
+            userProf?.full_name ||
+            user.user_metadata?.full_name ||
+            "";
+
+          if (resolvedName) setStudentName(resolvedName);
+          if (studentProf?.phone || userProf?.phone) {
+            setPhone(studentProf?.phone || userProf?.phone || "");
+          }
+          if (studentProf?.dob) {
+            setDob(studentProf.dob);
+          } else if (!dob) {
+            setDob("2012-05-15");
+          }
+          if (studentProf?.gender) {
+            setGender(studentProf.gender as any);
+          }
+          if (studentProf?.current_class || userProf?.current_class) {
+            setCurrentClass(normalizeClassOption(studentProf?.current_class || userProf?.current_class));
+          }
+          if (studentProf?.school_name) {
+            setSchoolName(studentProf.school_name);
+          }
+          if (studentProf?.target_exam) {
+            if (["FOUNDATION", "IIT_JEE", "NEET_UG"].includes(studentProf.target_exam)) {
+              setStreamInterest(studentProf.target_exam as any);
+            }
+          }
+        } else if (isMounted) {
+          setIsAuthenticatedStudent(false);
+          if (!dob) {
+            setDob("2012-05-15");
+          }
+        }
+      } catch (err) {
+        console.error("[ETSE_FORM_INIT_ERROR]", err);
+      } finally {
+        if (isMounted) {
+          setIsLoadingProfile(false);
+        }
+      }
+    }
+
+    loadInitialData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,10 +215,7 @@ export const EtseRegistrationForm: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      // 1. Attempt primary ETSE registration
-      // Synthetic fallback IDs for exam and exam centre if dynamic database seeds are spinning up
-      const payload = {
-        examId: "00000000-0000-0000-0000-000000000001", // Active ETSE 2026 ID
+      const payload: any = {
         studentName: studentName.trim(),
         fatherName: fatherName.trim(),
         motherName: motherName.trim() || null,
@@ -73,8 +226,10 @@ export const EtseRegistrationForm: React.FC = () => {
         currentClass,
         schoolName: schoolName.trim(),
         streamInterest,
-        examCentreId: "00000000-0000-0000-0000-000000000002", // Mathura Main Academic Centre ID
       };
+
+      if (examId) payload.examId = examId;
+      if (examCentreId) payload.examCentreId = examCentreId;
 
       const res = await fetch("/api/etse/register", {
         method: "POST",
@@ -84,42 +239,28 @@ export const EtseRegistrationForm: React.FC = () => {
 
       const data = await res.json();
 
-      if (res.ok && data.data?.applicationNumber) {
+      if (res.ok && res.status === 201 && data.success && data.data?.applicationNumber) {
+        // Real database persistence confirmed
         setApplicationNumber(data.data.applicationNumber);
         setAdmitCardReady(!!data.data.admitCardReady);
         setAdmitCardToken(data.data.admitCardToken || null);
         setIsSubmitted(true);
         toast.success("Registration Successful", `Application ID: ${data.data.applicationNumber}`);
       } else {
-        // Fallback lead capture to guarantee candidate record is permanently logged
-        const leadRes = await fetch("/api/leads", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            studentName: studentName.trim(),
-            parentName: fatherName.trim(),
-            phone: phone.trim(),
-            email: email.trim() || null,
-            class: currentClass,
-            school: schoolName.trim(),
-            courseInterest: "ETSE_2026",
-            source: "ETSE",
-            notes: `ETSE 2026 Candidate Registration | Stream: ${streamInterest} | DOB: ${dob} | Gender: ${gender}`,
-          }),
-        });
-
-        const leadData = await leadRes.json();
-        const fallbackAppNo = leadData.data?.enquiryReferenceNumber
-          ? leadData.data.enquiryReferenceNumber.replace("ENQ-", "ETSE")
-          : `ETSE2026-${Math.floor(100000 + Math.random() * 900000)}`;
-
-        setApplicationNumber(fallbackAppNo);
-        setIsSubmitted(true);
-        toast.success("ETSE 2026 Registration Recorded", `Application ID: ${fallbackAppNo}`);
+        // Fail cleanly without fake application number generation
+        const errorMsg =
+          data.error?.message ||
+          data.message ||
+          "Registration could not be completed. Please check your information.";
+        setErrorMessage(errorMsg);
+        toast.error("Registration Failed", errorMsg);
+        setIsSubmitted(false);
       }
     } catch (err: any) {
-      setErrorMessage(err.message || "Could not complete registration. Please try again or visit our campus.");
-      toast.error("Registration Error", "Please try again or contact our Mathura desk.");
+      const msg = err?.message || "Could not complete registration. Please check your connection.";
+      setErrorMessage(msg);
+      toast.error("Registration Error", msg);
+      setIsSubmitted(false);
     } finally {
       setIsSubmitting(false);
     }
@@ -130,7 +271,7 @@ export const EtseRegistrationForm: React.FC = () => {
       <Container size="xl">
         <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl p-6 sm:p-10 lg:p-12 overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-            {/* Left Column: Reassurance & Exam Card */}
+            {/* Left Column: Reassurance & Canonical Exam Card */}
             <div className="lg:col-span-5 space-y-6">
               <div>
                 <Badge variant="gold" size="md" className="mb-3">
@@ -160,14 +301,25 @@ export const EtseRegistrationForm: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-4 rounded-2xl bg-linear-to-br from-slate-900 to-[var(--brand-primary)] text-white text-xs space-y-2 border border-slate-800">
+              {/* Canonical Exam Schedule Card */}
+              <div className="p-5 rounded-2xl bg-linear-to-br from-slate-900 to-[var(--brand-primary)] text-white text-xs space-y-2.5 border border-slate-800 shadow-md">
                 <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                  <span className="font-bold text-amber-300">Exam Date</span>
-                  <span>Sunday, 6 September 2026</span>
+                  <span className="font-bold text-amber-300 flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-amber-300" /> Exam Date
+                  </span>
+                  <span className="font-semibold">{examInfo.examDate}</span>
                 </div>
                 <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                  <span className="font-bold text-slate-300">Exam Center</span>
-                  <span>Emprise Academy Campus, Mathura</span>
+                  <span className="font-bold text-slate-300 flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-slate-300" /> Exam Schedule
+                  </span>
+                  <span>{examInfo.examTime} (Reporting: {examInfo.reportingTime})</span>
+                </div>
+                <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                  <span className="font-bold text-slate-300 flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-slate-300" /> Exam Centre
+                  </span>
+                  <span className="font-semibold">{examInfo.centreName}</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-emerald-400">Application Fee</span>
@@ -176,9 +328,27 @@ export const EtseRegistrationForm: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Column: Registration Form / Success View */}
+            {/* Right Column: Registration Form / Skeleton / Success View */}
             <div className="lg:col-span-7 bg-slate-50/80 rounded-2xl border border-slate-200 p-6 sm:p-8">
-              {isSubmitted ? (
+              {isLoadingProfile ? (
+                <div className="space-y-4 py-4 animate-pulse">
+                  <div className="h-6 bg-slate-200 rounded-md w-1/3 mb-4" />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="h-10 bg-slate-200 rounded-xl" />
+                    <div className="h-10 bg-slate-200 rounded-xl" />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="h-10 bg-slate-200 rounded-xl" />
+                    <div className="h-10 bg-slate-200 rounded-xl" />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="h-10 bg-slate-200 rounded-xl" />
+                    <div className="h-10 bg-slate-200 rounded-xl" />
+                    <div className="h-10 bg-slate-200 rounded-xl" />
+                  </div>
+                  <div className="h-12 bg-slate-200 rounded-xl mt-6" />
+                </div>
+              ) : isSubmitted ? (
                 <div className="text-center py-6 space-y-5 animate-fade-in">
                   <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
                     <UserCheck className="w-8 h-8" />
@@ -209,7 +379,7 @@ export const EtseRegistrationForm: React.FC = () => {
                     </div>
                     <div className="flex justify-between border-b border-slate-100 pb-2">
                       <span className="text-slate-400">Exam Date:</span>
-                      <span className="font-bold text-amber-600">6 September 2026 (10:00 AM)</span>
+                      <span className="font-bold text-amber-600">{examInfo.examDate} ({examInfo.examTime})</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Status:</span>
@@ -238,20 +408,13 @@ export const EtseRegistrationForm: React.FC = () => {
                   </div>
 
                   <div className="pt-2 flex flex-wrap justify-center gap-3">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => {
-                        setIsSubmitted(false);
-                        setStudentName("");
-                        setPhone("");
-                        setSchoolName("");
-                      }}
-                    >
-                      Register Another Candidate
-                    </Button>
-                    <Link href="/scholarship">
+                    <Link href="/student/dashboard">
                       <Button variant="primary" size="sm">
+                        Go to Student Dashboard
+                      </Button>
+                    </Link>
+                    <Link href="/scholarship">
+                      <Button variant="outline" size="sm">
                         View Scholarship Slabs
                       </Button>
                     </Link>
@@ -259,17 +422,24 @@ export const EtseRegistrationForm: React.FC = () => {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="border-b border-slate-200 pb-3 mb-2">
-                    <h3 className="text-lg font-bold text-[var(--brand-primary)]">
-                      Candidate Details Form
-                    </h3>
-                    <p className="text-xs text-slate-500">
-                      Please enter accurate information as per your school identity card.
-                    </p>
+                  <div className="border-b border-slate-200 pb-3 mb-2 flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg font-bold text-[var(--brand-primary)]">
+                        Candidate Details Form
+                      </h3>
+                      <p className="text-xs text-slate-500">
+                        Please enter accurate information as per your school identity card.
+                      </p>
+                    </div>
+                    {isAuthenticatedStudent && (
+                      <Badge variant="accent" size="sm" className="hidden sm:inline-flex">
+                        <Sparkles className="w-3 h-3 mr-1" /> Profile Synced
+                      </Badge>
+                    )}
                   </div>
 
                   {errorMessage && (
-                    <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-700 flex items-start gap-2">
+                    <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-700 flex items-start gap-2 animate-fade-in">
                       <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
                       <span>{errorMessage}</span>
                     </div>
@@ -279,7 +449,7 @@ export const EtseRegistrationForm: React.FC = () => {
                     <FormField label="Student Full Name" required htmlFor="etse-name">
                       <Input
                         id="etse-name"
-                        placeholder="e.g. Aarav Verma"
+                        placeholder="Full Name as per School ID"
                         value={studentName}
                         onChange={(e) => setStudentName(e.target.value)}
                         required
@@ -289,7 +459,7 @@ export const EtseRegistrationForm: React.FC = () => {
                     <FormField label="Father's / Guardian's Name" required htmlFor="etse-father">
                       <Input
                         id="etse-father"
-                        placeholder="e.g. Sunil Verma"
+                        placeholder="Father / Guardian Full Name"
                         value={fatherName}
                         onChange={(e) => setFatherName(e.target.value)}
                         required
@@ -307,11 +477,11 @@ export const EtseRegistrationForm: React.FC = () => {
                       />
                     </FormField>
 
-                    <FormField label="Email Address (Optional)" htmlFor="etse-email">
+                    <FormField label="Email Address" htmlFor="etse-email">
                       <Input
                         id="etse-email"
                         type="email"
-                        placeholder="e.g. student@example.com"
+                        placeholder="registered.email@example.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                       />
@@ -361,7 +531,7 @@ export const EtseRegistrationForm: React.FC = () => {
                     <FormField label="School Name & City" required htmlFor="etse-school">
                       <Input
                         id="etse-school"
-                        placeholder="e.g. St. Dominic's / Mathura"
+                        placeholder="School Name, City"
                         value={schoolName}
                         onChange={(e) => setSchoolName(e.target.value)}
                         required
@@ -382,9 +552,12 @@ export const EtseRegistrationForm: React.FC = () => {
                     </FormField>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-600 flex items-center gap-2">
-                    <Building className="w-4 h-4 text-[var(--brand-accent)] shrink-0" />
-                    <span>Designated Exam Centre: <strong>Emprise Academy Campus, Mathura</strong></span>
+                  <div className="p-3 rounded-xl bg-slate-100 border border-slate-200 text-xs text-slate-700 flex items-start gap-2.5">
+                    <Building className="w-4 h-4 text-[var(--brand-accent)] shrink-0 mt-0.5" />
+                    <div>
+                      <span>Designated Exam Centre: <strong>{examInfo.centreName}</strong></span>
+                      <p className="text-[11px] text-slate-500 mt-0.5">{examInfo.centreAddress}, PIN {examInfo.pincode}</p>
+                    </div>
                   </div>
 
                   <p className="text-[11px] text-slate-400">

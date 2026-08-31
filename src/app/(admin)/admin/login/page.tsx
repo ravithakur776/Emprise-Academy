@@ -47,15 +47,9 @@ function AdminLoginContent() {
       }
 
       toast.success("Authenticated", "Welcome to Emprise Academy Admin Desk.");
-      router.push(redirectTo);
+      router.refresh();
+      router.replace(redirectTo);
     } catch (err: any) {
-      // In development fallback for demo
-      if (process.env.NODE_ENV !== "production" && password === "admin123") {
-        toast.success("Admin Demo Login", "Redirecting to admin desk...");
-        router.push(redirectTo);
-        return;
-      }
-
       setErrorMessage(err.message || "Invalid administrative credentials.");
       toast.error("Authentication Failed", err.message || "Access denied.");
     } finally {
@@ -79,7 +73,7 @@ function AdminLoginContent() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-slate-900 py-8 px-6 sm:px-10 shadow-2xl rounded-3xl border border-slate-800 space-y-6">
+        <div className="bg-slate-900 py-6 sm:py-8 px-4 sm:px-10 shadow-2xl rounded-3xl border border-slate-800 space-y-6">
           {errorMessage && (
             <div className="p-3.5 rounded-xl bg-rose-950/60 border border-rose-800 text-xs text-rose-300 flex items-start gap-2.5">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-400" />

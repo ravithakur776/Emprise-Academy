@@ -6,6 +6,7 @@ export interface DirectorJsonLdProps {
   jobTitle: string;
   description: string;
   url: string;
+  image?: string | null;
   alumniOf?: string;
   knowsAbout?: string[];
   breadcrumbs: { name: string; item: string }[];
@@ -16,6 +17,7 @@ export const DirectorJsonLd: React.FC<DirectorJsonLdProps> = ({
   jobTitle,
   description,
   url,
+  image,
   alumniOf = "University of Derby, England, U.K.",
   knowsAbout = ["IIT-JEE Coaching", "Mathematics", "Physics", "Engineering Education"],
   breadcrumbs,
@@ -36,27 +38,39 @@ export const DirectorJsonLd: React.FC<DirectorJsonLdProps> = ({
     postalAddress.postalCode = business.address.postal_code;
   }
 
+  const imageUrl = image
+    ? image.startsWith("http")
+      ? image
+      : `${business.website_url.replace(/\/$/, "")}${image.startsWith("/") ? "" : "/"}${image}`
+    : undefined;
+
+  const personNode: Record<string, any> = {
+    "@type": "Person",
+    name: name,
+    jobTitle: jobTitle,
+    description: description,
+    url: url,
+    alumniOf: {
+      "@type": "EducationalOrganization",
+      name: alumniOf,
+    },
+    worksFor: {
+      "@type": "EducationalOrganization",
+      name: business.academy_name,
+      url: business.website_url,
+      address: postalAddress,
+    },
+    knowsAbout: knowsAbout,
+  };
+
+  if (imageUrl) {
+    personNode.image = imageUrl;
+  }
+
   const schema = {
     "@context": "https://schema.org",
     "@graph": [
-      {
-        "@type": "Person",
-        name: name,
-        jobTitle: jobTitle,
-        description: description,
-        url: url,
-        alumniOf: {
-          "@type": "EducationalOrganization",
-          name: alumniOf,
-        },
-        worksFor: {
-          "@type": "EducationalOrganization",
-          name: business.academy_name,
-          url: business.website_url,
-          address: postalAddress,
-        },
-        knowsAbout: knowsAbout,
-      },
+      personNode,
       {
         "@type": "BreadcrumbList",
         itemListElement: breadcrumbs.map((bc, idx) => ({

@@ -28,6 +28,14 @@ export const metadata: Metadata = {
     siteName: "Emprise Academy",
     locale: "en_IN",
     type: "profile",
+    images: [
+      {
+        url: "https://empriseacademy.com/images/directors/sushil-dagur.jpg",
+        width: 819,
+        height: 1024,
+        alt: "Sushil Dagur — Director, Educationist & Academic Entrepreneur at Emprise Academy",
+      },
+    ],
   },
 };
 
@@ -41,6 +49,7 @@ export default function SushilDagurProfilePage() {
         jobTitle={sushilDagur.designation}
         description={sushilDagur.leadershipPerspective}
         url="https://empriseacademy.com/directors/sushil-dagur"
+        image={sushilDagur.photoUrl}
         alumniOf={sushilDagur.almaMater}
         knowsAbout={["Curriculum Design", "Academic Leadership", "Physics Pedagogy", "Engineering Education"]}
         breadcrumbs={[

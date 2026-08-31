@@ -49,12 +49,6 @@ function ResetPasswordContent() {
         router.push("/student/login");
       }, 2500);
     } catch (err: any) {
-      if (process.env.NODE_ENV !== "production") {
-        setIsSuccess(true);
-        toast.success("Password Updated", "Redirecting to login...");
-        setTimeout(() => router.push("/student/login"), 1500);
-        return;
-      }
       setErrorMessage(err.message || "Failed to update password. Link may have expired.");
       toast.error("Error", err.message || "Could not update password.");
     } finally {

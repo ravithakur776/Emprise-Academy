@@ -44,8 +44,12 @@ export const DirectorPhoto: React.FC<DirectorPhotoProps> = ({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={photoUrl}
-          alt={`${name} — Director at Emprise Academy`}
-          className="w-full h-full object-cover object-center"
+          alt={
+            designation
+              ? `${name} — ${designation} at Emprise Academy`
+              : `${name} — Director at Emprise Academy`
+          }
+          className="w-full h-full object-cover object-top"
           loading="lazy"
         />
       </div>

@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/form/Input";
 import { PasswordField } from "@/components/ui/form/SpecializedFields";
 import { Button } from "@/components/ui/button/Button";
 import { createClientBrowser } from "@/lib/supabase/client";
+import { resolveStudentLoginEmail, verifyStudentPortalAccess } from "@/services/auth.service";
 import { EmpriseLogo } from "@/components/brand/EmpriseLogo";
 import { LogIn, ArrowRight, AlertCircle, ShieldCheck, Sparkles } from "lucide-react";
 
@@ -17,19 +18,48 @@ function StudentLoginContent() {
   const searchParams = useSearchParams();
   const toast = useToast();
 
-  const [identifier, setIdentifier] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const redirectTo = searchParams.get("redirectTo") || "/student/dashboard";
+  const isConfigured = Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
+    !process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder.supabase.co") &&
+    !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY.includes("placeholder")
+  );
+
+  const rawRedirect = searchParams.get("redirectTo") || "/student/dashboard";
+  let cleanRedirect = "/student/dashboard";
+  if (rawRedirect.startsWith("/student") && !rawRedirect.startsWith("//") && !rawRedirect.includes("://")) {
+    cleanRedirect = rawRedirect;
+  }
+
+  // If already authenticated, forward to dashboard
+  React.useEffect(() => {
+    const supabase = createClientBrowser();
+    supabase.auth.getUser().then(({ data }) => {
+      if (data?.user) {
+        window.location.href = cleanRedirect;
+      }
+    });
+  }, [cleanRedirect]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
-    if (!identifier.trim() || !password) {
-      toast.error("Required Fields Missing", "Please enter your registered email/phone and password.");
+    const cleanEmail = email.trim().toLowerCase();
+    if (!cleanEmail || !password) {
+      toast.error("Required Fields Missing", "Please enter your registered email address and password.");
+      return;
+    }
+
+    if (!isConfigured) {
+      const configMsg = "Backend Authentication Not Configured: Supabase API URL and Anon Key are missing or unconfigured in .env.local. Please configure your live Supabase credentials to enable student login.";
+      setErrorMessage(configMsg);
+      toast.error("Configuration Required", "Supabase credentials are not configured in .env.local.");
       return;
     }
 
@@ -38,36 +68,102 @@ function StudentLoginContent() {
     try {
       const supabase = createClientBrowser();
 
-      // Normalize email vs mobile format
-      const email = identifier.includes("@")
-        ? identifier.trim().toLowerCase()
-        : `${identifier.replace(/\D/g, "")}@student.empriseacademy.com`;
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[AUTH_REQUEST_STARTED]", {
+          step: "SIGN_IN_WITH_PASSWORD",
+          endpoint: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/v1/token?grant_type=password`,
+          method: "POST",
+          email: cleanEmail,
+        });
+      }
 
+      // 1. Sign in with Supabase Auth
       const { data, error } = await supabase.auth.signInWithPassword({
-        email,
+        email: cleanEmail,
         password,
       });
 
       if (error) {
-        // Provide friendly message
-        if (error.message.includes("Invalid login credentials")) {
+        if (process.env.NODE_ENV !== "production") {
+          console.warn("[AUTH_REQUEST_FAILED]", {
+            step: "SIGN_IN_WITH_PASSWORD",
+            errorName: String(error?.name || "AuthApiError"),
+            errorMessage: String(error?.message || "Sign in failed"),
+            status: (error as any)?.status || 400,
+            errorCode: (error as any)?.code || undefined,
+          });
+        }
+
+        const msgLower = (error.message || "").toLowerCase();
+        if (
+          msgLower.includes("failed to fetch") ||
+          msgLower.includes("networkerror") ||
+          msgLower.includes("fetch failed")
+        ) {
+          throw new Error("Unable to reach the authentication server. Please check your network connection or verify configuration.");
+        }
+
+        if (msgLower.includes("invalid login credentials")) {
           throw new Error("Invalid email or password. Please verify your credentials.");
+        }
+        if (msgLower.includes("email not confirmed")) {
+          throw new Error("Your email address has not been confirmed yet. Please verify your inbox.");
         }
         throw new Error(error.message);
       }
 
-      toast.success("Welcome back!", "Redirecting to your student dashboard...");
-      router.push(redirectTo);
-    } catch (err: any) {
-      // In development / demo mode, allow seamless login for testing
-      if (process.env.NODE_ENV !== "production" && password === "demo123") {
-        toast.success("Demo Login Successful", "Redirecting to student dashboard...");
-        router.push(redirectTo);
-        return;
+      // 2. Verify Session & User
+      if (!data.session || !data.user || !data.user.id) {
+        throw new Error("Unable to establish your session. Please try again.");
       }
 
-      setErrorMessage(err.message || "Failed to log in. Please check your credentials.");
-      toast.error("Login Failed", err.message || "Invalid credentials");
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[AUTH_SESSION_ESTABLISHED]", {
+          step: "VERIFY_PORTAL_ACCESS",
+          userId: data.user.id,
+        });
+      }
+
+      // 3. Verify student role and linked student profile
+      const accessVerification = await verifyStudentPortalAccess(
+        supabase,
+        data.user.id,
+        data.user.user_metadata
+      );
+
+      if (!accessVerification.isAllowed) {
+        await supabase.auth.signOut();
+        throw new Error(accessVerification.errorMessage || "Your student account is not fully configured. Please contact the academy.");
+      }
+
+      // 4. Success Toast & Navigation
+      toast.success("Signed in successfully.");
+      router.refresh();
+      router.replace(cleanRedirect);
+    } catch (err: any) {
+      if (process.env.NODE_ENV !== "production") {
+        console.error("[AUTH_FLOW_ERROR]", {
+          step: "student-login-flow",
+          errorName: String(err?.name || "Error"),
+          errorMessage: String(err?.message || err || "Authentication flow failed"),
+          errorCode: (err as any)?.code || undefined,
+          status: (err as any)?.status || undefined,
+        });
+      }
+
+      const msgLower = (err?.message || "").toLowerCase();
+      let msg = err?.message || "Failed to log in. Please check your credentials.";
+
+      if (
+        msgLower.includes("failed to fetch") ||
+        msgLower.includes("networkerror") ||
+        msgLower.includes("fetch failed")
+      ) {
+        msg = "Unable to reach the authentication server. Please check your network connection or verify configuration.";
+      }
+
+      setErrorMessage(msg);
+      toast.error("Login Failed", msg);
     } finally {
       setIsLoading(false);
     }
@@ -89,7 +185,19 @@ function StudentLoginContent() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-6 sm:px-10 shadow-xl rounded-3xl border border-slate-200 space-y-6">
+        <div className="bg-white py-6 sm:py-8 px-4 sm:px-10 shadow-xl rounded-3xl border border-slate-200 space-y-6">
+          {!isConfigured && process.env.NODE_ENV !== "production" && (
+            <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-800 flex items-start gap-2.5">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-amber-600" />
+              <div>
+                <p className="font-semibold">Supabase Backend Unconfigured</p>
+                <p className="mt-0.5 text-[11px] text-amber-700 leading-relaxed">
+                  Real authentication requires configuring <code className="bg-amber-100 px-1 py-0.5 rounded font-mono">NEXT_PUBLIC_SUPABASE_URL</code> and <code className="bg-amber-100 px-1 py-0.5 rounded font-mono">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> in <code className="bg-amber-100 px-1 py-0.5 rounded font-mono">.env.local</code>. See <code className="bg-amber-100 px-1 py-0.5 rounded font-mono">docs/SUPABASE_SETUP.md</code> for setup instructions.
+                </p>
+              </div>
+            </div>
+          )}
+
           {errorMessage && (
             <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-700 flex items-start gap-2.5">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
@@ -98,14 +206,15 @@ function StudentLoginContent() {
           )}
 
           <form onSubmit={handleLogin} className="space-y-4">
-            <FormField label="Email Address or Mobile Number" required htmlFor="student-id">
+            <FormField label="Registered Email Address" required htmlFor="student-email">
               <Input
-                id="student-id"
-                placeholder="e.g. yourname@email.com or 10-digit mobile"
-                value={identifier}
-                onChange={(e) => setIdentifier(e.target.value)}
+                id="student-email"
+                type="email"
+                placeholder="e.g. student@empriseacademy.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
-                autoComplete="username"
+                autoComplete="username email"
               />
             </FormField>
 

@@ -5,3 +5,5 @@ export * from "./admit-card.service";
 export * from "./lead.service";
 export * from "./cms.service";
 export * from "./storage.service";
+export * from "./auth.service";
+export * from "./student-portal.service";

@@ -146,7 +146,7 @@ export default function AdminAdmitCardDetailPage({
                 </div>
               </div>
 
-              <div className="text-right">
+              <div className="text-left sm:text-right">
                 <span className="text-[10px] font-bold text-slate-400 block uppercase">Roll Number</span>
                 <strong className="text-lg sm:text-xl font-black font-mono text-[var(--brand-primary)]">
                   {card.rollNumber}

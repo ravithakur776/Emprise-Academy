@@ -13,15 +13,15 @@ export interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
 
 const variantStyles: Record<HeadingVariant, string> = {
   display:
-    "text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.1] text-[var(--brand-primary)]",
+    "text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15] text-[var(--brand-primary)]",
   h1:
-    "text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.2] text-[var(--brand-primary)]",
+    "text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.2] text-[var(--brand-primary)]",
   h2:
-    "text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight leading-[1.25] text-[var(--brand-primary)]",
+    "text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight leading-[1.25] text-[var(--brand-primary)]",
   h3:
-    "text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight leading-[1.3] text-[var(--brand-primary)]",
+    "text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight leading-[1.3] text-[var(--brand-primary)]",
   h4:
-    "text-lg sm:text-xl font-semibold tracking-tight leading-[1.35] text-[var(--brand-primary)]",
+    "text-base sm:text-lg md:text-xl font-semibold tracking-tight leading-[1.35] text-[var(--brand-primary)]",
 };
 
 const colorStyles: Record<NonNullable<HeadingProps["color"]>, string> = {

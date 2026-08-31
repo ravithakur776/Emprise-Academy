@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const etseRegistrationSchema = z.object({
-  examId: z.string().uuid("Invalid Exam ID"),
+  examId: z.string().uuid("Invalid Exam ID").optional().nullable(),
   studentName: z.string().trim().min(2, "Student name must be at least 2 characters").max(150),
   fatherName: z.string().trim().min(2, "Father's name is required").max(150),
   motherName: z.string().trim().max(150).optional().nullable(),
@@ -12,7 +12,7 @@ export const etseRegistrationSchema = z.object({
   currentClass: z.string().min(1, "Please select your current class"),
   schoolName: z.string().trim().min(2, "School name is required").max(255),
   streamInterest: z.enum(["IIT_JEE", "NEET_UG", "FOUNDATION"]),
-  examCentreId: z.string().uuid("Please select a valid exam centre"),
+  examCentreId: z.string().uuid("Please select a valid exam centre").optional().nullable(),
   photoUrl: z.string().url("Invalid photo URL").optional().nullable(),
 });
 

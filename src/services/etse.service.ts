@@ -18,36 +18,79 @@ export class ETSEService {
   ): Promise<RegistrationResult> {
     const adminSupabase = createAdminClient();
 
-    // 1. Verify Exam exists and registration window is open
-    const { data: exam, error: examError } = await (adminSupabase
-      .from("etse_exams") as any)
-      .select("*")
-      .eq("id", input.examId)
-      .eq("is_active", true)
-      .single();
-
-    if (examError || !exam) {
-      throw new NotFoundError("ETSE Exam", input.examId);
+    // 1. Verify and resolve active ETSE Exam
+    let exam: any = null;
+    if (input.examId) {
+      const { data: exById } = await (adminSupabase
+        .from("etse_exams") as any)
+        .select("*")
+        .eq("id", input.examId)
+        .eq("is_active", true)
+        .maybeSingle();
+      exam = exById;
     }
 
+    if (!exam) {
+      // Resolve canonical active ETSE2026 exam record
+      const { data: exByCode } = await (adminSupabase
+        .from("etse_exams") as any)
+        .select("*")
+        .eq("is_active", true)
+        .order("exam_date", { ascending: true })
+        .limit(1)
+        .maybeSingle();
+      exam = exByCode;
+    }
+
+    if (!exam) {
+      throw new NotFoundError("ETSE Exam", input.examId || "ETSE2026");
+    }
+
+    // Verify registration window is open
     const today = new Date().toISOString().split("T")[0];
     if (today < exam.registration_start_date || today > exam.registration_end_date) {
       throw new ValidationError("Registrations for this examination are currently closed.");
     }
 
-    // 2. Verify Exam Centre exists and is active
-    const { data: centre, error: centreError } = await (adminSupabase
-      .from("exam_centres") as any)
-      .select("*")
-      .eq("id", input.examCentreId)
-      .eq("is_active", true)
-      .single();
+    // Verify class eligibility
+    const studentClassClean = input.currentClass.trim();
+    const classDigits = studentClassClean.replace(/\D/g, "");
+    const allowedClasses = (exam.eligible_classes || []).map((c: string) => c.replace(/\D/g, ""));
 
-    if (centreError || !centre) {
-      throw new NotFoundError("Exam Centre", input.examCentreId);
+    if (classDigits && allowedClasses.length > 0 && !allowedClasses.includes(classDigits)) {
+      throw new ValidationError(
+        `Students of ${studentClassClean} are not eligible for ${exam.title}. Eligible classes: ${exam.eligible_classes.join(", ")}`
+      );
     }
 
-    // 3. Resolve or Create Student Profile
+    // 2. Verify and resolve active Exam Centre
+    let centre: any = null;
+    if (input.examCentreId) {
+      const { data: ctrById } = await (adminSupabase
+        .from("exam_centres") as any)
+        .select("*")
+        .eq("id", input.examCentreId)
+        .eq("is_active", true)
+        .maybeSingle();
+      centre = ctrById;
+    }
+
+    if (!centre) {
+      // Resolve canonical active Mathura centre
+      const { data: ctrDefault } = await (adminSupabase
+        .from("exam_centres") as any)
+        .select("*")
+        .eq("is_active", true)
+        .limit(1)
+        .maybeSingle();
+      centre = ctrDefault;
+    }
+
+    if (!centre) {
+      throw new NotFoundError("Exam Centre", input.examCentreId || "Default Mathura Centre");
+    }
+
+    // 3. Resolve or Link Student Profile
     let studentProfileId: string | null = null;
     let isNewAccountClaimRequired = false;
     let rawClaimToken: string | null = null;
@@ -64,12 +107,12 @@ export class ETSEService {
       studentProfileId = profile?.id || null;
     }
 
-    // If studentProfileId exists, check duplicate registration for this specific exam
+    // Check duplicate registration for this specific exam
     if (studentProfileId) {
       const { data: existingReg } = await (adminSupabase
         .from("etse_registrations") as any)
         .select("id, application_number")
-        .eq("exam_id", input.examId)
+        .eq("exam_id", exam.id)
         .eq("student_profile_id", studentProfileId)
         .maybeSingle();
 
@@ -80,12 +123,12 @@ export class ETSEService {
         );
       }
     } else {
-      // Flow B: New student without active login session
+      // Flow B: Candidate without active user session
       // Check duplicate by Phone + DOB + Exam
       const { data: duplicateCheck } = await (adminSupabase
         .from("etse_registrations") as any)
         .select("id, application_number")
-        .eq("exam_id", input.examId)
+        .eq("exam_id", exam.id)
         .eq("phone", input.phone)
         .eq("dob", input.dob)
         .maybeSingle();
@@ -123,7 +166,7 @@ export class ETSEService {
             state: "Uttar Pradesh",
           })
           .select("id")
-          .single();
+          .maybeSingle();
 
         studentProfileId = newProfile?.id || null;
       }
@@ -138,34 +181,36 @@ export class ETSEService {
     let applicationNumber: string;
     const { data: rpcAppNo, error: rpcErr } = await (adminSupabase as any).rpc(
       "get_next_etse_application_number",
-      { p_exam_id: input.examId }
+      { p_exam_id: exam.id }
     );
 
     if (rpcErr || !rpcAppNo) {
-      // Fallback: Query counter directly with atomic increment
-      const { data: counter } = await (adminSupabase
+      // Query counter directly with atomic increment
+      const { data: counter, error: counterErr } = await (adminSupabase
         .from("exam_application_counters") as any)
         .upsert(
-          { exam_id: input.examId, current_sequence: 1 },
+          { exam_id: exam.id, current_sequence: 1 },
           { onConflict: "exam_id" }
         )
         .select("current_sequence")
         .single();
 
-      const seq = counter?.current_sequence || Math.floor(100000 + Math.random() * 900000);
-      applicationNumber = `ETSE${exam.year}-${String(seq).padStart(6, "0")}`;
+      if (counterErr || !counter?.current_sequence) {
+        throw new Error(`Failed to generate application sequence number: ${rpcErr?.message || counterErr?.message}`);
+      }
+      applicationNumber = `ETSE${exam.year}-${String(counter.current_sequence).padStart(6, "0")}`;
     } else {
       applicationNumber = rpcAppNo;
     }
 
-    // 5. Create ETSE Registration
+    // 5. Insert ETSE Registration into public.etse_registrations
     const { data: registration, error: regError } = await (adminSupabase
       .from("etse_registrations") as any)
       .insert({
         application_number: applicationNumber,
         student_profile_id: studentProfileId,
         user_id: userId || null,
-        exam_id: input.examId,
+        exam_id: exam.id,
         student_name: input.studentName,
         father_name: input.fatherName,
         mother_name: input.motherName || null,
@@ -176,7 +221,7 @@ export class ETSEService {
         current_class: input.currentClass,
         school_name: input.schoolName,
         stream_interest: input.streamInterest,
-        exam_centre_id: input.examCentreId,
+        exam_centre_id: centre.id,
         photo_url: input.photoUrl || null,
         status: "REGISTERED",
         claim_token_hash: claimTokenHash,
@@ -188,8 +233,8 @@ export class ETSEService {
       .select("*")
       .single();
 
-    if (regError || !registration) {
-      throw new Error(`Failed to create ETSE registration: ${regError?.message}`);
+    if (regError || !registration || !registration.id) {
+      throw new Error(`Failed to insert ETSE registration: ${regError?.message}`);
     }
 
     // 6. Generate Idempotent Admit Card with historical snapshot data
@@ -202,6 +247,10 @@ export class ETSEService {
       }
     );
 
+    if (!admitCard || (!(admitCard as any).roll_number && !(admitCard as any).rollNumber)) {
+      throw new Error("Admit card generation failed after registration insert.");
+    }
+
     // 7. Log administrative audit event
     await logAuditEvent({
       userId: userId || null,
@@ -209,8 +258,8 @@ export class ETSEService {
       entityName: "etse_registrations",
       entityId: registration.id,
       metadata: {
-        applicationNumber,
-        examId: input.examId,
+        applicationNumber: registration.application_number,
+        examId: exam.id,
         studentProfileId,
         isNewAccountClaimRequired,
       },
@@ -219,7 +268,7 @@ export class ETSEService {
     return {
       registration,
       admitCard,
-      applicationNumber,
+      applicationNumber: registration.application_number,
       claimToken: rawClaimToken,
       isNewAccountClaimRequired,
     };

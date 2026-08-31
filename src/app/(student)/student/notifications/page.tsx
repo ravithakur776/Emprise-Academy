@@ -1,55 +1,153 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { StudentLayout } from "@/components/student/StudentLayout";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
-import { Bell, CheckCircle2, Clock, Sparkles, BookOpen, AlertCircle } from "lucide-react";
+import { createClientBrowser } from "@/lib/supabase/client";
+import { Bell, CheckCircle2, Clock, Sparkles, BookOpen, AlertCircle, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function StudentNotificationsPage() {
-  const [notifications, setNotifications] = useState([
-    {
-      id: "notif-1",
-      title: "ETSE 2026 Registration Confirmed",
-      message: "Your application for ETSE 2026 (Application ID: ETSE2026-000100) has been verified. Exam is scheduled for Sunday, 6 September 2026.",
-      date: "26 August 2026",
-      isRead: false,
-      type: "REGISTRATION",
-    },
-    {
-      id: "notif-2",
-      title: "Admit Card Generation Schedule",
-      message: "Digital admit cards with assigned examination roll numbers will be released 10 days prior to the examination date.",
-      date: "26 August 2026",
-      isRead: false,
-      type: "ADMIT_CARD",
-    },
-    {
-      id: "notif-3",
-      title: "Foundation Batch Orientation",
-      message: "Foundation classroom orientation webinar recording is now available in your academic document portal.",
-      date: "20 August 2026",
-      isRead: true,
-      type: "ACADEMIC",
-    },
-  ]);
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [studentIdentity, setStudentIdentity] = useState({
+    name: "Student",
+    class: "Class 12",
+    applicationNo: "ETSE Portal",
+  });
+  const [notifications, setNotifications] = useState<any[]>([]);
 
-  const markAllAsRead = () => {
-    setNotifications(notifications.map((n) => ({ ...n, isRead: true })));
+  const loadNotifications = async () => {
+    try {
+      setLoading(true);
+      const supabase = createClientBrowser();
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (authError || !user) {
+        router.push("/student/login?redirectTo=%2Fstudent%2Fnotifications");
+        return;
+      }
+
+      // Fetch student profile
+      const { data: studentProf } = await (supabase
+        .from("student_profiles") as any)
+        .select("*")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      const { data: userProf } = await (supabase
+        .from("user_profiles") as any)
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      const name =
+        studentProf?.full_name ||
+        userProf?.full_name ||
+        user.user_metadata?.full_name ||
+        user.email?.split("@")[0] ||
+        "Student";
+      const currentClass = studentProf?.current_class || "Class 12";
+
+      const { data: appRecord } = await (supabase
+        .from("etse_registrations") as any)
+        .select("application_number")
+        .eq("user_id", user.id)
+        .limit(1)
+        .maybeSingle();
+
+      setStudentIdentity({
+        name,
+        class: currentClass,
+        applicationNo: appRecord?.application_number || studentProf?.admission_number || "ETSE Portal",
+      });
+
+      // Query notifications
+      const { data: notifs } = await (supabase
+        .from("notifications") as any)
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+      if (notifs && notifs.length > 0) {
+        setNotifications(
+          notifs.map((n: any) => ({
+            id: n.id,
+            title: n.title,
+            message: n.message,
+            date: new Date(n.created_at).toLocaleDateString("en-IN", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            }),
+            isRead: n.is_read,
+            type: n.type || "GENERAL",
+          }))
+        );
+      } else {
+        setNotifications([]);
+      }
+    } catch (err) {
+      console.error("[NOTIFICATIONS_LOAD_ERROR]", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const markAsRead = (id: string) => {
-    setNotifications(
-      notifications.map((n) => (n.id === id ? { ...n, isRead: true } : n))
+  useEffect(() => {
+    loadNotifications();
+  }, []);
+
+  const markAllAsRead = async () => {
+    try {
+      const supabase = createClientBrowser();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await (supabase.from("notifications") as any)
+          .update({ is_read: true })
+          .eq("user_id", user.id);
+      }
+      setNotifications(notifications.map((n) => ({ ...n, isRead: true })));
+    } catch {
+      // Safe fallback
+    }
+  };
+
+  const markAsRead = async (id: string) => {
+    try {
+      const supabase = createClientBrowser();
+      await (supabase.from("notifications") as any)
+        .update({ is_read: true })
+        .eq("id", id);
+      setNotifications(
+        notifications.map((n) => (n.id === id ? { ...n, isRead: true } : n))
+      );
+    } catch {
+      // Safe fallback
+    }
+  };
+
+  if (loading) {
+    return (
+      <StudentLayout>
+        <div className="space-y-6 max-w-4xl mx-auto animate-pulse">
+          <div className="h-8 bg-slate-200 rounded-md w-1/3" />
+          <div className="bg-white rounded-3xl border border-slate-200 p-8 h-64" />
+        </div>
+      </StudentLayout>
     );
-  };
+  }
 
   return (
     <StudentLayout
-      studentName="Aarav Verma"
-      studentClass="Class 8"
-      applicationNo="ETSE2026-000100"
+      studentName={studentIdentity.name}
+      studentClass={studentIdentity.class}
+      applicationNo={studentIdentity.applicationNo}
     >
       <div className="space-y-6 max-w-4xl mx-auto">
         {/* Header */}
@@ -63,55 +161,49 @@ export default function StudentNotificationsPage() {
             </h1>
           </div>
 
-          <Button variant="outline" size="sm" onClick={markAllAsRead}>
-            Mark All as Read
-          </Button>
+          {notifications.length > 0 && (
+            <Button variant="outline" size="sm" onClick={markAllAsRead}>
+              Mark All as Read
+            </Button>
+          )}
         </div>
 
         {/* Notifications List */}
-        <div className="space-y-3">
-          {notifications.map((notif) => (
-            <div
-              key={notif.id}
-              onClick={() => markAsRead(notif.id)}
-              className={cn(
-                "p-5 rounded-2xl border transition-all cursor-pointer flex items-start gap-4",
-                notif.isRead
-                  ? "bg-white border-slate-200 opacity-80"
-                  : "bg-white border-[var(--brand-accent)] shadow-xs"
-              )}
-            >
+        {notifications.length > 0 ? (
+          <div className="space-y-3">
+            {notifications.map((n) => (
               <div
+                key={n.id}
+                onClick={() => markAsRead(n.id)}
                 className={cn(
-                  "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5",
-                  notif.isRead
-                    ? "bg-slate-100 text-slate-400"
-                    : "bg-orange-50 text-[var(--brand-accent)]"
+                  "p-5 rounded-2xl border transition-all cursor-pointer space-y-2",
+                  n.isRead
+                    ? "bg-white border-slate-200 opacity-80"
+                    : "bg-orange-50/40 border-orange-200 shadow-xs"
                 )}
               >
-                <Bell className="w-5 h-5" />
-              </div>
-
-              <div className="flex-1 space-y-1">
                 <div className="flex items-center justify-between gap-2">
-                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                    <span>{notif.title}</span>
-                    {!notif.isRead && (
-                      <span className="w-2 h-2 rounded-full bg-[var(--brand-accent)]" />
+                  <div className="flex items-center gap-2">
+                    {!n.isRead && (
+                      <span className="w-2 h-2 rounded-full bg-[var(--brand-accent)] shrink-0" />
                     )}
-                  </h3>
-                  <span className="text-[11px] text-slate-400 shrink-0">
-                    {notif.date}
-                  </span>
+                    <h2 className="text-sm font-bold text-slate-900">{n.title}</h2>
+                  </div>
+                  <span className="text-[11px] text-slate-400 shrink-0">{n.date}</span>
                 </div>
-
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  {notif.message}
-                </p>
+                <p className="text-xs text-slate-600 leading-relaxed pl-4">{n.message}</p>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 bg-white rounded-3xl border border-slate-200 p-8 space-y-3">
+            <Bell className="w-12 h-12 text-slate-300 mx-auto" />
+            <h3 className="text-base font-bold text-slate-800">No New Notifications</h3>
+            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+              You are all caught up! Examination circulars and admit card releases will appear here.
+            </p>
+          </div>
+        )}
       </div>
     </StudentLayout>
   );

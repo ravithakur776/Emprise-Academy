@@ -28,6 +28,14 @@ export const metadata: Metadata = {
     siteName: "Emprise Academy",
     locale: "en_IN",
     type: "profile",
+    images: [
+      {
+        url: "https://empriseacademy.com/images/directors/rakesh-kumar.jpg",
+        width: 731,
+        height: 1024,
+        alt: "Rakesh Kumar — Director, Mathematics Mentor & IIT-JEE Faculty at Emprise Academy",
+      },
+    ],
   },
 };
 
@@ -41,6 +49,7 @@ export default function RakeshKumarProfilePage() {
         jobTitle={rakeshKumar.designation}
         description={rakeshKumar.leadershipPerspective}
         url="https://empriseacademy.com/directors/rakesh-kumar"
+        image={rakeshKumar.photoUrl}
         alumniOf={rakeshKumar.almaMater}
         knowsAbout={["IIT-JEE Mathematics", "Calculus", "Coordinate Geometry", "Algebraic Discipline"]}
         breadcrumbs={[

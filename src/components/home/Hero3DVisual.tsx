@@ -86,7 +86,7 @@ export const Hero3DVisual: React.FC = () => {
       <div
         ref={cardRef}
         className={cn(
-          "relative rounded-3xl bg-linear-to-b from-slate-900/95 via-[#0D1F38]/95 to-[#071324]/98 border border-slate-700/80 p-6 sm:p-8 shadow-2xl backdrop-blur-xl transition-transform duration-300 ease-out",
+          "relative rounded-3xl bg-linear-to-b from-slate-900/95 via-[#0D1F38]/95 to-[#071324]/98 border border-slate-700/80 p-4 sm:p-6 lg:p-8 shadow-2xl backdrop-blur-xl transition-transform duration-300 ease-out",
           "[transform-style:preserve-3d]"
         )}
         style={{
@@ -107,40 +107,40 @@ export const Hero3DVisual: React.FC = () => {
 
         {/* Floating Top Floating Metric Pill (Depth +45px) */}
         <div
-          className="absolute -top-3.5 right-6 px-3.5 py-1 rounded-full bg-linear-to-r from-amber-500/90 to-orange-500/90 text-slate-950 text-[11px] font-extrabold shadow-lg border border-amber-300/40 flex items-center gap-1.5 z-20 pointer-events-none"
+          className="absolute -top-3.5 right-3 sm:right-6 px-2.5 sm:px-3.5 py-1 rounded-full bg-linear-to-r from-amber-500/90 to-orange-500/90 text-slate-950 text-[10px] sm:text-[11px] font-extrabold shadow-lg border border-amber-300/40 flex items-center gap-1.5 z-20 pointer-events-none"
           style={{
             transform: !isReducedMotion && isHovered ? "translateZ(45px)" : "translateZ(0px)",
             transition: "transform 0.3s ease-out",
           }}
         >
-          <Sparkles className="w-3.5 h-3.5 fill-slate-950" />
-          <span>ETSE 2026 Registration Open</span>
+          <Sparkles className="w-3.5 h-3.5 fill-slate-950 shrink-0" />
+          <span>ETSE 2026 Open</span>
         </div>
 
         {/* Card Header (Depth +20px) */}
         <div
-          className="flex items-center justify-between border-b border-slate-700/60 pb-4 mb-6 relative z-10"
+          className="flex items-center justify-between border-b border-slate-700/60 pb-3 sm:pb-4 mb-4 sm:mb-6 relative z-10 gap-2"
           style={{
             transform: !isReducedMotion && isHovered ? "translateZ(20px)" : "translateZ(0px)",
             transition: "transform 0.3s ease-out",
           }}
         >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-linear-to-br from-[var(--brand-accent)] to-orange-600 text-white flex items-center justify-center shadow-md border border-orange-400/40">
-              <GraduationCap className="w-6 h-6" />
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-linear-to-br from-[var(--brand-accent)] to-orange-600 text-white flex items-center justify-center shadow-md border border-orange-400/40 shrink-0">
+              <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <div>
-              <h3 className="text-base font-extrabold text-white leading-tight flex items-center gap-1.5">
+              <h3 className="text-sm sm:text-base font-extrabold text-white leading-tight flex items-center gap-1.5">
                 Emprise Academic System
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
               </h3>
-              <p className="text-xs text-slate-400 font-medium">
+              <p className="text-[11px] sm:text-xs text-slate-400 font-medium">
                 Mathura Campus • Est. 2011
               </p>
             </div>
           </div>
 
-          <span className="text-xs font-bold text-amber-300 bg-amber-950/70 border border-amber-600/40 px-3 py-1 rounded-lg shadow-xs">
+          <span className="text-[10px] sm:text-xs font-bold text-amber-300 bg-amber-950/70 border border-amber-600/40 px-2 sm:px-3 py-0.5 sm:py-1 rounded-lg shadow-xs shrink-0">
             ★ 15+ Years
           </span>
         </div>

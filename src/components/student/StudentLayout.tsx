@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ToastProvider } from "@/components/ui/toast/ToastProvider";
@@ -42,13 +42,89 @@ const navItems = [
 
 export const StudentLayout: React.FC<StudentLayoutProps> = ({
   children,
-  studentName = "Aarav Verma",
-  studentClass = "Class 8",
-  applicationNo = "ETSE2026-000100",
+  studentName,
+  studentClass,
+  applicationNo,
 }) => {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const [identity, setIdentity] = useState({
+    name: studentName || "Student",
+    class: studentClass || "Class 12",
+    applicationNo: applicationNo || "ID: Pending",
+  });
+
+  useEffect(() => {
+    if (studentName && studentName !== "Student") {
+      setIdentity({
+        name: studentName,
+        class: studentClass || "Class 12",
+        applicationNo: applicationNo || "ID: Pending",
+      });
+      return;
+    }
+
+    async function fetchIdentity() {
+      try {
+        const supabase = createClientBrowser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) return;
+
+        const { data: studentProf } = await (supabase
+          .from("student_profiles") as any)
+          .select("full_name, current_class, admission_number")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        const { data: userProf } = await (supabase
+          .from("user_profiles") as any)
+          .select("full_name")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        const { data: appRecord } = await (supabase
+          .from("etse_registrations") as any)
+          .select("application_number")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        const resolvedName =
+          studentProf?.full_name ||
+          userProf?.full_name ||
+          user.user_metadata?.full_name ||
+          user.email?.split("@")[0] ||
+          "Student";
+
+        const resolvedClass = studentProf?.current_class || studentClass || "Class 12";
+        const resolvedAppNo =
+          appRecord?.application_number ||
+          studentProf?.admission_number ||
+          applicationNo ||
+          "ETSE Portal";
+
+        setIdentity({
+          name: resolvedName,
+          class: resolvedClass,
+          applicationNo: resolvedAppNo,
+        });
+      } catch {
+        // Safe fallback
+      }
+    }
+
+    fetchIdentity();
+  }, [studentName, studentClass, applicationNo]);
+
+  const activeName = studentName || identity.name;
+  const activeClass = studentClass || identity.class;
+  const activeAppNo = applicationNo || identity.applicationNo;
 
   const handleLogout = async () => {
     try {
@@ -57,6 +133,7 @@ export const StudentLayout: React.FC<StudentLayoutProps> = ({
     } catch {
       // Ignore if SSR mock
     }
+    router.refresh();
     router.push("/student/login");
   };
 
@@ -77,14 +154,14 @@ export const StudentLayout: React.FC<StudentLayoutProps> = ({
           {/* Student Profile Snapshot */}
           <div className="p-4 mx-3 my-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-[var(--brand-primary)] text-white flex items-center justify-center font-bold text-sm shrink-0">
-              {studentName.charAt(0)}
+              {activeName.charAt(0)}
             </div>
             <div className="overflow-hidden">
               <span className="font-bold text-xs text-slate-900 block truncate">
-                {studentName}
+                {activeName}
               </span>
               <span className="text-[11px] text-slate-500 block truncate">
-                {studentClass} • {applicationNo}
+                {activeClass} • {activeAppNo}
               </span>
             </div>
           </div>
@@ -139,8 +216,9 @@ export const StudentLayout: React.FC<StudentLayoutProps> = ({
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg bg-slate-100 text-slate-700"
+            className="w-11 h-11 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center cursor-pointer"
             aria-label="Toggle Menu"
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -148,16 +226,16 @@ export const StudentLayout: React.FC<StudentLayoutProps> = ({
 
         {/* Mobile Slide-down Drawer */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-white border-b border-slate-200 p-4 space-y-2 z-30 shadow-lg animate-fade-in">
+          <div className="md:hidden bg-white border-b border-slate-200 p-4 space-y-2 z-30 shadow-lg animate-fade-in max-h-[calc(100vh-4rem)] overflow-y-auto">
             <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs mb-3 flex items-center justify-between">
               <div>
-                <strong className="block text-slate-900">{studentName}</strong>
-                <span className="text-slate-500">{studentClass} • {applicationNo}</span>
+                <strong className="block text-slate-900">{activeName}</strong>
+                <span className="text-slate-500">{activeClass} • {activeAppNo}</span>
               </div>
               <Link
                 href="/student/profile"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-[11px] font-bold text-[var(--brand-accent)]"
+                className="text-[11px] font-bold text-[var(--brand-accent)] min-h-[44px] flex items-center"
               >
                 Edit Profile
               </Link>
@@ -176,7 +254,7 @@ export const StudentLayout: React.FC<StudentLayoutProps> = ({
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
-                    "flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all",
+                    "flex items-center justify-between px-3.5 py-3 rounded-xl text-xs font-semibold transition-all min-h-[44px]",
                     isActive
                       ? "bg-[var(--brand-primary)] text-white"
                       : "text-slate-700 hover:bg-slate-100"
@@ -194,7 +272,7 @@ export const StudentLayout: React.FC<StudentLayoutProps> = ({
             <div className="pt-2 border-t border-slate-100">
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50"
+                className="w-full flex items-center gap-2.5 px-3.5 py-3 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 min-h-[44px] cursor-pointer"
               >
                 <LogOut className="w-4 h-4" />
                 <span>Log Out</span>
@@ -204,14 +282,14 @@ export const StudentLayout: React.FC<StudentLayoutProps> = ({
         )}
 
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-w-0 pb-20 md:pb-8">
+        <div className="flex-1 flex flex-col min-w-0 pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-8">
           <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto w-full">
             {children}
           </main>
         </div>
 
         {/* Mobile Fixed Bottom Nav */}
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-2 py-1.5 z-20 flex items-center justify-around shadow-lg">
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-2 py-1 pb-[calc(0.375rem+env(safe-area-inset-bottom))] z-20 flex items-center justify-around shadow-lg">
           <Link
             href="/student/dashboard"
             className={cn(

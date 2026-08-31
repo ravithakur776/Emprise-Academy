@@ -60,39 +60,39 @@ export const EtseCountdown: React.FC = () => {
         <span>Exam In</span>
       </div>
 
-      <div className="flex items-center gap-1.5 sm:gap-2">
-        <div className="flex flex-col items-center bg-white/10 px-2.5 py-1 rounded-lg min-w-[40px]">
-          <span className="text-sm sm:text-base font-extrabold text-amber-300 leading-tight">
+      <div className="flex items-center gap-1 sm:gap-2">
+        <div className="flex flex-col items-center bg-white/10 px-2 sm:px-2.5 py-1 rounded-lg min-w-[36px] sm:min-w-[40px]">
+          <span className="text-xs sm:text-base font-extrabold text-amber-300 leading-tight">
             {timeLeft.days}
           </span>
-          <span className="text-[9px] text-slate-400 uppercase font-medium">Days</span>
+          <span className="text-[8px] sm:text-[9px] text-slate-400 uppercase font-medium">Days</span>
         </div>
 
-        <span className="font-bold text-slate-500">:</span>
+        <span className="font-bold text-slate-500 text-xs sm:text-base">:</span>
 
-        <div className="flex flex-col items-center bg-white/10 px-2.5 py-1 rounded-lg min-w-[40px]">
-          <span className="text-sm sm:text-base font-extrabold text-white leading-tight">
+        <div className="flex flex-col items-center bg-white/10 px-2 sm:px-2.5 py-1 rounded-lg min-w-[36px] sm:min-w-[40px]">
+          <span className="text-xs sm:text-base font-extrabold text-white leading-tight">
             {String(timeLeft.hours).padStart(2, "0")}
           </span>
-          <span className="text-[9px] text-slate-400 uppercase font-medium">Hrs</span>
+          <span className="text-[8px] sm:text-[9px] text-slate-400 uppercase font-medium">Hrs</span>
         </div>
 
-        <span className="font-bold text-slate-500">:</span>
+        <span className="font-bold text-slate-500 text-xs sm:text-base">:</span>
 
-        <div className="flex flex-col items-center bg-white/10 px-2.5 py-1 rounded-lg min-w-[40px]">
-          <span className="text-sm sm:text-base font-extrabold text-white leading-tight">
+        <div className="flex flex-col items-center bg-white/10 px-2 sm:px-2.5 py-1 rounded-lg min-w-[36px] sm:min-w-[40px]">
+          <span className="text-xs sm:text-base font-extrabold text-white leading-tight">
             {String(timeLeft.minutes).padStart(2, "0")}
           </span>
-          <span className="text-[9px] text-slate-400 uppercase font-medium">Min</span>
+          <span className="text-[8px] sm:text-[9px] text-slate-400 uppercase font-medium">Min</span>
         </div>
 
-        <span className="font-bold text-slate-500">:</span>
+        <span className="font-bold text-slate-500 text-xs sm:text-base">:</span>
 
-        <div className="flex flex-col items-center bg-white/10 px-2.5 py-1 rounded-lg min-w-[40px]">
-          <span className="text-sm sm:text-base font-extrabold text-[var(--brand-accent-light)] leading-tight">
+        <div className="flex flex-col items-center bg-white/10 px-2 sm:px-2.5 py-1 rounded-lg min-w-[36px] sm:min-w-[40px]">
+          <span className="text-xs sm:text-base font-extrabold text-[var(--brand-accent-light)] leading-tight">
             {String(timeLeft.seconds).padStart(2, "0")}
           </span>
-          <span className="text-[9px] text-slate-400 uppercase font-medium">Sec</span>
+          <span className="text-[8px] sm:text-[9px] text-slate-400 uppercase font-medium">Sec</span>
         </div>
       </div>
     </div>

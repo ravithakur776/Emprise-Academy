@@ -39,15 +39,15 @@ export const FormField: React.FC<FormFieldProps> = ({
         <p
           id={htmlFor ? `${htmlFor}-error` : undefined}
           role="alert"
-          className="inline-flex items-center gap-1 text-xs text-[var(--brand-danger)] font-medium mt-0.5 animate-fade-in"
+          className="inline-flex items-start gap-1 text-xs text-[var(--brand-danger)] font-medium mt-0.5 animate-fade-in break-words"
         >
-          <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-          <span>{error}</span>
+          <AlertCircle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+          <span className="break-words">{error}</span>
         </p>
       ) : helperText ? (
         <p
           id={htmlFor ? `${htmlFor}-helper` : undefined}
-          className="text-xs text-[var(--brand-muted)] mt-0.5"
+          className="text-xs text-[var(--brand-muted)] mt-0.5 break-words"
         >
           {helperText}
         </p>

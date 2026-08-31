@@ -9,6 +9,7 @@ import { Input, Select } from "@/components/ui/form/Input";
 import { PhoneField, PasswordField } from "@/components/ui/form/SpecializedFields";
 import { Button } from "@/components/ui/button/Button";
 import { createClientBrowser } from "@/lib/supabase/client";
+import { verifyStudentPortalAccess } from "@/services/auth.service";
 import { EmpriseLogo } from "@/components/brand/EmpriseLogo";
 import { UserPlus, AlertCircle, ShieldCheck } from "lucide-react";
 
@@ -29,8 +30,10 @@ function StudentRegisterContent() {
     e.preventDefault();
     setErrorMessage(null);
 
-    if (!fullName.trim() || phone.length < 10 || !password) {
-      toast.error("Required Fields Missing", "Please provide full name, phone number, and password.");
+    const cleanPhone = phone.replace(/\D/g, "");
+
+    if (!fullName.trim() || cleanPhone.length < 10 || !password) {
+      toast.error("Required Fields Missing", "Please provide full name, 10-digit phone number, and password.");
       return;
     }
 
@@ -51,7 +54,7 @@ function StudentRegisterContent() {
 
       const userEmail = email.trim()
         ? email.trim().toLowerCase()
-        : `${phone.trim()}@student.empriseacademy.com`;
+        : `${cleanPhone}@student.empriseacademy.com`;
 
       const { data, error } = await supabase.auth.signUp({
         email: userEmail,
@@ -59,7 +62,7 @@ function StudentRegisterContent() {
         options: {
           data: {
             full_name: fullName.trim(),
-            phone: phone.trim(),
+            phone: cleanPhone,
             current_class: currentClass,
             role: "STUDENT",
           },
@@ -70,16 +73,19 @@ function StudentRegisterContent() {
         throw new Error(error.message);
       }
 
-      toast.success("Account Created", "Your student portal account has been created. Redirecting...");
-      router.push("/student/dashboard");
-    } catch (err: any) {
-      // In development fallback
-      if (process.env.NODE_ENV !== "production") {
-        toast.success("Account Registered", "Redirecting to your student dashboard...");
-        router.push("/student/dashboard");
-        return;
+      if (data.user) {
+        await verifyStudentPortalAccess(supabase, data.user.id, {
+          full_name: fullName.trim(),
+          phone: cleanPhone,
+          current_class: currentClass,
+          role: "STUDENT",
+        });
       }
 
+      toast.success("Account Created", "Your student portal account has been created.");
+      router.refresh();
+      router.replace("/student/dashboard");
+    } catch (err: any) {
       setErrorMessage(err.message || "Failed to create account. Please contact admissions support.");
       toast.error("Registration Error", err.message || "Could not complete registration");
     } finally {
@@ -103,7 +109,7 @@ function StudentRegisterContent() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-6 sm:px-10 shadow-xl rounded-3xl border border-slate-200 space-y-6">
+        <div className="bg-white py-6 sm:py-8 px-4 sm:px-10 shadow-xl rounded-3xl border border-slate-200 space-y-6">
           {errorMessage && (
             <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-700 flex items-start gap-2.5">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />

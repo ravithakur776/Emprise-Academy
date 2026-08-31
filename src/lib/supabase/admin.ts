@@ -11,11 +11,14 @@ import { Database } from "@/types/database";
  */
 export function createAdminClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const supabaseServiceKey =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    "";
 
   if (!supabaseServiceKey) {
     throw new Error(
-      "SUPABASE_SERVICE_ROLE_KEY is not defined. Server admin client cannot be initialized."
+      "SUPABASE_SERVICE_ROLE_KEY or NEXT_PUBLIC_SUPABASE_ANON_KEY is not defined. Server client cannot be initialized."
     );
   }
 

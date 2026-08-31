@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -10,6 +10,7 @@ import { NavLink } from "@/components/ui/link/NavLink";
 import { Drawer } from "@/components/ui/modal/Drawer";
 import { EmpriseLogo } from "@/components/brand/EmpriseLogo";
 import { HOMEPAGE_DATA } from "@/data/homepage";
+import { createClientBrowser } from "@/lib/supabase/client";
 import {
   GraduationCap,
   Menu,
@@ -18,12 +19,34 @@ import {
   User,
   BookOpen,
   Trophy,
+  LayoutDashboard,
 } from "lucide-react";
 
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isCoursesOpen, setIsCoursesOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+
+  useEffect(() => {
+    const supabase = createClientBrowser();
+
+    // Check initial auth session
+    supabase.auth.getUser().then(({ data }) => {
+      setIsAuthenticated(Boolean(data?.user));
+    });
+
+    // Listen to live auth changes (login, logout, token refresh)
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(Boolean(session?.user));
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-[var(--brand-border)] transition-all">
@@ -71,16 +94,16 @@ export const Navbar: React.FC = () => {
             </button>
 
             {isCoursesOpen && (
-              <div className="absolute top-full left-0 w-64 bg-white rounded-xl shadow-xl border border-[var(--brand-border)] p-2 mt-1 animate-slide-down z-50">
+              <div className="absolute top-full left-0 w-72 bg-white rounded-xl shadow-xl border border-[var(--brand-border)] p-2 z-50 animate-fade-in">
                 <Link
                   href="/iit-jee-coaching-mathura"
                   className="flex items-start gap-2.5 p-2.5 rounded-lg hover:bg-orange-50/50 transition-colors"
                 >
-                  <div className="w-8 h-8 rounded-md bg-blue-50 text-[var(--brand-primary)] flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-md bg-orange-50 text-[var(--brand-accent)] flex items-center justify-center shrink-0">
                     <BookOpen className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="text-sm font-bold text-[var(--brand-primary)] block">IIT-JEE Program</span>
+                    <span className="text-sm font-bold text-[var(--brand-primary)] block">IIT-JEE (Main & Adv)</span>
                     <span className="text-[11px] text-[var(--brand-muted)] block">Classes 11, 12 & Droppers</span>
                   </div>
                 </Link>
@@ -88,12 +111,12 @@ export const Navbar: React.FC = () => {
                   href="/neet-coaching-mathura"
                   className="flex items-start gap-2.5 p-2.5 rounded-lg hover:bg-orange-50/50 transition-colors"
                 >
-                  <div className="w-8 h-8 rounded-md bg-orange-50 text-[var(--brand-accent)] flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-md bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
                     <Trophy className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="text-sm font-bold text-[var(--brand-primary)] block">NEET-UG Program</span>
-                    <span className="text-[11px] text-[var(--brand-muted)] block">Medical Entrance Training</span>
+                    <span className="text-sm font-bold text-[var(--brand-primary)] block">NEET (UG) Medical</span>
+                    <span className="text-[11px] text-[var(--brand-muted)] block">Comprehensive Biology & Physics</span>
                   </div>
                 </Link>
                 <Link
@@ -122,11 +145,19 @@ export const Navbar: React.FC = () => {
 
         {/* Action Buttons */}
         <div className="hidden lg:flex items-center gap-3">
-          <Link href="/student/login">
-            <Button variant="outline" size="sm" leftIcon={<User className="w-4 h-4" />}>
-              Student Login
-            </Button>
-          </Link>
+          {isAuthenticated ? (
+            <Link href="/student/dashboard">
+              <Button variant="outline" size="sm" leftIcon={<LayoutDashboard className="w-4 h-4 text-[var(--brand-accent)]" />}>
+                Student Dashboard
+              </Button>
+            </Link>
+          ) : (
+            <Link href="/student/login">
+              <Button variant="outline" size="sm" leftIcon={<User className="w-4 h-4" />}>
+                Student Login
+              </Button>
+            </Link>
+          )}
           <Link href="/etse-2026">
             <Button variant="primary" size="sm">
               Register for ETSE
@@ -137,14 +168,15 @@ export const Navbar: React.FC = () => {
         {/* Mobile Menu Button */}
         <div className="flex items-center gap-2 lg:hidden">
           <Link href="/etse-2026">
-            <Button variant="primary" size="sm" className="text-xs h-9 px-3">
+            <Button variant="primary" size="sm" className="text-xs h-10 px-3 font-bold">
               ETSE 2026
             </Button>
           </Link>
           <button
             onClick={() => setIsMobileOpen(true)}
             aria-label="Open mobile navigation menu"
-            className="w-10 h-10 rounded-lg border border-[var(--brand-border)] flex items-center justify-center text-[var(--brand-primary)] hover:bg-slate-50 cursor-pointer"
+            aria-expanded={isMobileOpen}
+            className="w-11 h-11 rounded-xl border border-[var(--brand-border)] flex items-center justify-center text-[var(--brand-primary)] hover:bg-slate-50 active:bg-slate-100 cursor-pointer min-w-[44px] min-h-[44px]"
           >
             <Menu className="w-5 h-5" />
           </button>
@@ -158,8 +190,8 @@ export const Navbar: React.FC = () => {
         title="Navigation Menu"
         position="right"
       >
-        <div className="flex flex-col gap-4">
-          <div className="space-y-1 pb-4 border-b border-slate-100">
+        <div className="flex flex-col gap-4 p-4">
+          <div className="flex flex-col gap-1 border-b border-[var(--brand-border)] pb-4">
             <Link
               href="/"
               onClick={() => setIsMobileOpen(false)}
@@ -177,24 +209,48 @@ export const Navbar: React.FC = () => {
               onClick={() => setIsMobileOpen(false)}
               className={cn(
                 "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
-                pathname === "/about"
+                pathname?.startsWith("/about")
                   ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
                   : "text-[var(--brand-primary)] hover:bg-slate-50"
               )}
             >
-              About Emprise
+              About Us
             </Link>
             <Link
-              href="/courses"
+              href="/iit-jee-coaching-mathura"
               onClick={() => setIsMobileOpen(false)}
               className={cn(
                 "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
-                pathname?.startsWith("/courses") || pathname?.includes("coaching-mathura")
+                pathname?.startsWith("/iit-jee")
                   ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
                   : "text-[var(--brand-primary)] hover:bg-slate-50"
               )}
             >
-              Academic Courses (JEE / NEET / Foundation)
+              IIT-JEE (Main & Advanced)
+            </Link>
+            <Link
+              href="/neet-coaching-mathura"
+              onClick={() => setIsMobileOpen(false)}
+              className={cn(
+                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
+                pathname?.startsWith("/neet")
+                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
+                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+              )}
+            >
+              NEET (UG) Medical
+            </Link>
+            <Link
+              href="/foundation-coaching-mathura"
+              onClick={() => setIsMobileOpen(false)}
+              className={cn(
+                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
+                pathname?.startsWith("/foundation")
+                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
+                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+              )}
+            >
+              Foundation (Classes 8–10)
             </Link>
             <Link
               href="/results"
@@ -266,11 +322,19 @@ export const Navbar: React.FC = () => {
           </div>
 
           <div className="space-y-2 pt-2">
-            <Link href="/student/login" onClick={() => setIsMobileOpen(false)} className="block">
-              <Button variant="outline" size="md" fullWidth leftIcon={<User className="w-4 h-4" />}>
-                Student Portal Login
-              </Button>
-            </Link>
+            {isAuthenticated ? (
+              <Link href="/student/dashboard" onClick={() => setIsMobileOpen(false)} className="block">
+                <Button variant="outline" size="md" fullWidth leftIcon={<LayoutDashboard className="w-4 h-4 text-[var(--brand-accent)]" />}>
+                  My Student Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/student/login" onClick={() => setIsMobileOpen(false)} className="block">
+                <Button variant="outline" size="md" fullWidth leftIcon={<User className="w-4 h-4" />}>
+                  Student Portal Login
+                </Button>
+              </Link>
+            )}
             <Link href="/etse-2026" onClick={() => setIsMobileOpen(false)} className="block">
               <Button variant="primary" size="md" fullWidth>
                 Register for ETSE 2026

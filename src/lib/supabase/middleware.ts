@@ -34,14 +34,30 @@ export async function updateSession(request: NextRequest) {
 
   const path = request.nextUrl.pathname;
 
+  // Helper to construct redirect with cookies preserved
+  const createRedirectWithCookies = (targetUrl: URL) => {
+    const redirectResponse = NextResponse.redirect(targetUrl);
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value, cookie);
+    });
+    return redirectResponse;
+  };
+
   // Protect Admin Area
   if (path.startsWith("/admin") && !path.startsWith("/admin/login")) {
     if (!user) {
       const url = request.nextUrl.clone();
       url.pathname = "/admin/login";
       url.searchParams.set("redirectTo", path);
-      return NextResponse.redirect(url);
+      return createRedirectWithCookies(url);
     }
+  }
+
+  // If already authenticated as admin and visiting /admin/login
+  if (path === "/admin/login" && user) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin";
+    return createRedirectWithCookies(url);
   }
 
   // Protect Student Area
@@ -56,8 +72,15 @@ export async function updateSession(request: NextRequest) {
       const url = request.nextUrl.clone();
       url.pathname = "/student/login";
       url.searchParams.set("redirectTo", path);
-      return NextResponse.redirect(url);
+      return createRedirectWithCookies(url);
     }
+  }
+
+  // If already authenticated and visiting /student/login or /student/register
+  if ((path === "/student/login" || path === "/student/register") && user) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/student/dashboard";
+    return createRedirectWithCookies(url);
   }
 
   return supabaseResponse;

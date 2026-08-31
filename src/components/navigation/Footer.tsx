@@ -206,11 +206,11 @@ export const MobileBottomCTA: React.FC = () => {
   const whatsappLink = business.contact.whatsapp_link;
 
   return (
-    <div className="fixed bottom-0 inset-x-0 z-30 lg:hidden bg-white/95 backdrop-blur-md border-t border-[var(--brand-border)] p-2.5 shadow-lg">
+    <div className="fixed bottom-0 inset-x-0 z-30 lg:hidden bg-white/95 backdrop-blur-md border-t border-[var(--brand-border)] p-2.5 pb-[calc(0.625rem+env(safe-area-inset-bottom))] shadow-lg">
       <div className="grid grid-cols-3 gap-2">
         <a
           href={phoneTel}
-          className="flex flex-col items-center justify-center p-2 rounded-lg bg-slate-50 text-[var(--brand-primary)] border border-slate-200 active:scale-95 transition-transform"
+          className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-50 text-[var(--brand-primary)] border border-slate-200 active:scale-95 transition-transform min-h-[44px]"
         >
           <Phone className="w-4 h-4 text-[var(--brand-primary)] mb-0.5" />
           <span className="text-[11px] font-bold">Call Campus</span>
@@ -220,7 +220,7 @@ export const MobileBottomCTA: React.FC = () => {
           href={whatsappLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex flex-col items-center justify-center p-2 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 active:scale-95 transition-transform"
+          className="flex flex-col items-center justify-center p-2 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 active:scale-95 transition-transform min-h-[44px]"
         >
           <span className="text-xs mb-0.5">💬</span>
           <span className="text-[11px] font-bold">WhatsApp</span>
@@ -228,7 +228,7 @@ export const MobileBottomCTA: React.FC = () => {
 
         <Link
           href="/admissions#counselling"
-          className="flex flex-col items-center justify-center p-2 rounded-lg bg-[var(--brand-accent)] text-white font-bold active:scale-95 transition-transform shadow-xs"
+          className="flex flex-col items-center justify-center p-2 rounded-xl bg-[var(--brand-accent)] text-white font-bold active:scale-95 transition-transform shadow-xs min-h-[44px]"
         >
           <span className="text-[11px] font-extrabold uppercase">Counselling</span>
           <span className="text-[9px] opacity-90">Book Free</span>

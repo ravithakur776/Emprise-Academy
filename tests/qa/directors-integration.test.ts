@@ -91,10 +91,13 @@ async function runDirectorsIntegrationTests() {
   if (getDirectorBySlug("invalid-slug") !== undefined) {
     throw new Error("getDirectorBySlug returned value for invalid slug");
   }
-  if (sushil.photoUrl !== null || rakesh.photoUrl !== null) {
-    throw new Error("photoUrl must be null in initial phase (no fake human photos)");
+  if (sushil.photoUrl !== "/images/directors/sushil-dagur.jpg") {
+    throw new Error("Sushil Dagur photoUrl must point to /images/directors/sushil-dagur.jpg");
   }
-  console.log("✓ Director slug routing and photo null-state verified.");
+  if (rakesh.photoUrl !== "/images/directors/rakesh-kumar.jpg") {
+    throw new Error("Rakesh Kumar photoUrl must point to /images/directors/rakesh-kumar.jpg");
+  }
+  console.log("✓ Director slug routing and photo states verified (Both Sushil Dagur and Rakesh Kumar canonical images active).");
 
   // [TEST 5] Homepage Directors Derivation
   console.log("\n[TEST 5] Auditing Homepage Directors Derivation...");

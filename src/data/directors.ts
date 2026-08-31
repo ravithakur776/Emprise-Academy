@@ -51,7 +51,7 @@ export const DIRECTORS_DATA: {
     qualification: "B.E. (Hons.) Mechanical Engineering",
     institution: "University of Derby, England, U.K.",
     almaMater: "University of Derby, England, U.K.",
-    photoUrl: null, // Initialized to null; photo placeholder renders until real photo uploaded
+    photoUrl: "/images/directors/sushil-dagur.jpg",
     quote:
       "True education is not about memorising formulas; it is about building the intellectual endurance to think independently, analyze critically, and solve real challenges.",
     shortBio:
@@ -133,7 +133,7 @@ export const DIRECTORS_DATA: {
     qualification: "B.E. (Hons.) Mechanical Engineering",
     institution: "University of Derby, England, U.K.",
     almaMater: "University of Derby, England, U.K.",
-    photoUrl: null, // Initialized to null; photo placeholder renders until real photo uploaded
+    photoUrl: "/images/directors/rakesh-kumar.jpg",
     quote:
       "Mathematics is not a subject of rules; it is the art of logical deduction. When a student learns to visualize a problem geometrically and algebraically, fear turns into confidence.",
     shortBio:

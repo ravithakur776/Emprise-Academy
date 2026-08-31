@@ -1,37 +1,135 @@
-import type { Metadata } from "next";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { StudentLayout } from "@/components/student/StudentLayout";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
-import { FileText, Calendar, Building, CheckCircle2, ArrowRight, Eye, CreditCard } from "lucide-react";
-
-export const metadata: Metadata = {
-  title: "My Applications | Emprise Academy Student Portal",
-  robots: { index: false, follow: false },
-};
+import { createClientBrowser } from "@/lib/supabase/client";
+import { FileText, Calendar, Building, CheckCircle2, ArrowRight, Eye, CreditCard, RefreshCw } from "lucide-react";
 
 export default function StudentApplicationsPage() {
-  const applications = [
-    {
-      id: "etse-2026-app",
-      examTitle: "Emprise Talent Search Examination 2026 (ETSE 2026)",
-      applicationNo: "ETSE2026-000100",
-      academicYear: "2026–27",
-      registrationDate: "26 August 2026",
-      examDate: "6 September 2026 (10:00 AM – 12:00 PM)",
-      status: "CONFIRMED",
-      classEnrolled: "Class 8",
-      stream: "Foundation (Science & Mathematics)",
-      centre: "Emprise Academy Campus, Mathura",
-      admitCardStatus: "PENDING_RELEASE",
-    },
-  ];
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [studentIdentity, setStudentIdentity] = useState({
+    name: "Student",
+    class: "Class 12",
+    applicationNo: "ETSE Portal",
+  });
+  const [applications, setApplications] = useState<any[]>([]);
+
+  const loadApplications = async () => {
+    try {
+      setLoading(true);
+      const supabase = createClientBrowser();
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (authError || !user) {
+        router.push("/student/login?redirectTo=%2Fstudent%2Fapplications");
+        return;
+      }
+
+      // Fetch student profile
+      const { data: studentProf } = await (supabase
+        .from("student_profiles") as any)
+        .select("*")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      const { data: userProf } = await (supabase
+        .from("user_profiles") as any)
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      const name =
+        studentProf?.full_name ||
+        userProf?.full_name ||
+        user.user_metadata?.full_name ||
+        user.email?.split("@")[0] ||
+        "Student";
+      const currentClass = studentProf?.current_class || "Class 12";
+
+      // Query etse_registrations
+      let q = (supabase.from("etse_registrations") as any)
+        .select("*, etse_exams(*), exam_centres(*)");
+
+      if (studentProf?.id) {
+        q = q.or(`student_profile_id.eq.${studentProf.id},user_id.eq.${user.id}`);
+      } else {
+        q = q.eq("user_id", user.id);
+      }
+
+      const { data: appRecords } = await q.order("created_at", { ascending: false });
+
+      if (appRecords && appRecords.length > 0) {
+        const formatted = appRecords.map((r: any) => {
+          const exam = r.etse_exams || {};
+          const centre = r.exam_centres || {};
+          return {
+            id: r.id,
+            examTitle: exam.title || "Emprise Talent Search Examination 2026",
+            applicationNo: r.application_number,
+            academicYear: exam.year ? `${exam.year}–${(exam.year + 1).toString().slice(2)}` : "2026–27",
+            registrationDate: new Date(r.registered_at || r.created_at).toLocaleDateString("en-IN", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            }),
+            examDate: exam.exam_date
+              ? `${new Date(exam.exam_date).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })} (${exam.exam_time || "10:00 AM"})`
+              : "6 September 2026 (10:00 AM – 12:00 PM)",
+            status: r.status || "CONFIRMED",
+            classEnrolled: r.current_class || currentClass,
+            stream: r.stream_interest || "Foundation (Science & Mathematics)",
+            centre: centre.centre_name ? `${centre.centre_name}, ${centre.city || "Mathura"}` : "Emprise Academy Campus, Mathura",
+          };
+        });
+        setApplications(formatted);
+        setStudentIdentity({
+          name,
+          class: currentClass,
+          applicationNo: formatted[0].applicationNo,
+        });
+      } else {
+        setApplications([]);
+        setStudentIdentity({
+          name,
+          class: currentClass,
+          applicationNo: studentProf?.admission_number || "No Application",
+        });
+      }
+    } catch (err) {
+      console.error("[APPLICATIONS_LOAD_ERROR]", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadApplications();
+  }, []);
+
+  if (loading) {
+    return (
+      <StudentLayout>
+        <div className="space-y-6 max-w-5xl mx-auto animate-pulse">
+          <div className="h-8 bg-slate-200 rounded-md w-1/3" />
+          <div className="bg-white rounded-3xl border border-slate-200 p-8 h-64" />
+        </div>
+      </StudentLayout>
+    );
+  }
 
   return (
     <StudentLayout
-      studentName="Aarav Verma"
-      studentClass="Class 8"
-      applicationNo="ETSE2026-000100"
+      studentName={studentIdentity.name}
+      studentClass={studentIdentity.class}
+      applicationNo={studentIdentity.applicationNo}
     >
       <div className="space-y-6 max-w-5xl mx-auto">
         {/* Header */}
@@ -78,7 +176,7 @@ export default function StudentApplicationsPage() {
 
                   <div className="flex items-center gap-2">
                     <Badge variant="success" size="md">
-                      {app.status}
+                      {app.status === "REGISTERED" || app.status === "CONFIRMED" ? "Registration Confirmed" : app.status}
                     </Badge>
                   </div>
                 </div>
@@ -100,19 +198,19 @@ export default function StudentApplicationsPage() {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-2">
                   <span className="text-xs text-slate-500">
                     Registered on: {app.registrationDate}
                   </span>
 
-                  <div className="flex items-center gap-2">
-                    <Link href={`/student/applications/${app.id}`}>
-                      <Button variant="outline" size="sm" leftIcon={<Eye className="w-4 h-4" />}>
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+                    <Link href={`/student/applications/${app.id}`} className="w-full sm:w-auto">
+                      <Button variant="outline" size="sm" fullWidth className="sm:w-auto" leftIcon={<Eye className="w-4 h-4" />}>
                         View Details
                       </Button>
                     </Link>
-                    <Link href="/student/admit-cards">
-                      <Button variant="primary" size="sm" leftIcon={<CreditCard className="w-4 h-4" />}>
+                    <Link href="/student/admit-cards" className="w-full sm:w-auto">
+                      <Button variant="primary" size="sm" fullWidth className="sm:w-auto" leftIcon={<CreditCard className="w-4 h-4" />}>
                         Admit Card
                       </Button>
                     </Link>

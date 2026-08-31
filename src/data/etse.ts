@@ -59,7 +59,7 @@ export const MAIN_ETSE_DATA = {
     registrationFee: "FREE (Zero Application Fee)",
     mode: "Offline (Pen & Paper OMR Format)",
     location: "Mathura, Uttar Pradesh",
-    venue: "Emprise Academy Campus, Mathura & Designated City Partner Centres",
+    venue: "Emprise Academy Mathura, Near Tera Tower, Bhuteshwar Road, Mathura",
     admitCardReleaseDate: "To be announced 10 days prior to examination",
     isAdmitCardPublished: false,
     heroParagraph:

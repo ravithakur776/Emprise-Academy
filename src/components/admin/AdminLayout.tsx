@@ -335,8 +335,9 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="p-2 rounded-lg bg-slate-800 text-slate-300"
+            className="w-11 h-11 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center cursor-pointer"
             aria-label="Toggle Navigation"
+            aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -344,7 +345,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
 
         {/* Mobile Menu Drawer */}
         {mobileOpen && (
-          <div className="md:hidden bg-slate-900 text-slate-300 p-4 space-y-3 z-30 border-b border-slate-800 shadow-xl animate-fade-in">
+          <div className="md:hidden bg-slate-900 text-slate-300 p-4 space-y-3 z-30 border-b border-slate-800 shadow-xl animate-fade-in max-h-[calc(100vh-4rem)] overflow-y-auto">
             {navSections.map((section) => {
               const visibleItems = section.items.filter((item) =>
                 item.roles.includes(staffRole)

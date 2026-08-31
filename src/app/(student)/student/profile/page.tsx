@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { StudentLayout } from "@/components/student/StudentLayout";
 import { FormField } from "@/components/ui/form/FormField";
 import { Input, Select } from "@/components/ui/form/Input";
@@ -8,40 +9,203 @@ import { PhoneField } from "@/components/ui/form/SpecializedFields";
 import { Button } from "@/components/ui/button/Button";
 import { Badge } from "@/components/ui/badge/Badge";
 import { ToastProvider, useToast } from "@/components/ui/toast/ToastProvider";
-import { Save, User, ShieldCheck, Lock, CheckCircle2 } from "lucide-react";
+import { createClientBrowser } from "@/lib/supabase/client";
+import { Save, User, ShieldCheck, Lock, CheckCircle2, RefreshCw } from "lucide-react";
 
 function StudentProfileContent() {
   const toast = useToast();
+  const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
 
   // Profile Fields
   const [profile, setProfile] = useState({
-    studentName: "Aarav Verma",
-    fatherName: "Sunil Verma",
-    motherName: "Sunita Verma",
-    dob: "2011-05-15",
+    studentName: "",
+    fatherName: "",
+    motherName: "",
+    dob: "2009-01-01",
     gender: "MALE",
-    currentClass: "Class 8",
-    schoolName: "St. Dominic's Senior Secondary School",
-    phone: "98XXXXXXXX",
-    email: "student@example.com",
-    address: "Mathura, Uttar Pradesh",
-    applicationNo: "ETSE2026-000100",
+    currentClass: "Class 12",
+    schoolName: "",
+    phone: "",
+    email: "",
+    address: "",
+    applicationNo: "ETSE Portal",
     accountStatus: "ACTIVE",
   });
 
-  const handleSave = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSaving(true);
+  const loadProfile = async () => {
+    try {
+      setIsLoading(true);
+      const supabase = createClientBrowser();
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
 
-    setTimeout(() => {
-      setIsSaving(false);
+      if (authError || !user) {
+        router.push("/student/login?redirectTo=%2Fstudent%2Fprofile");
+        return;
+      }
+
+      setUserId(user.id);
+
+      // Fetch student profile
+      const { data: studentProf } = await (supabase
+        .from("student_profiles") as any)
+        .select("*")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      // Fetch user profile
+      const { data: userProf } = await (supabase
+        .from("user_profiles") as any)
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      // Fetch parent profile if available
+      let parentProf: any = null;
+      if (studentProf?.id) {
+        const { data: p } = await (supabase
+          .from("parent_profiles") as any)
+          .select("*")
+          .eq("student_id", studentProf.id)
+          .maybeSingle();
+        parentProf = p;
+      }
+
+      // Fetch application number
+      const { data: appRecord } = await (supabase
+        .from("etse_registrations") as any)
+        .select("application_number, father_name, mother_name, school_name")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      const studentName =
+        studentProf?.full_name ||
+        userProf?.full_name ||
+        user.user_metadata?.full_name ||
+        user.email?.split("@")[0] ||
+        "Student";
+
+      const fatherName =
+        parentProf?.father_name || appRecord?.father_name || "";
+      const motherName =
+        parentProf?.mother_name || appRecord?.mother_name || "";
+      const currentClass = studentProf?.current_class || "Class 12";
+      const schoolName =
+        studentProf?.school_name || appRecord?.school_name || "";
+      const phone = studentProf?.phone || userProf?.phone || "";
+      const email = user.email || studentProf?.email || "";
+      const address = studentProf?.address ? `${studentProf.address}, ${studentProf.city || ""}` : (studentProf?.city || "Mathura, Uttar Pradesh");
+      const dob = studentProf?.dob || "2009-01-01";
+      const gender = studentProf?.gender || "MALE";
+      const applicationNo =
+        appRecord?.application_number ||
+        studentProf?.admission_number ||
+        "ETSE Portal";
+
+      setProfile({
+        studentName,
+        fatherName,
+        motherName,
+        dob,
+        gender,
+        currentClass,
+        schoolName,
+        phone,
+        email,
+        address,
+        applicationNo,
+        accountStatus: studentProf?.is_active !== false ? "ACTIVE" : "INACTIVE",
+      });
+    } catch (err) {
+      console.error("[PROFILE_LOAD_ERROR]", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!userId) return;
+
+    setIsSaving(true);
+    try {
+      const supabase = createClientBrowser();
+
+      // Upsert student_profiles
+      const { data: existingStudent } = await (supabase
+        .from("student_profiles") as any)
+        .select("id")
+        .eq("user_id", userId)
+        .maybeSingle();
+
+      if (existingStudent?.id) {
+        await (supabase.from("student_profiles") as any)
+          .update({
+            full_name: profile.studentName,
+            dob: profile.dob,
+            gender: profile.gender,
+            phone: profile.phone,
+            current_class: profile.currentClass,
+            school_name: profile.schoolName,
+            address: profile.address,
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", existingStudent.id);
+      } else {
+        await (supabase.from("student_profiles") as any).insert({
+          user_id: userId,
+          full_name: profile.studentName,
+          dob: profile.dob,
+          gender: profile.gender,
+          phone: profile.phone,
+          current_class: profile.currentClass,
+          school_name: profile.schoolName,
+          address: profile.address,
+        });
+      }
+
+      // Also update user_profiles
+      await (supabase.from("user_profiles") as any)
+        .update({
+          full_name: profile.studentName,
+          phone: profile.phone,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", userId);
+
       setIsEditing(false);
       toast.success("Profile Updated", "Your profile information has been saved successfully.");
-    }, 600);
+    } catch (err: any) {
+      console.error("[PROFILE_SAVE_ERROR]", err);
+      toast.error("Update Failed", err?.message || "Could not save profile changes.");
+    } finally {
+      setIsSaving(false);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <StudentLayout>
+        <div className="space-y-6 max-w-4xl mx-auto animate-pulse">
+          <div className="h-8 bg-slate-200 rounded-md w-1/3" />
+          <div className="bg-white rounded-3xl border border-slate-200 p-8 space-y-6 h-96" />
+        </div>
+      </StudentLayout>
+    );
+  }
 
   return (
     <StudentLayout
@@ -82,11 +246,11 @@ function StudentProfileContent() {
           {/* Avatar Banner */}
           <div className="flex items-center gap-4 pb-6 border-b border-slate-100">
             <div className="w-16 h-16 rounded-2xl bg-[var(--brand-primary)] text-white font-extrabold text-2xl flex items-center justify-center shadow-xs">
-              {profile.studentName.charAt(0)}
+              {profile.studentName ? profile.studentName.charAt(0) : "S"}
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-900">{profile.studentName}</h2>
-              <p className="text-xs text-slate-500">{profile.currentClass} • {profile.schoolName}</p>
+              <h2 className="text-lg font-bold text-slate-900">{profile.studentName || "Authenticated Student"}</h2>
+              <p className="text-xs text-slate-500">{profile.currentClass} {profile.schoolName ? `• ${profile.schoolName}` : ""}</p>
               <div className="flex items-center gap-2 mt-1">
                 <span className="text-[11px] font-mono text-[var(--brand-accent)] font-semibold">
                   Permanent ID: {profile.applicationNo}
@@ -108,13 +272,12 @@ function StudentProfileContent() {
                 />
               </FormField>
 
-              <FormField label="Father's / Guardian's Name" required htmlFor="prof-father">
+              <FormField label="Father's / Guardian's Name" htmlFor="prof-father">
                 <Input
                   id="prof-father"
                   value={profile.fatherName}
                   disabled={!isEditing}
                   onChange={(e) => setProfile({ ...profile, fatherName: e.target.value })}
-                  required
                 />
               </FormField>
             </div>
@@ -157,7 +320,7 @@ function StudentProfileContent() {
                   id="prof-email"
                   type="email"
                   value={profile.email}
-                  disabled={!isEditing}
+                  disabled={true}
                   onChange={(e) => setProfile({ ...profile, email: e.target.value })}
                 />
               </FormField>
@@ -182,13 +345,12 @@ function StudentProfileContent() {
                 />
               </FormField>
 
-              <FormField label="School Name" required htmlFor="prof-school">
+              <FormField label="School Name" htmlFor="prof-school">
                 <Input
                   id="prof-school"
                   value={profile.schoolName}
                   disabled={!isEditing}
                   onChange={(e) => setProfile({ ...profile, schoolName: e.target.value })}
-                  required
                 />
               </FormField>
             </div>
@@ -211,11 +373,11 @@ function StudentProfileContent() {
             </div>
 
             {isEditing && (
-              <div className="pt-2 flex justify-end gap-3">
-                <Button type="button" variant="outline" size="sm" onClick={() => setIsEditing(false)}>
+              <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3">
+                <Button type="button" variant="outline" size="sm" fullWidth className="sm:w-auto" onClick={() => setIsEditing(false)}>
                   Cancel
                 </Button>
-                <Button type="submit" variant="primary" size="sm" isLoading={isSaving} rightIcon={<Save className="w-4 h-4" />}>
+                <Button type="submit" variant="primary" size="sm" fullWidth className="sm:w-auto" isLoading={isSaving} rightIcon={<Save className="w-4 h-4" />}>
                   Save Changes
                 </Button>
               </div>

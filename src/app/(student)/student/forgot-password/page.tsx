@@ -39,11 +39,6 @@ function ForgotPasswordContent() {
       setIsSubmitted(true);
       toast.success("Recovery Email Sent", "Check your inbox for password reset instructions.");
     } catch (err: any) {
-      if (process.env.NODE_ENV !== "production") {
-        setIsSubmitted(true);
-        toast.success("Reset Link Generated", "Check your email for reset instructions.");
-        return;
-      }
       setErrorMessage(err.message || "Failed to send reset link. Please contact support.");
       toast.error("Error", err.message || "Could not send password reset email.");
     } finally {
@@ -67,7 +62,7 @@ function ForgotPasswordContent() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-6 sm:px-10 shadow-xl rounded-3xl border border-slate-200 space-y-6">
+        <div className="bg-white py-6 sm:py-8 px-4 sm:px-10 shadow-xl rounded-3xl border border-slate-200 space-y-6">
           {isSubmitted ? (
             <div className="text-center py-4 space-y-4 animate-fade-in">
               <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">

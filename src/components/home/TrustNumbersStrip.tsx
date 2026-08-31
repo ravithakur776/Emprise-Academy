@@ -17,7 +17,7 @@ export const TrustNumbersStrip: React.FC = () => {
   return (
     <section className="bg-linear-to-b from-white via-slate-50/50 to-white border-b border-[var(--brand-border)] py-8 sm:py-12 relative z-20" aria-label="Institutional Record">
       <Container size="xl">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 min-[420px]:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
           {trustMetrics.map((stat, idx) => (
             <div
               key={idx}

@@ -5,6 +5,11 @@ export const loginSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
+export const studentLoginSchema = z.object({
+  identifier: z.string().trim().min(3, "Please enter your registered email or 10-digit mobile number"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
 export const studentRegisterSchema = z.object({
   fullName: z.string().trim().min(2, "Full name must be at least 2 characters").max(150),
   email: z.string().trim().email("Please provide a valid email address"),
