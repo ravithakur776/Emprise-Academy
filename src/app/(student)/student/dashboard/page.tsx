@@ -137,7 +137,7 @@ export default function StudentDashboardPage() {
     >
       <div className="space-y-6">
         {/* Welcome Banner */}
-        <div className="rounded-3xl bg-linear-to-br from-[var(--brand-primary)] via-[#0C223E] to-[#0A192F] text-white p-6 sm:p-8 border border-slate-800 shadow-lg relative overflow-hidden">
+        <div className="rounded-3xl bg-linear-to-br from-[var(--brand-primary-dark)] via-[#1B4282] to-[#112C57] text-white p-6 sm:p-8 border border-blue-900/40 shadow-lg relative overflow-hidden">
           <div className="absolute -top-10 -right-10 w-48 h-48 bg-[var(--brand-accent)]/15 rounded-full blur-2xl pointer-events-none" />
 
           <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">

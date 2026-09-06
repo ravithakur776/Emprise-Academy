@@ -86,7 +86,7 @@ export const Hero3DVisual: React.FC = () => {
       <div
         ref={cardRef}
         className={cn(
-          "relative rounded-3xl bg-linear-to-b from-slate-900/95 via-[#0D1F38]/95 to-[#071324]/98 border border-slate-700/80 p-4 sm:p-6 lg:p-8 shadow-2xl backdrop-blur-xl transition-transform duration-300 ease-out",
+          "relative rounded-3xl bg-linear-to-b from-[var(--brand-primary-dark)]/95 via-[#1B4282]/95 to-[#112C57]/98 border border-blue-800/60 p-4 sm:p-6 lg:p-8 shadow-2xl backdrop-blur-xl transition-transform duration-300 ease-out",
           "[transform-style:preserve-3d]"
         )}
         style={{

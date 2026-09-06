@@ -61,7 +61,7 @@ export const DirectorPhoto: React.FC<DirectorPhotoProps> = ({
     <div
       role="img"
       aria-label={`Official photograph placeholder for ${name} — Director at Emprise Academy`}
-      className={`relative overflow-hidden rounded-3xl bg-linear-to-br from-slate-900 via-[var(--brand-primary)] to-[#0A192F] text-white border-2 border-slate-700/60 shadow-xl flex flex-col items-center justify-between p-6 sm:p-8 select-none ${aspectClass} ${className}`}
+      className={`relative overflow-hidden rounded-3xl bg-linear-to-br from-[var(--brand-primary-dark)] via-[#1B4282] to-[#112C57] text-white border-2 border-blue-900/40 shadow-xl flex flex-col items-center justify-between p-6 sm:p-8 select-none ${aspectClass} ${className}`}
     >
       {/* Background Decorative Glow */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--brand-accent)]/15 rounded-full blur-2xl pointer-events-none" />

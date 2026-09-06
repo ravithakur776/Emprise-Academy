@@ -23,7 +23,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           disabled={disabled}
           className={cn(
             "w-full h-11 px-3.5 bg-white text-sm text-[var(--brand-text)] placeholder:text-slate-400 rounded-lg border transition-all duration-150",
-            "focus:outline-none focus:ring-2 focus:ring-[var(--brand-accent)]/20 focus:border-[var(--brand-accent)]",
+            "focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)]/20 focus:border-[var(--brand-primary)]",
             "disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed",
             hasError
               ? "border-[var(--brand-danger)] focus:ring-red-100 focus:border-[var(--brand-danger)]"
@@ -66,7 +66,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           disabled={disabled}
           className={cn(
             "w-full h-11 pl-3.5 pr-10 bg-white text-sm text-[var(--brand-text)] rounded-lg border appearance-none transition-all duration-150 cursor-pointer",
-            "focus:outline-none focus:ring-2 focus:ring-[var(--brand-accent)]/20 focus:border-[var(--brand-accent)]",
+            "focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)]/20 focus:border-[var(--brand-primary)]",
             "disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed",
             hasError
               ? "border-[var(--brand-danger)] focus:ring-red-100 focus:border-[var(--brand-danger)]"
@@ -103,7 +103,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         disabled={disabled}
         className={cn(
           "w-full p-3.5 bg-white text-sm text-[var(--brand-text)] placeholder:text-slate-400 rounded-lg border transition-all duration-150 resize-y min-h-[90px]",
-          "focus:outline-none focus:ring-2 focus:ring-[var(--brand-accent)]/20 focus:border-[var(--brand-accent)]",
+          "focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)]/20 focus:border-[var(--brand-primary)]",
           "disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed",
           hasError
             ? "border-[var(--brand-danger)] focus:ring-red-100 focus:border-[var(--brand-danger)]"
@@ -140,7 +140,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           type="checkbox"
           disabled={disabled}
           className={cn(
-            "w-4 h-4 rounded text-[var(--brand-accent)] border-[var(--brand-border)] focus:ring-[var(--brand-accent)] focus:ring-offset-1 cursor-pointer accent-[var(--brand-accent)]",
+            "w-4 h-4 rounded text-[var(--brand-primary)] border-[var(--brand-border)] focus:ring-[var(--brand-primary)] focus:ring-offset-1 cursor-pointer accent-[var(--brand-primary)]",
             className
           )}
           {...props}
@@ -183,7 +183,7 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
           className={cn(
             "flex items-start gap-3 p-3 rounded-lg border transition-all duration-150 cursor-pointer select-none",
             value === opt.value
-              ? "border-[var(--brand-accent)] bg-orange-50/40"
+              ? "border-[var(--brand-primary)] bg-[var(--brand-primary-soft)]/50"
               : "border-[var(--brand-border)] hover:border-slate-300 bg-white",
             disabled ? "opacity-50 cursor-not-allowed" : ""
           )}
@@ -195,7 +195,7 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
             checked={value === opt.value}
             disabled={disabled}
             onChange={() => onChange && onChange(opt.value)}
-            className="w-4 h-4 mt-0.5 text-[var(--brand-accent)] border-[var(--brand-border)] focus:ring-[var(--brand-accent)] accent-[var(--brand-accent)] cursor-pointer"
+            className="w-4 h-4 mt-0.5 text-[var(--brand-primary)] border-[var(--brand-border)] focus:ring-[var(--brand-primary)] accent-[var(--brand-primary)] cursor-pointer"
           />
           <div>
             <span className="text-sm font-semibold text-[var(--brand-text)] block">

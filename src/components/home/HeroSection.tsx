@@ -18,7 +18,7 @@ export const HeroSection: React.FC = () => {
   const { hero, announcement } = HOMEPAGE_DATA;
 
   return (
-    <section className="relative overflow-hidden bg-linear-to-b from-[var(--brand-primary)] via-[#0D2342] to-[#0A192F] text-white py-12 sm:py-16 lg:py-24 border-b border-slate-800">
+    <section className="relative overflow-hidden bg-linear-to-b from-[var(--brand-primary-dark)] via-[#1B4282] to-[#112C57] text-white py-12 sm:py-16 lg:py-24 border-b border-blue-900/40">
       {/* 3D Atmospheric Background Layering */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-[var(--brand-accent)]/12 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />

@@ -302,7 +302,7 @@ export const EtseRegistrationForm: React.FC = () => {
               </div>
 
               {/* Canonical Exam Schedule Card */}
-              <div className="p-5 rounded-2xl bg-linear-to-br from-slate-900 to-[var(--brand-primary)] text-white text-xs space-y-2.5 border border-slate-800 shadow-md">
+              <div className="p-5 rounded-2xl bg-linear-to-br from-[var(--brand-primary-dark)] via-[#1B4282] to-[#112C57] text-white text-xs space-y-2.5 border border-blue-900/40 shadow-md">
                 <div className="flex items-center justify-between border-b border-white/10 pb-2">
                   <span className="font-bold text-amber-300 flex items-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5 text-amber-300" /> Exam Date

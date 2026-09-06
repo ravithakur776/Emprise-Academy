@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -12,22 +12,39 @@ import { EmpriseLogo } from "@/components/brand/EmpriseLogo";
 import { HOMEPAGE_DATA } from "@/data/homepage";
 import { createClientBrowser } from "@/lib/supabase/client";
 import {
-  GraduationCap,
+  Sparkles,
   Menu,
   ChevronDown,
-  Sparkles,
   User,
+  LayoutDashboard,
+  ArrowRight,
+  Phone,
   BookOpen,
   Trophy,
-  LayoutDashboard,
+  GraduationCap,
+  FileText,
+  MessageSquareQuote,
+  X,
 } from "lucide-react";
 
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [isCoursesOpen, setIsCoursesOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isCoursesOpen, setIsCoursesOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
+  // Scroll detection for subtle elevation
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Live Supabase Auth Session
   useEffect(() => {
     const supabase = createClientBrowser();
 
@@ -36,7 +53,7 @@ export const Navbar: React.FC = () => {
       setIsAuthenticated(Boolean(data?.user));
     });
 
-    // Listen to live auth changes (login, logout, token refresh)
+    // Listen to live auth state changes (login, logout, token refresh)
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -48,36 +65,93 @@ export const Navbar: React.FC = () => {
     };
   }, []);
 
+  // Close mobile drawer on route change
+  useEffect(() => {
+    setIsMobileOpen(false);
+  }, [pathname]);
+
+  // Body scroll lock when mobile drawer is open
+  useEffect(() => {
+    if (isMobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileOpen]);
+
   return (
-    <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-[var(--brand-border)] transition-all">
-      {/* Top Notification Bar */}
-      <div className="bg-[var(--brand-primary)] text-white text-[11px] sm:text-xs py-1.5 px-4 text-center font-medium">
-        <div className="flex items-center justify-center gap-2">
-          <span className="flex items-center gap-1 text-[var(--brand-accent-light)] font-bold">
-            <Sparkles className="w-3.5 h-3.5 shrink-0" /> {HOMEPAGE_DATA.announcement.badge}:
-          </span>
-          <span className="hidden sm:inline">{HOMEPAGE_DATA.announcement.text}</span>
-          <span className="sm:hidden">Exam: 6 Sept 2026 • Classes 7th–10th • FREE</span>
-          <Link
-            href={HOMEPAGE_DATA.announcement.ctaHref}
-            className="underline text-orange-200 hover:text-white font-semibold ml-1 shrink-0"
-          >
-            {HOMEPAGE_DATA.announcement.ctaText}
-          </Link>
+    <header
+      className={cn(
+        "sticky top-0 z-40 w-full transition-all duration-200",
+        isScrolled
+          ? "bg-white/98 backdrop-blur-md shadow-xs border-b border-[var(--brand-border)]"
+          : "bg-white border-b border-[var(--brand-border)]"
+      )}
+    >
+      {/* 1. TOP ANNOUNCEMENT BAR (Deep Institutional Blue #123E73) */}
+      <div className="bg-[var(--brand-primary-dark)] text-white text-[11px] sm:text-xs py-2 px-4 text-center font-medium border-b border-blue-900/40 select-none">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+          {/* Announcement Message & Badge */}
+          <div className="flex items-center gap-2 overflow-hidden truncate">
+            <span className="inline-flex items-center gap-1 text-[var(--brand-accent)] font-bold uppercase tracking-wider text-[10px] bg-white/10 px-2 py-0.5 rounded shrink-0 border border-white/15">
+              <Sparkles className="w-3 h-3 text-[var(--brand-accent)]" /> ETSE 2026
+            </span>
+            <span className="hidden md:inline truncate">
+              Emprise Talent Search Examination • Exam on 6 September 2026 • 100% Free Registration Open for Classes 7th to 10th
+            </span>
+            <span className="md:hidden truncate">
+              Exam: 6 Sept 2026 • Classes 7th–10th • FREE
+            </span>
+          </div>
+
+          {/* Right Action Links */}
+          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+            <Link
+              href="/etse-2026#register"
+              className="text-amber-300 hover:text-white font-semibold text-xs inline-flex items-center gap-1 transition-colors"
+            >
+              <span>Register Now</span>
+              <ArrowRight className="w-3 h-3" />
+            </Link>
+            <span className="hidden sm:inline text-white/30">|</span>
+            <a
+              href="tel:+917247889955"
+              className="hidden sm:inline-flex items-center gap-1.5 text-slate-300 hover:text-white text-xs transition-colors"
+            >
+              <Phone className="w-3 h-3 text-[var(--brand-accent)]" />
+              <span>+91 7247889955</span>
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* Main Navigation Bar */}
-      <Container size="xl" className="flex items-center justify-between h-16 sm:h-20">
-        {/* Logo & Brand Identity (Clicking Logo returns to /) */}
-        <Link href="/" className="flex items-center gap-2 group select-none py-1" aria-label="Emprise Academy — Home">
-          <EmpriseLogo size="md" priority className="group-hover:opacity-90 transition-opacity" />
+      {/* 2. MAIN NAVBAR (Pure White Background) */}
+      <Container size="xl" className="flex items-center justify-between h-18 sm:h-20 lg:h-22 gap-2">
+        {/* LEFT: Official Emprise Academy Logo */}
+        <Link
+          href="/"
+          className="flex items-center gap-2 group select-none py-1.5 shrink-0"
+          aria-label="Emprise Academy — Home"
+        >
+          <EmpriseLogo
+            size="lg"
+            priority
+            imgClassName="h-11 sm:h-12 lg:h-14 w-auto"
+            className="group-hover:opacity-95 transition-opacity"
+          />
         </Link>
 
-        {/* Desktop Navigation Links (with prominent Home link) */}
-        <nav className="hidden lg:flex items-center gap-1 xl:gap-2" aria-label="Main Navigation">
+        {/* CENTER: EXACT NAVIGATION ORDER */}
+        {/* Logo -> Home -> About -> Courses -> ETSE -> Results -> Gallery -> Blog -> Testimonials -> Contact */}
+        <nav
+          className="hidden xl:flex items-center gap-0.5 2xl:gap-1.5"
+          aria-label="Main Navigation"
+        >
           <NavLink href="/">Home</NavLink>
-          <NavLink href="/about">About Us</NavLink>
+          <NavLink href="/about">About</NavLink>
 
           {/* Courses Dropdown */}
           <div
@@ -85,261 +159,365 @@ export const Navbar: React.FC = () => {
             onMouseEnter={() => setIsCoursesOpen(true)}
             onMouseLeave={() => setIsCoursesOpen(false)}
           >
-            <button
-              className="inline-flex items-center gap-1 text-sm font-medium py-1.5 px-3 rounded-md text-[var(--brand-text-secondary)] hover:text-[var(--brand-primary)] hover:bg-[var(--brand-surface-muted)] transition-colors cursor-pointer"
-              aria-expanded={isCoursesOpen}
+            <Link
+              href="/courses"
+              className={cn(
+                "inline-flex items-center gap-1 text-sm font-medium py-1.5 px-3 rounded-md transition-colors",
+                pathname?.startsWith("/courses") ||
+                  pathname?.startsWith("/iit-jee") ||
+                  pathname?.startsWith("/neet") ||
+                  pathname?.startsWith("/foundation")
+                  ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-semibold"
+                  : "text-[var(--brand-text)] hover:text-[var(--brand-primary)] hover:bg-[var(--brand-primary-soft)]/50"
+              )}
             >
               <span>Courses</span>
-              <ChevronDown className={cn("w-4 h-4 transition-transform duration-150", isCoursesOpen ? "rotate-180" : "")} />
-            </button>
+              <ChevronDown
+                className={cn(
+                  "w-3.5 h-3.5 transition-transform duration-150",
+                  isCoursesOpen ? "rotate-180" : ""
+                )}
+              />
+            </Link>
 
             {isCoursesOpen && (
-              <div className="absolute top-full left-0 w-72 bg-white rounded-xl shadow-xl border border-[var(--brand-border)] p-2 z-50 animate-fade-in">
+              <div className="absolute top-full left-0 w-72 bg-white rounded-2xl shadow-xl border border-[var(--brand-border)] p-2 z-50 animate-fade-in">
                 <Link
                   href="/iit-jee-coaching-mathura"
-                  className="flex items-start gap-2.5 p-2.5 rounded-lg hover:bg-orange-50/50 transition-colors"
+                  className="flex items-start gap-2.5 p-2.5 rounded-xl hover:bg-[var(--brand-primary-soft)]/60 transition-colors"
                 >
-                  <div className="w-8 h-8 rounded-md bg-orange-50 text-[var(--brand-accent)] flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-[var(--brand-primary)] flex items-center justify-center shrink-0 mt-0.5">
                     <BookOpen className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="text-sm font-bold text-[var(--brand-primary)] block">IIT-JEE (Main & Adv)</span>
-                    <span className="text-[11px] text-[var(--brand-muted)] block">Classes 11, 12 & Droppers</span>
+                    <span className="text-xs font-bold text-[var(--brand-text)] block">
+                      IIT-JEE (Main + Advanced)
+                    </span>
+                    <span className="text-[11px] text-[var(--brand-text-secondary)] block">
+                      Classes 11, 12 & Droppers
+                    </span>
                   </div>
                 </Link>
+
                 <Link
                   href="/neet-coaching-mathura"
-                  className="flex items-start gap-2.5 p-2.5 rounded-lg hover:bg-orange-50/50 transition-colors"
+                  className="flex items-start gap-2.5 p-2.5 rounded-xl hover:bg-[var(--brand-primary-soft)]/60 transition-colors"
                 >
-                  <div className="w-8 h-8 rounded-md bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
                     <Trophy className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="text-sm font-bold text-[var(--brand-primary)] block">NEET (UG) Medical</span>
-                    <span className="text-[11px] text-[var(--brand-muted)] block">Comprehensive Biology & Physics</span>
+                    <span className="text-xs font-bold text-[var(--brand-text)] block">
+                      NEET-UG Medical
+                    </span>
+                    <span className="text-[11px] text-[var(--brand-text-secondary)] block">
+                      NCERT Mastery & Physics
+                    </span>
                   </div>
                 </Link>
+
                 <Link
                   href="/foundation-coaching-mathura"
-                  className="flex items-start gap-2.5 p-2.5 rounded-lg hover:bg-orange-50/50 transition-colors"
+                  className="flex items-start gap-2.5 p-2.5 rounded-xl hover:bg-[var(--brand-primary-soft)]/60 transition-colors"
                 >
-                  <div className="w-8 h-8 rounded-md bg-amber-50 text-amber-700 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center shrink-0 mt-0.5">
                     <GraduationCap className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="text-sm font-bold text-[var(--brand-primary)] block">Foundation Program</span>
-                    <span className="text-[11px] text-[var(--brand-muted)] block">Classes 8, 9 & 10 Olympiads</span>
+                    <span className="text-xs font-bold text-[var(--brand-text)] block">
+                      Foundation Classes 8–10
+                    </span>
+                    <span className="text-[11px] text-[var(--brand-text-secondary)] block">
+                      Olympiads & Early Base
+                    </span>
                   </div>
                 </Link>
               </div>
             )}
           </div>
 
+          <NavLink href="/etse-2026">ETSE</NavLink>
           <NavLink href="/results">Results</NavLink>
-          <NavLink href="/directors">Directors</NavLink>
-          <NavLink href="/admissions">Admissions</NavLink>
-          <NavLink href="/scholarship">Scholarship</NavLink>
-          <NavLink href="/etse-2026">ETSE 2026</NavLink>
+          <NavLink href="/gallery">Gallery</NavLink>
+          <NavLink href="/blog">Blog</NavLink>
+          <NavLink href="/testimonials">Testimonials</NavLink>
           <NavLink href="/contact">Contact</NavLink>
         </nav>
 
-        {/* Action Buttons */}
-        <div className="hidden lg:flex items-center gap-3">
+        {/* RIGHT: DUAL ACTION BUTTON PAIR */}
+        {/* [ Student Login / Dashboard ] [ Register for ETSE ] */}
+        <div className="hidden lg:flex items-center gap-2 2xl:gap-2.5 shrink-0">
           {isAuthenticated ? (
             <Link href="/student/dashboard">
-              <Button variant="outline" size="sm" leftIcon={<LayoutDashboard className="w-4 h-4 text-[var(--brand-accent)]" />}>
-                Student Dashboard
+              <Button
+                variant="secondary"
+                size="md"
+                className="font-semibold text-xs 2xl:text-sm px-3.5 2xl:px-4 h-10 border-blue-300 text-[var(--brand-primary)] bg-blue-50/60 hover:bg-[var(--brand-primary-soft)] transition-colors shadow-2xs"
+                leftIcon={<LayoutDashboard className="w-4 h-4 text-[var(--brand-primary)]" />}
+              >
+                Dashboard
               </Button>
             </Link>
           ) : (
             <Link href="/student/login">
-              <Button variant="outline" size="sm" leftIcon={<User className="w-4 h-4" />}>
+              <Button
+                variant="secondary"
+                size="md"
+                className="font-semibold text-xs 2xl:text-sm px-3.5 2xl:px-4 h-10 border-[var(--brand-border)] text-[var(--brand-primary)] bg-white hover:bg-[var(--brand-primary-soft)] hover:border-blue-300 transition-colors shadow-2xs"
+                leftIcon={<User className="w-4 h-4 text-[var(--brand-primary)]" />}
+              >
                 Student Login
               </Button>
             </Link>
           )}
-          <Link href="/etse-2026">
-            <Button variant="primary" size="sm">
+
+          <Link href="/etse-2026#register">
+            <Button
+              variant="primary"
+              size="md"
+              className="font-bold text-xs 2xl:text-sm px-4 2xl:px-5 h-10 bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-white shadow-xs hover:shadow-md transition-all duration-150 active:scale-[0.98]"
+              rightIcon={<ArrowRight className="w-4 h-4" />}
+            >
               Register for ETSE
             </Button>
           </Link>
         </div>
 
-        {/* Mobile Menu Button */}
-        <div className="flex items-center gap-2 lg:hidden">
-          <Link href="/etse-2026">
-            <Button variant="primary" size="sm" className="text-xs h-10 px-3 font-bold">
-              ETSE 2026
+        {/* Mobile / Tablet Actions */}
+        <div className="flex items-center gap-2 xl:hidden">
+          <Link href="/etse-2026#register">
+            <Button
+              variant="primary"
+              size="sm"
+              className="text-xs font-bold px-3 h-9 sm:h-10 bg-[var(--brand-primary)] text-white shadow-xs"
+            >
+              Register ETSE
             </Button>
           </Link>
+
           <button
             onClick={() => setIsMobileOpen(true)}
             aria-label="Open mobile navigation menu"
             aria-expanded={isMobileOpen}
-            className="w-11 h-11 rounded-xl border border-[var(--brand-border)] flex items-center justify-center text-[var(--brand-primary)] hover:bg-slate-50 active:bg-slate-100 cursor-pointer min-w-[44px] min-h-[44px]"
+            className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl border border-[var(--brand-border)] flex items-center justify-center text-[var(--brand-text)] hover:bg-slate-50 active:bg-slate-100 cursor-pointer min-w-[44px] min-h-[44px] transition-colors"
           >
             <Menu className="w-5 h-5" />
           </button>
         </div>
       </Container>
 
-      {/* Mobile Drawer Navigation */}
+      {/* 3. MOBILE NAVIGATION DRAWER */}
       <Drawer
         isOpen={isMobileOpen}
         onClose={() => setIsMobileOpen(false)}
-        title="Navigation Menu"
+        title="Emprise Academy"
         position="right"
       >
-        <div className="flex flex-col gap-4 p-4">
-          <div className="flex flex-col gap-1 border-b border-[var(--brand-border)] pb-4">
+        <div className="flex flex-col gap-4 p-4 text-left">
+          {/* Top Notice in Drawer */}
+          <div className="p-3.5 rounded-2xl bg-[var(--brand-primary-soft)] border border-blue-200/80 space-y-2">
+            <div className="text-xs font-bold text-[var(--brand-primary-dark)] flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 text-[var(--brand-accent)]" />
+              <span>ETSE 2026 — 6 Sept 2026</span>
+            </div>
+            <p className="text-[11px] text-[var(--brand-text-secondary)]">
+              100% Free scholarship registration open for Classes 7th to 10th.
+            </p>
+            <Link
+              href="/etse-2026#register"
+              onClick={() => setIsMobileOpen(false)}
+              className="inline-flex items-center gap-1 text-xs font-bold text-[var(--brand-primary)] hover:underline"
+            >
+              <span>Register for ETSE</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          {/* EXACT NAVIGATION ORDER (Mobile Drawer) */}
+          <nav className="flex flex-col gap-1 border-b border-[var(--brand-border)] pb-4 text-sm font-semibold" aria-label="Mobile Navigation">
             <Link
               href="/"
               onClick={() => setIsMobileOpen(false)}
               className={cn(
-                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
+                "p-3 rounded-xl transition-colors flex items-center justify-between min-h-[44px]",
                 pathname === "/"
-                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
-                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+                  ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-bold"
+                  : "text-[var(--brand-text)] hover:bg-slate-50"
               )}
             >
-              Home
+              <span>Home</span>
             </Link>
+
             <Link
               href="/about"
               onClick={() => setIsMobileOpen(false)}
               className={cn(
-                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
-                pathname?.startsWith("/about")
-                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
-                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+                "p-3 rounded-xl transition-colors flex items-center justify-between min-h-[44px]",
+                pathname === "/about"
+                  ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-bold"
+                  : "text-[var(--brand-text)] hover:bg-slate-50"
               )}
             >
-              About Us
+              <span>About</span>
             </Link>
+
             <Link
-              href="/iit-jee-coaching-mathura"
+              href="/courses"
               onClick={() => setIsMobileOpen(false)}
               className={cn(
-                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
-                pathname?.startsWith("/iit-jee")
-                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
-                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+                "p-3 rounded-xl transition-colors flex items-center justify-between min-h-[44px]",
+                pathname?.startsWith("/courses")
+                  ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-bold"
+                  : "text-[var(--brand-text)] hover:bg-slate-50"
               )}
             >
-              IIT-JEE (Main & Advanced)
+              <span>Courses</span>
             </Link>
+
             <Link
-              href="/neet-coaching-mathura"
+              href="/etse-2026"
               onClick={() => setIsMobileOpen(false)}
               className={cn(
-                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
-                pathname?.startsWith("/neet")
-                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
-                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+                "p-3 rounded-xl transition-colors flex items-center justify-between min-h-[44px]",
+                pathname === "/etse-2026"
+                  ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-bold"
+                  : "text-[var(--brand-text)] hover:bg-slate-50"
               )}
             >
-              NEET (UG) Medical
+              <span>ETSE</span>
             </Link>
-            <Link
-              href="/foundation-coaching-mathura"
-              onClick={() => setIsMobileOpen(false)}
-              className={cn(
-                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
-                pathname?.startsWith("/foundation")
-                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
-                  : "text-[var(--brand-primary)] hover:bg-slate-50"
-              )}
-            >
-              Foundation (Classes 8–10)
-            </Link>
+
             <Link
               href="/results"
               onClick={() => setIsMobileOpen(false)}
               className={cn(
-                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
-                pathname?.startsWith("/results")
-                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
-                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+                "p-3 rounded-xl transition-colors flex items-center justify-between min-h-[44px]",
+                pathname === "/results"
+                  ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-bold"
+                  : "text-[var(--brand-text)] hover:bg-slate-50"
               )}
             >
-              Results & Ranks
+              <span>Results</span>
             </Link>
+
             <Link
-              href="/directors"
+              href="/gallery"
               onClick={() => setIsMobileOpen(false)}
               className={cn(
-                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
-                pathname?.startsWith("/directors")
-                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
-                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+                "p-3 rounded-xl transition-colors flex items-center justify-between min-h-[44px]",
+                pathname === "/gallery"
+                  ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-bold"
+                  : "text-[var(--brand-text)] hover:bg-slate-50"
               )}
             >
-              Meet Our Directors
+              <span>Gallery</span>
             </Link>
+
             <Link
-              href="/admissions"
+              href="/blog"
               onClick={() => setIsMobileOpen(false)}
               className={cn(
-                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
-                pathname?.startsWith("/admissions")
-                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
-                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+                "p-3 rounded-xl transition-colors flex items-center justify-between min-h-[44px]",
+                pathname === "/blog"
+                  ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-bold"
+                  : "text-[var(--brand-text)] hover:bg-slate-50"
               )}
             >
-              Admission Process & Counselling
+              <span className="flex items-center gap-2">
+                <FileText className="w-4 h-4 text-slate-400" />
+                <span>Blog</span>
+              </span>
             </Link>
+
             <Link
-              href="/scholarship"
+              href="/testimonials"
               onClick={() => setIsMobileOpen(false)}
               className={cn(
-                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
-                pathname?.startsWith("/scholarship")
-                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
-                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+                "p-3 rounded-xl transition-colors flex items-center justify-between min-h-[44px]",
+                pathname === "/testimonials"
+                  ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-bold"
+                  : "text-[var(--brand-text)] hover:bg-slate-50"
               )}
             >
-              Scholarship Slabs
+              <span className="flex items-center gap-2">
+                <MessageSquareQuote className="w-4 h-4 text-slate-400" />
+                <span>Testimonials</span>
+              </span>
             </Link>
-            <Link
-              href="/etse-2026"
-              onClick={() => setIsMobileOpen(false)}
-              className="block p-2.5 text-sm font-bold text-[var(--brand-accent)] bg-orange-50/60 rounded-lg"
-            >
-              ETSE 2026 Talent Search
-            </Link>
+
             <Link
               href="/contact"
               onClick={() => setIsMobileOpen(false)}
               className={cn(
-                "block p-2.5 text-sm font-semibold rounded-lg transition-colors",
+                "p-3 rounded-xl transition-colors flex items-center justify-between min-h-[44px]",
                 pathname === "/contact"
-                  ? "text-[var(--brand-accent)] bg-orange-50 font-bold"
-                  : "text-[var(--brand-primary)] hover:bg-slate-50"
+                  ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-bold"
+                  : "text-[var(--brand-text)] hover:bg-slate-50"
               )}
             >
-              Contact Mathura Campus
+              <span>Contact</span>
             </Link>
-          </div>
+          </nav>
 
-          <div className="space-y-2 pt-2">
+          {/* DUAL CTA PAIR IN MOBILE DRAWER */}
+          <div className="pt-2 space-y-3">
             {isAuthenticated ? (
-              <Link href="/student/dashboard" onClick={() => setIsMobileOpen(false)} className="block">
-                <Button variant="outline" size="md" fullWidth leftIcon={<LayoutDashboard className="w-4 h-4 text-[var(--brand-accent)]" />}>
-                  My Student Dashboard
+              <Link
+                href="/student/dashboard"
+                onClick={() => setIsMobileOpen(false)}
+                className="block w-full"
+              >
+                <Button
+                  variant="secondary"
+                  fullWidth
+                  size="lg"
+                  className="font-bold border-blue-300 text-[var(--brand-primary)] bg-blue-50/80 shadow-xs min-h-[44px]"
+                  leftIcon={<LayoutDashboard className="w-4 h-4" />}
+                >
+                  Student Dashboard
                 </Button>
               </Link>
             ) : (
-              <Link href="/student/login" onClick={() => setIsMobileOpen(false)} className="block">
-                <Button variant="outline" size="md" fullWidth leftIcon={<User className="w-4 h-4" />}>
-                  Student Portal Login
+              <Link
+                href="/student/login"
+                onClick={() => setIsMobileOpen(false)}
+                className="block w-full"
+              >
+                <Button
+                  variant="secondary"
+                  fullWidth
+                  size="lg"
+                  className="font-bold border-[var(--brand-border)] text-[var(--brand-primary)] bg-white shadow-xs min-h-[44px]"
+                  leftIcon={<User className="w-4 h-4" />}
+                >
+                  Student Login
                 </Button>
               </Link>
             )}
-            <Link href="/etse-2026" onClick={() => setIsMobileOpen(false)} className="block">
-              <Button variant="primary" size="md" fullWidth>
-                Register for ETSE 2026
+
+            <Link
+              href="/etse-2026#register"
+              onClick={() => setIsMobileOpen(false)}
+              className="block w-full"
+            >
+              <Button
+                variant="primary"
+                fullWidth
+                size="lg"
+                className="font-bold bg-[var(--brand-primary)] text-white shadow-md min-h-[44px]"
+                rightIcon={<ArrowRight className="w-4 h-4" />}
+              >
+                Register for ETSE
               </Button>
             </Link>
+
+            <a
+              href="tel:+917247889955"
+              className="w-full flex items-center justify-center gap-2 py-3 text-xs font-semibold text-slate-600 bg-slate-100 rounded-xl min-h-[44px] transition-colors hover:bg-slate-200"
+            >
+              <Phone className="w-4 h-4 text-[var(--brand-accent)]" />
+              <span>Call Campus: +91 7247889955</span>
+            </a>
           </div>
         </div>
       </Drawer>

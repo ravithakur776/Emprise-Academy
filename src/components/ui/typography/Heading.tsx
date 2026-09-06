@@ -7,25 +7,27 @@ export interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
   as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "div";
   variant?: HeadingVariant;
   align?: "left" | "center" | "right";
-  color?: "primary" | "accent" | "gold" | "white" | "inherit";
+  color?: "default" | "primary" | "navy" | "accent" | "gold" | "white" | "inherit";
   children: React.ReactNode;
 }
 
 const variantStyles: Record<HeadingVariant, string> = {
   display:
-    "text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15] text-[var(--brand-primary)]",
+    "text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.15] text-[var(--brand-text)]",
   h1:
-    "text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.2] text-[var(--brand-primary)]",
+    "text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.2] text-[var(--brand-text)]",
   h2:
-    "text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight leading-[1.25] text-[var(--brand-primary)]",
+    "text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight leading-[1.25] text-[var(--brand-text)]",
   h3:
-    "text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight leading-[1.3] text-[var(--brand-primary)]",
+    "text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight leading-[1.3] text-[var(--brand-text)]",
   h4:
-    "text-base sm:text-lg md:text-xl font-semibold tracking-tight leading-[1.35] text-[var(--brand-primary)]",
+    "text-base sm:text-lg md:text-xl font-semibold tracking-tight leading-[1.35] text-[var(--brand-text)]",
 };
 
 const colorStyles: Record<NonNullable<HeadingProps["color"]>, string> = {
+  default: "text-[var(--brand-text)]",
   primary: "text-[var(--brand-primary)]",
+  navy: "text-[var(--brand-primary-dark)]",
   accent: "text-[var(--brand-accent)]",
   gold: "text-[var(--brand-gold)]",
   white: "text-white",
@@ -36,13 +38,13 @@ export const Heading: React.FC<HeadingProps> = ({
   as: Component = "h2",
   variant = "h2",
   align = "left",
-  color,
+  color = "default",
   className,
   children,
   ...props
 }) => {
   const alignClass = align === "center" ? "text-center" : align === "right" ? "text-right" : "text-left";
-  const customColorClass = color ? colorStyles[color] : "";
+  const customColorClass = colorStyles[color];
 
   return (
     <Component

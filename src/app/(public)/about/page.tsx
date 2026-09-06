@@ -168,7 +168,7 @@ export default function AboutPage() {
 
         <main className="flex-1">
           {/* 1. Hero Section */}
-          <section className="relative overflow-hidden bg-linear-to-b from-[var(--brand-primary)] via-[#0D2342] to-[#0A192F] text-white pt-8 pb-14 sm:pt-12 sm:pb-20 border-b border-slate-800">
+          <section className="relative overflow-hidden bg-linear-to-b from-[var(--brand-primary-dark)] via-[#1B4282] to-[#112C57] text-white pt-8 pb-14 sm:pt-12 sm:pb-20 border-b border-blue-900/40">
             <div className="absolute top-0 left-1/3 w-96 h-96 bg-[var(--brand-accent)]/10 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -254,7 +254,7 @@ export default function AboutPage() {
                 </div>
 
                 <div className="lg:col-span-5">
-                  <div className="p-6 sm:p-8 rounded-3xl bg-linear-to-br from-slate-900 via-[var(--brand-primary)] to-[#0A192F] text-white shadow-xl border border-slate-800 space-y-6">
+                  <div className="p-6 sm:p-8 rounded-3xl bg-linear-to-br from-[var(--brand-primary-dark)] via-[#1B4282] to-[#112C57] text-white shadow-xl border border-blue-900/40 space-y-6">
                     <div className="space-y-2">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300 block">
                         OUR CORE VALUES
@@ -579,7 +579,7 @@ export default function AboutPage() {
           {/* 7. Final Action CTA */}
           <Section variant="surface" spacing="lg">
             <Container size="xl">
-              <div className="rounded-3xl bg-linear-to-br from-slate-900 via-[var(--brand-primary)] to-[#0A192F] text-white p-8 sm:p-12 border border-slate-800 shadow-xl flex flex-col lg:flex-row items-center justify-between gap-8">
+              <div className="rounded-3xl bg-linear-to-br from-[var(--brand-primary-dark)] via-[#1B4282] to-[#112C57] text-white p-8 sm:p-12 border border-blue-900/40 shadow-xl flex flex-col lg:flex-row items-center justify-between gap-8">
                 <div className="space-y-3 text-left max-w-2xl">
                   <Badge variant="gold" size="sm">
                     START YOUR ACADEMIC JOURNEY

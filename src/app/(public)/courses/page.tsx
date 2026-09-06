@@ -81,7 +81,7 @@ export default function CoursesPage() {
 
         <main className="flex-1">
           {/* 1. Editorial Hero */}
-          <section className="relative overflow-hidden bg-linear-to-b from-[var(--brand-primary)] via-[#0D2342] to-[#0A192F] text-white pt-6 pb-12 sm:pt-8 sm:pb-16 border-b border-slate-800">
+          <section className="relative overflow-hidden bg-linear-to-b from-[var(--brand-primary-dark)] via-[#1B4282] to-[#112C57] text-white pt-6 pb-12 sm:pt-8 sm:pb-16 border-b border-blue-900/40">
             <div className="absolute top-0 left-1/3 w-96 h-96 bg-[var(--brand-accent)]/10 rounded-full blur-3xl pointer-events-none" />
 
             <Container size="xl" className="relative z-10 space-y-6">
@@ -319,7 +319,7 @@ export default function CoursesPage() {
           {/* 4. Admissions & Consultation CTA */}
           <Section variant="default" spacing="lg">
             <Container size="xl">
-              <div className="rounded-3xl bg-linear-to-br from-slate-900 via-[var(--brand-primary)] to-[#0A192F] text-white p-8 sm:p-12 border border-slate-800 shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="rounded-3xl bg-linear-to-br from-[var(--brand-primary-dark)] via-[#1B4282] to-[#112C57] text-white p-8 sm:p-12 border border-blue-900/40 shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
                 <div className="space-y-3 text-left max-w-2xl">
                   <Badge variant="gold" size="sm">
                     ADMISSIONS & COUNSELLING

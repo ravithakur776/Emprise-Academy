@@ -149,7 +149,7 @@ export default function DropperJeePage() {
           {/* 4. Parent Guidance for the Drop Year */}
           <Section variant="default" spacing="lg">
             <Container size="xl">
-              <div className="rounded-3xl bg-linear-to-br from-slate-900 via-[var(--brand-primary)] to-[#0A192F] text-white p-6 sm:p-10 lg:p-12 border border-slate-800 shadow-xl">
+              <div className="rounded-3xl bg-linear-to-br from-[var(--brand-primary-dark)] via-[#1B4282] to-[#112C57] text-white p-6 sm:p-10 lg:p-12 border border-blue-900/40 shadow-xl">
                 <div className="max-w-3xl mb-8 space-y-2">
                   <Badge variant="gold" size="md">
                     PARENT GUIDANCE

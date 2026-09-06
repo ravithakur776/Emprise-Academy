@@ -4,71 +4,86 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Container } from "@/components/ui/layout/Container";
 import { Section } from "@/components/ui/layout/Section";
-import { Heading } from "@/components/ui/typography/Heading";
-import { Text } from "@/components/ui/typography/Text";
 import { Badge } from "@/components/ui/badge/Badge";
-import { HOMEPAGE_DATA } from "@/data/homepage";
+import { Text } from "@/components/ui/typography/Text";
+import { Button } from "@/components/ui/button/Button";
+import { HOMEPAGE_DATA, HomepageFAQ } from "@/data/homepage";
 import { ChevronDown, HelpCircle, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const FAQSection: React.FC = () => {
-  const { faqs } = HOMEPAGE_DATA;
-  const [openIdx, setOpenIdx] = useState<number | null>(0);
+  const faqs: HomepageFAQ[] = HOMEPAGE_DATA.faqs;
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const toggle = (idx: number) => {
-    setOpenIdx(openIdx === idx ? null : idx);
+    setOpenIndex((prev) => (prev === idx ? null : idx));
   };
 
   return (
-    <Section variant="default" spacing="lg" id="faqs">
-      <Container size="md">
+    <Section variant="default" spacing="lg" id="faq" className="bg-white">
+      <Container size="xl">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 space-y-3">
           <Badge variant="primary" size="md">
             FREQUENTLY ASKED QUESTIONS
           </Badge>
-          <Heading as="h2" variant="h1" align="center">
-            Admissions & Academic FAQs
-          </Heading>
-          <Text variant="body-large" color="muted" align="center">
-            Common questions regarding our IIT-JEE, NEET-UG, Foundation batches, and ETSE 2026 examination in Mathura.
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-[var(--brand-text)] tracking-tight">
+            Got Questions? <span className="text-[var(--brand-primary)]">We Have Answers.</span>
+          </h2>
+          <Text variant="body-large" color="secondary" className="text-sm sm:text-base">
+            Everything you need to know about our courses, ETSE scholarship exam, faculty mentorship, and campus admissions in Mathura.
           </Text>
         </div>
 
-        {/* Accordion List */}
-        <div className="space-y-3">
+        {/* Accordion List (Type A Clean White Cards) */}
+        <div className="max-w-4xl mx-auto space-y-3">
           {faqs.map((faq, idx) => {
-            const isOpen = openIdx === idx;
+            const isOpen = openIndex === idx;
 
             return (
               <div
                 key={idx}
                 className={cn(
-                  "border rounded-2xl bg-white transition-all overflow-hidden",
+                  "rounded-2xl border transition-all duration-200 overflow-hidden bg-white text-left",
                   isOpen
-                    ? "border-[var(--brand-accent)] shadow-xs"
-                    : "border-slate-200/80 hover:border-slate-300"
+                    ? "border-[var(--brand-primary)]/50 shadow-xs ring-1 ring-[var(--brand-primary)]/10"
+                    : "border-[var(--brand-border)] hover:border-slate-300"
                 )}
               >
                 <button
                   onClick={() => toggle(idx)}
-                  className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 cursor-pointer select-none"
                   aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${idx}`}
+                  className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)]"
                 >
-                  <span className="text-sm sm:text-base font-bold text-[var(--brand-primary)]">
-                    {faq.question}
+                  <span className="text-sm sm:text-base font-bold text-[var(--brand-text)] flex items-center gap-3">
+                    <span
+                      className={cn(
+                        "w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 transition-colors",
+                        isOpen
+                          ? "bg-[var(--brand-primary)] text-white"
+                          : "bg-[var(--brand-primary-soft)] text-[var(--brand-primary)]"
+                      )}
+                    >
+                      {idx + 1}
+                    </span>
+                    <span>{faq.question}</span>
                   </span>
+
                   <ChevronDown
                     className={cn(
-                      "w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200",
-                      isOpen ? "rotate-180 text-[var(--brand-accent)]" : ""
+                      "w-5 h-5 text-slate-400 shrink-0 transition-transform duration-200",
+                      isOpen ? "rotate-180 text-[var(--brand-primary)]" : ""
                     )}
                   />
                 </button>
 
                 {isOpen && (
-                  <div className="px-4 pb-5 sm:px-5 sm:pb-5 pt-0 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 animate-fade-in">
-                    <p className="mt-3">{faq.answer}</p>
+                  <div
+                    id={`faq-answer-${idx}`}
+                    className="px-5 pb-6 sm:px-6 sm:pb-6 pt-0 text-xs sm:text-sm text-[var(--brand-text-secondary)] leading-relaxed border-t border-slate-100 mt-1"
+                  >
+                    <p className="pt-4">{faq.answer}</p>
                   </div>
                 )}
               </div>
@@ -76,15 +91,29 @@ export const FAQSection: React.FC = () => {
           })}
         </div>
 
-        {/* Action Link */}
-        <div className="text-center pt-8">
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[var(--brand-accent)] hover:underline"
-          >
-            <span>Have a specific query not listed here? Contact our admissions office</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+        {/* Need More Assistance Banner */}
+        <div className="max-w-4xl mx-auto mt-8 p-6 rounded-2xl bg-[var(--brand-background)] border border-[var(--brand-border)] flex flex-col sm:flex-row items-center justify-between gap-4 text-left">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[var(--brand-primary-soft)] text-[var(--brand-primary)] flex items-center justify-center shrink-0">
+              <HelpCircle className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-[var(--brand-text)]">
+                Still have questions?
+              </h3>
+              <p className="text-xs text-[var(--brand-text-secondary)]">
+                Talk directly with our academic counsellors at the Mathura campus.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 shrink-0">
+            <Link href="/contact">
+              <Button variant="primary" size="sm" rightIcon={<ArrowRight className="w-3.5 h-3.5" />}>
+                Contact Counsellor
+              </Button>
+            </Link>
+          </div>
         </div>
       </Container>
     </Section>

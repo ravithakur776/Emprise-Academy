@@ -156,7 +156,7 @@ export default function StudentResultsPage() {
         </div>
 
         {/* ETSE Status Banner */}
-        <div className="p-6 rounded-3xl bg-linear-to-br from-slate-900 via-[var(--brand-primary)] to-[#0A192F] text-white border border-slate-800 shadow-md space-y-4">
+        <div className="p-6 rounded-3xl bg-linear-to-br from-[var(--brand-primary-dark)] via-[#1B4282] to-[#112C57] text-white border border-blue-900/40 shadow-md space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-amber-300" />

@@ -32,10 +32,10 @@ export const NavLink: React.FC<NavLinkProps> = ({
       href={href}
       className={cn(
         "text-sm font-medium transition-colors duration-150 py-1.5 px-3 rounded-md",
-        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-accent)]",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-primary)]",
         active
-          ? "text-[var(--brand-accent)] bg-orange-50/70 font-semibold"
-          : "text-[var(--brand-text-secondary)] hover:text-[var(--brand-primary)] hover:bg-[var(--brand-surface-muted)]",
+          ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-semibold"
+          : "text-[var(--brand-text-secondary)] hover:text-[var(--brand-primary)] hover:bg-[var(--brand-primary-soft)]/50",
         className
       )}
       {...props}

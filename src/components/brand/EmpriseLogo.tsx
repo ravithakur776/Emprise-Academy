@@ -12,12 +12,12 @@ export interface EmpriseLogoProps {
 }
 
 const sizeMap = {
-  xs: { height: 24, width: 70 },
-  sm: { height: 32, width: 93 },
-  md: { height: 42, width: 122 },
-  lg: { height: 52, width: 151 },
-  xl: { height: 64, width: 186 },
-  custom: { height: 42, width: 122 },
+  xs: { height: 28, width: 81 },
+  sm: { height: 38, width: 110 },
+  md: { height: 50, width: 145 },
+  lg: { height: 62, width: 180 },
+  xl: { height: 76, width: 221 },
+  custom: { height: 62, width: 180 },
 };
 
 export const EmpriseLogo: React.FC<EmpriseLogoProps> = ({
@@ -53,7 +53,7 @@ export const EmpriseLogo: React.FC<EmpriseLogoProps> = ({
     return (
       <div
         className={cn(
-          "inline-flex items-center justify-center bg-white px-3 py-1.5 rounded-xl shadow-xs border border-white/20",
+          "inline-flex items-center justify-center bg-white px-3.5 py-2 rounded-xl shadow-xs border border-white/20",
           className
         )}
       >

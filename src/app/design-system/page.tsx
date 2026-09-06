@@ -102,44 +102,44 @@ function DesignSystemContent() {
           <Grid cols={2} colsSm={3} colsMd={6} gap="md">
             <div className="p-4 rounded-xl bg-[var(--brand-primary)] text-white shadow-xs">
               <div className="h-10 rounded-lg bg-[var(--brand-primary-light)] mb-2" />
-              <p className="font-bold text-sm">Deep Navy</p>
-              <p className="text-xs opacity-70">#0A192F</p>
-              <span className="text-[10px] uppercase font-semibold text-blue-200">--brand-primary</span>
+              <p className="font-bold text-sm">Academic Blue</p>
+              <p className="text-xs opacity-85 font-mono">#2F6FED</p>
+              <span className="text-[10px] uppercase font-semibold text-blue-100">--brand-primary</span>
+            </div>
+
+            <div className="p-4 rounded-xl bg-[var(--brand-primary-dark)] text-white shadow-xs">
+              <div className="h-10 rounded-lg bg-[#1B4282] mb-2" />
+              <p className="font-bold text-sm">Authority Blue</p>
+              <p className="text-xs opacity-85 font-mono">#173B73</p>
+              <span className="text-[10px] uppercase font-semibold text-blue-200">--brand-primary-dark</span>
             </div>
 
             <div className="p-4 rounded-xl bg-[var(--brand-accent)] text-white shadow-xs">
               <div className="h-10 rounded-lg bg-[var(--brand-accent-light)] mb-2" />
-              <p className="font-bold text-sm">Vibrant Orange</p>
-              <p className="text-xs opacity-70">#FF6B00</p>
-              <span className="text-[10px] uppercase font-semibold text-orange-200">--brand-accent</span>
+              <p className="font-bold text-sm">Refined Orange</p>
+              <p className="text-xs opacity-85 font-mono">#F28C28</p>
+              <span className="text-[10px] uppercase font-semibold text-orange-100">--brand-accent</span>
             </div>
 
-            <div className="p-4 rounded-xl bg-[var(--brand-gold)] text-white shadow-xs">
-              <div className="h-10 rounded-lg bg-amber-400 mb-2" />
-              <p className="font-bold text-sm">Achievement Gold</p>
-              <p className="text-xs opacity-70">#D97706</p>
-              <span className="text-[10px] uppercase font-semibold text-amber-200">--brand-gold</span>
+            <div className="p-4 rounded-xl bg-[var(--brand-primary-soft)] border border-blue-200 text-[var(--brand-primary-dark)] shadow-xs">
+              <div className="h-10 rounded-lg bg-white border border-blue-200 mb-2" />
+              <p className="font-bold text-sm">Soft Brand Blue</p>
+              <p className="text-xs opacity-80 font-mono">#EAF2FF</p>
+              <span className="text-[10px] uppercase font-semibold text-blue-600">--brand-primary-soft</span>
             </div>
 
-            <div className="p-4 rounded-xl bg-white border border-slate-200 text-slate-900 shadow-xs">
-              <div className="h-10 rounded-lg bg-[var(--brand-background)] border border-slate-200 mb-2" />
-              <p className="font-bold text-sm">Clean Slate</p>
-              <p className="text-xs text-slate-500">#F8FAFC</p>
+            <div className="p-4 rounded-xl bg-white border border-[var(--brand-border)] text-[var(--brand-text)] shadow-xs">
+              <div className="h-10 rounded-lg bg-[var(--brand-background)] border border-[var(--brand-border)] mb-2" />
+              <p className="font-bold text-sm">Neutral Canvas</p>
+              <p className="text-xs text-slate-500 font-mono">#F7F9FC</p>
               <span className="text-[10px] uppercase font-semibold text-slate-400">--brand-background</span>
             </div>
 
-            <div className="p-4 rounded-xl bg-emerald-600 text-white shadow-xs">
+            <div className="p-4 rounded-xl bg-[var(--brand-success)] text-white shadow-xs">
               <div className="h-10 rounded-lg bg-emerald-400 mb-2" />
               <p className="font-bold text-sm">Success Green</p>
-              <p className="text-xs opacity-70">#10B981</p>
-              <span className="text-[10px] uppercase font-semibold text-emerald-200">--brand-success</span>
-            </div>
-
-            <div className="p-4 rounded-xl bg-red-600 text-white shadow-xs">
-              <div className="h-10 rounded-lg bg-red-400 mb-2" />
-              <p className="font-bold text-sm">Danger Red</p>
-              <p className="text-xs opacity-70">#EF4444</p>
-              <span className="text-[10px] uppercase font-semibold text-red-200">--brand-danger</span>
+              <p className="text-xs opacity-85 font-mono">#168B5B</p>
+              <span className="text-[10px] uppercase font-semibold text-emerald-100">--brand-success</span>
             </div>
           </Grid>
         </section>

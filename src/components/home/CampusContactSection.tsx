@@ -2,12 +2,11 @@ import React from "react";
 import Link from "next/link";
 import { Container } from "@/components/ui/layout/Container";
 import { Section } from "@/components/ui/layout/Section";
-import { Heading } from "@/components/ui/typography/Heading";
-import { Text } from "@/components/ui/typography/Text";
 import { Badge } from "@/components/ui/badge/Badge";
+import { Text } from "@/components/ui/typography/Text";
 import { Button } from "@/components/ui/button/Button";
 import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
-import { MapPin, Phone, Mail, Clock, ArrowUpRight, Navigation } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, ArrowUpRight, Navigation, CheckCircle2 } from "lucide-react";
 
 export const CampusContactSection: React.FC = () => {
   const business = CANONICAL_BUSINESS_CONFIG;
@@ -18,39 +17,43 @@ export const CampusContactSection: React.FC = () => {
   const directionsUrl = business.contact.google_maps_url;
 
   return (
-    <Section variant="surface" spacing="lg" id="contact">
+    <Section variant="default" spacing="lg" id="contact" className="bg-[var(--brand-background)]">
       <Container size="xl">
-        <div className="rounded-3xl bg-linear-to-br from-[var(--brand-primary)] via-[#0D2342] to-[#0A192F] text-white p-6 sm:p-10 lg:p-12 shadow-xl border border-slate-800">
+        <div className="rounded-3xl bg-white border border-[var(--brand-border)] p-6 sm:p-10 lg:p-12 shadow-sm text-left">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left Info */}
-            <div className="lg:col-span-7 space-y-6">
+            {/* Left Column: Clean White Institutional Info */}
+            <div className="lg:col-span-7 space-y-6 text-left">
               <div>
-                <Badge variant="accent" size="md" className="mb-3">
+                <Badge variant="primary" size="md" className="mb-3">
                   VISIT OUR CAMPUS
                 </Badge>
-                <Heading as="h2" variant="h1" color="white">
-                  {business.academy_name}, Mathura
-                </Heading>
-                <Text variant="body-large" color="white" className="opacity-90 mt-2">
-                  Visit our academic campus in Mathura for personal course guidance, syllabus discussion, and classroom tours.
+                <h2 className="text-2xl sm:text-4xl font-extrabold text-[var(--brand-text)] tracking-tight">
+                  {business.academy_name}, <span className="text-[var(--brand-primary)]">Mathura</span>
+                </h2>
+                <Text variant="body-large" color="secondary" className="text-sm sm:text-base mt-2">
+                  Visit our academic campus in Mathura for personalized course guidance, syllabus discussion, and direct faculty counseling.
                 </Text>
               </div>
 
-              <div className="space-y-4 pt-2 text-xs sm:text-sm text-slate-300">
+              <div className="space-y-4 pt-1 text-xs sm:text-sm text-[var(--brand-text-secondary)]">
                 <div className="flex items-start gap-3">
-                  <MapPin className="w-5 h-5 text-[var(--brand-accent)] shrink-0 mt-0.5" />
+                  <div className="w-9 h-9 rounded-xl bg-[var(--brand-primary-soft)] text-[var(--brand-primary)] flex items-center justify-center shrink-0 mt-0.5">
+                    <MapPin className="w-4 h-4 text-[var(--brand-accent)]" />
+                  </div>
                   <div>
-                    <span className="font-bold text-white block">Campus Location:</span>
+                    <span className="font-bold text-[var(--brand-text)] block">Campus Location:</span>
                     <span>{business.address.display_location}</span>
                   </div>
                 </div>
 
                 {phone && (
                   <div className="flex items-start gap-3">
-                    <Phone className="w-5 h-5 text-[var(--brand-accent)] shrink-0 mt-0.5" />
+                    <div className="w-9 h-9 rounded-xl bg-[var(--brand-primary-soft)] text-[var(--brand-primary)] flex items-center justify-center shrink-0 mt-0.5">
+                      <Phone className="w-4 h-4 text-[var(--brand-primary)]" />
+                    </div>
                     <div>
-                      <span className="font-bold text-white block">Admissions Desk:</span>
-                      <a href={`tel:${phone}`} className="hover:text-white underline font-semibold">
+                      <span className="font-bold text-[var(--brand-text)] block">Admissions Desk:</span>
+                      <a href={`tel:${phone}`} className="text-[var(--brand-primary)] hover:underline font-bold">
                         {phone}
                       </a>
                     </div>
@@ -59,10 +62,12 @@ export const CampusContactSection: React.FC = () => {
 
                 {email && (
                   <div className="flex items-start gap-3">
-                    <Mail className="w-5 h-5 text-[var(--brand-accent)] shrink-0 mt-0.5" />
+                    <div className="w-9 h-9 rounded-xl bg-[var(--brand-primary-soft)] text-[var(--brand-primary)] flex items-center justify-center shrink-0 mt-0.5">
+                      <Mail className="w-4 h-4 text-[var(--brand-primary)]" />
+                    </div>
                     <div>
-                      <span className="font-bold text-white block">Official Email:</span>
-                      <a href={`mailto:${email}`} className="hover:text-white underline">
+                      <span className="font-bold text-[var(--brand-text)] block">Official Email:</span>
+                      <a href={`mailto:${email}`} className="text-[var(--brand-primary)] hover:underline font-semibold">
                         {email}
                       </a>
                     </div>
@@ -71,9 +76,11 @@ export const CampusContactSection: React.FC = () => {
 
                 {hours && (
                   <div className="flex items-start gap-3">
-                    <Clock className="w-5 h-5 text-[var(--brand-accent)] shrink-0 mt-0.5" />
+                    <div className="w-9 h-9 rounded-xl bg-[var(--brand-primary-soft)] text-[var(--brand-primary)] flex items-center justify-center shrink-0 mt-0.5">
+                      <Clock className="w-4 h-4 text-[var(--brand-accent)]" />
+                    </div>
                     <div>
-                      <span className="font-bold text-white block">Consultation Hours:</span>
+                      <span className="font-bold text-[var(--brand-text)] block">Consultation Hours:</span>
                       <span>{hours}</span>
                     </div>
                   </div>
@@ -108,9 +115,8 @@ export const CampusContactSection: React.FC = () => {
                 )}
                 <Link href="/admissions">
                   <Button
-                    variant="outline"
+                    variant="secondary"
                     size="md"
-                    className="text-white border-white/20 hover:bg-white/10"
                   >
                     Admissions Process
                   </Button>
@@ -118,41 +124,39 @@ export const CampusContactSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Map / Interactive Guide Card */}
-            <div className="lg:col-span-5 bg-white/5 rounded-2xl border border-white/10 p-6 sm:p-8 backdrop-blur-xs flex flex-col justify-between space-y-4 text-left">
+            {/* Right Column: Deep Blue Feature Highlight Panel */}
+            <div className="lg:col-span-5 bg-gradient-to-br from-[#123E73] to-[#0B2748] text-white rounded-3xl p-6 sm:p-8 shadow-md flex flex-col justify-between space-y-5 text-left">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-[var(--brand-accent-light)] block mb-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-amber-300 block mb-1">
                   Location Relevance
                 </span>
-                <h3 className="text-lg font-bold text-white mb-2">
+                <h3 className="text-xl font-bold text-white mb-2">
                   Centrally Located in Mathura
                 </h3>
-                <p className="text-xs text-slate-300 leading-relaxed mb-4">
-                  Easily accessible from all major localities of Mathura, Vrindavan, and neighboring regions in Western Uttar Pradesh.
+                <p className="text-xs text-slate-200 leading-relaxed mb-4">
+                  Easily accessible from all major localities of Mathura, Vrindavan, and Western Uttar Pradesh via Bhuteshwar Road.
                 </p>
-                <div className="space-y-2 text-xs text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <div className="space-y-2.5 text-xs text-slate-200">
+                  <div className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                     <span>Dedicated student academic mentorship</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <div className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                     <span>Quiet, distraction-free study environment</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                    <span>Parent & student consultation desk</span>
+                  <div className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Modern CBT & OMR testing center on campus</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-white/10">
-                <a
-                  href="#counselling"
-                  className="block w-full py-2.5 text-center text-xs font-bold rounded-lg bg-white text-[var(--brand-primary)] hover:bg-slate-100 transition-colors"
-                >
-                  Schedule an In-Person Campus Visit
-                </a>
+              <div className="pt-4 border-t border-white/15">
+                <Link href="/contact" className="text-xs font-bold text-amber-300 hover:text-white inline-flex items-center gap-1.5 transition-colors">
+                  <span>Schedule an In-Person Campus Visit</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
             </div>
           </div>

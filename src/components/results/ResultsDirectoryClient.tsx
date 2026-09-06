@@ -257,7 +257,7 @@ export const ResultsDirectoryClient: React.FC<ResultsDirectoryClientProps> = ({ 
 
         {/* Secure Candidate Scorecard Lookup Section */}
         <div className="mt-16 sm:mt-20 pt-12 border-t border-slate-200" id="verify-scorecard">
-          <div className="rounded-3xl bg-linear-to-br from-slate-900 via-[var(--brand-primary)] to-[#0A192F] text-white p-6 sm:p-10 lg:p-12 border border-slate-800 shadow-xl">
+          <div className="rounded-3xl bg-linear-to-br from-[var(--brand-primary-dark)] via-[#1B4282] to-[#112C57] text-white p-6 sm:p-10 lg:p-12 border border-blue-900/40 shadow-xl">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
               {/* Left Info */}
               <div className="lg:col-span-6 space-y-4 text-left">

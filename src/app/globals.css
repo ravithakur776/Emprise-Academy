@@ -2,43 +2,66 @@
 
 @layer base {
   :root {
-    /* Brand Primary (Navy) */
-    --brand-primary: #0A192F;
-    --brand-primary-dark: #0D2342;
-    --brand-primary-light: #132E59;
-    --brand-primary-hover: #1E3A8A;
+    /* Brand Primary (Academic Blue) */
+    --color-primary: #1769E0;
+    --color-primary-dark: #123E73;
+    --color-primary-mid: #0B2748;
+    --color-primary-light: #4A8DF0;
+    --color-primary-hover: #1358BE;
+    --color-primary-soft: #EEF5FF;
+
+    --brand-primary: #1769E0;
+    --brand-primary-dark: #123E73;
+    --brand-primary-mid: #0B2748;
+    --brand-primary-light: #4A8DF0;
+    --brand-primary-hover: #1358BE;
+    --brand-primary-soft: #EEF5FF;
     
-    /* Brand Accent (Orange) */
-    --brand-accent: #FF6B00;
-    --brand-accent-vibrant: #FA5A00;
-    --brand-accent-light: #FF8533;
-    --brand-accent-hover: #EA580C;
+    /* Brand Accent (Energetic Academic Orange) */
+    --color-accent: #FF8A00;
+    --color-accent-hover: #E67A00;
+    --color-accent-light: #FFA433;
+
+    --brand-accent: #FF8A00;
+    --brand-accent-vibrant: #FF8A00;
+    --brand-accent-light: #FFA433;
+    --brand-accent-hover: #E67A00;
     
     /* Academic Achievement / Gold */
     --brand-gold: #D97706;
     --brand-gold-light: #F59E0B;
     --brand-gold-dark: #B45309;
     
-    /* Surface & Background */
+    /* Surface & Background (Light Neutral & Clean White) */
+    --color-background: #F8FAFC;
+    --color-surface: #FFFFFF;
+    --color-surface-muted: #EEF5FF;
+    --color-surface-dark: #123E73;
+    --color-text: #14213D;
+    --color-text-secondary: #667085;
+    --color-text-muted: #8896A6;
+    --color-border: #E3EAF3;
+    --color-border-dark: #123E73;
+
     --brand-background: #F8FAFC;
     --brand-surface: #FFFFFF;
-    --brand-surface-muted: #F1F5F9;
-    --brand-surface-dark: #0D2342;
-    --brand-text: #0F172A;
-    --brand-text-secondary: #334155;
-    --brand-muted: #64748B;
-    --brand-border: #E2E8F0;
-    --brand-border-dark: #334155;
+    --brand-surface-muted: #EEF5FF;
+    --brand-surface-dark: #123E73;
+    --brand-text: #14213D;
+    --brand-text-secondary: #667085;
+    --brand-muted: #8896A6;
+    --brand-border: #E3EAF3;
+    --brand-border-dark: #123E73;
     
     /* Status Feedback */
-    --brand-success: #10B981;
-    --brand-success-light: #ECFDF5;
-    --brand-warning: #F59E0B;
-    --brand-warning-light: #FFFBEB;
-    --brand-danger: #EF4444;
-    --brand-danger-light: #FEF2F2;
-    --brand-info: #3B82F6;
-    --brand-info-light: #EFF6FF;
+    --brand-success: #16A36A;
+    --brand-success-light: #E8F8F0;
+    --brand-warning: #C77A00;
+    --brand-warning-light: #FFF7EB;
+    --brand-danger: #D64545;
+    --brand-danger-light: #FEEFEF;
+    --brand-info: #1769E0;
+    --brand-info-light: #EEF5FF;
 
     --background: var(--brand-background);
     --foreground: var(--brand-text);
@@ -77,9 +100,9 @@ h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
 }
 
-/* Custom Accessibility Focus Rings */
+/* Accessible Focus Rings */
 :focus-visible {
-  outline: 2px solid var(--brand-accent);
+  outline: 2px solid var(--brand-primary);
   outline-offset: 2px;
 }
 

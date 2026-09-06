@@ -2,18 +2,21 @@ import type { Metadata } from "next";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer, MobileBottomCTA } from "@/components/navigation/Footer";
 import { ToastProvider } from "@/components/ui/toast/ToastProvider";
-import { HeroSection } from "@/components/home/HeroSection";
-import { TrustNumbersStrip } from "@/components/home/TrustNumbersStrip";
-import { CoreProgramsSection } from "@/components/home/CoreProgramsSection";
-import { WhyChooseSection } from "@/components/home/WhyChooseSection";
-import { MethodologySection } from "@/components/home/MethodologySection";
+import { HeroSlider } from "@/components/home/HeroSlider";
+import { QuickActionsSection } from "@/components/home/QuickActionsSection";
+import { TrustIntroSection } from "@/components/home/TrustIntroSection";
+import { CoursesGridSection } from "@/components/home/CoursesGridSection";
+import { EtseFeatureSection } from "@/components/home/EtseFeatureSection";
+import { WhyEmpriseSection } from "@/components/home/WhyEmpriseSection";
+import { TheEmpriseSystemSection } from "@/components/home/TheEmpriseSystemSection";
 import { DirectorsSection } from "@/components/home/DirectorsSection";
 import { ResultsSection } from "@/components/home/ResultsSection";
-import { CampusEnvironmentSection } from "@/components/home/CampusEnvironmentSection";
-import { ScholarshipSection } from "@/components/home/ScholarshipSection";
-import { AdmissionsCounsellingSection } from "@/components/home/AdmissionsCounsellingSection";
+import { GalleryPreviewSection } from "@/components/home/GalleryPreviewSection";
+import { LatestUpdatesSection } from "@/components/home/LatestUpdatesSection";
+import { TestimonialsHomeSection } from "@/components/home/TestimonialsHomeSection";
 import { FAQSection } from "@/components/home/FAQSection";
 import { CampusContactSection } from "@/components/home/CampusContactSection";
+import { FinalCtaSection } from "@/components/home/FinalCtaSection";
 import { HomepageJsonLd } from "@/components/home/HomepageJsonLd";
 
 export const metadata: Metadata = {
@@ -61,49 +64,58 @@ export default function HomePage() {
         {/* Global Navigation Shell */}
         <Navbar />
 
-        {/* Main Content Sections */}
+        {/* Main Content Sections with Sophisticated Visual Rhythm */}
         <main className="flex-1">
-          {/* 1. Hero Section */}
-          <HeroSection />
+          {/* 1. Large Hero Carousel Slider (Strong Blue Moment) */}
+          <HeroSlider />
 
-          {/* 2. Trust Numbers Section */}
-          <TrustNumbersStrip />
+          {/* 2. Quick Actions Shortcuts (White Surface) */}
+          <QuickActionsSection />
 
-          {/* 3. Three Core Academic Programmes */}
-          <CoreProgramsSection />
+          {/* 3. Trust & Introduction Section (White Surface) */}
+          <TrustIntroSection />
 
-          {/* 4. Why Choose Emprise Academy */}
-          <WhyChooseSection />
+          {/* 4. 4-Column Responsive Courses Section (Light Neutral #F8FAFC) */}
+          <CoursesGridSection />
 
-          {/* 5. Teaching Methodology Cycle */}
-          <MethodologySection />
+          {/* 5. Dedicated ETSE 2026 Feature Section (Strong Blue Moment) */}
+          <EtseFeatureSection />
 
-          {/* 6. Directors & Academic Leadership */}
+          {/* 6. Why Students & Parents Choose Emprise (White Surface) */}
+          <WhyEmpriseSection />
+
+          {/* 7. The Emprise System: 8-Step Interactive Journey (Light Neutral #F8FAFC) */}
+          <TheEmpriseSystemSection />
+
+          {/* 8. Meet the Directors: Verified Leadership (White Surface) */}
           <DirectorsSection />
 
-          {/* 7. Results Section */}
+          {/* 9. Results & Verified Achievers (Light Neutral #F8FAFC) */}
           <ResultsSection />
 
-          {/* 8. Campus & Learning Environment */}
-          <CampusEnvironmentSection />
+          {/* 10. Life at Emprise: Gallery Preview (White Surface) */}
+          <GalleryPreviewSection />
 
-          {/* 10. Scholarship Section */}
-          <ScholarshipSection />
+          {/* 11. Latest Updates & Notices (Light Neutral #F8FAFC) */}
+          <LatestUpdatesSection />
 
-          {/* 11. Admissions & Counselling CTA Form */}
-          <AdmissionsCounsellingSection />
+          {/* 12. Student & Parent Testimonials (White Surface) */}
+          <TestimonialsHomeSection />
 
-          {/* 12. Frequently Asked Questions */}
+          {/* 13. Accessible Accordion FAQs (White Surface) */}
           <FAQSection />
 
-          {/* 13. Mathura Campus Contact & Directions */}
+          {/* 14. Mathura Campus Contact & Location (Light Neutral #F8FAFC with Selective Blue Panel) */}
           <CampusContactSection />
+
+          {/* 15. Final Decision CTA (Strong Blue Moment) */}
+          <FinalCtaSection />
         </main>
 
-        {/* Institutional Footer */}
+        {/* Global Institutional Footer (Deep Institutional Blue #123E73) */}
         <Footer />
 
-        {/* Mobile Sticky Bottom Conversion Bar */}
+        {/* Mobile Fixed CTA Bar */}
         <MobileBottomCTA />
       </div>
     </ToastProvider>

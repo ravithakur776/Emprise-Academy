@@ -23,27 +23,27 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-  primary: "bg-[var(--brand-primary)] text-white",
-  secondary: "bg-slate-800 text-slate-100",
+  primary: "bg-[var(--brand-primary-soft)] text-[var(--brand-primary)] border border-blue-200/80 font-semibold",
+  secondary: "bg-[var(--brand-primary-dark)] text-white font-medium",
   accent: "bg-orange-50 text-[var(--brand-accent)] border border-orange-200/80 font-semibold",
   gold: "bg-amber-50 text-amber-800 border border-amber-200 font-semibold",
   success: "bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold",
   warning: "bg-amber-50 text-amber-700 border border-amber-200 font-medium",
   danger: "bg-red-50 text-red-700 border border-red-200 font-semibold",
-  info: "bg-blue-50 text-blue-700 border border-blue-200 font-medium",
+  info: "bg-[var(--brand-primary-soft)] text-[var(--brand-primary)] border border-blue-200 font-medium",
   muted: "bg-slate-100 text-slate-600 border border-slate-200",
   outline: "bg-transparent text-slate-700 border border-slate-300",
 };
 
 const dotColors: Record<BadgeVariant, string> = {
-  primary: "bg-white",
-  secondary: "bg-slate-300",
+  primary: "bg-[var(--brand-primary)]",
+  secondary: "bg-white",
   accent: "bg-[var(--brand-accent)]",
   gold: "bg-[var(--brand-gold)]",
   success: "bg-emerald-500",
   warning: "bg-amber-500",
   danger: "bg-red-500",
-  info: "bg-blue-500",
+  info: "bg-[var(--brand-primary)]",
   muted: "bg-slate-400",
   outline: "bg-slate-400",
 };
@@ -65,7 +65,7 @@ export const Badge: React.FC<BadgeProps> = ({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 font-medium leading-none whitespace-nowrap",
+        "inline-flex items-center gap-1.5 font-medium select-none tracking-wide",
         variantStyles[variant],
         sizeStyles[size],
         className
@@ -94,32 +94,25 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   size = "md",
   className,
 }) => {
-  const norm = status.toUpperCase().trim();
+  const normalized = status.toUpperCase().trim();
 
   let variant: BadgeVariant = "muted";
-  const dot = true;
 
-  if (norm === "PUBLISHED" || norm === "QUALIFIED" || norm === "ACTIVE" || norm === "APPROVED" || norm === "CONVERTED") {
+  if (["QUALIFIED", "CONFIRMED", "ACTIVE", "PUBLISHED", "PASS", "ENROLLED"].includes(normalized)) {
     variant = "success";
-  } else if (norm === "REGISTERED" || norm === "ADMIT_CARD_GENERATED" || norm === "NEW") {
-    variant = "accent";
-  } else if (norm === "PENDING" || norm === "AWAITING" || norm === "CONTACTED" || norm === "INTERESTED") {
+  } else if (["TOPPER", "AIR 1", "SCHOLARSHIP", "GOLD"].includes(normalized)) {
+    variant = "gold";
+  } else if (["PENDING", "IN_PROGRESS", "AWAITING", "UPCOMING"].includes(normalized)) {
     variant = "warning";
-  } else if (norm === "REVOKED" || norm === "REJECTED" || norm === "CANCELLED" || norm === "NOT_QUALIFIED" || norm === "LOST") {
+  } else if (["REJECTED", "FAILED", "CANCELLED", "INACTIVE"].includes(normalized)) {
     variant = "danger";
-  } else if (norm === "DRAFT" || norm === "INACTIVE") {
-    variant = "muted";
+  } else if (["ETSE", "FEATURED", "EXAM"].includes(normalized)) {
+    variant = "primary";
   }
 
-  // Humanize status label
-  const label = norm
-    .split("_")
-    .map((word) => word.charAt(0) + word.slice(1).toLowerCase())
-    .join(" ");
-
   return (
-    <Badge variant={variant} size={size} dot={dot} className={className}>
-      {label}
+    <Badge variant={variant} size={size} dot className={className}>
+      {status}
     </Badge>
   );
 };

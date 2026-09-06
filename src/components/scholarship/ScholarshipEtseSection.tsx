@@ -15,7 +15,7 @@ export const ScholarshipEtseSection: React.FC = () => {
   return (
     <Section variant="surface" spacing="lg" id="etse-pathway">
       <Container size="xl">
-        <div className="rounded-3xl bg-linear-to-br from-slate-900 via-[var(--brand-primary)] to-[#0A192F] text-white p-6 sm:p-10 lg:p-12 border border-slate-800 shadow-xl relative overflow-hidden">
+        <div className="rounded-3xl bg-linear-to-br from-[var(--brand-primary-dark)] via-[#1B4282] to-[#112C57] text-white p-6 sm:p-10 lg:p-12 border border-blue-900/40 shadow-xl relative overflow-hidden">
           <div className="absolute -top-12 -right-12 w-64 h-64 bg-[var(--brand-accent)]/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">

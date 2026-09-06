@@ -76,7 +76,7 @@ export default function ResultsMainPage() {
           {/* 4. Programme Preparation Gateway */}
           <Section variant="default" spacing="md">
             <Container size="xl">
-              <div className="rounded-3xl bg-linear-to-br from-slate-900 via-[var(--brand-primary)] to-[#0A192F] text-white p-6 sm:p-10 border border-slate-800 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="rounded-3xl bg-linear-to-br from-[var(--brand-primary-dark)] via-[#1B4282] to-[#112C57] text-white p-6 sm:p-10 border border-blue-900/40 shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="space-y-2 text-left">
                   <Badge variant="gold" size="sm">
                     START YOUR JOURNEY

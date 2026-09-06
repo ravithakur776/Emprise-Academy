@@ -115,7 +115,7 @@ export default async function AdminStudentDetailPage({
           {/* Academic & ETSE Modules Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
             {/* ETSE 2026 Registration Card */}
-            <div className="p-4 rounded-2xl bg-linear-to-br from-slate-900 to-[var(--brand-primary)] text-white space-y-2">
+            <div className="p-4 rounded-2xl bg-linear-to-br from-[var(--brand-primary-dark)] via-[#1B4282] to-[#112C57] text-white space-y-2 border border-blue-900/40">
               <div className="flex items-center justify-between border-b border-white/10 pb-2">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-amber-300">
                   ETSE 2026 Application

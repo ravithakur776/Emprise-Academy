@@ -27,7 +27,7 @@ export const ResultsHero: React.FC<ResultsHeroProps> = ({
   secondaryCta,
 }) => {
   return (
-    <section className="relative overflow-hidden bg-linear-to-b from-[var(--brand-primary)] via-[#0D2342] to-[#0A192F] text-white pt-6 pb-12 sm:pt-8 sm:pb-16 lg:pb-20 border-b border-slate-800">
+    <section className="relative overflow-hidden bg-linear-to-b from-[var(--brand-primary-dark)] via-[#1B4282] to-[#112C57] text-white pt-6 pb-12 sm:pt-8 sm:pb-16 lg:pb-20 border-b border-blue-900/40">
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-[var(--brand-accent)]/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
 
