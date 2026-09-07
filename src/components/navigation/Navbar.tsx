@@ -94,16 +94,16 @@ export const Navbar: React.FC = () => {
       {/* 1. TOP ANNOUNCEMENT BAR (Deep Institutional Blue #123E73) */}
       <div className="bg-[var(--brand-primary-dark)] text-white text-[11px] sm:text-xs py-2 px-4 text-center font-medium border-b border-blue-900/40 select-none">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
-          {/* Announcement Message & Badge */}
-          <div className="flex items-center gap-2 overflow-hidden truncate">
-            <span className="inline-flex items-center gap-1 text-[var(--brand-accent)] font-bold uppercase tracking-wider text-[10px] bg-white/10 px-2 py-0.5 rounded shrink-0 border border-white/15">
-              <Sparkles className="w-3 h-3 text-[var(--brand-accent)]" /> ETSE 2026
+          {/* Announcement Message & Label */}
+          <div className="flex items-center gap-2 sm:gap-2.5 overflow-hidden truncate">
+            <span className="font-semibold text-white tracking-wide shrink-0">
+              ETSE
             </span>
-            <span className="hidden md:inline truncate">
+            <span className="hidden md:inline truncate text-slate-200">
               Emprise Talent Search Examination • Exam on 6 September 2026 • 100% Free Registration Open for Classes 7th to 10th
             </span>
-            <span className="md:hidden truncate">
-              Exam: 6 Sept 2026 • Classes 7th–10th • FREE
+            <span className="md:hidden truncate text-slate-200">
+              • Exam: 6 Sept 2026 • Classes 7th–10th • FREE
             </span>
           </div>
 

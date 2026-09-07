@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge/Badge";
 import { Text } from "@/components/ui/typography/Text";
 import { Button } from "@/components/ui/button/Button";
 import { HOMEPAGE_DATA } from "@/data/homepage";
-import { CheckCircle2, ArrowRight } from "lucide-react";
+import { CheckCircle2, ArrowRight, Trophy, GraduationCap } from "lucide-react";
 
 export const TrustIntroSection: React.FC = () => {
   const { trustIntro } = HOMEPAGE_DATA;
@@ -21,15 +21,45 @@ export const TrustIntroSection: React.FC = () => {
               <Badge variant="primary" size="md">
                 ACADEMIC EXCELLENCE • EST. 2011
               </Badge>
-              <h2 className="text-2xl sm:text-4xl font-extrabold text-[var(--brand-text)] tracking-tight">
-                Preparing Students For{" "}
-                <span className="text-[var(--brand-primary)]">Bigger Dreams</span>
+              <h2 className="text-2xl sm:text-4xl lg:text-[2.65rem] font-extrabold text-[#0B2748] tracking-tight leading-[1.2]">
+                The Leader in{" "}
+                <span className="text-[var(--brand-primary)]">
+                  IIT-JEE, NEET &amp; Foundation
+                </span>{" "}
+                Coaching in Mathura
               </h2>
             </div>
 
             <Text variant="body-large" color="secondary" className="leading-relaxed text-sm sm:text-base">
               {trustIntro.paragraph}
             </Text>
+
+            {/* Credibility Badges */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border border-[#E3EAF3] shadow-xs">
+                <div className="w-10 h-10 rounded-xl bg-[#EEF5FF] text-[#1769E0] flex items-center justify-center shrink-0">
+                  <Trophy className="w-5 h-5 text-[#1769E0]" />
+                </div>
+                <div>
+                  <div className="text-sm font-extrabold text-[#0B2748] tracking-tight">7+</div>
+                  <div className="text-xs font-semibold text-[#667085] leading-tight">
+                    National Education Awards
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border border-[#E3EAF3] shadow-xs">
+                <div className="w-10 h-10 rounded-xl bg-[#FFF4E5] text-[#FF8A00] flex items-center justify-center shrink-0">
+                  <GraduationCap className="w-5 h-5 text-[#FF8A00]" />
+                </div>
+                <div>
+                  <div className="text-sm font-extrabold text-[#0B2748] tracking-tight">IITians &amp; Doctors</div>
+                  <div className="text-xs font-semibold text-[#667085] leading-tight">
+                    as Faculty
+                  </div>
+                </div>
+              </div>
+            </div>
 
             {/* Core Institutional Highlights */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
@@ -57,7 +87,7 @@ export const TrustIntroSection: React.FC = () => {
                   Learn More About Emprise
                 </Button>
               </Link>
-              <Link href="/directors">
+              <Link href="#directors">
                 <Button variant="secondary" size="md">
                   Meet Directors
                 </Button>

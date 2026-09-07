@@ -23,16 +23,6 @@ export interface HeroSlide {
   bannerImageHref?: string;
 }
 
-export interface QuickActionItem {
-  id: string;
-  label: string;
-  sublabel: string;
-  badge: string;
-  href: string;
-  iconName: "Trophy" | "GraduationCap" | "User" | "Award" | "PhoneCall" | "Calendar" | "BookOpen";
-  highlight?: boolean;
-}
-
 export interface TrustMetric {
   value: string;
   label: string;
@@ -106,7 +96,7 @@ export interface HomepageFAQ {
 
 export const HOMEPAGE_DATA = {
   announcement: {
-    badge: "ETSE 2026",
+    badge: "ETSE",
     text: "Emprise Talent Search Examination • Exam on 6 September 2026 • 100% Free Registration Open for Classes 7th to 10th",
     ctaText: "Register Now →",
     ctaHref: "/etse-2026#register",
@@ -162,37 +152,18 @@ export const HOMEPAGE_DATA = {
       accentColor: "#FF8A00",
     },
     {
-      id: "slide-2",
-      tag: "ANNUAL TALENT SEARCH EXAMINATION",
-      badge: "UP TO 100% SCHOLARSHIP",
-      heading: "ETSE 2026",
-      subheading: "Emprise Talent Search Examination 2026",
-      supportingInfo: "Exam Date: 6 September 2026 • Classes 7th to 10th • 100% Free Registration",
-      primaryBtn: { label: "Register Now", href: "/etse-2026#register" },
-      secondaryBtn: { label: "View Details", href: "/etse-2026" },
-      gradient: "from-[#0A2E63] via-[#0D3B78] to-[#1769E0]",
-      accentColor: "#FF8A00",
-    },
-    {
-      id: "slide-4",
-      tag: "ESTABLISHED IN 2011",
-      badge: "15+ YEARS OF EXCELLENCE",
-      heading: "15+ Years of Academic Excellence",
-      subheading: "Building strong foundations, disciplined testing, and confident achievers in Mathura since 2011.",
-      primaryBtn: { label: "About Emprise", href: "/about" },
-      secondaryBtn: { label: "Meet the Directors", href: "/directors" },
-      gradient: "from-[#08234D] via-[#0D3B78] to-[#1769E0]",
-      accentColor: "#FF8A00",
-    },
-    {
-      id: "slide-1",
-      tag: "PREMIER COACHING INSTITUTE • MATHURA",
-      badge: "IIT-JEE • NEET • FOUNDATION",
-      heading: "Shape Your Future With Emprise Academy",
-      subheading: "Focused preparation for IIT-JEE, NEET-UG & Foundation students with concept-driven pedagogy and personal faculty mentorship.",
-      primaryBtn: { label: "Explore Courses", href: "/courses" },
-      secondaryBtn: { label: "Apply Now", href: "/contact#enquire" },
-      gradient: "from-[#0D3B78] via-[#1769E0] to-[#0A2E63]",
+      id: "slide-neet-ug-2026-result",
+      isBannerImage: true,
+      bannerImageSrc: "/images/emprise-neet-ug-2026-result-achievers.png",
+      bannerImageAlt: "Emprise Academy NEET UG 2026 Result — Mathura Achievers",
+      bannerImageHref: "/results",
+      tag: "NEET (UG) 2026 • OFFICIAL RESULTS",
+      badge: "MATHURA DISTRICT TOP MEDICAL RANKS",
+      heading: "NEET (UG) 2026 — Mathura Result",
+      subheading: "Celebrating top medical achievers: Bhanu Pratap Tomar (AIR 1794, OBC), Shreya Agrawal (AIR 8570), Ashwani Kr. Sahni (AIR 16734), Srishti Saraswat (AIR 18162), Shreya Yadav (AIR 16937, OBC), Khushi (AIR 3480, Category Rank) — Your Dream. Our Guidance. Your Success.",
+      primaryBtn: { label: "View All Results", href: "/results" },
+      secondaryBtn: { label: "Explore NEET Program", href: "/neet-coaching-mathura" },
+      gradient: "from-[#123E73] via-[#1769E0] to-[#0B2748]",
       accentColor: "#FF8A00",
     },
   ] as HeroSlide[],
@@ -210,52 +181,8 @@ export const HOMEPAGE_DATA = {
     counsellingCta: { label: "Book Free Counselling", href: "#counselling" },
   },
 
-  quickActions: [
-    {
-      id: "etse",
-      label: "ETSE 2026",
-      sublabel: "Talent Search Exam",
-      badge: "6 Sept 2026",
-      href: "/etse-2026",
-      iconName: "Trophy",
-      highlight: true,
-    },
-    {
-      id: "admissions",
-      label: "Admissions",
-      sublabel: "Direct & Merit Intake",
-      badge: "Session 2026–27",
-      href: "/admissions",
-      iconName: "GraduationCap",
-    },
-    {
-      id: "student-portal",
-      label: "Student Login",
-      sublabel: "Admit Card & Results",
-      badge: "Student Desk",
-      href: "/student/login",
-      iconName: "User",
-    },
-    {
-      id: "results",
-      label: "Results",
-      sublabel: "Verified Merit Ranks",
-      badge: "Hall of Fame",
-      href: "/results",
-      iconName: "Award",
-    },
-    {
-      id: "contact",
-      label: "Contact Us",
-      sublabel: "Mathura Campus",
-      badge: "Counselling",
-      href: "/contact",
-      iconName: "PhoneCall",
-    },
-  ] as QuickActionItem[],
-
   trustIntro: {
-    heading: "Preparing Students For Bigger Dreams",
+    heading: "The Leader in IIT-JEE, NEET & Foundation Coaching in Mathura",
     paragraph:
       "Since 2011 in Mathura, Emprise Academy has been dedicated to providing high-caliber academic preparation for IIT-JEE (Main + Advanced), NEET-UG, and Foundation (Classes 8–10). Rooted in conceptual clarity, disciplined study habits, regular testing, detailed performance analysis, and personalized mentorship, we guide every student toward their highest potential.",
     stats: [

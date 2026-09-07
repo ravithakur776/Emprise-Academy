@@ -43,13 +43,15 @@ export const HeroSlider: React.FC = () => {
     return () => clearInterval(interval);
   }, [isPaused, nextSlide]);
 
-  // Pre-warm second and third banner images in background for instant transition
+  // Pre-warm second, third, and fourth banner images in background for instant transition
   useEffect(() => {
     if (typeof window !== "undefined") {
       const img2 = new window.Image();
       img2.src = "/images/emprise-back-to-back-iit-bombay-achievers-2025-2026.png";
       const img3 = new window.Image();
       img3.src = "/images/emprise-jee-main-2026-top-performers.png";
+      const img4 = new window.Image();
+      img4.src = "/images/emprise-neet-ug-2026-result-achievers.png";
     }
   }, []);
 

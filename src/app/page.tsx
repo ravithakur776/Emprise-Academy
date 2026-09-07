@@ -3,7 +3,6 @@ import { Navbar } from "@/components/navigation/Navbar";
 import { Footer, MobileBottomCTA } from "@/components/navigation/Footer";
 import { ToastProvider } from "@/components/ui/toast/ToastProvider";
 import { HeroSlider } from "@/components/home/HeroSlider";
-import { QuickActionsSection } from "@/components/home/QuickActionsSection";
 import { TrustIntroSection } from "@/components/home/TrustIntroSection";
 import { CoursesGridSection } from "@/components/home/CoursesGridSection";
 import { EtseFeatureSection } from "@/components/home/EtseFeatureSection";
@@ -66,14 +65,14 @@ export default function HomePage() {
 
         {/* Main Content Sections with Sophisticated Visual Rhythm */}
         <main className="flex-1">
-          {/* 1. Large Hero Carousel Slider (Strong Blue Moment) */}
+          {/* 1. Large Hero Carousel Slider (Promotional Showcase) */}
           <HeroSlider />
 
-          {/* 2. Quick Actions Shortcuts (White Surface) */}
-          <QuickActionsSection />
-
-          {/* 3. Trust & Introduction Section (White Surface) */}
+          {/* 2. Trust & Introduction Section (Academic Excellence • Est. 2011) */}
           <TrustIntroSection />
+
+          {/* 3. Meet the Directors: Academic Leadership (Light Neutral #F8FAFC) */}
+          <DirectorsSection />
 
           {/* 4. 4-Column Responsive Courses Section (Light Neutral #F8FAFC) */}
           <CoursesGridSection />
@@ -87,10 +86,7 @@ export default function HomePage() {
           {/* 7. The Emprise System: 8-Step Interactive Journey (Light Neutral #F8FAFC) */}
           <TheEmpriseSystemSection />
 
-          {/* 8. Meet the Directors: Verified Leadership (White Surface) */}
-          <DirectorsSection />
-
-          {/* 9. Results & Verified Achievers (Light Neutral #F8FAFC) */}
+          {/* 8. Results & Verified Achievers (Light Neutral #F8FAFC) */}
           <ResultsSection />
 
           {/* 10. Life at Emprise: Gallery Preview (White Surface) */}
