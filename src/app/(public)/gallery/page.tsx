@@ -6,8 +6,7 @@ import { Navbar } from "@/components/navigation/Navbar";
 import { Footer, MobileBottomCTA } from "@/components/navigation/Footer";
 import { Container } from "@/components/ui/layout/Container";
 import { Section } from "@/components/ui/layout/Section";
-import { Badge } from "@/components/ui/badge/Badge";
-import { Sparkles, Maximize2 } from "lucide-react";
+import { Sparkles, Maximize2, Camera } from "lucide-react";
 import { OFFICIAL_GALLERY_IMAGES, GalleryImage } from "@/data/gallery";
 import { GalleryLightbox } from "@/components/gallery/GalleryLightbox";
 
@@ -34,7 +33,7 @@ export default function GalleryPage() {
           <Container size="xl" className="relative z-10 text-center space-y-4 max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs text-amber-300 font-bold uppercase tracking-wider shadow-xs">
               <Sparkles className="w-3.5 h-3.5 text-[var(--brand-accent)]" />
-              <span>OFFICIAL CAMPUS ARCHIVE • {OFFICIAL_GALLERY_IMAGES.length} PHOTOGRAPHS</span>
+              <span>CAMPUS • MEDIA • MEMORIES • {OFFICIAL_GALLERY_IMAGES.length} PHOTOGRAPHS</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
@@ -47,15 +46,23 @@ export default function GalleryPage() {
           </Container>
         </section>
 
-        {/* Gallery Content Section */}
+        {/* Gallery Content Section (Direct Photo Gallery Display) */}
         <Section variant="default" spacing="lg" className="bg-white">
           <Container size="xl">
-            {/* Filter Status Bar */}
-            <div className="flex items-center justify-between border-b border-[var(--brand-border)] pb-5 mb-8 sm:mb-10">
-              <div className="flex items-center gap-2">
-                <span className="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-[var(--brand-primary)] text-white shadow-xs">
-                  All Photos ({OFFICIAL_GALLERY_IMAGES.length})
-                </span>
+            {/* Photo Gallery Sub-Header & Status Bar */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[var(--brand-border)] pb-5 mb-8 sm:mb-10 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[var(--brand-primary-soft)] text-[var(--brand-primary)] flex items-center justify-center shrink-0">
+                  <Camera className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="text-lg sm:text-xl font-bold text-[#0B2748] tracking-tight">
+                    Photo Gallery
+                  </h2>
+                  <p className="text-xs text-[var(--brand-text-secondary)]">
+                    Showing all {OFFICIAL_GALLERY_IMAGES.length} verified campus photographs
+                  </p>
+                </div>
               </div>
 
               <p className="text-xs text-[var(--brand-text-secondary)] hidden sm:block font-medium">

@@ -24,14 +24,26 @@ import {
   GraduationCap,
   FileText,
   MessageSquareQuote,
+  Camera,
+  Newspaper,
+  PlayCircle,
   X,
 } from "lucide-react";
+import { GALLERY_CATEGORIES } from "@/data/gallery";
+
+const GALLERY_ICONS = {
+  Camera,
+  Newspaper,
+  PlayCircle,
+};
 
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isCoursesOpen, setIsCoursesOpen] = useState(false);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [isMobileGalleryOpen, setIsMobileGalleryOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   // Scroll detection for subtle elevation
@@ -65,9 +77,11 @@ export const Navbar: React.FC = () => {
     };
   }, []);
 
-  // Close mobile drawer on route change
+  // Close mobile drawer and dropdowns on route change
   useEffect(() => {
     setIsMobileOpen(false);
+    setIsCoursesOpen(false);
+    setIsGalleryOpen(false);
   }, [pathname]);
 
   // Body scroll lock when mobile drawer is open
@@ -238,7 +252,121 @@ export const Navbar: React.FC = () => {
 
           <NavLink href="/etse-2026">ETSE</NavLink>
           <NavLink href="/results">Results</NavLink>
-          <NavLink href="/gallery">Gallery</NavLink>
+
+          {/* Gallery Mega-Menu Dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => setIsGalleryOpen(true)}
+            onMouseLeave={() => setIsGalleryOpen(false)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                setIsGalleryOpen(false);
+              }
+            }}
+          >
+            <Link
+              href="/gallery"
+              aria-haspopup="menu"
+              aria-expanded={isGalleryOpen}
+              onClick={() => setIsGalleryOpen(false)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  if (!isGalleryOpen) {
+                    e.preventDefault();
+                    setIsGalleryOpen(true);
+                  }
+                }
+              }}
+              className={cn(
+                "inline-flex items-center gap-1 text-sm font-medium py-1.5 px-3 rounded-md transition-colors select-none",
+                pathname?.startsWith("/gallery")
+                  ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-semibold"
+                  : "text-[var(--brand-text)] hover:text-[var(--brand-primary)] hover:bg-[var(--brand-primary-soft)]/50"
+              )}
+            >
+              <span>Gallery</span>
+              <ChevronDown
+                className={cn(
+                  "w-3.5 h-3.5 transition-transform duration-150",
+                  isGalleryOpen ? "rotate-180 text-[var(--brand-primary)]" : ""
+                )}
+              />
+            </Link>
+
+            {isGalleryOpen && (
+              <div
+                className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50 animate-fade-in"
+                role="menu"
+                aria-label="Gallery Mega Menu"
+              >
+                <div className="w-[660px] bg-white rounded-2xl shadow-xl border border-[#E3EAF3] p-4 relative overflow-hidden">
+                  {/* Subtle top accent line */}
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--brand-primary)] via-blue-400 to-[var(--brand-accent)]" />
+
+                  <div className="grid grid-cols-3 gap-3 pt-1">
+                    {GALLERY_CATEGORIES.map((cat) => {
+                      const Icon = GALLERY_ICONS[cat.iconName];
+                      const isActive = pathname === cat.href;
+
+                      return (
+                        <Link
+                          key={cat.id}
+                          href={cat.href}
+                          role="menuitem"
+                          onClick={() => setIsGalleryOpen(false)}
+                          className={cn(
+                            "group flex flex-col p-3.5 rounded-xl border transition-all duration-200 text-left outline-hidden focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)]",
+                            isActive
+                              ? "bg-[#EEF5FF] border-[#B8D5FA] shadow-2xs"
+                              : "border-slate-100/80 hover:border-[#B8D5FA] hover:bg-[#EEF5FF] hover:-translate-y-0.5"
+                          )}
+                        >
+                          <div className="flex items-center justify-between mb-2.5">
+                            <div
+                              className={cn(
+                                "w-9 h-9 rounded-lg flex items-center justify-center transition-colors duration-200",
+                                isActive
+                                  ? "bg-[var(--brand-primary)] text-white"
+                                  : "bg-blue-50 text-[var(--brand-primary)] group-hover:bg-[var(--brand-primary)] group-hover:text-white"
+                              )}
+                            >
+                              <Icon className="w-4 h-4" />
+                            </div>
+                            <span className="text-[10px] font-bold tracking-wider text-slate-400 group-hover:text-[var(--brand-primary)] transition-colors">
+                              {cat.step}
+                            </span>
+                          </div>
+
+                          <div className="space-y-1">
+                            <div className="flex items-center justify-between gap-1">
+                              <span
+                                className={cn(
+                                  "text-xs font-bold transition-colors duration-200 block",
+                                  isActive
+                                    ? "text-[var(--brand-primary)]"
+                                    : "text-[#14213D] group-hover:text-[var(--brand-primary)]"
+                                )}
+                              >
+                                {cat.title}
+                              </span>
+                              {cat.badge && (
+                                <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-700">
+                                  {cat.badge}
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-[11px] leading-relaxed text-[#667085] line-clamp-2">
+                              {cat.description}
+                            </p>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
           <NavLink href="/blog">Blog</NavLink>
           <NavLink href="/testimonials">Testimonials</NavLink>
           <NavLink href="/contact">Contact</NavLink>
@@ -400,18 +528,79 @@ export const Navbar: React.FC = () => {
               <span>Results</span>
             </Link>
 
-            <Link
-              href="/gallery"
-              onClick={() => setIsMobileOpen(false)}
-              className={cn(
-                "p-3 rounded-xl transition-colors flex items-center justify-between min-h-[44px]",
-                pathname === "/gallery"
-                  ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-bold"
-                  : "text-[var(--brand-text)] hover:bg-slate-50"
+            {/* Mobile Gallery Accordion Submenu */}
+            <div className="flex flex-col">
+              <div
+                className={cn(
+                  "flex items-center justify-between rounded-xl transition-colors min-h-[44px]",
+                  pathname?.startsWith("/gallery")
+                    ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-bold"
+                    : "text-[var(--brand-text)] hover:bg-slate-50"
+                )}
+              >
+                <Link
+                  href="/gallery"
+                  onClick={() => setIsMobileOpen(false)}
+                  className="flex-1 p-3 min-h-[44px] flex items-center"
+                >
+                  <span>Gallery</span>
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setIsMobileGalleryOpen((prev) => !prev)}
+                  aria-expanded={isMobileGalleryOpen}
+                  aria-label="Toggle Gallery submenu"
+                  className="p-3 min-h-[44px] min-w-[44px] flex items-center justify-center text-slate-500 hover:text-[var(--brand-primary)] cursor-pointer"
+                >
+                  <ChevronDown
+                    className={cn(
+                      "w-4 h-4 transition-transform duration-200",
+                      isMobileGalleryOpen ? "rotate-180 text-[var(--brand-primary)]" : ""
+                    )}
+                  />
+                </button>
+              </div>
+
+              {isMobileGalleryOpen && (
+                <div className="pl-3 pr-1 pt-1 pb-1 space-y-1 flex flex-col animate-fade-in border-l-2 border-blue-200 ml-4 my-1">
+                  {GALLERY_CATEGORIES.map((cat) => {
+                    const Icon = GALLERY_ICONS[cat.iconName];
+                    const isActive = pathname === cat.href;
+
+                    return (
+                      <Link
+                        key={cat.id}
+                        href={cat.href}
+                        onClick={() => setIsMobileOpen(false)}
+                        className={cn(
+                          "flex items-center gap-2.5 p-2.5 rounded-lg min-h-[44px] text-xs font-semibold transition-colors",
+                          isActive
+                            ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-bold"
+                            : "text-slate-700 hover:text-[var(--brand-primary)] hover:bg-slate-50"
+                        )}
+                      >
+                        <div
+                          className={cn(
+                            "w-7 h-7 rounded-md flex items-center justify-center shrink-0",
+                            isActive
+                              ? "bg-[var(--brand-primary)] text-white"
+                              : "bg-blue-50 text-[var(--brand-primary)]"
+                          )}
+                        >
+                          <Icon className="w-3.5 h-3.5" />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="leading-snug">{cat.title}</span>
+                          <span className="text-[10px] text-slate-500 font-normal">
+                            {cat.description}
+                          </span>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
               )}
-            >
-              <span>Gallery</span>
-            </Link>
+            </div>
 
             <Link
               href="/blog"

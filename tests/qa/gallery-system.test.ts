@@ -62,10 +62,9 @@ async function runGallerySystemAudit() {
   const previewContent = fs.readFileSync(previewPath, "utf-8");
 
   const expectedStrings = [
-    "LIFE AT",
-    "EMPRISE ACADEMY",
-    "Real moments. Real achievers. Real memories.",
-    "CAMPUS • ACHIEVEMENTS • MEMORIES",
+    "Gallery",
+    "CAMPUS • MEDIA • MEMORIES",
+    "Explore the moments, stories and achievements of Emprise Academy.",
     "View Full Gallery",
     "/gallery",
     "GalleryMarqueeRow",

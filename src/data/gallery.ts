@@ -15,6 +15,47 @@ export interface GalleryImage {
   originalFileName: string;
 }
 
+export type GalleryCategory = "photo" | "media" | "video";
+
+export interface GalleryCategoryMeta {
+  id: GalleryCategory;
+  title: string;
+  description: string;
+  iconName: "Camera" | "Newspaper" | "PlayCircle";
+  href: string;
+  step: string;
+  badge?: string;
+}
+
+export const GALLERY_CATEGORIES: GalleryCategoryMeta[] = [
+  {
+    id: "photo",
+    title: "Photo Gallery",
+    description: "Campus, students & academy moments",
+    iconName: "Camera",
+    href: "/gallery",
+    step: "01",
+    badge: "59 Photos",
+  },
+  {
+    id: "media",
+    title: "Media Gallery",
+    description: "Press features & publications",
+    iconName: "Newspaper",
+    href: "/gallery/media",
+    step: "02",
+    badge: "125 Clippings",
+  },
+  {
+    id: "video",
+    title: "Video Gallery",
+    description: "Campus tours & event highlights",
+    iconName: "PlayCircle",
+    href: "/gallery/videos",
+    step: "03",
+  },
+];
+
 export const OFFICIAL_GALLERY_IMAGES: GalleryImage[] = [
   {
     "id": "gal-01",

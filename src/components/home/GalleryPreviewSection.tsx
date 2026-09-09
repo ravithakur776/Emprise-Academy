@@ -40,16 +40,16 @@ export const GalleryPreviewSection: React.FC = () => {
             <div className="flex items-center gap-2">
               <Badge variant="primary" size="md">
                 <Sparkles className="w-3.5 h-3.5 mr-1 text-[var(--brand-accent)]" />
-                CAMPUS • ACHIEVEMENTS • MEMORIES
+                CAMPUS • MEDIA • MEMORIES
               </Badge>
             </div>
 
             <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0B2748] tracking-tight">
-              LIFE AT <span className="text-[var(--brand-primary)]">EMPRISE ACADEMY</span>
+              Gallery
             </h2>
 
             <p className="text-sm sm:text-base text-[var(--brand-text-secondary)] font-normal leading-relaxed">
-              Real moments. Real achievers. Real memories.
+              Explore the moments, stories and achievements of Emprise Academy.
             </p>
           </div>
 
