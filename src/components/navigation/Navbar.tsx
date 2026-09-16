@@ -16,6 +16,8 @@ import {
   Menu,
   ChevronDown,
   User,
+  Users,
+  Building2,
   LayoutDashboard,
   ArrowRight,
   Phone,
@@ -30,6 +32,8 @@ import {
   X,
 } from "lucide-react";
 import { GALLERY_CATEGORIES } from "@/data/gallery";
+import { AboutDropdown } from "./AboutDropdown";
+import { ABOUT_MENU_ITEMS } from "@/data/aboutNav";
 
 const GALLERY_ICONS = {
   Camera,
@@ -37,14 +41,23 @@ const GALLERY_ICONS = {
   PlayCircle,
 };
 
+const ABOUT_ICONS = {
+  Building2,
+  Trophy,
+  Users,
+};
+
 export const Navbar: React.FC = () => {
   const pathname = usePathname();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isMobileAboutOpen, setIsMobileAboutOpen] = useState(false);
   const [isCoursesOpen, setIsCoursesOpen] = useState(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [isMobileGalleryOpen, setIsMobileGalleryOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const aboutDropdownRef = React.useRef<HTMLDivElement>(null);
 
   // Scroll detection for subtle elevation
   useEffect(() => {
@@ -80,9 +93,29 @@ export const Navbar: React.FC = () => {
   // Close mobile drawer and dropdowns on route change
   useEffect(() => {
     setIsMobileOpen(false);
+    setIsAboutOpen(false);
+    setIsMobileAboutOpen(false);
     setIsCoursesOpen(false);
     setIsGalleryOpen(false);
   }, [pathname]);
+
+  // Outside click listener for desktop About dropdown
+  useEffect(() => {
+    const handlePointerDownOutside = (event: MouseEvent) => {
+      if (
+        aboutDropdownRef.current &&
+        !aboutDropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsAboutOpen(false);
+      }
+    };
+    if (isAboutOpen) {
+      document.addEventListener("mousedown", handlePointerDownOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDownOutside);
+    };
+  }, [isAboutOpen]);
 
   // Body scroll lock when mobile drawer is open
   useEffect(() => {
@@ -165,12 +198,67 @@ export const Navbar: React.FC = () => {
           aria-label="Main Navigation"
         >
           <NavLink href="/">Home</NavLink>
-          <NavLink href="/about">About</NavLink>
+
+          {/* About Dropdown */}
+          <div
+            ref={aboutDropdownRef}
+            className="relative"
+            onMouseEnter={() => {
+              setIsAboutOpen(true);
+              setIsCoursesOpen(false);
+              setIsGalleryOpen(false);
+            }}
+            onMouseLeave={() => setIsAboutOpen(false)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                setIsAboutOpen(false);
+              }
+            }}
+          >
+            <Link
+              href="/about"
+              aria-haspopup="menu"
+              aria-expanded={isAboutOpen}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  if (!isAboutOpen) {
+                    e.preventDefault();
+                    setIsAboutOpen(true);
+                  }
+                }
+              }}
+              className={cn(
+                "inline-flex items-center gap-1 text-sm font-medium py-1.5 px-3 rounded-md transition-colors select-none",
+                pathname === "/about" ||
+                  pathname?.startsWith("/about/") ||
+                  isAboutOpen
+                  ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-semibold"
+                  : "text-[var(--brand-text)] hover:text-[var(--brand-primary)] hover:bg-[var(--brand-primary-soft)]/50"
+              )}
+            >
+              <span>About</span>
+              <ChevronDown
+                className={cn(
+                  "w-3.5 h-3.5 transition-transform duration-150",
+                  isAboutOpen ? "rotate-180 text-[var(--brand-primary)]" : ""
+                )}
+              />
+            </Link>
+
+            <AboutDropdown
+              isOpen={isAboutOpen}
+              onItemClick={() => setIsAboutOpen(false)}
+            />
+          </div>
 
           {/* Courses Dropdown */}
           <div
             className="relative"
-            onMouseEnter={() => setIsCoursesOpen(true)}
+            onMouseEnter={() => {
+              setIsCoursesOpen(true);
+              setIsAboutOpen(false);
+              setIsGalleryOpen(false);
+            }}
             onMouseLeave={() => setIsCoursesOpen(false)}
           >
             <Link
@@ -256,7 +344,11 @@ export const Navbar: React.FC = () => {
           {/* Gallery Mega-Menu Dropdown */}
           <div
             className="relative"
-            onMouseEnter={() => setIsGalleryOpen(true)}
+            onMouseEnter={() => {
+              setIsGalleryOpen(true);
+              setIsAboutOpen(false);
+              setIsCoursesOpen(false);
+            }}
             onMouseLeave={() => setIsGalleryOpen(false)}
             onKeyDown={(e) => {
               if (e.key === "Escape") {
@@ -476,18 +568,82 @@ export const Navbar: React.FC = () => {
               <span>Home</span>
             </Link>
 
-            <Link
-              href="/about"
-              onClick={() => setIsMobileOpen(false)}
-              className={cn(
-                "p-3 rounded-xl transition-colors flex items-center justify-between min-h-[44px]",
-                pathname === "/about"
-                  ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-bold"
-                  : "text-[var(--brand-text)] hover:bg-slate-50"
+            {/* Mobile About Accordion Submenu */}
+            <div className="flex flex-col">
+              <button
+                type="button"
+                onClick={() => setIsMobileAboutOpen((prev) => !prev)}
+                aria-expanded={isMobileAboutOpen}
+                aria-label="Toggle About submenu"
+                className={cn(
+                  "w-full flex items-center justify-between p-3 rounded-xl transition-colors min-h-[44px] text-left cursor-pointer",
+                  pathname === "/about" || pathname?.startsWith("/about/")
+                    ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-bold"
+                    : "text-[var(--brand-text)] hover:bg-slate-50"
+                )}
+              >
+                <span>About</span>
+                <ChevronDown
+                  className={cn(
+                    "w-4 h-4 transition-transform duration-200 text-slate-500",
+                    isMobileAboutOpen ? "rotate-180 text-[var(--brand-primary)]" : ""
+                  )}
+                />
+              </button>
+
+              {isMobileAboutOpen && (
+                <div className="pl-3 pr-1 pt-1 pb-1 space-y-1 flex flex-col animate-fade-in border-l-2 border-blue-200 ml-4 my-1">
+                  {ABOUT_MENU_ITEMS.map((item) => {
+                    const Icon = ABOUT_ICONS[item.iconName];
+                    const isActive =
+                      item.href === "/about"
+                        ? pathname === "/about"
+                        : item.href === "/about/awards"
+                        ? pathname === "/about/awards"
+                        : false;
+
+                    return (
+                      <Link
+                        key={item.id}
+                        href={item.href}
+                        onClick={() => {
+                          setIsMobileOpen(false);
+                          setIsMobileAboutOpen(false);
+                        }}
+                        className={cn(
+                          "flex items-center gap-2.5 p-2.5 rounded-lg min-h-[44px] text-xs font-semibold transition-colors",
+                          isActive
+                            ? "text-[var(--brand-primary)] bg-[var(--brand-primary-soft)] font-bold"
+                            : "text-slate-700 hover:text-[var(--brand-primary)] hover:bg-slate-50"
+                        )}
+                      >
+                        <div
+                          className={cn(
+                            "w-7 h-7 rounded-md flex items-center justify-center shrink-0",
+                            isActive
+                              ? "bg-[var(--brand-primary)] text-white"
+                              : "bg-blue-50 text-[var(--brand-primary)]"
+                          )}
+                        >
+                          <Icon className="w-3.5 h-3.5" />
+                        </div>
+                        <div className="flex flex-col min-w-0">
+                          <span className="leading-snug flex items-center gap-1.5">
+                            <span className="text-[10px] font-mono text-slate-400 font-bold">
+                              {item.number}
+                            </span>
+                            <span className="truncate">{item.title}</span>
+                          </span>
+                          <span className="text-[10px] text-slate-500 font-normal line-clamp-1">
+                            {item.description}
+                          </span>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
               )}
-            >
-              <span>About</span>
-            </Link>
+            </div>
 
             <Link
               href="/courses"

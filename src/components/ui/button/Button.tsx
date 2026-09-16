@@ -11,7 +11,8 @@ export type ButtonVariant =
   | "ghost"
   | "danger"
   | "success"
-  | "gold";
+  | "gold"
+  | "courseCta";
 
 export type ButtonSize = "sm" | "md" | "lg";
 
@@ -45,6 +46,8 @@ const variantStyles: Record<ButtonVariant, string> = {
     "bg-[var(--brand-success)] text-white hover:bg-emerald-700 active:scale-[0.98] font-semibold border border-transparent",
   gold:
     "bg-[var(--brand-gold)] text-white hover:bg-amber-700 active:scale-[0.98] font-semibold border border-transparent",
+  courseCta:
+    "bg-white text-[#1769E0] border border-[#1769E0] hover:bg-[#1769E0] hover:text-white hover:border-[#1769E0] hover:shadow-xs hover:-translate-y-px active:bg-[#1358BE] active:border-[#1358BE] active:text-white active:scale-[0.98] active:translate-y-0 font-bold transition-all duration-200",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {

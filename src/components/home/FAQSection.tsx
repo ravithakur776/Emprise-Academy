@@ -8,8 +8,8 @@ import { Badge } from "@/components/ui/badge/Badge";
 import { Text } from "@/components/ui/typography/Text";
 import { Button } from "@/components/ui/button/Button";
 import { HOMEPAGE_DATA, HomepageFAQ } from "@/data/homepage";
-import { ChevronDown, HelpCircle, ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { FAQAccordionItem } from "./FAQAccordionItem";
+import { HelpCircle, ArrowRight } from "lucide-react";
 
 export const FAQSection: React.FC = () => {
   const faqs: HomepageFAQ[] = HOMEPAGE_DATA.faqs;
@@ -35,60 +35,17 @@ export const FAQSection: React.FC = () => {
           </Text>
         </div>
 
-        {/* Accordion List (Type A Clean White Cards) */}
+        {/* 13 Accordion Items (Centered 900–1000px width) */}
         <div className="max-w-4xl mx-auto space-y-3">
-          {faqs.map((faq, idx) => {
-            const isOpen = openIndex === idx;
-
-            return (
-              <div
-                key={idx}
-                className={cn(
-                  "rounded-2xl border transition-all duration-200 overflow-hidden bg-white text-left",
-                  isOpen
-                    ? "border-[var(--brand-primary)]/50 shadow-xs ring-1 ring-[var(--brand-primary)]/10"
-                    : "border-[var(--brand-border)] hover:border-slate-300"
-                )}
-              >
-                <button
-                  onClick={() => toggle(idx)}
-                  aria-expanded={isOpen}
-                  aria-controls={`faq-answer-${idx}`}
-                  className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)]"
-                >
-                  <span className="text-sm sm:text-base font-bold text-[var(--brand-text)] flex items-center gap-3">
-                    <span
-                      className={cn(
-                        "w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 transition-colors",
-                        isOpen
-                          ? "bg-[var(--brand-primary)] text-white"
-                          : "bg-[var(--brand-primary-soft)] text-[var(--brand-primary)]"
-                      )}
-                    >
-                      {idx + 1}
-                    </span>
-                    <span>{faq.question}</span>
-                  </span>
-
-                  <ChevronDown
-                    className={cn(
-                      "w-5 h-5 text-slate-400 shrink-0 transition-transform duration-200",
-                      isOpen ? "rotate-180 text-[var(--brand-primary)]" : ""
-                    )}
-                  />
-                </button>
-
-                {isOpen && (
-                  <div
-                    id={`faq-answer-${idx}`}
-                    className="px-5 pb-6 sm:px-6 sm:pb-6 pt-0 text-xs sm:text-sm text-[var(--brand-text-secondary)] leading-relaxed border-t border-slate-100 mt-1"
-                  >
-                    <p className="pt-4">{faq.answer}</p>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+          {faqs.map((faq, idx) => (
+            <FAQAccordionItem
+              key={faq.id || idx}
+              faq={faq}
+              index={idx}
+              isOpen={openIndex === idx}
+              onToggle={() => toggle(idx)}
+            />
+          ))}
         </div>
 
         {/* Need More Assistance Banner */}

@@ -37,14 +37,16 @@ export const WhyEmpriseSection: React.FC = () => {
     <Section variant="default" spacing="lg" id="why-emprise" className="bg-white">
       <Container size="xl">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 space-y-3">
+        <div className="text-center max-w-4xl lg:max-w-5xl mx-auto mb-10 sm:mb-14">
           <Badge variant="primary" size="md">
             THE EMPRISE ADVANTAGE
           </Badge>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-[var(--brand-text)] tracking-tight">
-            Why Students & Parents Choose <span className="text-[var(--brand-primary)]">Emprise</span>
+          <h2 className="text-2xl sm:text-3xl lg:text-[2.5rem] font-extrabold text-[#14213D] tracking-tight leading-[1.2] mt-3.5 sm:mt-4">
+            <span className="inline-block">Trusted by Mathura’s Parents. </span>
+            <span className="inline-block text-[#1769E0]">Proven by Results. </span>
+            <span className="block mt-1 sm:mt-1.5 text-[#14213D]">Chosen for IIT-JEE &amp; NEET Success.</span>
           </h2>
-          <Text variant="body-large" color="secondary" className="text-sm sm:text-base">
+          <Text variant="body-large" color="secondary" className="text-sm sm:text-base max-w-2xl mx-auto mt-4 sm:mt-5 leading-relaxed">
             Ten foundational pillars that create disciplined study habits, deeper conceptual clarity, and confident academic achievers in Mathura.
           </Text>
         </div>

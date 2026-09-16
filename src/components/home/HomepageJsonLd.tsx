@@ -1,5 +1,6 @@
 import React from "react";
 import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
+import { HOMEPAGE_DATA } from "@/data/homepage";
 
 export const HomepageJsonLd: React.FC = () => {
   const business = CANONICAL_BUSINESS_CONFIG;
@@ -71,10 +72,29 @@ export const HomepageJsonLd: React.FC = () => {
     },
   };
 
+  const faqSchema: Record<string, any> = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: HOMEPAGE_DATA.faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+    </>
   );
 };

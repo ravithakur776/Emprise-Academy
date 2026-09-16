@@ -3,10 +3,10 @@ import Link from "next/link";
 import { Container } from "@/components/ui/layout/Container";
 import { Section } from "@/components/ui/layout/Section";
 import { Badge } from "@/components/ui/badge/Badge";
-import { Text } from "@/components/ui/typography/Text";
 import { Button } from "@/components/ui/button/Button";
 import { HOMEPAGE_DATA } from "@/data/homepage";
-import { CheckCircle2, ArrowRight, Trophy, GraduationCap } from "lucide-react";
+import { CheckCircle2, ArrowRight, Trophy } from "lucide-react";
+import { AcademicStatCard } from "./AcademicStatCard";
 
 export const TrustIntroSection: React.FC = () => {
   const { trustIntro } = HOMEPAGE_DATA;
@@ -14,9 +14,9 @@ export const TrustIntroSection: React.FC = () => {
   return (
     <Section variant="default" spacing="lg" id="about-intro" className="bg-white">
       <Container size="xl">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 xl:gap-12 items-center">
           {/* Left Column: Heading & Narrative */}
-          <div className="lg:col-span-7 space-y-6 text-left">
+          <div className="xl:col-span-6 space-y-6 text-left">
             <div className="space-y-3">
               <Badge variant="primary" size="md">
                 ACADEMIC EXCELLENCE • EST. 2011
@@ -30,39 +30,30 @@ export const TrustIntroSection: React.FC = () => {
               </h2>
             </div>
 
-            <Text variant="body-large" color="secondary" className="leading-relaxed text-sm sm:text-base">
-              {trustIntro.paragraph}
-            </Text>
-
-            {/* Credibility Badges */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border border-[#E3EAF3] shadow-xs">
-                <div className="w-10 h-10 rounded-xl bg-[#EEF5FF] text-[#1769E0] flex items-center justify-center shrink-0">
-                  <Trophy className="w-5 h-5 text-[#1769E0]" />
-                </div>
-                <div>
-                  <div className="text-sm font-extrabold text-[#0B2748] tracking-tight">7+</div>
-                  <div className="text-xs font-semibold text-[#667085] leading-tight">
-                    National Education Awards
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border border-[#E3EAF3] shadow-xs">
-                <div className="w-10 h-10 rounded-xl bg-[#FFF4E5] text-[#FF8A00] flex items-center justify-center shrink-0">
-                  <GraduationCap className="w-5 h-5 text-[#FF8A00]" />
-                </div>
-                <div>
-                  <div className="text-sm font-extrabold text-[#0B2748] tracking-tight">IITians &amp; Doctors</div>
-                  <div className="text-xs font-semibold text-[#667085] leading-tight">
-                    as Faculty
-                  </div>
-                </div>
-              </div>
+            {/* Approved Two-Paragraph Narrative */}
+            <div className="space-y-4 sm:space-y-4.5 text-[#667085] text-base sm:text-[17px] lg:text-[18px] leading-[1.7] sm:leading-[1.75]">
+              <p>
+                Since 2011, Emprise Academy has been transforming aspirations into achievements and shaping the careers of thousands of students in Mathura. Over the years, the academy has earned a strong reputation as{" "}
+                <span className="font-semibold text-[#0B2748]">
+                  one of the leading IIT-JEE and NEET coaching institutes in Mathura
+                </span>{" "}
+                and a trusted name for competitive examination preparation.
+              </p>
+              <p>
+                Over the years, Emprise Academy has built a strong and structured culture of{" "}
+                <span className="font-semibold text-[#0B2748]">
+                  academic excellence, competitive preparation, and personalised student care
+                </span>
+                . With an experienced team of{" "}
+                <span className="font-semibold text-[#0B2748]">
+                  IITians and Doctors
+                </span>
+                , the academy focuses on conceptual clarity, disciplined learning, individual attention, and consistent performance improvement.
+              </p>
             </div>
 
             {/* Core Institutional Highlights */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               <div className="flex items-start gap-2.5 text-xs sm:text-sm text-[var(--brand-text)] font-semibold">
                 <CheckCircle2 className="w-4 h-4 text-[var(--brand-primary)] shrink-0 mt-0.5" />
                 <span>Director-Led Classrooms & Mentorship</span>
@@ -72,8 +63,8 @@ export const TrustIntroSection: React.FC = () => {
                 <span>Small Batches for 100% Doubt Coverage</span>
               </div>
               <div className="flex items-start gap-2.5 text-xs sm:text-sm text-[var(--brand-text)] font-semibold">
-                <CheckCircle2 className="w-4 h-4 text-[var(--brand-primary)] shrink-0 mt-0.5" />
-                <span>Graded DPPs & CBT Pattern Test Series</span>
+                <Trophy className="w-4 h-4 text-[var(--brand-primary)] shrink-0 mt-0.5" />
+                <span>Outstanding IIT-JEE &amp; NEET Results in Mathura</span>
               </div>
               <div className="flex items-start gap-2.5 text-xs sm:text-sm text-[var(--brand-text)] font-semibold">
                 <CheckCircle2 className="w-4 h-4 text-[var(--brand-primary)] shrink-0 mt-0.5" />
@@ -81,6 +72,7 @@ export const TrustIntroSection: React.FC = () => {
               </div>
             </div>
 
+            {/* Action Buttons */}
             <div className="pt-2 flex items-center gap-3">
               <Link href="/about">
                 <Button variant="primary" size="md" rightIcon={<ArrowRight className="w-4 h-4" />}>
@@ -95,29 +87,17 @@ export const TrustIntroSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Column: 4 Credibility Highlights Cards (Clean White Type A) */}
-          <div className="lg:col-span-5 grid grid-cols-2 gap-4">
-            {trustIntro.stats.map((stat, idx) => (
-              <div
-                key={idx}
-                className="p-5 sm:p-6 rounded-2xl bg-white border border-[var(--brand-border)] hover:border-[var(--brand-primary)]/40 shadow-xs hover:shadow-sm transition-all text-left flex flex-col justify-between"
-              >
-                <div className="w-8 h-8 rounded-lg bg-[var(--brand-primary-soft)] text-[var(--brand-primary)] flex items-center justify-center font-bold text-xs mb-3">
-                  0{idx + 1}
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-[var(--brand-primary)] tracking-tight">
-                    {stat.value}
-                  </div>
-                  <h3 className="text-xs sm:text-sm font-bold text-[var(--brand-text)] mt-1">
-                    {stat.label}
-                  </h3>
-                  <p className="text-[11px] text-[var(--brand-text-secondary)] mt-1 leading-snug">
-                    {stat.sublabel}
-                  </p>
-                </div>
-              </div>
-            ))}
+          {/* Right Column: Premium 6-Card Academic Credentials & Statistics System */}
+          <div className="xl:col-span-6 w-full">
+            <div className="group/stats-grid grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-3.5">
+              {trustIntro.stats.map((stat) => (
+                <AcademicStatCard
+                  key={stat.index}
+                  stat={stat}
+                  className="group-hover/stats-grid:opacity-[0.94] hover:!opacity-100"
+                />
+              ))}
+            </div>
           </div>
         </div>
       </Container>

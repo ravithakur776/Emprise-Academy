@@ -23,6 +23,15 @@ export interface HeroSlide {
   bannerImageHref?: string;
 }
 
+export interface AcademicStatItem {
+  index: string;
+  value: string;
+  label: string;
+  description: string;
+  accent: "blue" | "gold" | "success" | "academic";
+  iconName: "Trophy" | "Target" | "Award" | "Users" | "CheckCircle2" | "Stethoscope";
+}
+
 export interface TrustMetric {
   value: string;
   label: string;
@@ -35,13 +44,14 @@ export interface CourseCardData {
   title: string;
   badge: string;
   targetClasses: string;
+  tagline?: string;
   targetExams: string;
   description: string;
   keyBenefit: string;
   features: string[];
   ctaLabel: string;
   ctaHref: string;
-  iconName: "Compass" | "Sparkles" | "BookOpen" | "GraduationCap";
+  iconName: "Compass" | "Atom" | "DraftingCompass" | "Sparkles" | "Stethoscope" | "GraduationCap" | "BookOpen" | "Laptop" | "MonitorPlay";
   accentColor?: "navy" | "orange" | "gold";
 }
 
@@ -58,6 +68,9 @@ export interface EmpriseSystemStep {
   title: string;
   subtitle: string;
   description: string;
+  iconName?: string;
+  phase?: string;
+  benefits?: string[];
 }
 
 export interface StudentAchiever {
@@ -88,10 +101,25 @@ export interface LatestUpdateItem {
   isImportant?: boolean;
 }
 
+export interface FaqAchiever {
+  yearExam: string;
+  student: string;
+  detail: string;
+}
+
 export interface HomepageFAQ {
+  id: number;
   question: string;
   answer: string;
   category?: string;
+  lead?: string;
+  bullets?: string[];
+  paragraphs?: string[];
+  achievers?: FaqAchiever[];
+  subheading?: string;
+  closing?: string;
+  closingParagraphs?: string[];
+  highlight?: string;
 }
 
 export const HOMEPAGE_DATA = {
@@ -183,34 +211,62 @@ export const HOMEPAGE_DATA = {
 
   trustIntro: {
     heading: "The Leader in IIT-JEE, NEET & Foundation Coaching in Mathura",
+    paragraph1:
+      "Since 2011, Emprise Academy has been transforming aspirations into achievements and shaping the careers of thousands of students in Mathura. Over the years, the academy has earned a strong reputation as one of the leading IIT-JEE and NEET coaching institutes in Mathura and a trusted name for competitive examination preparation.",
+    paragraph2:
+      "Over the years, Emprise Academy has built a strong and structured culture of academic excellence, competitive preparation, and personalised student care. With an experienced team of IITians and Doctors, the academy focuses on conceptual clarity, disciplined learning, individual attention, and consistent performance improvement.",
     paragraph:
-      "Since 2011 in Mathura, Emprise Academy has been dedicated to providing high-caliber academic preparation for IIT-JEE (Main + Advanced), NEET-UG, and Foundation (Classes 8–10). Rooted in conceptual clarity, disciplined study habits, regular testing, detailed performance analysis, and personalized mentorship, we guide every student toward their highest potential.",
+      "Since 2011, Emprise Academy has been transforming aspirations into achievements and shaping the careers of thousands of students in Mathura. Over the years, the academy has earned a strong reputation as one of the leading IIT-JEE and NEET coaching institutes in Mathura and a trusted name for competitive examination preparation. Over the years, Emprise Academy has built a strong and structured culture of academic excellence, competitive preparation, and personalised student care. With an experienced team of IITians and Doctors, the academy focuses on conceptual clarity, disciplined learning, individual attention, and consistent performance improvement.",
     stats: [
       {
-        value: "15+",
-        label: "Years of Academic Excellence",
-        sublabel: "Mentoring students in Mathura since 2011",
-        isVerified: true,
+        index: "01",
+        value: "15+ Years",
+        label: "of Academic Excellence",
+        description: "Mentoring students in Mathura since 2011.",
+        accent: "blue",
+        iconName: "Trophy",
       },
       {
-        value: "Since 2011",
-        label: "Serving Mathura",
-        sublabel: "Unwavering commitment to conceptual learning",
-        isVerified: true,
-      },
-      {
+        index: "02",
         value: "JEE + NEET",
         label: "Competitive Focus",
-        sublabel: "Specialized engineering & medical entrance streams",
-        isVerified: true,
+        description: "Specialized engineering & medical entrance streams.",
+        accent: "blue",
+        iconName: "Target",
       },
       {
-        value: "35–40",
-        label: "Small Batch Focus",
-        sublabel: "Maximum individual faculty attention & doubt care",
-        isVerified: true,
+        index: "03",
+        value: "7+",
+        label: "National Education Awards",
+        description: "A strong record of academic recognition and institutional achievement.",
+        accent: "gold",
+        iconName: "Award",
       },
-    ] as TrustMetric[],
+      {
+        index: "04",
+        value: "5000+",
+        label: "Students Mentored",
+        description: "Guiding students through structured learning, competitive preparation and personalised academic support.",
+        accent: "blue",
+        iconName: "Users",
+      },
+      {
+        index: "05",
+        value: "700+",
+        label: "Students Qualified",
+        description: "Supporting students through disciplined preparation, testing and consistent performance improvement.",
+        accent: "success",
+        iconName: "CheckCircle2",
+      },
+      {
+        index: "06",
+        value: "IITians & Doctors",
+        label: "Faculty",
+        description: "Experienced academic guidance from IITians and Doctors.",
+        accent: "academic",
+        iconName: "Stethoscope",
+      },
+    ] as AcademicStatItem[],
   },
 
   trustMetrics: [
@@ -258,7 +314,7 @@ export const HOMEPAGE_DATA = {
       ],
       ctaLabel: "Explore IIT-JEE →",
       ctaHref: "/iit-jee-coaching-mathura",
-      iconName: "Compass",
+      iconName: "Atom",
       accentColor: "navy",
     },
     {
@@ -278,7 +334,7 @@ export const HOMEPAGE_DATA = {
       ],
       ctaLabel: "Explore NEET →",
       ctaHref: "/neet-coaching-mathura",
-      iconName: "Sparkles",
+      iconName: "Stethoscope",
       accentColor: "orange",
     },
     {
@@ -302,23 +358,26 @@ export const HOMEPAGE_DATA = {
       accentColor: "gold",
     },
     {
-      id: "school-competitive",
-      title: "School + Competitive Preparation",
-      badge: "Integrated Program",
-      targetClasses: "Classes 8th to 12th",
-      targetExams: "Board Exams + Competitive Gateway",
+      id: "digital-learning",
+      title: "Digital Learning & Study Resources",
+      badge: "Digital Learning",
+      tagline: "Learn Online. Practice Smart. Succeed with Emprise.",
+      targetClasses: "Learn Online. Practice Smart. Succeed with Emprise.",
+      targetExams: "JEE Main, JEE Advanced, NEET (UG) & Foundation",
       description:
-        "A balanced curriculum ensuring top performance in CBSE/State board examinations alongside disciplined competitive preparation.",
-      keyBenefit: "Zero conflict between school homework, board exams, and competitive coaching.",
+        "Emprise provides comprehensive online test series, study material, and DPPs for serious competitive exam preparation.",
+      keyBenefit:
+        "Complete digital practice ecosystem combining online testing, structured study material and daily practice.",
       features: [
-        "Chapter-wise board descriptive answer-writing guidance",
-        "Dedicated board exam revision series and pre-board mocks",
-        "Synchronized timelines for school tests & coaching tests",
-        "Continuous parent reporting and personalized academic care",
+        "JEE Main — Online Test Series",
+        "JEE Advanced — Online Test Series",
+        "NEET (UG) — Online Test Series",
+        "Study Material — Structured, exam-oriented resources",
+        "DPPs (Daily Practice Problems) — Regular practice for stronger concepts and better performance",
       ],
       ctaLabel: "View All Courses →",
       ctaHref: "/courses",
-      iconName: "BookOpen",
+      iconName: "Laptop",
       accentColor: "navy",
     },
   ] as CourseCardData[],
@@ -531,48 +590,104 @@ export const HOMEPAGE_DATA = {
       title: "Integrated Subject Learning",
       subtitle: "Foundational Clarity",
       description: "Interactive classroom pedagogy breaking complex physics, chemistry, biology, and math concepts into first principles.",
+      iconName: "BookOpen",
+      phase: "Phase 1: Concept & Theory",
+      benefits: [
+        "First-principles conceptual derivation across Physics, Chemistry, Math & Biology.",
+        "Graded Daily Practice Problems (DPPs) synchronized with daily classroom lectures.",
+        "Multi-subject faculty coordination to prevent conceptual bottlenecks and learning gaps.",
+      ],
     },
     {
       stepNumber: "02",
       title: "Competitive Exam Testing System",
       subtitle: "Exam Simulation",
       description: "Strictly timed objective and numerical testing conforming exactly to current NTA JEE & NEET blueprint patterns.",
+      iconName: "ClipboardCheck",
+      phase: "Phase 2: Exam Simulation",
+      benefits: [
+        "Strict NTA JEE & NEET blueprint testing with authentic negative marking dynamics.",
+        "Part-syllabus and cumulative full-syllabus national mock examinations.",
+        "All-Mathura percentile benchmarking with detailed rank-prediction analytics.",
+      ],
     },
     {
       stepNumber: "03",
       title: "Success Planner",
       subtitle: "Daily Execution",
       description: "Structured self-study roadmaps and micro-schedules helping students distribute study hours and practice consistently.",
+      iconName: "Compass",
+      phase: "Phase 3: Execution Framework",
+      benefits: [
+        "Micro-scheduled daily study hours balanced across all subjects and revisions.",
+        "Continuous syllabus completion tracking with weekly milestone checkpoints.",
+        "Structured self-study roadmaps eliminating last-minute exam cramming.",
+      ],
     },
     {
       stepNumber: "04",
       title: "Board & School Exam Preparation",
       subtitle: "Dual Excellence",
       description: "Dedicated descriptive writing guidance and textbook exercises ensuring outstanding performance in school boards.",
+      iconName: "GraduationCap",
+      phase: "Phase 4: Dual Excellence",
+      benefits: [
+        "Subjective answer-writing guidance with authentic board step-marking evaluation.",
+        "Comprehensive NCERT line-by-line coverage and textbook exercises practice.",
+        "Harmonized schedule eliminating conflict between board scores and competitive prep.",
+      ],
     },
     {
       stepNumber: "05",
       title: "Online & CBT-Based Test Practice",
       subtitle: "Digital Readiness",
       description: "Computer-Based Test simulations familiarizing students with digital screen navigation, timers, and test ergonomics.",
+      iconName: "MonitorPlay",
+      phase: "Phase 5: Digital Preparedness",
+      benefits: [
+        "Authentic digital examination interface with virtual timers and question palettes.",
+        "Speed, accuracy, and screen-fatigue optimization drills under exam pressure.",
+        "Instant post-exam analytical breakdown and step-by-step solution explanations.",
+      ],
     },
     {
       stepNumber: "06",
       title: "Regular PTM & Parent Feedback",
       subtitle: "Transparent Tracking",
       description: "Scheduled Parent-Teacher Meetings with complete attendance and progress data to align home and classroom support.",
+      iconName: "Users",
+      phase: "Phase 6: Holistic Tracking",
+      benefits: [
+        "One-on-one progress review meetings with subject faculty and academic directors.",
+        "Transparent attendance records, DPP submission tracking, and test score reports.",
+        "Constructive personalized action plans for targeted academic improvement at home.",
+      ],
     },
     {
       stepNumber: "07",
       title: "Surprise Tests & Review Tests",
       subtitle: "Retention Check",
       description: "Periodic unannounced assessments that test long-term retention and reinforce continuous daily revision.",
+      iconName: "RefreshCcw",
+      phase: "Phase 7: Retention Audit",
+      benefits: [
+        "Periodic unannounced assessments cultivating proactive daily revision habits.",
+        "Comprehensive concept retention audits covering previously taught chapters.",
+        "Rapid identification and targeted remediation of dormant conceptual weaknesses.",
+      ],
     },
     {
       stepNumber: "08",
       title: "Counselling & Motivation Sessions",
       subtitle: "Mindset & Focus",
       description: "Director-led motivational talks and stress-management guidance keeping aspirants confident, positive, and focused.",
+      iconName: "HeartHandshake",
+      phase: "Phase 8: Mentorship & Temperament",
+      benefits: [
+        "Director-led motivational sessions on competitive temperament and stress management.",
+        "Individual academic counselling to overcome performance plateaus and fatigue.",
+        "Sustained positive mindset, discipline, and emotional focus throughout the year.",
+      ],
     },
   ] as EmpriseSystemStep[],
 
@@ -805,34 +920,163 @@ export const HOMEPAGE_DATA = {
 
   faqs: [
     {
-      question: "Why should I choose Emprise Academy for IIT-JEE and NEET in Mathura?",
-      answer: "Emprise Academy combines experienced academic leadership with a proven 15+ year legacy in Mathura. With small batch sizes (35–40 students), director-led teaching, structured Daily Practice Problems (DPPs), and personalized mentorship, students receive the same pedagogical rigor as national coaching hubs while staying close to home.",
-      category: "General",
+      id: 1,
+      question: "Why is Emprise Academy a trusted choice for IIT-JEE and NEET preparation in Mathura?",
+      answer:
+        "Since 2011, Emprise Academy has earned the trust of thousands of students and families across Mathura through consistent academic guidance and successful results.\n\n• 15+ Years of Academic Legacy in Mathura.\n• Students from across Mathura and surrounding areas have trusted Emprise for their competitive-exam preparation.\n• Every year, Emprise students achieve strong ranks and selections in IITs, NITs, IIITs, AIIMS, Government Medical Colleges and other prestigious institutions.\n• A proven combination of experienced faculty, structured preparation, rigorous testing, personalised mentorship and continuous student care.\n• A long-standing legacy of helping students turn their aspirations into IITians, Doctors, Engineers and other successful professionals.\n\nThis continued success and the trust of thousands of students and parents make Emprise Academy one of Mathura’s most trusted names for IIT-JEE & NEET preparation.",
+      lead: "Since 2011, Emprise Academy has earned the trust of thousands of students and families across Mathura through consistent academic guidance and successful results.",
+      bullets: [
+        "15+ Years of Academic Legacy in Mathura.",
+        "Students from across Mathura and surrounding areas have trusted Emprise for their competitive-exam preparation.",
+        "Every year, Emprise students achieve strong ranks and selections in IITs, NITs, IIITs, AIIMS, Government Medical Colleges and other prestigious institutions.",
+        "A proven combination of experienced faculty, structured preparation, rigorous testing, personalised mentorship and continuous student care.",
+        "A long-standing legacy of helping students turn their aspirations into IITians, Doctors, Engineers and other successful professionals.",
+      ],
+      closing:
+        "This continued success and the trust of thousands of students and parents make Emprise Academy one of Mathura’s most trusted names for IIT-JEE & NEET preparation.",
     },
     {
-      question: "What is ETSE 2026 and how can I participate?",
-      answer: "ETSE (Emprise Talent Search Examination) 2026 is an annual scholarship exam conducted on 6 September 2026 for students in Classes 7th to 10th. Registration is 100% free. High-scoring candidates earn merit scholarships of up to 100% on classroom programs.",
-      category: "ETSE",
+      id: 2,
+      question: "Which is the best IIT-JEE coaching in Mathura?",
+      answer:
+        "Emprise Academy is the Best IIT-JEE coaching institute in Mathura, offering structured preparation for JEE Main and JEE Advanced with experienced faculty, regular testing, performance analysis, personalised mentorship, and dedicated doubt support. By delivering consistent and reliable results in the JEE exams, Emprise holds the title of best JEE Coaching in Mathura.",
     },
     {
-      question: "How does Emprise Academy balance school boards with competitive exams?",
-      answer: "Our curriculum is synchronized with school and board requirements. We cover descriptive answer writing for board examinations alongside objective problem-solving strategies, ensuring students excel in both board percentages and competitive rankings.",
-      category: "Academics",
+      id: 3,
+      question: "How is Emprise Academy different from other JEE and NEET coaching institutes in Mathura?",
+      answer:
+        "Emprise Academy stands apart through a structured, highly personalised, and student-focused academic system:\n\n• Strong & Experienced Faculty Pool — 3–4 dedicated faculty members for each subject Physics, Chemistry, Mathematics & Biology, ensuring better academic availability, faster doubt resolution and individual attention.\n• Regular Classes in All Major Subjects — Daily classes in Physics, Chemistry, Mathematics & Biology maintain learning continuity and help students build strong connections between concepts and subjects.\n• Complete Academic System — Concept building, daily practice, DPPs, objective & subjective tests, performance analysis, revision, doubt resolution, personalised mentorship and parent feedback.\n• Personalised Student Care — Close monitoring and individual academic support to identify learning gaps and guide every student towards improvement.\n• Safe & Study-Friendly Campus — A secure, disciplined and focused learning environment designed to minimise distractions and support productive study.\n• Director-Led Teaching & Mentorship — The Director personally teaches, guides, mentors, motivates and cares for students, ensuring direct academic supervision and stronger student connect.\n\nMore Faculty. More Attention. More Care. A Better Academic Environment.",
+      lead: "Emprise Academy stands apart through a structured, highly personalised, and student-focused academic system:",
+      bullets: [
+        "Strong & Experienced Faculty Pool — 3–4 dedicated faculty members for each subject Physics, Chemistry, Mathematics & Biology, ensuring better academic availability, faster doubt resolution and individual attention.",
+        "Regular Classes in All Major Subjects — Daily classes in Physics, Chemistry, Mathematics & Biology maintain learning continuity and help students build strong connections between concepts and subjects.",
+        "Complete Academic System — Concept building, daily practice, DPPs, objective & subjective tests, performance analysis, revision, doubt resolution, personalised mentorship and parent feedback.",
+        "Personalised Student Care — Close monitoring and individual academic support to identify learning gaps and guide every student towards improvement.",
+        "Safe & Study-Friendly Campus — A secure, disciplined and focused learning environment designed to minimise distractions and support productive study.",
+        "Director-Led Teaching & Mentorship — The Director personally teaches, guides, mentors, motivates and cares for students, ensuring direct academic supervision and stronger student connect.",
+      ],
+      closing: "More Faculty. More Attention. More Care. A Better Academic Environment.",
     },
     {
-      question: "What is the batch size at Emprise Academy?",
-      answer: "We strictly limit batch strength to 35–40 students. This guarantees that teachers know every student by name, track individual test curves, and address doubts immediately.",
-      category: "Academics",
+      id: 4,
+      question: "Does Emprise Academy have experienced IITians and Doctors as faculty?",
+      answer:
+        "Yes. Emprise has an experienced academic team that includes IITians, Doctors, and experienced educators, bringing strong subject expertise and competitive-exam guidance.",
     },
     {
-      question: "How are doubts resolved at the institute?",
-      answer: "We operate daily dedicated doubt clearance counters where faculty members assist students individually with conceptual questions, textbook problems, and test paper errors.",
-      category: "Academics",
+      id: 5,
+      question: "Does Emprise Academy have a proven JEE and NEET track record?",
+      answer:
+        "Absolutely. Since 2011, Emprise Academy, Mathura has built a strong legacy of producing IITians and Doctors. Over the years, 200+ Emprise students have achieved success as IITians and Doctors, while 700+ students have successfully cleared various competitive examinations and secured admissions to prestigious institutions across India.\n\nOur students have gone on to pursue their dreams at institutions including IITs, NITs, IIITs, GFTIs, AIIMS, BITS Pilani, and leading colleges for MBBS, BDS, BAMS, BHMS and other professional programmes.\n\nThis long-standing journey reflects Emprise Academy's commitment to quality teaching, disciplined preparation, personalised mentorship, continuous assessment, and student-focused academic care—creating a legacy of successful IITians, Doctors and other accomplished professionals from Mathura.\n\nEmprise continues to build on this legacy with a clear focus on strong foundations, competitive-exam excellence, and long-term student success.\n\nThe institute showcases its results, selections, and top ranks as key indicators of its academic performance.",
+      paragraphs: [
+        "Absolutely. Since 2011, Emprise Academy, Mathura has built a strong legacy of producing IITians and Doctors. Over the years, 200+ Emprise students have achieved success as IITians and Doctors, while 700+ students have successfully cleared various competitive examinations and secured admissions to prestigious institutions across India.",
+        "Our students have gone on to pursue their dreams at institutions including IITs, NITs, IIITs, GFTIs, AIIMS, BITS Pilani, and leading colleges for MBBS, BDS, BAMS, BHMS and other professional programmes.",
+        "This long-standing journey reflects Emprise Academy's commitment to quality teaching, disciplined preparation, personalised mentorship, continuous assessment, and student-focused academic care—creating a legacy of successful IITians, Doctors and other accomplished professionals from Mathura.",
+        "Emprise continues to build on this legacy with a clear focus on strong foundations, competitive-exam excellence, and long-term student success.",
+        "The institute showcases its results, selections, and top ranks as key indicators of its academic performance.",
+      ],
     },
     {
-      question: "Where is the Emprise Academy campus located in Mathura?",
-      answer: "Our campus is conveniently located Near Tera Tower, Bhuteshwar Road, Mathura, Uttar Pradesh (PIN: 281004). You are welcome to visit our admissions office between 9:00 AM and 7:00 PM for campus tours and counselling.",
-      category: "Campus",
+      id: 6,
+      question: "Who are the toppers from Emprise Academy Mathura?",
+      answer:
+        "Emprise Academy has a strong track record of students achieving excellent results in IIT-JEE and NEET and progressing to premier institutions across India.\n\nRecent achievers include:\n\n• 2026 IIT-JEE Topper — Atul Dagur, now pursuing Computer Science at IIT-Bombay.\n• 2025 IIT-JEE Topper — Govind Gupta: AIR 404, now pursuing studies at IIT-Bombay.\n• 2024 IIT-JEE Topper — Utkarsh Pandey, now pursuing studies at IIT-Dhanbad.\n• 2023 IIT-JEE Topper — Sharvan, AIR-92 (Cat.), now pursuing studies at IIT-Kanpur.\n• 2022 IIT-JEE Topper — Umesh Yadav, AIR-645, now pursuing studies at IIT-Delhi.\n• 2025 NEET Topper — Anil Yadav: AIR 4,460, now studying MBBS at GMC.\n• 2024 NEET Topper — Tanisha: AIR 458, now studying MBBS at AIIMS Rae Bareli.\n• 2023 NEET Topper — Aayan: AIR 850, now studying MBBS at AIIMS Gorakhpur.\n• 2022 NEET Topper — Shobhit, now pursuing MBBS at AIIMS Jodhpur.\n\nAlong with these achievers, many Emprise students have secured top ranks and admissions every year in IITs, NITs, IIITs, AIIMS, and leading Government Medical Colleges across India.\n\nEmprise Academy showcases its successful students and toppers through its Results and Student Testimonials sections. Students and parents can refer to these sections for the latest available results and verified achievements.",
+      lead: "Emprise Academy has a strong track record of students achieving excellent results in IIT-JEE and NEET and progressing to premier institutions across India.",
+      subheading: "Recent achievers include:",
+      achievers: [
+        {
+          yearExam: "2026 IIT-JEE Topper",
+          student: "Atul Dagur",
+          detail: "now pursuing Computer Science at IIT-Bombay.",
+        },
+        {
+          yearExam: "2025 IIT-JEE Topper",
+          student: "Govind Gupta",
+          detail: "AIR 404, now pursuing studies at IIT-Bombay.",
+        },
+        {
+          yearExam: "2024 IIT-JEE Topper",
+          student: "Utkarsh Pandey",
+          detail: "now pursuing studies at IIT-Dhanbad.",
+        },
+        {
+          yearExam: "2023 IIT-JEE Topper",
+          student: "Sharvan",
+          detail: "AIR-92 (Cat.), now pursuing studies at IIT-Kanpur.",
+        },
+        {
+          yearExam: "2022 IIT-JEE Topper",
+          student: "Umesh Yadav",
+          detail: "AIR-645, now pursuing studies at IIT-Delhi.",
+        },
+        {
+          yearExam: "2025 NEET Topper",
+          student: "Anil Yadav",
+          detail: "AIR 4,460, now studying MBBS at GMC.",
+        },
+        {
+          yearExam: "2024 NEET Topper",
+          student: "Tanisha",
+          detail: "AIR 458, now studying MBBS at AIIMS Rae Bareli.",
+        },
+        {
+          yearExam: "2023 NEET Topper",
+          student: "Aayan",
+          detail: "AIR 850, now studying MBBS at AIIMS Gorakhpur.",
+        },
+        {
+          yearExam: "2022 NEET Topper",
+          student: "Shobhit",
+          detail: "now pursuing MBBS at AIIMS Jodhpur.",
+        },
+      ],
+      closingParagraphs: [
+        "Along with these achievers, many Emprise students have secured top ranks and admissions every year in IITs, NITs, IIITs, AIIMS, and leading Government Medical Colleges across India.",
+        "Emprise Academy showcases its successful students and toppers through its Results and Student Testimonials sections. Students and parents can refer to these sections for the latest available results and verified achievements.",
+      ],
+    },
+    {
+      id: 7,
+      question: "Does Emprise Academy prepare students for Board Exams along with JEE and NEET?",
+      answer:
+        "Yes. Board and school examinations are an important part of the academic system at Emprise. Students receive subjective-format tests, written-answer practice, and PYQ practice alongside competitive-exam preparation.",
+    },
+    {
+      id: 8,
+      question: "Does Emprise Academy provide online or CBT-based test practice?",
+      answer:
+        "Yes. Students receive online and computer-based test practice, helping them become familiar with digital examination environments and improve their exam readiness.",
+    },
+    {
+      id: 9,
+      question: "Does Emprise provide doubt-solving and personalised mentorship?",
+      answer:
+        "Yes. Regular doubt resolution, faculty guidance, performance monitoring, and individual academic support are integral parts of the Emprise academic system.",
+    },
+    {
+      id: 10,
+      question: "Does the Director personally teach and mentor students?",
+      answer:
+        "Yes. At Emprise, the Director is directly involved in academics and personally teaches, guides, mentors, and interacts with students, helping maintain close academic supervision and student care.",
+    },
+    {
+      id: 11,
+      question: "Does Emprise Academy conduct Parent-Teacher Meetings (PTMs)?",
+      answer:
+        "Yes. Regular Parent–Teacher Meetings (PTMs) are conducted to discuss student performance, strengths, areas of improvement, and faculty feedback with parents.",
+    },
+    {
+      id: 12,
+      question: "Does Emprise Academy offer Foundation Classes for Classes 8–10?",
+      answer:
+        "Yes. Emprise offers Foundation programmes for Classes 8–10, designed to strengthen conceptual foundations and prepare students for future competitive examinations.",
+    },
+    {
+      id: 13,
+      question: "Where is Emprise Academy located in Mathura?",
+      answer:
+        "Emprise Academy's Mathura Corporate Centre is located near Tera Tower, Bhuteshwar Road, Mathura.",
+      highlight: "Near Tera Tower, Bhuteshwar Road, Mathura",
     },
   ] as HomepageFAQ[],
 

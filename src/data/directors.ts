@@ -55,7 +55,7 @@ export const DIRECTORS_DATA: {
     quote:
       "True education is not about memorising formulas; it is about building the intellectual endurance to think independently, analyze critically, and solve real challenges.",
     shortBio:
-      "Co-founder and Director of Emprise Academy. Engineering graduate from the University of Derby (UK) with project engineering experience at Ford Group UK and extensive competitive coaching mentorship.",
+      "Co-founder and Director of Emprise Academy. Engineering graduate from the University of Derby (UK) with project engineering experience at FORD, England, and extensive competitive coaching mentorship as an accomplished Physics Faculty.",
     displayOrder: 1,
     isFeatured: true,
     isPublished: true,
@@ -67,16 +67,16 @@ export const DIRECTORS_DATA: {
           "Completed rigorous engineering honours education with a focus on mechanical systems, analytical problem modeling, and structured engineering design.",
       },
       {
-        companyOrContext: "Ford Group, UK",
+        companyOrContext: "FORD, England",
         roleSummary: "Project Engineering & Industrial Experience",
         description:
-          "Gained industrial and project engineering experience with the Ford Group in the United Kingdom, applying disciplined problem-solving methodologies and precision engineering workflows.",
+          "Gained industrial and project engineering experience with FORD, England, applying disciplined problem-solving methodologies and precision engineering workflows.",
       },
       {
         companyOrContext: "Premier Coaching Ecosystems (Kota)",
-        roleSummary: "Academic Mentorship & Institutional Teaching",
+        roleSummary: "Physics Faculty & Academic Mentorship",
         description:
-          "Brought classroom teaching and academic management experience from premier competitive coaching institutes in Kota, guiding students in concept-first competitive methodologies.",
+          "Brought classroom teaching and academic management experience from premier competitive coaching institutes in Kota as an accomplished Physics Faculty, guiding students in concept-first competitive methodologies.",
       },
       {
         companyOrContext: "Emprise Academy (Est. 2011)",
@@ -97,9 +97,9 @@ export const DIRECTORS_DATA: {
           "Author of academic study materials, concept sheets, and competitive entrance publications focusing on structured fundamental problem solving.",
       },
       {
-        area: "Mentorship & Academic Leadership",
+        area: "Physics Pedagogy & Mentorship",
         description:
-          "Provides individual strategic guidance to students navigating the psychological demands of high-stakes competitive examinations.",
+          "Provides individual strategic guidance and concept-first Physics mentorship to students navigating the psychological demands of high-stakes competitive examinations.",
       },
     ],
     teachingPhilosophy: [
@@ -137,7 +137,7 @@ export const DIRECTORS_DATA: {
     quote:
       "Mathematics is not a subject of rules; it is the art of logical deduction. When a student learns to visualize a problem geometrically and algebraically, fear turns into confidence.",
     shortBio:
-      "Co-founder, Director and Head of Mathematics at Emprise Academy. Engineering graduate from the University of Derby (UK) with precision engineering background at Rolls-Royce Limited.",
+      "Co-founder, Director and Head of Mathematics at Emprise Academy. Engineering graduate from the University of Derby (UK) with precision engineering background at Rolls-Royce Limited, England, guiding 200+ students to IITs.",
     displayOrder: 2,
     isFeatured: true,
     isPublished: true,
@@ -149,16 +149,16 @@ export const DIRECTORS_DATA: {
           "Completed honours engineering education in mechanical systems, mathematical modeling, calculus, and computational analytical techniques.",
       },
       {
-        companyOrContext: "Rolls-Royce Limited",
+        companyOrContext: "Rolls-Royce Limited, England",
         roleSummary: "Project Engineering & Mechanical Design",
         description:
-          "Worked on engineering design, project management, and high-precision technical systems at Rolls-Royce Limited, honing an uncompromising standard for accuracy and analytical discipline.",
+          "Worked on engineering design, project management, and high-precision technical systems at Rolls-Royce Limited, England, honing an uncompromising standard for accuracy and analytical discipline.",
       },
       {
         companyOrContext: "IIT-JEE Mathematics Faculty",
         roleSummary: "Senior Advanced Mathematics Mentor",
         description:
-          "Extensive experience teaching advanced Mathematics for IIT-JEE Main and Advanced, mentoring hundreds of students into premier engineering institutions.",
+          "Extensive experience teaching advanced Mathematics for IIT-JEE Main and Advanced for over 15 years, guiding 200+ students to fulfill their dream of studying at IITs.",
       },
       {
         companyOrContext: "Emprise Academy (Est. 2011)",
@@ -196,7 +196,7 @@ export const DIRECTORS_DATA: {
       "To build fearless mathematical thinkers who approach complex problems with structured logic, creative curiosity, and the endurance to excel at the highest national competitive levels.",
     contributionToEmprise: [
       "Developed the comprehensive IIT-JEE Mathematics curriculum and graded problem-solving sheets at Emprise Academy.",
-      "Mentored students from Mathura to top ranks in JEE Main, JEE Advanced, and Mathematics Olympiads since 2011.",
+      "Mentored students from Mathura to top ranks in JEE Main, JEE Advanced, and Mathematics Olympiads since 2011 with 200+ students into IITs.",
       "Formulated the 'Measure. Analyse. Improve.' testing and question-level diagnostic review framework.",
       "Direct one-on-one doubt resolution desks and personalized academic roadmap sessions for JEE aspirants.",
     ],
@@ -207,6 +207,84 @@ export const DIRECTORS_DATA: {
     ],
   },
 };
+
+export interface HomepageDirectorLeader {
+  id: string;
+  slug: string;
+  name: string;
+  role: string;
+  qualification?: string;
+  institution?: string;
+  education: string;
+  educationSummary: string;
+  photoUrl: string;
+  bio: string;
+  biography: string;
+  philosophy: string;
+  signature: string;
+}
+
+// =========================================================================
+// STEP 5I — AUTHORITATIVE HOMEPAGE LEADERSHIP SOURCE OF TRUTH
+// =========================================================================
+
+export const SUSHIL_BIO =
+  "With a strong foundation in Mechanical Engineering from the University of Derby, England, U.K., our Director brings a unique blend of international industry experience and academic leadership. His professional journey at FORD, England, in engineering shaped his analytical and problem-solving approach. For over 15 years, he has dedicated himself to the IIT-JEE & NEET coaching industry as an accomplished Physics Faculty, making complex concepts simple, logical, and engaging for students. His ability to connect fundamentals with practical understanding has made him a trusted mentor and academic leader. Beyond teaching, he plays a key role in building the academic vision, standards, and student-centric culture that drive Emprise towards excellence.";
+
+export const SUSHIL_PHILOSOPHY =
+  "At Emprise, every student is special. We identify their weaknesses, work on their habits, strengthen their skills, and guide them towards becoming their best selves. We don’t just teach for results—we build the right habits, mindset, and confidence that make success a natural outcome.";
+
+export const SUSHIL_SIGNATURE = "SD — Director, Emprise Academy";
+
+export const RAKESH_BIO =
+  "Our Director holds a B.E. (Hons.) in Mechanical Engineering from the University of Derby, England, U.K. and began his professional career with Rolls-Royce Limited, England, gaining valuable experience in project engineering and mechanical design. After his corporate journey, he chose education as his true calling and has been mentoring students in the IIT-JEE & NEET coaching industry for over 15 years. Under his guidance, 200+ students have fulfilled their dream of studying at IITs. Known for his strong command of Mathematics, our Director personally mentors students with a teaching approach that emphasizes simplicity, clarity, and conceptual understanding—making even the most challenging topics easy to learn and apply.";
+
+export const RAKESH_PHILOSOPHY =
+  "At Emprise, students are never just numbers—they are dreams, potential, and possibilities. We care for every student, help them overcome their weaknesses, and provide the right guidance and environment to bring out their best. Because when a student succeeds, we feel their success as our own.";
+
+export const RAKESH_SIGNATURE = "RK — Director, Emprise Academy";
+
+export const DIRECTORS_EDUCATION_LINE =
+  "B.E. (Hons.) Mechanical Engineering • University of Derby, England, U.K.";
+
+// Dedicated Sushil Data Object (Enforced at Data Level)
+export const SUSHIL_DAGUR_LEADERSHIP: HomepageDirectorLeader = {
+  id: "dir-sushil-dagur",
+  slug: "sushil-dagur",
+  name: "Sushil Dagur",
+  role: "Director | Educationist | Academic Entrepreneur",
+  qualification: "B.E. (Hons.) Mechanical Engineering",
+  institution: "University of Derby, England, U.K.",
+  education: DIRECTORS_EDUCATION_LINE,
+  educationSummary: DIRECTORS_EDUCATION_LINE,
+  photoUrl: "/images/directors/sushil-dagur.jpg",
+  bio: SUSHIL_BIO,
+  biography: SUSHIL_BIO,
+  philosophy: SUSHIL_PHILOSOPHY,
+  signature: SUSHIL_SIGNATURE,
+};
+
+// Dedicated Rakesh Data Object (Enforced at Data Level)
+export const RAKESH_KUMAR_LEADERSHIP: HomepageDirectorLeader = {
+  id: "dir-rakesh-kumar",
+  slug: "rakesh-kumar",
+  name: "Rakesh Kumar",
+  role: "Director | Mathematics Mentor | IIT-JEE Faculty",
+  qualification: "B.E. (Hons.) Mechanical Engineering",
+  institution: "University of Derby, England, U.K.",
+  education: DIRECTORS_EDUCATION_LINE,
+  educationSummary: DIRECTORS_EDUCATION_LINE,
+  photoUrl: "/images/directors/rakesh-kumar.jpg",
+  bio: RAKESH_BIO,
+  biography: RAKESH_BIO,
+  philosophy: RAKESH_PHILOSOPHY,
+  signature: RAKESH_SIGNATURE,
+};
+
+export const HOMEPAGE_LEADERSHIP_DATA: HomepageDirectorLeader[] = [
+  SUSHIL_DAGUR_LEADERSHIP,
+  RAKESH_KUMAR_LEADERSHIP,
+];
 
 export const getCanonicalDirectorsList = (): DirectorFullProfile[] => {
   return [DIRECTORS_DATA.sushilDagur, DIRECTORS_DATA.rakeshKumar].sort(
