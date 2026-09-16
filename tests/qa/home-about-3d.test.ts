@@ -40,11 +40,10 @@ async function runHomeAbout3dTests() {
 
   const requiredAboutElements = [
     "Building Strong Foundations for Competitive Success",
-    "ABOUT EMPRISE ACADEMY",
+    "About Emprise Academy",
     "OUR IDENTITY & MISSION",
     "CORE ACADEMIC PILLARS",
     "PEDAGOGICAL FRAMEWORK",
-    "FOUNDING LEADERSHIP",
     "THE EMPRISE ADVANTAGE",
     "Book Free Counselling",
     "Explore Programmes",
@@ -55,18 +54,20 @@ async function runHomeAbout3dTests() {
       throw new Error(`About page missing expected section or text: "${elem}"`);
     }
   }
-  console.log("✓ Verified full 7-section structure and content on /about.");
+  console.log("✓ Verified institutional structure and content on /about (Destination 01).");
 
-  // [TEST 4] Auditing Canonical Data Integration on /about
-  console.log("\n[TEST 4] Auditing Canonical Data Integration on /about...");
+  // [TEST 4] Auditing Canonical Directors Integration on /about/directors
+  console.log("\n[TEST 4] Auditing Canonical Data Integration on /about/directors...");
   const directors = getCanonicalDirectorsList();
   if (directors.length !== 2) {
     throw new Error(`Expected 2 canonical directors, found ${directors.length}`);
   }
-  if (!aboutContent.includes("getCanonicalDirectorsList") || !aboutContent.includes("DirectorPhoto")) {
-    throw new Error("About page must consume getCanonicalDirectorsList and DirectorPhoto");
+  const directorsPagePath = path.resolve(process.cwd(), "src/app/(public)/about/directors/page.tsx");
+  const directorsPageContent = fs.readFileSync(directorsPagePath, "utf-8");
+  if (!directorsPageContent.includes("MAIN_DIRECTORS_DATA") || !directorsPageContent.includes("DirectorsDualGrid")) {
+    throw new Error("Directors page must consume MAIN_DIRECTORS_DATA and DirectorsDualGrid");
   }
-  console.log("✓ Verified canonical director profiles and Photo system on /about.");
+  console.log("✓ Verified canonical director profiles and Photo system on /about/directors (Destination 03).");
 
   // [TEST 5] Auditing About Us SEO & Schema
   console.log("\n[TEST 5] Auditing About Us SEO & Metadata...");

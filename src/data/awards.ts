@@ -1,17 +1,81 @@
-import { AwardRecord } from "@/types/awards";
+import { AwardEntry } from "@/types/awards";
 
 /**
- * Verified Awards & Institutional Accolades of Emprise Academy Mathura.
- * NOTE: As per specifications, real award records (01–07) will be populated
- * here once the verified archive documentation is provided.
- * No fabricated records or simulated dates are included.
+ * Centralized Awards Data Model for Emprise Academy Mathura.
+ * NOTE: Exactly 7 award entries structured as requested in Step 11B.
+ * All fields are initialized with empty values until official verified records
+ * and photographs are provided. Zero fabricated awards or dates are included.
  */
-export const AWARD_RECORDS: AwardRecord[] = [];
+export const AWARDS_DATA: AwardEntry[] = [
+  {
+    id: 1,
+    number: "01",
+    name: "",
+    organization: "",
+    year: "",
+    description: "",
+    image: "",
+  },
+  {
+    id: 2,
+    number: "02",
+    name: "",
+    organization: "",
+    year: "",
+    description: "",
+    image: "",
+  },
+  {
+    id: 3,
+    number: "03",
+    name: "",
+    organization: "",
+    year: "",
+    description: "",
+    image: "",
+  },
+  {
+    id: 4,
+    number: "04",
+    name: "",
+    organization: "",
+    year: "",
+    description: "",
+    image: "",
+  },
+  {
+    id: 5,
+    number: "05",
+    name: "",
+    organization: "",
+    year: "",
+    description: "",
+    image: "",
+  },
+  {
+    id: 6,
+    number: "06",
+    name: "",
+    organization: "",
+    year: "",
+    description: "",
+    image: "",
+  },
+  {
+    id: 7,
+    number: "07",
+    name: "",
+    organization: "",
+    year: "",
+    description: "",
+    image: "",
+  },
+];
 
-export const getApprovedAwards = (): AwardRecord[] => {
-  return AWARD_RECORDS;
+export const hasVerifiedAwards = (): boolean => {
+  return AWARDS_DATA.some((award) => award.name.trim() !== "");
 };
 
-export const hasAwardsData = (): boolean => {
-  return AWARD_RECORDS.length > 0;
+export const getVerifiedAwards = (): AwardEntry[] => {
+  return AWARDS_DATA.filter((award) => award.name.trim() !== "");
 };

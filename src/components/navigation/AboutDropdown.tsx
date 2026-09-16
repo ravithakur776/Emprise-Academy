@@ -29,9 +29,7 @@ export const AboutDropdownItem: React.FC<AboutDropdownItemProps> = ({
   const isTargetActive =
     item.href === "/about"
       ? pathname === "/about"
-      : item.href === "/about/awards"
-      ? pathname === "/about/awards"
-      : false;
+      : pathname === item.href || pathname?.startsWith(`${item.href}/`);
 
   return (
     <Link

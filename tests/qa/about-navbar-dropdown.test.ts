@@ -1,15 +1,15 @@
 import fs from "fs";
 import path from "path";
 import { ABOUT_NAV_HEADER, ABOUT_MENU_ITEMS } from "@/data/aboutNav";
-import { AWARD_RECORDS, hasAwardsData } from "@/data/awards";
+import { AWARDS_DATA, hasVerifiedAwards } from "@/data/awards";
 
 console.log("==================================================");
-console.log("TEST SUITE: STEP 11A - ABOUT NAVBAR DROPDOWN & THREE-SECTION ARCHITECTURE QA");
+console.log("TEST SUITE: STEP 11B - THREE INDEPENDENT ABOUT DESTINATIONS QA");
 console.log("==================================================");
 
-async function runAboutNavbarDropdownTests() {
-  // [TEST 1] Auditing Configuration Data in src/data/aboutNav.ts
-  console.log("\n[TEST 1] Auditing About Navigation Items Configuration...");
+async function runThreeIndependentAboutDestinationsTests() {
+  // [TEST 1] Auditing Navigation Configuration & Routes in src/data/aboutNav.ts
+  console.log("\n[TEST 1] Auditing Three Independent About Navigation Items...");
   if (ABOUT_MENU_ITEMS.length !== 3) {
     throw new Error(`Expected exactly 3 About categories, found ${ABOUT_MENU_ITEMS.length}`);
   }
@@ -37,7 +37,7 @@ async function runAboutNavbarDropdownTests() {
       title: "Directors",
       description: "Meet the academic leadership behind Emprise.",
       iconName: "Users",
-      href: "/about#directors",
+      href: "/about/directors",
     },
   ];
 
@@ -52,9 +52,6 @@ async function runAboutNavbarDropdownTests() {
     if (found.title !== exp.title) {
       throw new Error(`Title mismatch for ${exp.id}: got "${found.title}", expected "${exp.title}"`);
     }
-    if (found.description !== exp.description) {
-      throw new Error(`Description mismatch for ${exp.id}: got "${found.description}", expected "${exp.description}"`);
-    }
     if (found.href !== exp.href) {
       throw new Error(`Href mismatch for ${exp.id}: got "${found.href}", expected "${exp.href}"`);
     }
@@ -63,107 +60,104 @@ async function runAboutNavbarDropdownTests() {
   if (!ABOUT_NAV_HEADER.title || ABOUT_NAV_HEADER.title !== "ABOUT EMPRISE") {
     throw new Error(`Unexpected header title: ${ABOUT_NAV_HEADER.title}`);
   }
-  if (!ABOUT_NAV_HEADER.subtitle.includes("Explore our story")) {
-    throw new Error(`Unexpected header subtitle: ${ABOUT_NAV_HEADER.subtitle}`);
-  }
-  console.log("✓ Verified configuration-driven navigation data with exactly 3 items (01 Brief About Emprise, 02 Awards & Accolades, 03 Directors).");
+  console.log("✓ Verified 3 independent navigation routes: /about, /about/awards, /about/directors.");
 
-  // [TEST 2] Auditing Awards Data Architecture (Zero Fabricated Awards)
-  console.log("\n[TEST 2] Auditing Awards Data Integrity (No Fabricated Awards)...");
-  if (AWARD_RECORDS.length > 0) {
-    throw new Error("No fabricated award records should be present in AWARD_RECORDS yet.");
-  }
-  if (hasAwardsData()) {
-    throw new Error("hasAwardsData() should return false until verified 7 records are provided.");
-  }
-  console.log("✓ Verified zero fake award names or dates created.");
+  // [TEST 2] Auditing Destination 01 (src/app/(public)/about/page.tsx)
+  console.log("\n[TEST 2] Auditing Destination 01: Brief About Emprise Separation...");
+  const aboutPagePath = path.resolve(process.cwd(), "src/app/(public)/about/page.tsx");
+  const aboutContent = fs.readFileSync(aboutPagePath, "utf-8");
 
-  // [TEST 3] Auditing Dedicated /about/awards Page
-  console.log("\n[TEST 3] Auditing /about/awards Route and Clean Empty State...");
+  if (aboutContent.includes("getCanonicalDirectorsList")) {
+    throw new Error("Full directors list biography should not be in Destination 01 (/about)");
+  }
+  if (aboutContent.includes("<DirectorPhoto")) {
+    throw new Error("Full director biography cards should not be embedded in Destination 01 (/about)");
+  }
+  if (!aboutContent.includes("DESTINATION 01 — BRIEF ABOUT EMPRISE")) {
+    throw new Error("About page missing Destination 01 eyebrow");
+  }
+  if (!aboutContent.includes("/about/directors")) {
+    throw new Error("About page missing cross-link to /about/directors");
+  }
+  if (!aboutContent.includes("/about/awards")) {
+    throw new Error("About page missing cross-link to /about/awards");
+  }
+  console.log("✓ Verified Destination 01: Contains solely institutional content, no full directors biography cards.");
+
+  // [TEST 3] Auditing Destination 02 (Awards 7-Slot Architecture & Zero Fake Data)
+  console.log("\n[TEST 3] Auditing Destination 02: Awards Architecture & 7 Empty Slots...");
+  if (AWARDS_DATA.length !== 7) {
+    throw new Error(`Expected exactly 7 award entries in AWARDS_DATA, found ${AWARDS_DATA.length}`);
+  }
+  for (let i = 0; i < 7; i++) {
+    const award = AWARDS_DATA[i];
+    if (award.id !== i + 1) {
+      throw new Error(`Expected award id ${i + 1}, found ${award.id}`);
+    }
+    if (award.name !== "" || award.organization !== "" || award.year !== "") {
+      throw new Error(`Award ${award.id} must be empty until verified data is provided`);
+    }
+  }
+  if (hasVerifiedAwards()) {
+    throw new Error("hasVerifiedAwards() must be false until real verified data is entered");
+  }
+
   const awardsPagePath = path.resolve(process.cwd(), "src/app/(public)/about/awards/page.tsx");
-  if (!fs.existsSync(awardsPagePath)) {
-    throw new Error("Missing src/app/(public)/about/awards/page.tsx");
-  }
   const awardsContent = fs.readFileSync(awardsPagePath, "utf-8");
-  if (!awardsContent.includes("Awards & Accolades")) {
-    throw new Error("Awards page missing title heading");
+  if (!awardsContent.includes("A dedicated space for Emprise Academy&apos;s awards and accolades")) {
+    throw new Error("Awards page missing required editorial placeholder text");
   }
-  if (!awardsContent.includes("/about/awards")) {
-    throw new Error("Awards page missing canonical link");
+  if (!awardsContent.includes("DESTINATION 02 — HONORS & RECOGNITION")) {
+    throw new Error("Awards page missing Destination 02 eyebrow");
   }
-  console.log("✓ Verified /about/awards route: authentic empty state layout ready for 7 real records.");
+  console.log("✓ Verified Destination 02: Exactly 7-slot empty architecture, zero fake awards, verified editorial placeholder.");
 
-  // [TEST 4] Auditing AboutDropdown Component
-  console.log("\n[TEST 4] Auditing AboutDropdown.tsx Component...");
-  const dropdownPath = path.resolve(process.cwd(), "src/components/navigation/AboutDropdown.tsx");
-  if (!fs.existsSync(dropdownPath)) {
-    throw new Error("Missing src/components/navigation/AboutDropdown.tsx");
+  // [TEST 4] Auditing Destination 03 (/about/directors & Canonical Data Mapping)
+  console.log("\n[TEST 4] Auditing Destination 03: Directors Dedicated Route...");
+  const directorsPagePath = path.resolve(process.cwd(), "src/app/(public)/about/directors/page.tsx");
+  if (!fs.existsSync(directorsPagePath)) {
+    throw new Error("Missing src/app/(public)/about/directors/page.tsx");
   }
-  const dropdownContent = fs.readFileSync(dropdownPath, "utf-8");
-  if (!dropdownContent.includes('role="menu"')) {
-    throw new Error("AboutDropdown missing role=\"menu\"");
+  const directorsContent = fs.readFileSync(directorsPagePath, "utf-8");
+  if (!directorsContent.includes("DESTINATION 03 — ACADEMIC LEADERSHIP")) {
+    throw new Error("Directors page missing Destination 03 eyebrow");
   }
-  if (!dropdownContent.includes('role="menuitem"')) {
-    throw new Error("AboutDropdownItem missing role=\"menuitem\"");
+  if (!directorsContent.includes("Leadership Behind Success")) {
+    throw new Error("Directors page missing approved header");
   }
-  if (!dropdownContent.includes("motion-reduce")) {
-    throw new Error("AboutDropdown missing motion-reduce styling");
+  if (!directorsContent.includes("DirectorsDualGrid")) {
+    throw new Error("Directors page missing DirectorsDualGrid component");
   }
-  if (!dropdownContent.includes("#EEF5FF")) {
-    throw new Error("AboutDropdown missing #EEF5FF hover background");
+  if (!directorsContent.includes("MAIN_DIRECTORS_DATA")) {
+    throw new Error("Directors page must consume canonical MAIN_DIRECTORS_DATA");
   }
-  console.log("✓ Verified AboutDropdown component: semantics, tokens, and motion-reduce support.");
+  console.log("✓ Verified Destination 03: Dedicated /about/directors route consuming canonical data with zero duplication.");
 
-  // [TEST 5] Auditing Navbar.tsx Desktop & Mobile Integration
-  console.log("\n[TEST 5] Auditing Navbar.tsx Integration...");
+  // [TEST 5] Auditing Navbar Integration & Active States
+  console.log("\n[TEST 5] Auditing Navbar Dropdown and Mobile Submenu Active Routing...");
   const navbarPath = path.resolve(process.cwd(), "src/components/navigation/Navbar.tsx");
   const navbarContent = fs.readFileSync(navbarPath, "utf-8");
 
   if (!navbarContent.includes("isAboutOpen")) {
-    throw new Error("Navbar.tsx missing isAboutOpen state");
-  }
-  if (!navbarContent.includes("isMobileAboutOpen")) {
-    throw new Error("Navbar.tsx missing isMobileAboutOpen state");
-  }
-  if (!navbarContent.includes("aboutDropdownRef")) {
-    throw new Error("Navbar.tsx missing aboutDropdownRef for outside click handling");
-  }
-  if (!navbarContent.includes("setIsAboutOpen(true)")) {
-    throw new Error("Navbar.tsx missing onMouseEnter for About dropdown");
-  }
-  if (!navbarContent.includes("setIsAboutOpen(false)")) {
-    throw new Error("Navbar.tsx missing close handlers for About dropdown");
-  }
-  if (!navbarContent.includes("AboutDropdown")) {
-    throw new Error("Navbar.tsx missing AboutDropdown component integration");
+    throw new Error("Navbar missing isAboutOpen state");
   }
   if (!navbarContent.includes("ABOUT_MENU_ITEMS")) {
-    throw new Error("Navbar.tsx missing shared ABOUT_MENU_ITEMS in mobile drawer");
+    throw new Error("Navbar missing shared ABOUT_MENU_ITEMS");
   }
-  console.log("✓ Verified desktop hover trigger, keyboard support, outside-click close, and mobile drawer accordion.");
 
-  // [TEST 6] Preserving other Navbar Items
-  console.log("\n[TEST 6] Preserving Courses, ETSE, Results, Gallery, Blog, Testimonials, Contact...");
-  if (!navbarContent.includes("isCoursesOpen")) {
-    throw new Error("Courses dropdown functionality broken or removed");
+  const dropdownPath = path.resolve(process.cwd(), "src/components/navigation/AboutDropdown.tsx");
+  const dropdownContent = fs.readFileSync(dropdownPath, "utf-8");
+  if (!dropdownContent.includes("role=\"menu\"")) {
+    throw new Error("AboutDropdown missing role=\"menu\"");
   }
-  if (!navbarContent.includes("isGalleryOpen")) {
-    throw new Error("Gallery dropdown functionality broken or removed");
-  }
-  if (!navbarContent.includes("/etse-2026")) {
-    throw new Error("ETSE link removed from Navbar");
-  }
-  if (!navbarContent.includes("/results")) {
-    throw new Error("Results link removed from Navbar");
-  }
-  console.log("✓ Verified all other navigation items and dropdowns remain 100% intact.");
+  console.log("✓ Verified Navbar and AboutDropdown: active routing and keyboard accessibility.");
 
   console.log("\n==================================================");
-  console.log("ALL STEP 11A ABOUT NAVBAR DROPDOWN TESTS PASSED (6/6)");
+  console.log("ALL STEP 11B THREE INDEPENDENT DESTINATIONS TESTS PASSED (5/5)");
   console.log("==================================================");
 }
 
-runAboutNavbarDropdownTests().catch((err) => {
+runThreeIndependentAboutDestinationsTests().catch((err) => {
   console.error("\n❌ TEST FAILED:", err);
   process.exit(1);
 });

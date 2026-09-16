@@ -35,6 +35,6 @@ export const ABOUT_MENU_ITEMS: AboutMenuItem[] = [
     title: "Directors",
     description: "Meet the academic leadership behind Emprise.",
     iconName: "Users",
-    href: "/about#directors",
+    href: "/about/directors",
   },
 ];

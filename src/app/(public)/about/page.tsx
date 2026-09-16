@@ -12,9 +12,7 @@ import { Button } from "@/components/ui/button/Button";
 import { Breadcrumbs } from "@/components/ui/link/TextLink";
 import { SiteJsonLd } from "@/components/seo/SiteJsonLd";
 import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
-import { getCanonicalDirectorsList } from "@/data/directors";
 import { getCoreProgramPillars } from "@/data/courses";
-import { DirectorPhoto } from "@/components/directors/DirectorPhoto";
 import {
   GraduationCap,
   BookOpen,
@@ -61,7 +59,6 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
-  const directors = getCanonicalDirectorsList();
   const pillars = getCoreProgramPillars();
   const business = CANONICAL_BUSINESS_CONFIG;
 
@@ -183,7 +180,7 @@ export default function AboutPage() {
 
               <div className="max-w-3xl space-y-4">
                 <Badge variant="accent" size="sm">
-                  ABOUT EMPRISE ACADEMY
+                  DESTINATION 01 — BRIEF ABOUT EMPRISE
                 </Badge>
 
                 <Heading
@@ -192,8 +189,12 @@ export default function AboutPage() {
                   color="white"
                   className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight"
                 >
-                  Building Strong Foundations for Competitive Success
+                  About Emprise Academy
                 </Heading>
+
+                <p className="text-lg sm:text-xl font-semibold text-amber-300">
+                  Building Strong Foundations for Competitive Success
+                </p>
 
                 <p className="text-base sm:text-lg text-slate-200 leading-relaxed">
                   Established in 2011, Emprise Academy provides structured concept-first classroom coaching for IIT-JEE, NEET-UG, and Foundation (Classes 8–10) in Mathura.
@@ -461,78 +462,34 @@ export default function AboutPage() {
             </Container>
           </Section>
 
-          {/* 5. Academic Leadership */}
-          <Section variant="surface" spacing="lg" id="directors">
-            <Container size="xl" className="space-y-12">
-              <div className="text-center max-w-3xl mx-auto space-y-2">
-                <Badge variant="primary" size="md">
-                  FOUNDING LEADERSHIP
-                </Badge>
-                <Heading as="h2" variant="h1" align="center">
-                  Guided by Experienced Academic Directors
-                </Heading>
-                <Text variant="body-large" color="muted" align="center">
-                  Meet the leaders steering curriculum rigor and mentorship at Emprise Academy Mathura.
-                </Text>
-              </div>
+          {/* 5. Independent Destinations Explorer */}
+          <Section variant="surface" spacing="md" id="about-destinations">
+            <Container size="xl">
+              <div className="p-8 sm:p-10 rounded-3xl bg-white border border-[#E3EAF3] shadow-xs flex flex-col lg:flex-row items-center justify-between gap-8">
+                <div className="space-y-2 text-center lg:text-left max-w-2xl">
+                  <Badge variant="primary" size="sm">
+                    INDEPENDENT ABOUT DESTINATIONS
+                  </Badge>
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#14213D]">
+                    Explore Leadership Profiles or Institutional Recognition
+                  </h3>
+                  <p className="text-xs sm:text-sm text-[#667085] leading-relaxed">
+                    Meet the academic leadership steering curriculum rigor at Emprise Academy, or explore our dedicated awards and accolades space.
+                  </p>
+                </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {directors.map((director) => (
-                  <div
-                    key={director.id}
-                    className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200/90 shadow-sm flex flex-col md:flex-row gap-6 items-center md:items-start hover:shadow-md transition-shadow"
-                  >
-                    <div className="w-40 sm:w-48 shrink-0">
-                      <DirectorPhoto
-                        photoUrl={director.photoUrl}
-                        name={director.name}
-                        designation={director.designation}
-                        aspectRatio="portrait"
-                        className="rounded-2xl"
-                      />
-                    </div>
-
-                    <div className="space-y-3 text-left flex-1">
-                      <div>
-                        <Badge variant="primary" size="sm" className="mb-1">
-                          {director.designation}
-                        </Badge>
-                        <h3 className="text-xl font-extrabold text-[var(--brand-primary)]">
-                          {director.name}
-                        </h3>
-                        <p className="text-xs font-semibold text-slate-500">
-                          {director.qualification} • {director.almaMater}
-                        </p>
-                      </div>
-
-                      <blockquote className="text-xs italic text-slate-600 border-l-2 border-[var(--brand-accent)] pl-3 my-2">
-                        &ldquo;{director.quote}&rdquo;
-                      </blockquote>
-
-                      <p className="text-xs text-slate-600 leading-relaxed line-clamp-3">
-                        {director.shortBio}
-                      </p>
-
-                      <div className="pt-2">
-                        <Link
-                          href={`/directors/${director.slug}`}
-                          className="inline-flex items-center gap-1 text-xs font-bold text-[var(--brand-accent)] hover:underline"
-                        >
-                          <span>Read Full Profile</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="text-center pt-4">
-                <Link href="/directors">
-                  <Button variant="outline" size="md">
-                    Explore Leadership & Directors Page →
-                  </Button>
-                </Link>
+                <div className="flex flex-wrap items-center justify-center gap-3 shrink-0">
+                  <Link href="/about/directors">
+                    <Button variant="primary" size="md" rightIcon={<ArrowRight className="w-4 h-4" />}>
+                      03 Meet the Directors
+                    </Button>
+                  </Link>
+                  <Link href="/about/awards">
+                    <Button variant="outline" size="md">
+                      02 Awards & Accolades
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </Container>
           </Section>

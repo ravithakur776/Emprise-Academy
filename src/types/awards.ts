@@ -1,15 +1,11 @@
-export interface AwardRecord {
-  id: string;
-  number: string; // "01" through "07"
-  title: string;
+export interface AwardEntry {
+  id: number;
+  number: string;
+  name: string;
+  organization: string;
   year: string;
-  awardingOrganization: string;
   description: string;
-  image?: {
-    src: string;
-    alt: string;
-    caption?: string;
-  };
+  image: string;
+  category?: string;
   location?: string;
-  featured?: boolean;
 }
