@@ -46,7 +46,7 @@ export interface CourseCardData {
   targetClasses: string;
   tagline?: string;
   targetExams: string;
-  description: string;
+  description?: string;
   keyBenefit: string;
   features: string[];
   ctaLabel: string;
@@ -125,10 +125,10 @@ export interface HomepageFAQ {
 export const HOMEPAGE_DATA = {
   announcement: {
     badge: "ETSE",
-    text: "Emprise Talent Search Examination • Exam on 6 September 2026 • 100% Free Registration Open for Classes 7th to 10th",
+    text: "Emprise Talent Search Examination • Exam on 27 September 2026 • 100% Free Registration Open for Classes 7th to 10th",
     ctaText: "Register Now →",
     ctaHref: "/etse-2026#register",
-    examDate: "6 September 2026",
+    examDate: "27 September 2026",
     eligibleClasses: "Classes 7th to 10th",
     fee: "100% FREE",
   },
@@ -303,8 +303,7 @@ export const HOMEPAGE_DATA = {
       badge: "Engineering Stream",
       targetClasses: "Classes 11, 12 & Droppers",
       targetExams: "JEE Main & JEE Advanced",
-      description:
-        "Rigorous concept building in Physics, Chemistry, and Mathematics with advanced problem-solving sessions and national pattern testing.",
+      description: "Become Engineer with IITians Faculty.",
       keyBenefit: "Daily DPPs with one-on-one doubt resolution and CBT test practice.",
       features: [
         "In-depth Physics, Chemistry & Mathematics pedagogy",
@@ -323,8 +322,7 @@ export const HOMEPAGE_DATA = {
       badge: "Medical Stream",
       targetClasses: "Classes 11, 12 & Droppers",
       targetExams: "NEET-UG (Medical Entrance)",
-      description:
-        "Comprehensive NCERT line-by-line mastery in Biology, Chemistry, and Physics with high-frequency timed OMR examination drills.",
+      description: "Your First Step Towards Becoming Doctor.",
       keyBenefit: "100% NCERT alignment with error-analysis loops for medical entrance.",
       features: [
         "NCERT line-by-line Biology revision modules",
@@ -343,8 +341,7 @@ export const HOMEPAGE_DATA = {
       badge: "Junior Foundation",
       targetClasses: "Classes 8, 9 & 10",
       targetExams: "School Boards, Olympiads & Early Base",
-      description:
-        "Building strong fundamental concepts, analytical thinking, and mental ability to establish early academic confidence.",
+      description: "Build Your Strong Base with experts at Emprise.",
       keyBenefit: "Dual advantage: school syllabus mastery plus competitive foundation.",
       features: [
         "Core science & mathematics fundamentals reinforcement",
@@ -364,8 +361,7 @@ export const HOMEPAGE_DATA = {
       tagline: "Learn Online. Practice Smart. Succeed with Emprise.",
       targetClasses: "Learn Online. Practice Smart. Succeed with Emprise.",
       targetExams: "JEE Main, JEE Advanced, NEET (UG) & Foundation",
-      description:
-        "Emprise provides comprehensive online test series, study material, and DPPs for serious competitive exam preparation.",
+      description: "",
       keyBenefit:
         "Complete digital practice ecosystem combining online testing, structured study material and daily practice.",
       features: [
@@ -442,7 +438,7 @@ export const HOMEPAGE_DATA = {
   etseFeature: {
     heading: "Emprise Talent Search Examination 2026",
     subheading: "A standardized benchmark to test conceptual aptitude, discover academic potential, and earn merit scholarships.",
-    examDate: "06 September 2026",
+    examDate: "27 September 2026",
     examTime: "10:00 AM – 12:00 PM",
     reportingTime: "09:30 AM",
     eligibility: "Students currently in Classes 7th, 8th, 9th & 10th",
@@ -873,10 +869,10 @@ export const HOMEPAGE_DATA = {
   latestUpdates: [
     {
       id: "up-1",
-      date: "06 Sep 2026",
+      date: "27 Sep 2026",
       category: "ETSE",
       title: "ETSE 2026 Examination Date Confirmed",
-      preview: "Emprise Talent Search Examination will be conducted offline at the Mathura campus on 6 September 2026. Free registration is currently open.",
+      preview: "Emprise Talent Search Examination will be conducted offline at the Mathura campus on 27 September 2026. Free registration is currently open.",
       href: "/etse-2026",
       isImportant: true,
     },
@@ -1086,9 +1082,9 @@ export const HOMEPAGE_DATA = {
     phoneDisplay: "+91 7247889955",
     phoneSecondaryDisplay: "+91 9634448800",
     phoneHref: "tel:+917247889955",
-    whatsappHref: "https://wa.me/917247889955",
+    whatsappHref: "https://wa.me/919808912829",
     email: "info@empriseacademy.com",
-    hours: "9:00 AM – 7:00 PM (Monday to Saturday)",
+    hours: "10:00 AM – 7:00 PM (Monday to Saturday)",
     directionsUrl: "https://maps.google.com/?q=Emprise+Academy+Mathura",
   },
 };

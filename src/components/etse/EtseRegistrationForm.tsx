@@ -58,7 +58,7 @@ export const EtseRegistrationForm: React.FC = () => {
   const [examCentreId, setExamCentreId] = useState<string | null>(null);
   const [examInfo, setExamInfo] = useState({
     title: "Emprise Talent Search Examination (ETSE) 2026",
-    examDate: "Sunday, 6 September 2026",
+    examDate: "Sunday, 27 September 2026",
     reportingTime: "09:30 AM",
     examTime: "10:00 AM – 12:00 PM",
     centreName: "Emprise Academy Mathura",

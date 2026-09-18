@@ -120,7 +120,7 @@ export default function AdminAdmitCardGeneratePage() {
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-2">
               <strong className="block text-slate-900 font-bold">Standard ETSE 2026 Schedule:</strong>
               <div className="grid grid-cols-2 gap-2 text-slate-700">
-                <div>Date: <strong>06 September 2026</strong></div>
+                <div>Date: <strong>27 September 2026</strong></div>
                 <div>Time: <strong>10:00 AM – 12:00 PM</strong></div>
                 <div>Reporting: <strong className="text-[var(--brand-accent)]">09:15 AM</strong></div>
                 <div>Exam Format: <strong>Pen & Paper (OMR)</strong></div>

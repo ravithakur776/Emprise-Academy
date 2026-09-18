@@ -17,6 +17,7 @@ import { FAQSection } from "@/components/home/FAQSection";
 import { CampusContactSection } from "@/components/home/CampusContactSection";
 import { FinalCtaSection } from "@/components/home/FinalCtaSection";
 import { HomepageJsonLd } from "@/components/home/HomepageJsonLd";
+import { DesktopScrollProgress } from "@/components/home/DesktopScrollProgress";
 
 export const metadata: Metadata = {
   title: "IIT-JEE & NEET Coaching in Mathura | Emprise Academy",
@@ -62,6 +63,9 @@ export default function HomePage() {
 
         {/* Global Navigation Shell */}
         <Navbar />
+
+        {/* Subtle Desktop Scroll Progress Indicator */}
+        <DesktopScrollProgress />
 
         {/* Main Content Sections with Sophisticated Visual Rhythm */}
         <main className="flex-1">

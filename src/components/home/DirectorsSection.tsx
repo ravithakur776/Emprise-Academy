@@ -22,7 +22,7 @@ export const DirectorsSection: React.FC = () => {
   ];
 
   return (
-    <Section variant="default" spacing="lg" id="directors" className="bg-[#F8FAFC] border-y border-[var(--brand-border)]">
+    <Section variant="default" spacing="lg" id="directors" className="bg-[#EEF5FF] border-y border-[#E3EAF3]">
       <Container size="xl">
         {/* Section Header (No top badge, begins directly with main heading) */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-11">

@@ -23,7 +23,7 @@ export const Footer: React.FC = () => {
   const phone = "+91 7247889955";
   const phoneSecondary = "+91 9634448800";
   const email = "info@empriseacademy.com";
-  const hours = "9 AM – 7 PM";
+  const hours = "10 AM – 7 PM";
   const directionsUrl = contact.directionsUrl;
 
   return (

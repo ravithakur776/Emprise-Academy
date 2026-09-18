@@ -58,13 +58,22 @@ async function runCoursesTests() {
   if (card1.id !== "iit-jee" || card1.title !== "IIT-JEE Preparation" || card1.badge !== "Engineering Stream") {
     throw new Error("Card 1 (IIT-JEE Preparation) altered!");
   }
+  if (card1.description !== "Become Engineer with IITians Faculty.") {
+    throw new Error(`Card 1 description mismatch! Got: '${card1.description}'`);
+  }
   if (card2.id !== "neet-ug" || card2.title !== "NEET-UG Preparation" || card2.badge !== "Medical Stream") {
     throw new Error("Card 2 (NEET-UG Preparation) altered!");
+  }
+  if (card2.description !== "Your First Step Towards Becoming Doctor.") {
+    throw new Error(`Card 2 description mismatch! Got: '${card2.description}'`);
   }
   if (card3.id !== "foundation" || card3.title !== "Foundation Classes 8–10" || card3.badge !== "Junior Foundation") {
     throw new Error("Card 3 (Foundation Classes 8–10) altered!");
   }
-  console.log("✓ Verified Card 1, Card 2, Card 3 content is completely unaltered.");
+  if (card3.description !== "Build Your Strong Base with experts at Emprise.") {
+    throw new Error(`Card 3 description mismatch! Got: '${card3.description}'`);
+  }
+  console.log("✓ Verified Card 1, Card 2, Card 3 content and updated subheadings.");
 
   // [TEST 6] Step 6A: 4th Card Content & Exact Identity Lock
   console.log("\n[TEST 6] Auditing Step 6A: 4th Course Card Content...");
@@ -82,8 +91,8 @@ async function runCoursesTests() {
   if (card4.tagline !== "Learn Online. Practice Smart. Succeed with Emprise.") {
     throw new Error(`Card 4 tagline expected 'Learn Online. Practice Smart. Succeed with Emprise.', got '${card4.tagline}'`);
   }
-  if (card4.description !== "Emprise provides comprehensive online test series, study material, and DPPs for serious competitive exam preparation.") {
-    throw new Error(`Card 4 description mismatch! Got: '${card4.description}'`);
+  if (card4.description && card4.description !== "") {
+    throw new Error(`Card 4 description expected to be empty! Got: '${card4.description}'`);
   }
   if (card4.keyBenefit !== "Complete digital practice ecosystem combining online testing, structured study material and daily practice.") {
     throw new Error(`Card 4 keyBenefit mismatch! Got: '${card4.keyBenefit}'`);

@@ -97,8 +97,8 @@ export default function StudentAdmitCardsPage() {
           }
 
           // Format Exam Date
-          const rawExamDate = ac.exam_date || exam.exam_date || "2026-09-06";
-          let formattedExamDate = "Sunday, 06 September 2026";
+          const rawExamDate = ac.exam_date || exam.exam_date || "2026-09-27";
+          let formattedExamDate = "Sunday, 27 September 2026";
           if (rawExamDate) {
             try {
               const ed = new Date(rawExamDate);

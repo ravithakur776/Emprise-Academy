@@ -30,9 +30,11 @@ export const GalleryPreviewSection: React.FC = () => {
     <Section
       variant="default"
       spacing="lg"
-      id="gallery-preview"
-      className="bg-white overflow-hidden"
+      id="gallery"
+      className="bg-[#EEF5FF]/60 border-y border-[#E3EAF3] overflow-hidden"
     >
+      {/* Anchor compatibility for existing #gallery-preview links */}
+      <div id="gallery-preview" className="scroll-mt-24" />
       <Container size="xl">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 sm:mb-10 text-left">

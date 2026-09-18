@@ -170,7 +170,7 @@ export default function AdminDashboardPage() {
                 ETSE 2026 Registrations (Classes 7–10)
               </h3>
               <p className="text-xs text-slate-400 mt-1">
-                Exam on 6 Sept 2026. {metrics.etseRegistrations} candidate applications recorded.
+                Exam on 27 Sept 2026. {metrics.etseRegistrations} candidate applications recorded.
               </p>
             </div>
             <Link href="/admin/etse">

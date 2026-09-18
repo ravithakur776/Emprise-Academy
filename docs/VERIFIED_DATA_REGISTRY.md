@@ -32,10 +32,10 @@
 | `display_location` | **VERIFIED_OFFICIAL** | `CANONICAL_BUSINESS_CONFIG.address.display_location` | **YES** | `"Near Tera Tower, Bhuteshwar Road, Mathura, Uttar Pradesh - 281004"` |
 | `phone_primary` | **VERIFIED_OFFICIAL** | Official Helpline | **YES** | `"+91 7247889955"` (`tel:+917247889955`) |
 | `phone_secondary` | **VERIFIED_OFFICIAL** | Official Secondary Helpline | **YES** | `"+91 9634448800"` (`tel:+919634448800`) |
-| `whatsapp` | **VERIFIED_OFFICIAL** | Official WhatsApp Desk | **YES** | `"+91 7247889955"` (`https://wa.me/917247889955...`) |
+| `whatsapp` | **VERIFIED_OFFICIAL** | Official WhatsApp Desk | **YES** | `"+91 9808912829"` (`https://wa.me/919808912829...`) |
 | `email` | **VERIFIED_OFFICIAL** | Official Email Desk | **YES** | `"info@empriseacademy.com"` (`mailto:info@empriseacademy.com`) |
 | `google_maps_url` | **VERIFIED_OFFICIAL** | Official Maps Location | **YES** | `"https://maps.app.goo.gl/P3E6GLnWqrdZfNcn7"` |
-| `business_hours` | **VERIFIED_OFFICIAL** | Official Working Hours | **YES** | `"9AM to 7PM"` |
+| `business_hours` | **VERIFIED_OFFICIAL** | Official Working Hours | **YES** | `"10 AM – 7 PM"` |
 | `social.instagram` | **VERIFIED_OFFICIAL** | Official Instagram Profile | **YES** | `"https://www.instagram.com/empriseacademy/"` |
 | `social.facebook` | **VERIFIED_OFFICIAL** | Official Facebook Page | **YES** | `"https://www.facebook.com/EmpriseAcademy"` |
 | `social.youtube` | **VERIFIED_OFFICIAL** | Official YouTube Channel | **YES** | `"https://youtube.com/@emprisemathura?si=mQONprDb6PzOAGuB"` |
@@ -49,7 +49,7 @@
 | :--- | :--- | :--- | :---: | :--- |
 | `etse.name` | **VERIFIED_OFFICIAL** | `CANONICAL_BUSINESS_CONFIG.etse.name` | **YES** | `"Emprise Talent Search Examination"` |
 | `etse.short_name` | **VERIFIED_OFFICIAL** | `CANONICAL_BUSINESS_CONFIG.etse.short_name` | **YES** | `"ETSE 2026"` |
-| `etse.exam_date` | **VERIFIED_OFFICIAL** | `CANONICAL_BUSINESS_CONFIG.etse.exam_date` | **YES** | `"6 September 2026"` |
+| `etse.exam_date` | **VERIFIED_OFFICIAL** | `CANONICAL_BUSINESS_CONFIG.etse.exam_date` | **YES** | `"27 September 2026"` |
 | `etse.eligible_classes`| **VERIFIED_OFFICIAL** | `CANONICAL_BUSINESS_CONFIG.etse.eligible_classes`| **YES** | `["Class 7", "Class 8", "Class 9", "Class 10"]` |
 | `etse.fee` | **VERIFIED_OFFICIAL** | `CANONICAL_BUSINESS_CONFIG.etse.fee` | **YES** | `"FREE"` |
 | `etse.mode` | **VERIFIED_OFFICIAL** | `CANONICAL_BUSINESS_CONFIG.etse.mode` | **YES** | `"Offline (Pen & Paper)"` |

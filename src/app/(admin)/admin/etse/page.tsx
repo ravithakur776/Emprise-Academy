@@ -102,7 +102,7 @@ export default function AdminEtsePage() {
 
           <div className="flex items-center gap-3">
             <span className="text-xs px-3 py-1.5 rounded-xl bg-amber-100 text-amber-900 font-bold border border-amber-200">
-              Exam Date: 6 September 2026
+              Exam Date: 27 September 2026
             </span>
 
             <Button

@@ -62,8 +62,8 @@ async function runDataPurificationTests() {
     throw new Error("Secondary phone tel href MUST NOT match primary phone tel href");
   }
   if (
-    CANONICAL_BUSINESS_CONFIG.contact.whatsapp !== "+91 7247889955" ||
-    !CANONICAL_BUSINESS_CONFIG.contact.whatsapp_link.includes("917247889955")
+    CANONICAL_BUSINESS_CONFIG.contact.whatsapp !== "+91 9808912829" ||
+    !CANONICAL_BUSINESS_CONFIG.contact.whatsapp_link.includes("919808912829")
   ) {
     throw new Error(`Invalid WhatsApp config: ${CANONICAL_BUSINESS_CONFIG.contact.whatsapp}`);
   }
@@ -76,7 +76,7 @@ async function runDataPurificationTests() {
   if (CANONICAL_BUSINESS_CONFIG.contact.google_maps_url !== "https://maps.app.goo.gl/P3E6GLnWqrdZfNcn7") {
     throw new Error(`Invalid maps URL: ${CANONICAL_BUSINESS_CONFIG.contact.google_maps_url}`);
   }
-  if (CANONICAL_BUSINESS_CONFIG.contact.business_hours !== "9AM to 7PM") {
+  if (CANONICAL_BUSINESS_CONFIG.contact.business_hours !== "10 AM – 7 PM") {
     throw new Error(`Invalid business hours: ${CANONICAL_BUSINESS_CONFIG.contact.business_hours}`);
   }
   console.log("✓ Official primary/secondary phones, WhatsApp, email, hours, and Google Maps URL verified.");
@@ -122,10 +122,10 @@ async function runDataPurificationTests() {
   if (CANONICAL_BUSINESS_CONFIG.etse.short_name !== "ETSE 2026") {
     throw new Error(`Invalid ETSE short name: ${CANONICAL_BUSINESS_CONFIG.etse.short_name}`);
   }
-  if (CANONICAL_BUSINESS_CONFIG.etse.exam_date !== "6 September 2026") {
+  if (CANONICAL_BUSINESS_CONFIG.etse.exam_date !== "27 September 2026") {
     throw new Error(`Invalid ETSE exam date: ${CANONICAL_BUSINESS_CONFIG.etse.exam_date}`);
   }
-  if (MAIN_ETSE_DATA.campaign.examDateDisplay !== "6 September 2026") {
+  if (MAIN_ETSE_DATA.campaign.examDateDisplay !== "27 September 2026") {
     throw new Error(`MAIN_ETSE_DATA exam date mismatch: ${MAIN_ETSE_DATA.campaign.examDateDisplay}`);
   }
   console.log(`✓ ETSE 2026 campaign specs verified: ${CANONICAL_BUSINESS_CONFIG.etse.exam_date}, Classes 7–10, ${CANONICAL_BUSINESS_CONFIG.etse.fee}.`);

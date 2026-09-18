@@ -40,7 +40,7 @@ export default function AdminAdmitCardDetailPage({
     class: "Class 8",
     school: "St. Dominic's Senior Secondary School, Mathura",
     examTitle: "Emprise Talent Search Examination (ETSE 2026)",
-    examDate: "06 September 2026",
+    examDate: "27 September 2026",
     examTime: "10:00 AM – 12:00 PM",
     reportingTime: "09:15 AM",
     centre: "Emprise Academy Campus, Mathura",

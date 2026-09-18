@@ -197,7 +197,7 @@ export default function StudentDashboardPage() {
             </div>
             <div className="text-xl sm:text-2xl font-black text-slate-900">{scorecardStatus}</div>
             <span className="text-[11px] text-slate-500">
-              {scorecardStatus === "Declared" ? "Scorecard Published" : (totalApplications > 0 ? "Exam: 6 Sept 2026" : "No exam records")}
+              {scorecardStatus === "Declared" ? "Scorecard Published" : (totalApplications > 0 ? "Exam: 27 Sept 2026" : "No exam records")}
             </span>
           </div>
 

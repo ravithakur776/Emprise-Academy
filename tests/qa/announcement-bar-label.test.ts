@@ -29,11 +29,11 @@ async function runAnnouncementBarTests() {
 
   // [TEST 3] Auditing Preserved Announcement Content (Desktop & Mobile)
   console.log("\n[TEST 3] Auditing announcement copy preservation...");
-  const desktopAnnouncement = "Emprise Talent Search Examination • Exam on 6 September 2026 • 100% Free Registration Open for Classes 7th to 10th";
+  const desktopAnnouncement = "Emprise Talent Search Examination • Exam on 27 September 2026 • 100% Free Registration Open for Classes 7th to 10th";
   if (!navbarContent.includes(desktopAnnouncement)) {
     throw new Error("Desktop announcement copy modified unexpectedly!");
   }
-  const mobileAnnouncement = "• Exam: 6 Sept 2026 • Classes 7th–10th • FREE";
+  const mobileAnnouncement = "• Exam: 27 Sept 2026 • Classes 7th–10th • FREE";
   if (!navbarContent.includes(mobileAnnouncement)) {
     throw new Error("Mobile announcement copy modified unexpectedly!");
   }
@@ -54,7 +54,7 @@ async function runAnnouncementBarTests() {
   if (HOMEPAGE_DATA.announcement.badge !== "ETSE") {
     throw new Error(`HOMEPAGE_DATA.announcement.badge expected 'ETSE', found '${HOMEPAGE_DATA.announcement.badge}'`);
   }
-  if (HOMEPAGE_DATA.announcement.examDate !== "6 September 2026") {
+  if (HOMEPAGE_DATA.announcement.examDate !== "27 September 2026") {
     throw new Error("HOMEPAGE_DATA.announcement.examDate modified unexpectedly!");
   }
   console.log("✓ Verified canonical announcement data configuration.");

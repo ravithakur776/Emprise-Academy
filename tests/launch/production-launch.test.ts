@@ -26,8 +26,8 @@ if (siteConfig.establishedYear !== 2011) {
 }
 const verifiedEtseCampaign = {
   examTitle: "ETSE 2026",
-  examDate: "2026-09-06",
-  formattedDate: "6 September 2026",
+  examDate: "2026-09-27",
+  formattedDate: "27 September 2026",
   eligibility: "Classes 7 to 10",
   fee: "FREE",
 };

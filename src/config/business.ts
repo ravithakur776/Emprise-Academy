@@ -86,12 +86,12 @@ export const CANONICAL_BUSINESS_CONFIG: CanonicalBusinessConfig = {
     phone_primary_tel: "tel:+917247889955",
     phone_secondary: "+91 9634448800",
     phone_secondary_tel: "tel:+919634448800",
-    whatsapp: "+91 7247889955",
-    whatsapp_link: "https://wa.me/917247889955?text=Hello%20Emprise%20Academy,%20I%20want%20to%20inquire%20about%20admissions.",
+    whatsapp: "+91 9808912829",
+    whatsapp_link: "https://wa.me/919808912829?text=Hello%20Emprise%20Academy,%20I%20want%20to%20inquire%20about%20admissions.",
     email: "info@empriseacademy.com",
     email_mailto: "mailto:info@empriseacademy.com",
     google_maps_url: "https://maps.app.goo.gl/P3E6GLnWqrdZfNcn7",
-    business_hours: "9AM to 7PM",
+    business_hours: "10 AM – 7 PM",
   },
 
   social: {
@@ -104,7 +104,7 @@ export const CANONICAL_BUSINESS_CONFIG: CanonicalBusinessConfig = {
   etse: {
     name: "Emprise Talent Search Examination",
     short_name: "ETSE 2026",
-    exam_date: "6 September 2026",
+    exam_date: "27 September 2026",
     eligible_classes: ["Class 7", "Class 8", "Class 9", "Class 10"] as const,
     fee: "FREE",
     mode: "Offline (Pen & Paper)",

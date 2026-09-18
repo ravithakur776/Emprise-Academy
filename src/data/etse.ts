@@ -35,7 +35,7 @@ export const MAIN_ETSE_DATA = {
   meta: {
     title: "ETSE 2026 – Emprise Talent Search Exam | Mathura | Emprise Academy",
     description:
-      "Register FREE for Emprise Talent Search Examination (ETSE 2026) for Classes 7–10 in Mathura. Exam Date: 6 September 2026. Earn merit scholarships, rank benchmarking, and academic recognition.",
+      "Register FREE for Emprise Talent Search Examination (ETSE 2026) for Classes 7–10 in Mathura. Exam Date: 27 September 2026. Earn merit scholarships, rank benchmarking, and academic recognition.",
     keywords: [
       "ETSE 2026",
       "Emprise Talent Search Examination 2026",
@@ -53,8 +53,8 @@ export const MAIN_ETSE_DATA = {
     tagline: "The Search for Mathura's Brightest Minds",
     subheading: "For Students of Classes 7, 8, 9 & 10",
     status: "REGISTRATION_OPEN" as EtseCampaignStatus,
-    examDateIso: "2026-09-06T10:00:00+05:30",
-    examDateDisplay: "6 September 2026",
+    examDateIso: "2026-09-27T10:00:00+05:30",
+    examDateDisplay: "27 September 2026",
     examTimeDisplay: "10:00 AM – 12:00 PM (2 Hours)",
     registrationFee: "FREE (Zero Application Fee)",
     mode: "Offline (Pen & Paper OMR Format)",
@@ -163,7 +163,7 @@ export const MAIN_ETSE_DATA = {
     },
     {
       step: "05",
-      title: "Appear for Exam on 6 Sept 2026",
+      title: "Appear for Exam on 27 Sept 2026",
       description: "Take the offline pen-and-paper OMR test at your allotted Mathura exam centre.",
     },
     {
@@ -181,7 +181,7 @@ export const MAIN_ETSE_DATA = {
     {
       question: "What is the official exam date for ETSE 2026?",
       answer:
-        "ETSE 2026 will take place on Sunday, 6 September 2026. The examination duration is 2 hours (10:00 AM to 12:00 PM).",
+        "ETSE 2026 will take place on Sunday, 27 September 2026. The examination duration is 2 hours (10:00 AM to 12:00 PM).",
     },
     {
       question: "Who is eligible to participate?",

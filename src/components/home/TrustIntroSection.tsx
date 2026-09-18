@@ -7,12 +7,18 @@ import { Button } from "@/components/ui/button/Button";
 import { HOMEPAGE_DATA } from "@/data/homepage";
 import { CheckCircle2, ArrowRight, Trophy } from "lucide-react";
 import { AcademicStatCard } from "./AcademicStatCard";
+import { TrustProofStrip } from "./TrustProofStrip";
 
 export const TrustIntroSection: React.FC = () => {
   const { trustIntro } = HOMEPAGE_DATA;
 
   return (
-    <Section variant="default" spacing="lg" id="about-intro" className="bg-white">
+    <>
+      {/* 04. Dedicated Full-Width Deep-Blue Trust & Proof Strip */}
+      <TrustProofStrip />
+
+      {/* 05. Academic Introduction & Visual Storytelling Section */}
+      <Section variant="default" spacing="lg" id="about-intro" className="bg-white">
       <Container size="xl">
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 xl:gap-12 items-center">
           {/* Left Column: Heading & Narrative */}
@@ -87,9 +93,77 @@ export const TrustIntroSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Column: Premium 6-Card Academic Credentials & Statistics System */}
-          <div className="xl:col-span-6 w-full">
-            <div className="group/stats-grid grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-3.5">
+          {/* Right Column: Visual Storytelling Collage + Supporting Academic Credentials */}
+          <div className="xl:col-span-6 w-full space-y-5">
+            {/* Photographic Storytelling Composition */}
+            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E3EAF3] bg-gradient-to-br from-[#EEF5FF] via-white to-slate-50 p-3 sm:p-4 shadow-sm select-none">
+              {/* Restrained Brand Geometry */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#1769E0]/5 rounded-full blur-2xl pointer-events-none" />
+              <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#FF8A00]/5 rounded-full blur-2xl pointer-events-none" />
+
+              {/* Asymmetric Dual-Photo Composition */}
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-3.5">
+                {/* Primary Academy Classroom Photograph */}
+                <div className="sm:col-span-8 relative h-52 sm:h-64 lg:h-72 rounded-xl sm:rounded-2xl overflow-hidden shadow-xs border border-slate-200/70 bg-slate-100 group">
+                  <img
+                    src="/gallery/emprise-gallery-01.jpg"
+                    alt="Emprise Academy Mathura — Director-led classroom mentorship and competitive preparation"
+                    className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+                    loading="eager"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#123E73]/85 via-[#123E73]/25 to-transparent" />
+
+                  {/* Campus Location Badge */}
+                  <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md border border-white/60 shadow-xs text-[11px] font-bold text-[#123E73]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#16A36A] animate-pulse" />
+                    <span>Bhuteshwar Road Campus</span>
+                  </div>
+
+                  {/* Caption */}
+                  <div className="absolute bottom-2.5 left-2.5 right-2.5 sm:bottom-3 sm:left-3 sm:right-3 z-10 text-white">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300 block">
+                      Classroom Culture
+                    </span>
+                    <h3 className="text-xs sm:text-sm font-bold text-white drop-shadow-xs truncate">
+                      Director-Led Learning &amp; Concept Mastery
+                    </h3>
+                  </div>
+                </div>
+
+                {/* Secondary Photo & Academic Legacy Card */}
+                <div className="sm:col-span-4 flex flex-col gap-3">
+                  {/* Secondary Campus/Library Photo */}
+                  <div className="relative h-28 sm:h-36 rounded-xl overflow-hidden shadow-xs border border-slate-200/70 bg-slate-100 group">
+                    <img
+                      src="/gallery/emprise-gallery-02.jpg"
+                      alt="Emprise Academy study environment and student discussion"
+                      className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#123E73]/80 via-transparent to-transparent" />
+                    <span className="absolute bottom-2 left-2 text-[10px] font-bold text-white tracking-wide">
+                      Interactive Care
+                    </span>
+                  </div>
+
+                  {/* 15+ Years Legacy Information Block */}
+                  <div className="flex-1 p-3 rounded-xl bg-[#123E73] text-white flex flex-col justify-center border border-blue-900/60 shadow-xs">
+                    <div className="text-xl sm:text-2xl font-extrabold text-[#FF8A00] leading-none">
+                      15+ Years
+                    </div>
+                    <div className="text-[11px] font-semibold text-blue-100 mt-1 leading-tight">
+                      Legacy in Mathura
+                    </div>
+                    <div className="text-[9px] text-blue-200/70 mt-0.5">
+                      Since 2011 • Trusted Mentors
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Supporting 6-Card Academic Credentials & Statistics System */}
+            <div className="group/stats-grid grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2.5 sm:gap-3">
               {trustIntro.stats.map((stat) => (
                 <AcademicStatCard
                   key={stat.index}
@@ -101,6 +175,7 @@ export const TrustIntroSection: React.FC = () => {
           </div>
         </div>
       </Container>
-    </Section>
+      </Section>
+    </>
   );
 };

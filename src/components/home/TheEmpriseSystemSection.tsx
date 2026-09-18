@@ -20,9 +20,11 @@ export const TheEmpriseSystemSection: React.FC = () => {
     <Section
       variant="default"
       spacing="lg"
-      id="the-system"
-      className="bg-[var(--brand-background)] border-y border-[var(--brand-border)]/60"
+      id="emprise-system"
+      className="bg-white border-y border-[#E3EAF3]"
     >
+      {/* Anchor compatibility for existing #the-system links */}
+      <div id="the-system" className="scroll-mt-24" />
       <Container size="xl">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 space-y-3 sm:space-y-3.5">

@@ -21,11 +21,11 @@ export default function AdminAnnouncementsCmsPage() {
     {
       id: "ann-1",
       title: "ETSE 2026 Registration Open for Classes 7–10",
-      shortText: "Offline Talent Search Exam on 6 Sept 2026. ₹0 Registration Fee.",
+      shortText: "Offline Talent Search Exam on 27 Sept 2026. ₹0 Registration Fee.",
       ctaText: "Register Now",
       ctaLink: "/etse-2026",
       startDate: "01 August 2026",
-      endDate: "05 September 2026",
+      endDate: "26 September 2026",
       priority: "HIGH",
       status: "ACTIVE",
     },

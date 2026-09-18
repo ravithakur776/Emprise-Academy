@@ -82,7 +82,7 @@ export default function StudentApplicationsPage() {
             }),
             examDate: exam.exam_date
               ? `${new Date(exam.exam_date).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })} (${exam.exam_time || "10:00 AM"})`
-              : "6 September 2026 (10:00 AM – 12:00 PM)",
+              : "27 September 2026 (10:00 AM – 12:00 PM)",
             status: r.status || "CONFIRMED",
             classEnrolled: r.current_class || currentClass,
             stream: r.stream_interest || "Foundation (Science & Mathematics)",

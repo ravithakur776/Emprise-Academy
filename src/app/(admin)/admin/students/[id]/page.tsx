@@ -47,7 +47,7 @@ export default async function AdminStudentDetailPage({
     etseApplication: {
       applicationNo: "ETSE2026-000100",
       rollNumber: "26080100",
-      examDate: "6 September 2026",
+      examDate: "27 September 2026",
       status: "CONFIRMED",
       admitCardStatus: "PUBLISHED",
     },

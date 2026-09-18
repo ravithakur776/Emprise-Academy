@@ -39,13 +39,13 @@ async function runDataIntegrationTests() {
   const etseEligibility = HOMEPAGE_DATA.announcement.eligibleClasses;
   const brandClasses = VERIFIED_BRAND_DATA.etse.eligibleClasses;
 
-  if (etseDate !== "6 September 2026") {
-    throw new Error(`ETSE Exam date mismatch: expected '6 September 2026', got '${etseDate}'`);
+  if (etseDate !== "27 September 2026") {
+    throw new Error(`ETSE Exam date mismatch: expected '27 September 2026', got '${etseDate}'`);
   }
   if (!brandClasses.includes("Class 7") || !brandClasses.includes("Class 10") || (brandClasses as readonly string[]).includes("Class 11")) {
     throw new Error(`Brand ETSE eligible classes mismatch: expected Classes 7 to 10, got ${JSON.stringify(brandClasses)}`);
   }
-  console.log(`✓ Verified Authoritative ETSE 2026 Campaign: Exam on 6 September 2026, Eligibility: Classes 7–10, Fee: FREE.`);
+  console.log(`✓ Verified Authoritative ETSE 2026 Campaign: Exam on 27 September 2026, Eligibility: Classes 7–10, Fee: FREE.`);
 
   // [TEST 4] Auditing Verified Founding Leadership Single Source
   console.log("\n[TEST 4] Auditing Verified Founding Leadership Single Source...");

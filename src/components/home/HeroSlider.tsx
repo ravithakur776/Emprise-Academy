@@ -87,6 +87,7 @@ export const HeroSlider: React.FC = () => {
 
   return (
     <section
+      id="hero"
       aria-label="Promotional Hero Showcase"
       aria-roledescription="carousel"
       className={cn(
@@ -139,7 +140,7 @@ export const HeroSlider: React.FC = () => {
               className="block w-full group cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--brand-primary)]"
               aria-label={`View Emprise Academy ${slide.heading} results`}
             >
-              <div className="relative w-full overflow-hidden rounded-xl sm:rounded-2xl lg:rounded-3xl bg-white border border-[var(--brand-border)] shadow-xs group-hover:shadow-md transition-shadow duration-200">
+              <div className="relative w-full overflow-hidden rounded-[18px] sm:rounded-[20px] lg:rounded-[22px] bg-white border border-[var(--brand-border)] shadow-xs group-hover:shadow-md transition-shadow duration-200">
                 <Image
                   src={slide.bannerImageSrc!}
                   alt={slide.bannerImageAlt || "Emprise Academy JEE Main and Advanced 2026 Mathura Toppers"}
@@ -295,11 +296,11 @@ export const HeroSlider: React.FC = () => {
 
             <span
               className={cn(
-                "text-[11px] sm:text-xs font-semibold ml-1.5",
+                "text-[11px] sm:text-xs font-semibold ml-1.5 font-mono",
                 isImageSlide ? "text-[var(--brand-text-secondary)]" : "text-white/80"
               )}
             >
-              {current + 1} / {slides.length}
+              {String(current + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
             </span>
           </div>
 

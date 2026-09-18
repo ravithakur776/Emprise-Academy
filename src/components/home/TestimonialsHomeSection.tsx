@@ -89,7 +89,7 @@ export const TestimonialsHomeSection: React.FC = () => {
       variant="default"
       spacing="lg"
       id="testimonials"
-      className="bg-[var(--brand-background)] border-b border-[var(--brand-border)]/60"
+      className="bg-white border-y border-[#E3EAF3]"
     >
       <Container size="xl">
         {/* Section Header */}

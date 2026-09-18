@@ -165,7 +165,7 @@ export default function StudentResultsPage() {
               </span>
             </div>
             <span className="text-xs px-2.5 py-0.5 rounded-full bg-white/10 text-slate-300 border border-white/10">
-              Exam Date: 6 September 2026
+              Exam Date: 27 September 2026
             </span>
           </div>
 

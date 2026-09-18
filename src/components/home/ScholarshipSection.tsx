@@ -57,7 +57,7 @@ export const ScholarshipSection: React.FC = () => {
                   ETSE 2026 Scholarship
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Appear in the talent search examination on 6 September 2026.
+                  Appear in the talent search examination on 27 September 2026.
                 </p>
               </div>
 
