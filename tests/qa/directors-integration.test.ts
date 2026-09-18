@@ -31,7 +31,7 @@ async function runDirectorsIntegrationTests() {
   // [TEST 2] Sushil Dagur Official Profile Content
   console.log("\n[TEST 2] Auditing Sushil Dagur Official Profile Content...");
   const sushil = DIRECTORS_DATA.sushilDagur;
-  if (sushil.designation !== "Director | Educationist | Academic Entrepreneur") {
+  if (sushil.designation !== "Director | Educationist | Physics Mentor") {
     throw new Error(`Invalid designation for Sushil Dagur: ${sushil.designation}`);
   }
   if (

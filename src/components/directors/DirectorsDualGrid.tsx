@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
 import { getCanonicalDirectorsList } from "@/data/directors";
 import { DirectorPhoto } from "@/components/directors/DirectorPhoto";
-import { GraduationCap, ArrowRight, CheckCircle2 } from "lucide-react";
+import { GraduationCap, ArrowRight, CheckCircle2, Briefcase } from "lucide-react";
 
 export const DirectorsDualGrid: React.FC = () => {
   const directors = getCanonicalDirectorsList();
@@ -54,7 +54,7 @@ export const DirectorsDualGrid: React.FC = () => {
 
                   <div className="space-y-1">
                     <Badge variant={idx === 0 ? "primary" : "accent"} size="sm" className="mb-1">
-                      {idx === 0 ? "Academic Entrepreneur" : "Mathematics Mentor"}
+                      {idx === 0 ? "Physics Mentor" : "Mathematics Mentor"}
                     </Badge>
                     <h3 className="text-2xl font-bold text-[var(--brand-primary)] tracking-tight">
                       {dir.name}
@@ -65,6 +65,10 @@ export const DirectorsDualGrid: React.FC = () => {
                     <p className="text-xs text-slate-500 flex items-center gap-1.5 pt-0.5">
                       <GraduationCap className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                       <span>{dir.qualification} • {dir.institution}</span>
+                    </p>
+                    <p className="text-xs text-slate-500 flex items-center gap-1.5 pt-0.5">
+                      <Briefcase className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <span>15+ Years of Experience</span>
                     </p>
                   </div>
                 </div>

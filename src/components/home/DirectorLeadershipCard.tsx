@@ -4,7 +4,7 @@ import React, { useRef, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { HomepageDirectorLeader } from "@/data/directors";
-import { GraduationCap, ArrowRight, Quote } from "lucide-react";
+import { GraduationCap, ArrowRight, Quote, Briefcase } from "lucide-react";
 
 interface DirectorLeadershipCardProps {
   director: HomepageDirectorLeader;
@@ -117,6 +117,11 @@ export const DirectorLeadershipCard: React.FC<DirectorLeadershipCardProps> = ({
             <div className="flex items-start sm:items-center gap-1.5 text-xs text-[#667085] pt-0.5 leading-snug">
               <GraduationCap className="w-3.5 h-3.5 text-[#667085]/70 shrink-0 mt-0.5 sm:mt-0" />
               <span className="line-clamp-2 sm:line-clamp-1">{director.education || director.educationSummary}</span>
+            </div>
+
+            <div className="flex items-center gap-1.5 text-xs text-[#667085] pt-0.5 leading-snug">
+              <Briefcase className="w-3.5 h-3.5 text-[#667085]/70 shrink-0" />
+              <span>{director.experience || "15+ Years of Experience"}</span>
             </div>
           </div>
         </div>

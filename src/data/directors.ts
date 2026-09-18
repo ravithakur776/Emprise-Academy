@@ -47,7 +47,7 @@ export const DIRECTORS_DATA: {
     id: "dir-sushil-dagur",
     slug: "sushil-dagur",
     name: "Sushil Dagur",
-    designation: "Director | Educationist | Academic Entrepreneur",
+    designation: "Director | Educationist | Physics Mentor",
     qualification: "B.E. (Hons.) Mechanical Engineering",
     institution: "University of Derby, England, U.K.",
     almaMater: "University of Derby, England, U.K.",
@@ -217,6 +217,7 @@ export interface HomepageDirectorLeader {
   institution?: string;
   education: string;
   educationSummary: string;
+  experience?: string;
   photoUrl: string;
   bio: string;
   biography: string;
@@ -247,16 +248,19 @@ export const RAKESH_SIGNATURE = "RK — Director, Emprise Academy";
 export const DIRECTORS_EDUCATION_LINE =
   "B.E. (Hons.) Mechanical Engineering • University of Derby, England, U.K.";
 
+export const DIRECTORS_EXPERIENCE_LINE = "15+ Years of Experience";
+
 // Dedicated Sushil Data Object (Enforced at Data Level)
 export const SUSHIL_DAGUR_LEADERSHIP: HomepageDirectorLeader = {
   id: "dir-sushil-dagur",
   slug: "sushil-dagur",
   name: "Sushil Dagur",
-  role: "Director | Educationist | Academic Entrepreneur",
+  role: "Director | Educationist | Physics Mentor",
   qualification: "B.E. (Hons.) Mechanical Engineering",
   institution: "University of Derby, England, U.K.",
   education: DIRECTORS_EDUCATION_LINE,
   educationSummary: DIRECTORS_EDUCATION_LINE,
+  experience: DIRECTORS_EXPERIENCE_LINE,
   photoUrl: "/images/directors/sushil-dagur.jpg",
   bio: SUSHIL_BIO,
   biography: SUSHIL_BIO,
@@ -274,6 +278,7 @@ export const RAKESH_KUMAR_LEADERSHIP: HomepageDirectorLeader = {
   institution: "University of Derby, England, U.K.",
   education: DIRECTORS_EDUCATION_LINE,
   educationSummary: DIRECTORS_EDUCATION_LINE,
+  experience: DIRECTORS_EXPERIENCE_LINE,
   photoUrl: "/images/directors/rakesh-kumar.jpg",
   bio: RAKESH_BIO,
   biography: RAKESH_BIO,

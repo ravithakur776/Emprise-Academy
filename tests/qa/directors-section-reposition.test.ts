@@ -85,7 +85,7 @@ async function runDirectorsRepositionAudit() {
   if (SUSHIL_DAGUR_LEADERSHIP.name !== "Sushil Dagur") {
     throw new Error(`Sushil name mismatch: ${SUSHIL_DAGUR_LEADERSHIP.name}`);
   }
-  if (SUSHIL_DAGUR_LEADERSHIP.role !== "Director | Educationist | Academic Entrepreneur") {
+  if (SUSHIL_DAGUR_LEADERSHIP.role !== "Director | Educationist | Physics Mentor") {
     throw new Error(`Sushil role mismatch: ${SUSHIL_DAGUR_LEADERSHIP.role}`);
   }
   if (SUSHIL_DAGUR_LEADERSHIP.bio !== SUSHIL_BIO) {
