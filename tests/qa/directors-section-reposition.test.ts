@@ -62,7 +62,6 @@ async function runDirectorsRepositionAudit() {
     "Leadership Behind",
     "Success",
     "Our vision, experience, and unwavering commitment empower students to turn their potential into proven success.",
-    "The driving force behind thousands of student achievements in IIT-JEE, NEET, and beyond. With academic expertise, proven experience, and a student-first approach, our directors are committed to transforming aspirations into excellence and success.",
     'id="directors"',
     "Explore Complete Academic Leadership",
   ];

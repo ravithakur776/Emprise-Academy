@@ -33,10 +33,6 @@ export const DirectorsSection: React.FC = () => {
           <p className="text-sm sm:text-base font-medium text-[#667085] leading-relaxed max-w-2xl mx-auto mt-3.5 sm:mt-4">
             Our vision, experience, and unwavering commitment empower students to turn their potential into proven success.
           </p>
-
-          <p className="text-xs sm:text-sm text-[#667085] leading-relaxed max-w-2xl mx-auto mt-3.5 sm:mt-4">
-            The driving force behind thousands of student achievements in IIT-JEE, NEET, and beyond. With academic expertise, proven experience, and a student-first approach, our directors are committed to transforming aspirations into excellence and success.
-          </p>
         </div>
 
         {/* Dual Director Cards (50 / 50 Desktop Grid: Left: Sushil Dagur, Right: Rakesh Kumar, Stacked on Mobile) */}
