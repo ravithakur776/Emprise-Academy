@@ -146,8 +146,8 @@ async function runTrustIntroTests() {
     },
     {
       index: "03",
-      value: "7+",
-      label: "National Education Awards",
+      value: "7+ National",
+      label: "Education Awards",
       description: "A strong record of academic recognition and institutional achievement.",
     },
     {
