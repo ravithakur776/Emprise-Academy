@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { HOMEPAGE_DATA } from "@/data/homepage";
 import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
+import { InstagramIcon, FacebookIcon, YoutubeIcon } from "@/components/brand/SocialIcons";
 
 export const Footer: React.FC = () => {
   const business = CANONICAL_BUSINESS_CONFIG;
@@ -55,34 +56,39 @@ export const Footer: React.FC = () => {
             </div>
 
             {/* Official Social Media Links */}
-            <div className="pt-2 flex items-center gap-3">
-              <a
-                href={business.social.instagram || "https://instagram.com/empriseacademy"}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Emprise Academy on Instagram"
-                className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[var(--brand-primary)] hover:text-white text-slate-300 flex items-center justify-center transition-colors border border-white/15 text-xs font-bold"
-              >
-                IG
-              </a>
-              <a
-                href={business.social.facebook || "https://facebook.com/empriseacademy"}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Emprise Academy on Facebook"
-                className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[var(--brand-primary)] hover:text-white text-slate-300 flex items-center justify-center transition-colors border border-white/15 text-xs font-bold"
-              >
-                FB
-              </a>
-              <a
-                href={business.social.youtube || "https://youtube.com/@empriseacademy"}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Emprise Academy on YouTube"
-                className="w-9 h-9 rounded-lg bg-white/10 hover:bg-red-600 hover:text-white text-slate-300 flex items-center justify-center transition-colors border border-white/15 text-xs font-bold"
-              >
-                YT
-              </a>
+            <div className="pt-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2.5">
+                Connect With Us
+              </span>
+              <div className="flex items-center gap-3">
+                <a
+                  href={business.social.instagram || "https://www.instagram.com/empriseacademy/"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow Emprise Academy on Instagram"
+                  className="group relative w-10 h-10 rounded-xl bg-white/[0.08] hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] text-slate-300 hover:text-white flex items-center justify-center transition-all duration-300 border border-white/15 hover:border-transparent hover:shadow-[0_0_18px_rgba(220,39,67,0.5)] hover:-translate-y-0.5 active:scale-95"
+                >
+                  <InstagramIcon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+                </a>
+                <a
+                  href={business.social.facebook || "https://www.facebook.com/EmpriseAcademy"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Follow Emprise Academy on Facebook"
+                  className="group relative w-10 h-10 rounded-xl bg-white/[0.08] hover:bg-[#1877F2] text-slate-300 hover:text-white flex items-center justify-center transition-all duration-300 border border-white/15 hover:border-[#1877F2] hover:shadow-[0_0_18px_rgba(24,119,242,0.5)] hover:-translate-y-0.5 active:scale-95"
+                >
+                  <FacebookIcon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+                </a>
+                <a
+                  href={business.social.youtube || "https://youtube.com/@emprisemathura?si=mQONprDb6PzOAGuB"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Subscribe to Emprise Academy on YouTube"
+                  className="group relative w-10 h-10 rounded-xl bg-white/[0.08] hover:bg-[#FF0000] text-slate-300 hover:text-white flex items-center justify-center transition-all duration-300 border border-white/15 hover:border-[#FF0000] hover:shadow-[0_0_18px_rgba(255,0,0,0.5)] hover:-translate-y-0.5 active:scale-95"
+                >
+                  <YoutubeIcon className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+                </a>
+              </div>
             </div>
           </div>
 

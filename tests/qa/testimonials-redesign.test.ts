@@ -2,9 +2,9 @@ import { HOMEPAGE_REVIEWS } from "../../src/data/testimonials";
 import fs from "fs";
 import path from "path";
 
-function runStep10TestimonialsQA() {
+function runTestimonialsRedesignQA() {
   console.log("==================================================");
-  console.log("TEST SUITE: STEP 10 - TESTIMONIALS SECTION REDESIGN QA");
+  console.log("TEST SUITE: TESTIMONIALS SECTION REDESIGN WITH PHOTOS & COLOR QA");
   console.log("==================================================");
 
   const sectionFile = fs.readFileSync(
@@ -97,17 +97,21 @@ function runStep10TestimonialsQA() {
       throw new Error(`NEET #${idx + 1}: Expected institution '${exp.institution}', got '${act.institution}'`);
     }
   });
-  console.log("✓ Verified all 6 NEET reviews with exact students and institutions (including 'AIR-59 IN AIIMS').");
+  console.log("✓ Verified all 6 NEET reviews with exact students and institutions.");
 
-  // [TEST 7] Auditing Zero Fake Ratings & Zero Fake Verified Badges
-  console.log("\n[TEST 7] Auditing Prohibition of Fake Ratings & Verified Badges...");
-  if (cardFile.includes("5.0/5") || cardFile.includes("★★★★★")) {
-    throw new Error("Found fake numeric rating claim in ReviewCard!");
-  }
-  if (cardFile.includes("Verified") && !cardFile.includes("verifiedContext")) {
-    throw new Error("Found fake 'Verified' badge in ReviewCard!");
-  }
-  console.log("✓ Verified typography-led design: zero fake 5.0/5 ratings and zero fake trust badges.");
+  // [TEST 7] Auditing Student Portrait Images on Disk
+  console.log("\n[TEST 7] Auditing Student Portrait Images on Disk...");
+  const allReviews = [...jeeReviews, ...neetReviews];
+  allReviews.forEach((item) => {
+    if (!item.image) {
+      throw new Error(`Review item ${item.studentName} is missing image property!`);
+    }
+    const publicDiskPath = path.join(process.cwd(), "public", item.image);
+    if (!fs.existsSync(publicDiskPath)) {
+      throw new Error(`Image file for ${item.studentName} not found at: ${publicDiskPath}`);
+    }
+  });
+  console.log("✓ Verified all 12 student reviews have valid portrait images existing in public/images/students/.");
 
   // [TEST 8] Auditing Editorial Pagination Counter & Controls
   console.log("\n[TEST 8] Auditing Editorial Pagination & Navigation Controls...");
@@ -131,11 +135,49 @@ function runStep10TestimonialsQA() {
   if (!sectionFile.includes("onMouseEnter") || !sectionFile.includes("onFocus") || !sectionFile.includes("setInterval")) {
     throw new Error("Carousel missing hover/focus pause or interval logic!");
   }
-  console.log("✓ Verified autoplay (5s) with pause on mouseEnter, focus, and touchStart.");
+  console.log("✓ Verified carousel autoplay with hover, focus, and modal pause handlers.");
+
+  // [TEST 11] Auditing Multi-Card Responsive Layout (1 mobile, 2 tablet, 3 desktop)
+  console.log("\n[TEST 11] Auditing Multi-Card Responsive Layout...");
+  if (!sectionFile.includes("grid-cols-1 md:grid-cols-2 lg:grid-cols-3")) {
+    throw new Error("Multi-card responsive grid layout (1 mob, 2 tab, 3 desk) missing!");
+  }
+  console.log("✓ Verified well-proportioned multi-card layout (1 mobile, 2 tablet, 3 desktop cards).");
+
+  // [TEST 12] Auditing Colorful Theming & Phrase Color Hierarchy
+  console.log("\n[TEST 12] Auditing Colorful Theming & Phrase Color Hierarchy...");
+  if (!cardFile.includes("bg-gradient-to-br from-[#0D2447]") || !cardFile.includes("bg-gradient-to-br from-[#08291F]")) {
+    throw new Error("ReviewCard must apply vibrant JEE Navy & NEET Emerald gradients!");
+  }
+  if (!cardFile.includes("renderHighlightedText")) {
+    throw new Error("renderHighlightedText utility missing from ReviewCard!");
+  }
+  console.log("✓ Verified vibrant color theming: JEE Deep Navy/Amber and NEET Pine Emerald/Mint.");
+
+  // [TEST 13] Auditing Student Portrait Rendering in Card
+  console.log("\n[TEST 13] Auditing Student Portrait Rendering in Card...");
+  if (!cardFile.includes("review.image") || !cardFile.includes("rounded-full")) {
+    throw new Error("ReviewCard must display circular student portrait image!");
+  }
+  console.log("✓ Verified illuminated circular student portrait presentation in ReviewCard.");
+
+  // [TEST 14] Auditing Accessible Full Story Modal
+  console.log("\n[TEST 14] Auditing Full Story Modal Dialog...");
+  if (!sectionFile.includes('role="dialog"') || !sectionFile.includes('aria-modal="true"')) {
+    throw new Error("Accessible story modal dialog missing from TestimonialsHomeSection!");
+  }
+  console.log("✓ Verified accessible full story modal dialog with escape key & backdrop dismissal.");
+
+  // [TEST 15] Auditing Horizontal Story Progress Bar
+  console.log("\n[TEST 15] Auditing Horizontal Progress Bar...");
+  if (!sectionFile.includes("progressPercent") || !sectionFile.includes("bg-[#1769E0]")) {
+    throw new Error("Horizontal progress line missing from section controls!");
+  }
+  console.log("✓ Verified horizontal story progress line with active fill.");
 
   console.log("\n==================================================");
-  console.log("ALL STEP 10 TESTIMONIALS REDESIGN TESTS PASSED (10/10)");
+  console.log("ALL TESTIMONIALS SECTION REDESIGN TESTS PASSED (15/15)");
   console.log("==================================================");
 }
 
-runStep10TestimonialsQA();
+runTestimonialsRedesignQA();

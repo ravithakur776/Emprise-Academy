@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Container } from "@/components/ui/layout/Container";
 import { Section } from "@/components/ui/layout/Section";
 import { Badge } from "@/components/ui/badge/Badge";
@@ -17,6 +18,7 @@ import {
   Navigation,
   MessageCircle,
   ExternalLink,
+  Building2,
 } from "lucide-react";
 
 export const CampusContactSection: React.FC = () => {
@@ -39,28 +41,42 @@ export const CampusContactSection: React.FC = () => {
         <div className="rounded-3xl bg-white border border-[#E3EAF3] p-6 sm:p-10 lg:p-12 shadow-sm text-left">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Column: Authentic Campus/Academy Photograph */}
-            <div className="lg:col-span-5 relative rounded-2xl sm:rounded-3xl overflow-hidden border border-[#D8E4F2] shadow-md group">
-              <div className="relative w-full h-80 sm:h-96 lg:h-[420px] bg-slate-100">
-                <img
-                  src="/gallery/emprise-gallery-02.jpg"
-                  alt="Emprise Academy campus near Tera Tower, Bhuteshwar Road, Mathura"
-                  className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.02]"
-                  loading="lazy"
+            <div className="lg:col-span-5 relative rounded-2xl sm:rounded-3xl overflow-hidden border border-[#D8E4F2] shadow-xl group ring-1 ring-black/5">
+              <div className="relative w-full h-[380px] sm:h-[440px] lg:h-[490px] bg-slate-100 overflow-hidden">
+                <Image
+                  src="/images/emprise-academy-building-campus.jpg"
+                  alt="Emprise Academy modern academic campus building near Tera Tower, Bhuteshwar Road, Mathura"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  priority
+                  className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#123E73]/85 via-[#123E73]/25 to-transparent" />
+                {/* Subtle top & bottom lighting gradients */}
+                <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/40 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/70 via-black/25 to-transparent pointer-events-none" />
 
-                {/* Floating Campus Badge */}
-                <div className="absolute top-4 left-4 z-10 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-white/60 shadow-md text-xs font-bold text-[#123E73]">
+                {/* Floating Top Badges */}
+                <div className="absolute top-4 left-4 z-10 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-white/80 shadow-md text-xs font-bold text-[#123E73]">
                   <span className="w-2 h-2 rounded-full bg-[#16A36A] animate-pulse" />
                   <span>Bhuteshwar Road Campus</span>
                 </div>
 
-                {/* Bottom Campus Detail Overlay */}
-                <div className="absolute bottom-4 left-4 right-4 z-10 text-white space-y-1">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-amber-300">
-                    Mathura Academic Center
-                  </span>
-                  <h3 className="text-base sm:text-lg font-bold text-white drop-shadow-xs">
+                <div className="absolute top-4 right-4 z-10 hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/45 backdrop-blur-md border border-white/25 text-xs font-semibold text-white shadow-xs">
+                  <Building2 className="w-3.5 h-3.5 text-amber-300" />
+                  <span>Main Center</span>
+                </div>
+
+                {/* Floating Glassmorphic Bottom Info Panel */}
+                <div className="absolute bottom-4 left-4 right-4 z-10 p-4 rounded-2xl bg-[#0B2545]/85 backdrop-blur-md border border-white/20 text-white shadow-xl space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300">
+                      Mathura Academic Center
+                    </span>
+                    <span className="text-[10px] font-semibold text-slate-300">
+                      Established 2011
+                    </span>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-bold text-white tracking-tight drop-shadow-xs">
                     Emprise Academy Campus
                   </h3>
                   <p className="text-xs text-slate-200/90 leading-snug">
