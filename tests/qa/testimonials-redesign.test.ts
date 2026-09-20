@@ -146,13 +146,13 @@ function runTestimonialsRedesignQA() {
 
   // [TEST 12] Auditing Colorful Theming & Phrase Color Hierarchy
   console.log("\n[TEST 12] Auditing Colorful Theming & Phrase Color Hierarchy...");
-  if (!cardFile.includes("bg-gradient-to-br from-[#0D2447]") || !cardFile.includes("bg-gradient-to-br from-[#08291F]")) {
-    throw new Error("ReviewCard must apply vibrant JEE Navy & NEET Emerald gradients!");
+  if (!cardFile.includes("bg-gradient-to-br from-[#F0F6FF]") || !cardFile.includes("bg-gradient-to-br from-[#F0FDF4]")) {
+    throw new Error("ReviewCard must apply light, elegant JEE Sapphire & NEET Emerald gradients!");
   }
   if (!cardFile.includes("renderHighlightedText")) {
     throw new Error("renderHighlightedText utility missing from ReviewCard!");
   }
-  console.log("✓ Verified vibrant color theming: JEE Deep Navy/Amber and NEET Pine Emerald/Mint.");
+  console.log("✓ Verified light color theming: JEE Light Sapphire and NEET Light Emerald.");
 
   // [TEST 13] Auditing Student Portrait Rendering in Card
   console.log("\n[TEST 13] Auditing Student Portrait Rendering in Card...");

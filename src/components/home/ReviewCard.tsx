@@ -79,8 +79,8 @@ export const renderHighlightedText = (
         <span
           key={index}
           className={cn(
-            "font-semibold",
-            isJee ? "text-[#FFB049]" : "text-[#34D399]"
+            "font-bold",
+            isJee ? "text-[#D97706]" : "text-[#059669]"
           )}
         >
           {part}
@@ -96,7 +96,7 @@ export const renderHighlightedText = (
           key={index}
           className={cn(
             "font-semibold",
-            isJee ? "text-[#60A5FA]" : "text-[#A7F3D0]"
+            isJee ? "text-[#1D4ED8]" : "text-[#0F766E]"
           )}
         >
           {part}
@@ -135,8 +135,8 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
       className={cn(
         "relative rounded-3xl p-6 sm:p-7 flex flex-col justify-between text-left h-full select-none overflow-hidden transition-all duration-300 group",
         isJee
-          ? "bg-gradient-to-br from-[#0D2447] via-[#123668] to-[#0A1B36] text-white border border-blue-400/25 hover:border-[#FF8A00]/70 hover:shadow-2xl hover:shadow-blue-900/40"
-          : "bg-gradient-to-br from-[#08291F] via-[#0E4435] to-[#051E17] text-white border border-emerald-400/25 hover:border-emerald-300/70 hover:shadow-2xl hover:shadow-emerald-950/50",
+          ? "bg-gradient-to-br from-[#F0F6FF] via-[#E8F1FC] to-[#F8FAFC] text-slate-800 border border-blue-200/90 hover:border-[#1769E0] hover:shadow-xl hover:shadow-blue-500/10"
+          : "bg-gradient-to-br from-[#F0FDF4] via-[#E6F8ED] to-[#F7FCF9] text-slate-800 border border-emerald-200/90 hover:border-[#10B981] hover:shadow-xl hover:shadow-emerald-500/10",
         "min-h-[440px] sm:min-h-[460px]",
         className
       )}
@@ -146,8 +146,8 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
         className={cn(
           "absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r",
           isJee
-            ? "from-blue-500 via-[#FF8A00] to-cyan-400"
-            : "from-emerald-400 via-[#10B981] to-teal-300"
+            ? "from-blue-500 via-[#FF8A00] to-cyan-500"
+            : "from-emerald-500 via-[#10B981] to-teal-400"
         )}
       />
 
@@ -155,7 +155,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
       <Quote
         className={cn(
           "absolute -bottom-6 -right-6 w-36 h-36 pointer-events-none -rotate-12 transition-transform duration-500 group-hover:scale-105",
-          isJee ? "text-blue-400/[0.08]" : "text-emerald-400/[0.08]"
+          isJee ? "text-blue-500/[0.06]" : "text-emerald-500/[0.06]"
         )}
         aria-hidden="true"
       />
@@ -164,7 +164,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
       <div
         className={cn(
           "absolute -top-24 -left-24 w-48 h-48 rounded-full blur-3xl pointer-events-none",
-          isJee ? "bg-blue-400/15" : "bg-emerald-400/15"
+          isJee ? "bg-blue-300/25" : "bg-emerald-300/25"
         )}
       />
 
@@ -174,44 +174,51 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
           <div className="flex items-center gap-2">
             <span
               className={cn(
-                "inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full border",
+                "inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full border shadow-2xs",
                 isJee
-                  ? "bg-blue-500/20 text-blue-200 border-blue-400/30"
-                  : "bg-emerald-500/20 text-emerald-200 border-emerald-400/30"
+                  ? "bg-blue-100 text-blue-800 border-blue-200"
+                  : "bg-emerald-100 text-emerald-800 border-emerald-200"
               )}
             >
               <Sparkles
                 className={cn(
                   "w-3 h-3",
-                  isJee ? "text-[#FF8A00]" : "text-emerald-300"
+                  isJee ? "text-[#FF8A00]" : "text-emerald-600"
                 )}
               />
               <span>{review.categoryLabel}</span>
             </span>
 
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/10 text-[10px] font-medium text-slate-300 border border-white/10">
-              <ShieldCheck className="w-3 h-3 text-emerald-400" />
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-[10px] font-semibold text-slate-600 border border-slate-200 shadow-2xs">
+              <ShieldCheck className="w-3 h-3 text-emerald-600" />
               <span>Alum</span>
             </span>
           </div>
 
-          <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-md bg-black/25 text-slate-300 border border-white/10">
+          <span
+            className={cn(
+              "text-[11px] font-mono font-bold px-2 py-0.5 rounded-md border shadow-2xs",
+              isJee
+                ? "bg-white text-blue-900 border-blue-200"
+                : "bg-white text-emerald-900 border-emerald-200"
+            )}
+          >
             STORY {activeNumber}
           </span>
         </div>
 
         {/* Student Portrait & Name Card Block */}
-        <div className="flex items-center gap-3.5 mb-5 pb-5 border-b border-white/10">
+        <div className="flex items-center gap-3.5 mb-5 pb-5 border-b border-slate-200/80">
           {/* Illuminated Photo Frame */}
           <div
             className={cn(
-              "relative p-0.5 rounded-full shadow-lg shrink-0",
+              "relative p-0.5 rounded-full shadow-sm shrink-0",
               isJee
                 ? "bg-gradient-to-tr from-[#1769E0] via-cyan-400 to-[#FF8A00]"
                 : "bg-gradient-to-tr from-teal-400 via-emerald-400 to-amber-300"
             )}
           >
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden bg-slate-800 border-2 border-[#0D2447] relative">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden bg-slate-100 border-2 border-white relative shadow-xs">
               {review.image ? (
                 <Image
                   src={review.image}
@@ -222,7 +229,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
                   priority={false}
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center font-extrabold text-white text-base">
+                <div className="w-full h-full flex items-center justify-center font-extrabold text-slate-700 text-base">
                   {initials}
                 </div>
               )}
@@ -231,7 +238,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
             {/* Glowing Verified Dot */}
             <span
               className={cn(
-                "absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-[#0A1B36] flex items-center justify-center text-[8px] font-bold text-white",
+                "absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-white flex items-center justify-center text-[8px] font-bold text-white shadow-xs",
                 isJee ? "bg-[#FF8A00]" : "bg-emerald-500"
               )}
               title="Verified Student"
@@ -241,7 +248,12 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
           </div>
 
           <div className="min-w-0 flex-1">
-            <h3 className="text-base sm:text-lg font-extrabold text-white tracking-tight truncate">
+            <h3
+              className={cn(
+                "text-base sm:text-lg font-extrabold tracking-tight truncate",
+                isJee ? "text-[#14213D]" : "text-[#064E3B]"
+              )}
+            >
               {review.studentName}
             </h3>
             <div className="mt-1">
@@ -249,8 +261,8 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
                 className={cn(
                   "inline-block text-[11px] font-extrabold uppercase tracking-wide px-2 py-0.5 rounded-md border",
                   isJee
-                    ? "bg-[#FF8A00]/20 text-[#FFB049] border-[#FF8A00]/40"
-                    : "bg-emerald-400/20 text-[#34D399] border-emerald-400/40"
+                    ? "bg-amber-100/70 text-[#B45309] border-amber-300/80"
+                    : "bg-emerald-100/70 text-[#047857] border-emerald-300/80"
                 )}
               >
                 {review.institution}
@@ -264,15 +276,15 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
           <Quote
             className={cn(
               "w-5 h-5 mb-2",
-              isJee ? "text-[#FF8A00]" : "text-emerald-400"
+              isJee ? "text-[#FF8A00]" : "text-emerald-600"
             )}
           />
-          <p className="text-xs sm:text-[13.5px] text-slate-200 leading-relaxed line-clamp-4">
+          <p className="text-xs sm:text-[13.5px] text-[#1E293B] leading-relaxed line-clamp-4">
             &ldquo;{renderHighlightedText(review.paragraphs[0], isJee)}&rdquo;
           </p>
 
           {review.paragraphs.length > 1 && (
-            <p className="text-[12px] text-slate-300/80 mt-2 line-clamp-2 italic">
+            <p className="text-[12px] text-slate-500 mt-2 line-clamp-2 italic">
               {review.paragraphs[1]}
             </p>
           )}
@@ -280,23 +292,23 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
       </div>
 
       {/* Bottom CTA Row: Read Full Story Trigger */}
-      <div className="relative z-10 pt-4 mt-5 border-t border-white/10 flex items-center justify-between">
+      <div className="relative z-10 pt-4 mt-5 border-t border-slate-200/80 flex items-center justify-between">
         <button
           type="button"
           onClick={() => onOpenStory?.(review)}
           aria-label={`Read full review of ${review.studentName}`}
           className={cn(
-            "min-h-[44px] px-3 -ml-3 flex items-center gap-1.5 text-xs font-bold cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg",
+            "min-h-[44px] px-3 -ml-3 flex items-center gap-1.5 text-xs font-bold cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg",
             isJee
-              ? "text-blue-200 hover:text-white group-hover:text-[#FFB049]"
-              : "text-emerald-200 hover:text-white group-hover:text-[#34D399]"
+              ? "text-[var(--brand-primary)] hover:text-[#D97706] group-hover:text-[#D97706]"
+              : "text-emerald-700 hover:text-emerald-900 group-hover:text-emerald-800"
           )}
         >
           <span>Read Full Experience</span>
           <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" />
         </button>
 
-        <span className="text-[10px] uppercase font-mono tracking-widest text-slate-400">
+        <span className="text-[10px] uppercase font-mono tracking-widest text-slate-400 font-semibold">
           100% Verified
         </span>
       </div>
