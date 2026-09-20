@@ -84,22 +84,27 @@ async function runThreeIndependentAboutDestinationsTests() {
   }
   console.log("✓ Verified Destination 01: Contains solely institutional content, no full directors biography cards.");
 
-  // [TEST 3] Auditing Destination 02 (Awards 7-Slot Architecture & Zero Fake Data)
-  console.log("\n[TEST 3] Auditing Destination 02: Awards Architecture & 7 Empty Slots...");
-  if (AWARDS_DATA.length !== 7) {
-    throw new Error(`Expected exactly 7 award entries in AWARDS_DATA, found ${AWARDS_DATA.length}`);
+  // [TEST 3] Auditing Destination 02 (8 Verified Awards & Authentic Records)
+  console.log("\n[TEST 3] Auditing Destination 02: 8 Verified Awards & Authentic Records...");
+  if (AWARDS_DATA.length !== 8) {
+    throw new Error(`Expected exactly 8 award entries in AWARDS_DATA, found ${AWARDS_DATA.length}`);
   }
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 8; i++) {
     const award = AWARDS_DATA[i];
     if (award.id !== i + 1) {
       throw new Error(`Expected award id ${i + 1}, found ${award.id}`);
     }
-    if (award.name !== "" || award.organization !== "" || award.year !== "") {
-      throw new Error(`Award ${award.id} must be empty until verified data is provided`);
+    if (!award.name || !award.organization || !award.year || !award.image) {
+      throw new Error(`Award ${award.id} must have non-empty name, organization, year, and image`);
+    }
+    // Verify image exists on disk in public/
+    const imgDiskPath = path.resolve(process.cwd(), "public", award.image.replace(/^\//, ""));
+    if (!fs.existsSync(imgDiskPath)) {
+      throw new Error(`Award ${award.id} image not found on disk: ${imgDiskPath}`);
     }
   }
-  if (hasVerifiedAwards()) {
-    throw new Error("hasVerifiedAwards() must be false until real verified data is entered");
+  if (!hasVerifiedAwards()) {
+    throw new Error("hasVerifiedAwards() must be true after verified data is entered");
   }
 
   const awardsPagePath = path.resolve(process.cwd(), "src/app/(public)/about/awards/page.tsx");
@@ -110,7 +115,10 @@ async function runThreeIndependentAboutDestinationsTests() {
   if (!awardsContent.includes("DESTINATION 02 — HONORS & RECOGNITION")) {
     throw new Error("Awards page missing Destination 02 eyebrow");
   }
-  console.log("✓ Verified Destination 02: Exactly 7-slot empty architecture, zero fake awards, verified editorial placeholder.");
+  if (!awardsContent.includes("AwardsShowcaseGrid")) {
+    throw new Error("Awards page must render AwardsShowcaseGrid component");
+  }
+  console.log("✓ Verified Destination 02: Exactly 8 verified awards, authentic disk assets, and live showcase grid.");
 
   // [TEST 4] Auditing Destination 03 (/about/directors & Canonical Data Mapping)
   console.log("\n[TEST 4] Auditing Destination 03: Directors Dedicated Route...");

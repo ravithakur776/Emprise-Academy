@@ -14,7 +14,9 @@ async function runGallerySystemAudit() {
     throw new Error("public/gallery directory does not exist!");
   }
 
-  const diskFiles = fs.readdirSync(galleryDir).filter((f) => !f.startsWith("."));
+  const diskFiles = fs
+    .readdirSync(galleryDir)
+    .filter((f) => !f.startsWith(".") && /\.(jpe?g|png|webp)$/i.test(f));
   if (diskFiles.length !== 59) {
     throw new Error(`Expected exactly 59 gallery images on disk, found ${diskFiles.length}`);
   }

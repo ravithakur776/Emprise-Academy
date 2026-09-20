@@ -8,4 +8,5 @@ export interface AwardEntry {
   image: string;
   category?: string;
   location?: string;
+  imagePosition?: string;
 }
