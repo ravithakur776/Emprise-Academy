@@ -207,25 +207,25 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
           </span>
         </div>
 
-        {/* Student Portrait & Name Card Block */}
-        <div className="flex items-center gap-3.5 mb-5 pb-5 border-b border-slate-200/80">
-          {/* Illuminated Photo Frame */}
+        {/* Student Portrait & Name Card Block — Centered & Symmetrical */}
+        <div className="flex flex-col items-center text-center mb-5 pb-5 border-b border-slate-200/80">
+          {/* Illuminated Centered Photo Frame */}
           <div
             className={cn(
-              "relative p-0.5 rounded-full shadow-sm shrink-0",
+              "relative p-0.5 rounded-full shadow-sm shrink-0 mb-3",
               isJee
                 ? "bg-gradient-to-tr from-[#1769E0] via-cyan-400 to-[#FF8A00]"
                 : "bg-gradient-to-tr from-teal-400 via-emerald-400 to-amber-300"
             )}
           >
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden bg-slate-100 border-2 border-white relative shadow-xs">
+            <div className="w-16 h-16 sm:w-[70px] sm:h-[70px] rounded-full overflow-hidden bg-slate-100 border-2 border-white relative shadow-xs flex items-center justify-center">
               {review.image ? (
                 <Image
                   src={review.image}
                   alt={`Student photo of ${review.studentName}`}
-                  width={64}
-                  height={64}
-                  className="w-full h-full object-cover rounded-full"
+                  width={72}
+                  height={72}
+                  className="w-full h-full object-cover object-center rounded-full"
                   priority={false}
                 />
               ) : (
@@ -247,7 +247,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
             </span>
           </div>
 
-          <div className="min-w-0 flex-1">
+          <div className="w-full">
             <h3
               className={cn(
                 "text-base sm:text-lg font-extrabold tracking-tight truncate",
@@ -256,10 +256,10 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
             >
               {review.studentName}
             </h3>
-            <div className="mt-1">
+            <div className="mt-1 flex justify-center">
               <span
                 className={cn(
-                  "inline-block text-[11px] font-extrabold uppercase tracking-wide px-2 py-0.5 rounded-md border",
+                  "inline-block text-[11px] font-extrabold uppercase tracking-wide px-2.5 py-0.5 rounded-md border",
                   isJee
                     ? "bg-amber-100/70 text-[#B45309] border-amber-300/80"
                     : "bg-emerald-100/70 text-[#047857] border-emerald-300/80"

@@ -18,23 +18,42 @@ async function runGallerySystemAudit() {
     .readdirSync(galleryDir)
     .filter((f) => !f.startsWith(".") && /\.(jpe?g|png|webp)$/i.test(f));
   if (diskFiles.length !== 59) {
-    throw new Error(`Expected exactly 59 gallery images on disk, found ${diskFiles.length}`);
+    throw new Error(`Expected exactly 59 legacy gallery images in root public/gallery, found ${diskFiles.length}`);
+  }
+
+  const newPhotosDir = path.resolve(process.cwd(), "public/gallery/New Photos");
+  if (!fs.existsSync(newPhotosDir)) {
+    throw new Error("public/gallery/New Photos directory does not exist!");
+  }
+  const newDiskFiles = fs
+    .readdirSync(newPhotosDir)
+    .filter((f) => !f.startsWith(".") && /\.(jpe?g|png|webp)$/i.test(f));
+  if (newDiskFiles.length < 25) {
+    throw new Error(`Expected at least 25 new gallery images in public/gallery/New Photos, found ${newDiskFiles.length}`);
   }
 
   // Check no .DS_Store exists
   if (fs.existsSync(path.join(galleryDir, ".DS_Store"))) {
     throw new Error("Found .DS_Store in public/gallery directory!");
   }
-  console.log(`✓ Verified 59 valid images on disk in public/gallery/ (zero system/.DS_Store files).`);
+  console.log(`✓ Verified 59 legacy images and ${newDiskFiles.length} new images on disk (zero system/.DS_Store files).`);
 
   // [TEST 2] Auditing Centralized Gallery Dataset
   console.log("\n[TEST 2] Auditing Centralized Gallery Dataset (src/data/gallery.ts)...");
-  if (OFFICIAL_GALLERY_IMAGES.length !== 59) {
-    throw new Error(`Expected 59 items in OFFICIAL_GALLERY_IMAGES, got ${OFFICIAL_GALLERY_IMAGES.length}`);
+  if (OFFICIAL_GALLERY_IMAGES.length !== 84) {
+    throw new Error(`Expected 84 items in OFFICIAL_GALLERY_IMAGES, got ${OFFICIAL_GALLERY_IMAGES.length}`);
+  }
+
+  // Verify first 25 items are from New Photos (positioned at top)
+  for (let i = 0; i < 25; i++) {
+    if (!OFFICIAL_GALLERY_IMAGES[i].src.includes("New%20Photos") && !OFFICIAL_GALLERY_IMAGES[i].src.includes("New Photos")) {
+      throw new Error(`Image at index ${i} should be from New Photos at the top!`);
+    }
   }
 
   for (const item of OFFICIAL_GALLERY_IMAGES) {
-    const fullPath = path.resolve(process.cwd(), `public${item.src}`);
+    const decodedSrc = decodeURIComponent(item.src);
+    const fullPath = path.resolve(process.cwd(), `public${decodedSrc}`);
     if (!fs.existsSync(fullPath)) {
       throw new Error(`Referenced image missing on disk: ${fullPath}`);
     }
@@ -49,7 +68,7 @@ async function runGallerySystemAudit() {
       throw new Error(`Invalid dimensions for image: ${item.id}`);
     }
   }
-  console.log("✓ Verified all 59 gallery dataset entries: existing files, valid dimensions, non-empty alt text.");
+  console.log("✓ Verified all 84 gallery dataset entries: existing files, valid dimensions, non-empty alt text, and new photos prioritized at the top.");
 
   // [TEST 3] Auditing Marquee Subsets
   console.log("\n[TEST 3] Auditing Homepage Marquee Subsets...");

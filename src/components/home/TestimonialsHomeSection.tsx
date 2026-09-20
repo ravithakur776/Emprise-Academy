@@ -372,7 +372,7 @@ export const TestimonialsHomeSection: React.FC = () => {
                       alt={selectedStory.studentName}
                       width={80}
                       height={80}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover object-center"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center font-bold text-slate-700 text-lg">
@@ -451,7 +451,12 @@ export const TestimonialsHomeSection: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setSelectedStory(null)}
-                className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition-colors cursor-pointer"
+                className={cn(
+                  "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-colors cursor-pointer border shadow-2xs",
+                  selectedStory.category === "JEE"
+                    ? "bg-blue-100 hover:bg-blue-200 text-blue-900 border-blue-200"
+                    : "bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border-emerald-200"
+                )}
               >
                 Close Story
               </button>

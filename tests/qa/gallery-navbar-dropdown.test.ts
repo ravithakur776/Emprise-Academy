@@ -120,10 +120,10 @@ async function runGalleryNavbarDropdownTests() {
   if (!galleryPageContent.includes("OFFICIAL_GALLERY_IMAGES")) {
     throw new Error("/gallery page must display official gallery images");
   }
-  if (OFFICIAL_GALLERY_IMAGES.length !== 59) {
-    throw new Error(`Expected 59 official photos, found ${OFFICIAL_GALLERY_IMAGES.length}`);
+  if (OFFICIAL_GALLERY_IMAGES.length !== 84) {
+    throw new Error(`Expected 84 official photos, found ${OFFICIAL_GALLERY_IMAGES.length}`);
   }
-  console.log("✓ Verified /gallery page: large category cards removed, directly showing Photo Gallery with all 59 photos.");
+  console.log("✓ Verified /gallery page: large category cards removed, directly showing Photo Gallery with all 84 photos.");
 
   // [TEST 5] Auditing Media Gallery Route (/gallery/media)
   console.log("\n[TEST 5] Auditing Media Gallery Route (/gallery/media)...");

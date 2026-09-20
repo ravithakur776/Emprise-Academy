@@ -96,7 +96,7 @@ export const GalleryPreviewSection: React.FC = () => {
             className="font-semibold text-slate-700 hover:text-[var(--brand-primary)] border-[var(--brand-border)] hover:border-[var(--brand-primary)]/40 hover:bg-slate-50 transition-all shadow-2xs"
             rightIcon={<ArrowRight className="w-4 h-4" />}
           >
-            Explore All 59 Campus Moments →
+            Explore All {OFFICIAL_GALLERY_IMAGES.length} Campus Moments →
           </Button>
         </Link>
       </div>

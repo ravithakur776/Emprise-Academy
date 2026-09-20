@@ -35,10 +35,10 @@ async function runGalleryCategoriesTests() {
   if (!pageContent.includes("Photo Gallery")) {
     throw new Error("/gallery page must directly show Photo Gallery content");
   }
-  if (OFFICIAL_GALLERY_IMAGES.length !== 59) {
-    throw new Error(`Expected 59 photos in official gallery dataset, found ${OFFICIAL_GALLERY_IMAGES.length}`);
+  if (OFFICIAL_GALLERY_IMAGES.length !== 84) {
+    throw new Error(`Expected 84 photos in official gallery dataset, found ${OFFICIAL_GALLERY_IMAGES.length}`);
   }
-  console.log("✓ Verified /gallery page: large category cards removed, directly displaying Photo Gallery with all 59 photos.");
+  console.log("✓ Verified /gallery page: large category cards removed, directly displaying Photo Gallery with all 84 photos.");
 
   // [TEST 3] Auditing GalleryEmptyState Component (Data Safety & Zero Hallucination)
   console.log("\n[TEST 3] Auditing GalleryEmptyState Component...");

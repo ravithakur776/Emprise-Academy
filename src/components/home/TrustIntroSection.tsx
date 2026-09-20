@@ -103,15 +103,15 @@ export const TrustIntroSection: React.FC = () => {
 
               {/* Asymmetric Dual-Photo Composition */}
               <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-3.5">
-                {/* Primary Academy Classroom Photograph */}
+                {/* Primary Academy Campus & Building Photograph */}
                 <div className="sm:col-span-8 relative h-52 sm:h-64 lg:h-72 rounded-xl sm:rounded-2xl overflow-hidden shadow-xs border border-slate-200/70 bg-slate-100 group">
                   <img
-                    src="/gallery/emprise-gallery-01.jpg"
-                    alt="Emprise Academy Mathura — Director-led classroom mentorship and competitive preparation"
-                    className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+                    src="/images/emprise-academy-building-campus.jpg"
+                    alt="Emprise Academy Mathura — Modern Coaching Campus and Academic Infrastructure at Bhuteshwar Road"
+                    className="w-full h-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.02]"
                     loading="eager"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#123E73]/85 via-[#123E73]/25 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#123E73]/85 via-[#123E73]/20 to-transparent" />
 
                   {/* Campus Location Badge */}
                   <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-md border border-white/60 shadow-xs text-[11px] font-bold text-[#123E73]">
@@ -122,22 +122,22 @@ export const TrustIntroSection: React.FC = () => {
                   {/* Caption */}
                   <div className="absolute bottom-2.5 left-2.5 right-2.5 sm:bottom-3 sm:left-3 sm:right-3 z-10 text-white">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300 block">
-                      Classroom Culture
+                      Academic Campus
                     </span>
                     <h3 className="text-xs sm:text-sm font-bold text-white drop-shadow-xs truncate">
-                      Director-Led Learning &amp; Concept Mastery
+                      Modern Learning &amp; Competitive Preparation Infrastructure
                     </h3>
                   </div>
                 </div>
 
                 {/* Secondary Photo & Academic Legacy Card */}
                 <div className="sm:col-span-4 flex flex-col gap-3">
-                  {/* Secondary Campus/Library Photo */}
+                  {/* Secondary Student Mentorship & Community Photo */}
                   <div className="relative h-28 sm:h-36 rounded-xl overflow-hidden shadow-xs border border-slate-200/70 bg-slate-100 group">
                     <img
-                      src="/gallery/emprise-gallery-02.jpg"
-                      alt="Emprise Academy study environment and student discussion"
-                      className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                      src="/images/emprise-student-mentorship-group.jpg"
+                      alt="Emprise Academy Mathura — Students and faculty celebration and mentorship"
+                      className="w-full h-full object-cover object-[center_35%] transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                       loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#123E73]/80 via-transparent to-transparent" />

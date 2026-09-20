@@ -49,8 +49,8 @@ async function runMediaGalleryTests() {
 
   // [TEST 3] Auditing Separation from Photo Gallery
   console.log("\n[TEST 3] Auditing Strict Separation from Photo Gallery...");
-  if (OFFICIAL_GALLERY_IMAGES.length !== 59) {
-    throw new Error(`Photo gallery must remain intact with 59 images, found ${OFFICIAL_GALLERY_IMAGES.length}`);
+  if (OFFICIAL_GALLERY_IMAGES.length !== 84) {
+    throw new Error(`Photo gallery must remain intact with 84 images, found ${OFFICIAL_GALLERY_IMAGES.length}`);
   }
   const photoPaths = new Set(OFFICIAL_GALLERY_IMAGES.map(g => g.src));
   for (const m of OFFICIAL_MEDIA_ITEMS) {
@@ -58,7 +58,7 @@ async function runMediaGalleryTests() {
       throw new Error(`Media Gallery must not duplicate or mix Photo Gallery assets: ${m.src}`);
     }
   }
-  console.log("✓ Verified zero collision/mixing between Photo Gallery (59 assets) and Media Gallery (125 assets).");
+  console.log("✓ Verified zero collision/mixing between Photo Gallery (84 assets) and Media Gallery (125 assets).");
 
   // [TEST 4] Auditing Featured Coverage Implementation
   console.log("\n[TEST 4] Auditing Featured Coverage Section...");

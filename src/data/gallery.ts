@@ -1,6 +1,6 @@
 /**
  * Official Emprise Academy Gallery Dataset
- * Source: 59 verified campus and academic photographs
+ * Source: 84 verified campus and academic photographs
  */
 
 export interface GalleryImage {
@@ -35,7 +35,7 @@ export const GALLERY_CATEGORIES: GalleryCategoryMeta[] = [
     iconName: "Camera",
     href: "/gallery",
     step: "01",
-    badge: "59 Photos",
+    badge: "84 Photos",
   },
   {
     id: "media",
@@ -57,6 +57,281 @@ export const GALLERY_CATEGORIES: GalleryCategoryMeta[] = [
 ];
 
 export const OFFICIAL_GALLERY_IMAGES: GalleryImage[] = [
+  {
+    "id": "gal-new-01",
+    "slug": "emprise-gallery-new-01",
+    "src": "/gallery/New%20Photos/1.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 1)",
+    "width": 1280,
+    "height": 720,
+    "aspectRatio": 1.778,
+    "orientation": "landscape",
+    "originalFileName": "1.jpg"
+  },
+  {
+    "id": "gal-new-02",
+    "slug": "emprise-gallery-new-02",
+    "src": "/gallery/New%20Photos/2.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 2)",
+    "width": 720,
+    "height": 1119,
+    "aspectRatio": 0.643,
+    "orientation": "portrait",
+    "originalFileName": "2.jpg"
+  },
+  {
+    "id": "gal-new-03",
+    "slug": "emprise-gallery-new-03",
+    "src": "/gallery/New%20Photos/3.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 3)",
+    "width": 1280,
+    "height": 936,
+    "aspectRatio": 1.368,
+    "orientation": "landscape",
+    "originalFileName": "3.jpg"
+  },
+  {
+    "id": "gal-new-04",
+    "slug": "emprise-gallery-new-04",
+    "src": "/gallery/New%20Photos/4.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 4)",
+    "width": 2048,
+    "height": 1500,
+    "aspectRatio": 1.365,
+    "orientation": "landscape",
+    "originalFileName": "4.jpg"
+  },
+  {
+    "id": "gal-new-05",
+    "slug": "emprise-gallery-new-05",
+    "src": "/gallery/New%20Photos/5.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 5)",
+    "width": 2048,
+    "height": 1505,
+    "aspectRatio": 1.361,
+    "orientation": "landscape",
+    "originalFileName": "5.jpg"
+  },
+  {
+    "id": "gal-new-06",
+    "slug": "emprise-gallery-new-06",
+    "src": "/gallery/New%20Photos/6.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 6)",
+    "width": 1806,
+    "height": 897,
+    "aspectRatio": 2.013,
+    "orientation": "panoramic",
+    "originalFileName": "6.jpg"
+  },
+  {
+    "id": "gal-new-07",
+    "slug": "emprise-gallery-new-07",
+    "src": "/gallery/New%20Photos/7.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 7)",
+    "width": 2048,
+    "height": 1500,
+    "aspectRatio": 1.365,
+    "orientation": "landscape",
+    "originalFileName": "7.jpg"
+  },
+  {
+    "id": "gal-new-08",
+    "slug": "emprise-gallery-new-08",
+    "src": "/gallery/New%20Photos/8.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 8)",
+    "width": 976,
+    "height": 1280,
+    "aspectRatio": 0.762,
+    "orientation": "portrait",
+    "originalFileName": "8.jpg"
+  },
+  {
+    "id": "gal-new-09",
+    "slug": "emprise-gallery-new-09",
+    "src": "/gallery/New%20Photos/9.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 9)",
+    "width": 1536,
+    "height": 2048,
+    "aspectRatio": 0.75,
+    "orientation": "portrait",
+    "originalFileName": "9.jpg"
+  },
+  {
+    "id": "gal-new-10",
+    "slug": "emprise-gallery-new-10",
+    "src": "/gallery/New%20Photos/10.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 10)",
+    "width": 2048,
+    "height": 1051,
+    "aspectRatio": 1.949,
+    "orientation": "panoramic",
+    "originalFileName": "10.jpg"
+  },
+  {
+    "id": "gal-new-11",
+    "slug": "emprise-gallery-new-11",
+    "src": "/gallery/New%20Photos/11.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 11)",
+    "width": 960,
+    "height": 1280,
+    "aspectRatio": 0.75,
+    "orientation": "portrait",
+    "originalFileName": "11.jpg"
+  },
+  {
+    "id": "gal-new-12",
+    "slug": "emprise-gallery-new-12",
+    "src": "/gallery/New%20Photos/12.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 12)",
+    "width": 1582,
+    "height": 2048,
+    "aspectRatio": 0.772,
+    "orientation": "portrait",
+    "originalFileName": "12.jpg"
+  },
+  {
+    "id": "gal-new-13",
+    "slug": "emprise-gallery-new-13",
+    "src": "/gallery/New%20Photos/13.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 13)",
+    "width": 2048,
+    "height": 1150,
+    "aspectRatio": 1.781,
+    "orientation": "landscape",
+    "originalFileName": "13.jpg"
+  },
+  {
+    "id": "gal-new-14",
+    "slug": "emprise-gallery-new-14",
+    "src": "/gallery/New%20Photos/14.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 14)",
+    "width": 2048,
+    "height": 1519,
+    "aspectRatio": 1.348,
+    "orientation": "landscape",
+    "originalFileName": "14.jpg"
+  },
+  {
+    "id": "gal-new-15",
+    "slug": "emprise-gallery-new-15",
+    "src": "/gallery/New%20Photos/15.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 15)",
+    "width": 1280,
+    "height": 860,
+    "aspectRatio": 1.488,
+    "orientation": "landscape",
+    "originalFileName": "15.jpg"
+  },
+  {
+    "id": "gal-new-16",
+    "slug": "emprise-gallery-new-16",
+    "src": "/gallery/New%20Photos/16.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 16)",
+    "width": 2971,
+    "height": 1410,
+    "aspectRatio": 2.107,
+    "orientation": "panoramic",
+    "originalFileName": "16.jpg"
+  },
+  {
+    "id": "gal-new-17",
+    "slug": "emprise-gallery-new-17",
+    "src": "/gallery/New%20Photos/17.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 17)",
+    "width": 2048,
+    "height": 1150,
+    "aspectRatio": 1.781,
+    "orientation": "landscape",
+    "originalFileName": "17.jpg"
+  },
+  {
+    "id": "gal-new-18",
+    "slug": "emprise-gallery-new-18",
+    "src": "/gallery/New%20Photos/18.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 18)",
+    "width": 2048,
+    "height": 1536,
+    "aspectRatio": 1.333,
+    "orientation": "landscape",
+    "originalFileName": "18.jpg"
+  },
+  {
+    "id": "gal-new-19",
+    "slug": "emprise-gallery-new-19",
+    "src": "/gallery/New%20Photos/19.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 19)",
+    "width": 1280,
+    "height": 576,
+    "aspectRatio": 2.222,
+    "orientation": "panoramic",
+    "originalFileName": "19.jpg"
+  },
+  {
+    "id": "gal-new-20",
+    "slug": "emprise-gallery-new-20",
+    "src": "/gallery/New%20Photos/20.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 20)",
+    "width": 2048,
+    "height": 1371,
+    "aspectRatio": 1.494,
+    "orientation": "landscape",
+    "originalFileName": "20.jpg"
+  },
+  {
+    "id": "gal-new-21",
+    "slug": "emprise-gallery-new-21",
+    "src": "/gallery/New%20Photos/21.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 21)",
+    "width": 2048,
+    "height": 1536,
+    "aspectRatio": 1.333,
+    "orientation": "landscape",
+    "originalFileName": "21.jpg"
+  },
+  {
+    "id": "gal-new-22",
+    "slug": "emprise-gallery-new-22",
+    "src": "/gallery/New%20Photos/22.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 22)",
+    "width": 2048,
+    "height": 1150,
+    "aspectRatio": 1.781,
+    "orientation": "landscape",
+    "originalFileName": "22.jpg"
+  },
+  {
+    "id": "gal-new-23",
+    "slug": "emprise-gallery-new-23",
+    "src": "/gallery/New%20Photos/23.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 23)",
+    "width": 2048,
+    "height": 1152,
+    "aspectRatio": 1.778,
+    "orientation": "landscape",
+    "originalFileName": "23.jpg"
+  },
+  {
+    "id": "gal-new-24",
+    "slug": "emprise-gallery-new-24",
+    "src": "/gallery/New%20Photos/24.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 24)",
+    "width": 2048,
+    "height": 1510,
+    "aspectRatio": 1.356,
+    "orientation": "landscape",
+    "originalFileName": "24.jpg"
+  },
+  {
+    "id": "gal-new-25",
+    "slug": "emprise-gallery-new-25",
+    "src": "/gallery/New%20Photos/25.jpg",
+    "alt": "Emprise Academy campus, classroom and student academic moments (Photo 25)",
+    "width": 915,
+    "height": 809,
+    "aspectRatio": 1.131,
+    "orientation": "landscape",
+    "originalFileName": "25.jpg"
+  },
   {
     "id": "gal-01",
     "slug": "emprise-gallery-01",
@@ -712,5 +987,5 @@ export const OFFICIAL_GALLERY_IMAGES: GalleryImage[] = [
  * Curated subset for Homepage Marquee (Row 1 & Row 2)
  * Ensures a balanced mix of aspect ratios without excessive DOM weight
  */
-export const HOMEPAGE_MARQUEE_ROW_1: GalleryImage[] = OFFICIAL_GALLERY_IMAGES.slice(0, 16);
-export const HOMEPAGE_MARQUEE_ROW_2: GalleryImage[] = OFFICIAL_GALLERY_IMAGES.slice(16, 32);
+export const HOMEPAGE_MARQUEE_ROW_1: GalleryImage[] = OFFICIAL_GALLERY_IMAGES.slice(0, 13);
+export const HOMEPAGE_MARQUEE_ROW_2: GalleryImage[] = OFFICIAL_GALLERY_IMAGES.slice(13, 25);
