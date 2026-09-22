@@ -146,16 +146,33 @@ export const TrustIntroSection: React.FC = () => {
                     </span>
                   </div>
 
-                  {/* 15+ Years Legacy Information Block */}
-                  <div className="flex-1 p-3 rounded-xl bg-[#123E73] text-white flex flex-col justify-center border border-blue-900/60 shadow-xs">
-                    <div className="text-xl sm:text-2xl font-extrabold text-[#FF8A00] leading-none">
-                      15+ Years
+                  {/* 15+ Years Legacy Photo Card (Campus Reception & Counselling) */}
+                  <div className="relative flex-1 min-h-[120px] sm:min-h-0 rounded-xl overflow-hidden shadow-xs border border-slate-200/70 bg-slate-900 group">
+                    <img
+                      src="/images/emprise-academy-reception-counselling.jpg"
+                      alt="Emprise Academy Mathura — Campus Reception, Admissions and Student Counselling Center"
+                      className="w-full h-full object-cover object-[center_35%] transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0B2545]/95 via-[#0B2545]/55 to-[#0B2545]/20 group-hover:from-[#0B2545]/90 transition-colors" />
+
+                    {/* Top Pill: Campus Facility Badge */}
+                    <div className="absolute top-2 left-2 z-10 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-900/70 backdrop-blur-md border border-white/20 text-[9px] font-semibold text-white/95 shadow-2xs">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A00]" />
+                      <span>Campus Reception</span>
                     </div>
-                    <div className="text-[11px] font-semibold text-blue-100 mt-1 leading-tight">
-                      Legacy in Mathura
-                    </div>
-                    <div className="text-[9px] text-blue-200/70 mt-0.5">
-                      Since 2011 • Trusted Mentors
+
+                    {/* Bottom Legacy Content */}
+                    <div className="absolute inset-x-0 bottom-0 p-2.5 sm:p-3 z-10">
+                      <div className="text-xl sm:text-2xl font-black text-[#FF8A00] leading-none drop-shadow-xs">
+                        15+ Years
+                      </div>
+                      <div className="text-[11px] sm:text-xs font-bold text-white mt-1 leading-tight drop-shadow-xs">
+                        Legacy in Mathura
+                      </div>
+                      <div className="text-[9px] text-blue-100/85 mt-0.5 drop-shadow-2xs">
+                        Since 2011 • Trusted Mentors
+                      </div>
                     </div>
                   </div>
                 </div>
