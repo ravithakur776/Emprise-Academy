@@ -42,7 +42,7 @@ export const FACULTY_DATA: FacultyProfile[] = [
     qualification: "B.E. (Hons.) Mechanical Engineering, Univ. of Derby (UK)",
     experienceText: "Senior IIT-JEE Faculty",
     specialisation: "Calculus, Coordinate Geometry, Vectors & Advanced Algebra",
-    photoUrl: null,
+    photoUrl: "/images/directors/rakesh-kumar.jpg",
     bio: "Co-founder of Emprise Academy with industrial experience at Rolls-Royce Limited and extensive IIT-JEE advanced mathematics mentoring background.",
     teachingApproach: [
       "Visualizing mathematical functions geometrically before writing algebraic equations.",
@@ -77,7 +77,7 @@ export const FACULTY_DATA: FacultyProfile[] = [
     qualification: "B.E. (Hons.) Mechanical Engineering, Univ. of Derby (UK)",
     experienceText: "Senior Academic Mentor & Author",
     specialisation: "Classical Mechanics, Engineering Principles & Pedagogy",
-    photoUrl: null,
+    photoUrl: "/images/directors/sushil-dagur.jpg",
     bio: "Founding Director of Emprise Academy with industrial tenure at Ford Group UK and experience with leading coaching ecosystems in Kota.",
     teachingApproach: [
       "Deriving physical laws from first principles with real-world engineering analogies.",
