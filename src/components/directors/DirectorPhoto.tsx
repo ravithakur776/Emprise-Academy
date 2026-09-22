@@ -1,5 +1,14 @@
 import React from "react";
 import { GraduationCap, User } from "lucide-react";
+import sushilPhoto from "../../../public/images/directors/sushil-dagur.jpg";
+import rakeshPhoto from "../../../public/images/directors/rakesh-kumar.jpg";
+
+const STATIC_DIRECTOR_PHOTOS: Record<string, string> = {
+  "/images/directors/sushil-dagur.jpg": sushilPhoto.src,
+  "/images/directors/rakesh-kumar.jpg": rakeshPhoto.src,
+  "/images/sushil-dagur.jpg": sushilPhoto.src,
+  "/images/rakesh-kumar.jpg": rakeshPhoto.src,
+};
 
 export interface DirectorPhotoProps {
   photoUrl?: string | null;
@@ -37,13 +46,14 @@ export const DirectorPhoto: React.FC<DirectorPhotoProps> = ({
   };
 
   if (photoUrl) {
+    const resolvedSrc = STATIC_DIRECTOR_PHOTOS[photoUrl] || photoUrl;
     return (
       <div
         className={`relative overflow-hidden rounded-3xl border-2 border-slate-200 shadow-md ${aspectClass} ${className}`}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={photoUrl}
+          src={resolvedSrc}
           alt={
             designation
               ? `${name} — ${designation} at Emprise Academy`

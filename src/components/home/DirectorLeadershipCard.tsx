@@ -5,6 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { HomepageDirectorLeader } from "@/data/directors";
 import { GraduationCap, ArrowRight, Quote, Briefcase } from "lucide-react";
+import sushilPhoto from "../../../public/images/directors/sushil-dagur.jpg";
+import rakeshPhoto from "../../../public/images/directors/rakesh-kumar.jpg";
+
+const DIRECTOR_STATIC_PHOTOS: Record<string, typeof sushilPhoto> = {
+  "sushil-dagur": sushilPhoto,
+  "rakesh-kumar": rakeshPhoto,
+  "/images/directors/sushil-dagur.jpg": sushilPhoto,
+  "/images/directors/rakesh-kumar.jpg": rakeshPhoto,
+};
 
 interface DirectorLeadershipCardProps {
   director: HomepageDirectorLeader;
@@ -95,7 +104,11 @@ export const DirectorLeadershipCard: React.FC<DirectorLeadershipCardProps> = ({
           {/* PHOTO */}
           <div className="relative w-24 h-28 sm:w-28 sm:h-32 rounded-2xl overflow-hidden shrink-0 border border-slate-200 bg-slate-100 shadow-xs">
             <Image
-              src={director.photoUrl}
+              src={
+                (director.slug && DIRECTOR_STATIC_PHOTOS[director.slug]) ||
+                (director.photoUrl && DIRECTOR_STATIC_PHOTOS[director.photoUrl]) ||
+                director.photoUrl
+              }
               alt={`${director.name} — Director, Emprise Academy`}
               fill
               sizes="(max-width: 640px) 96px, 112px"
