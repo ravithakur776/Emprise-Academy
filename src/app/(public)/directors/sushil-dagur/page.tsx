@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://empriseacademy.com/images/directors/sushil-dagur.jpg",
-        width: 819,
+        width: 790,
         height: 1024,
         alt: "Sushil Dagur — Director, Educationist & Physics Mentor at Emprise Academy",
       },
