@@ -133,29 +133,26 @@ export const TrustIntroSection: React.FC = () => {
                 {/* Secondary Photo & Academic Legacy Card */}
                 <div className="sm:col-span-4 flex flex-col gap-3">
                   {/* Secondary Student Mentorship & Doubt Solving Photo */}
-                  <div className="relative h-28 sm:h-36 rounded-xl overflow-hidden shadow-xs border border-slate-200/70 bg-slate-100 group">
+                  <div className="relative h-28 sm:h-36 rounded-xl overflow-hidden shadow-xs border border-slate-200/70 bg-slate-900 group">
                     <img
                       src="/images/emprise-interactive-care-mentorship.jpg"
                       alt="Emprise Academy Mathura — Director-led doubt solving, mentorship and interactive student care"
-                      className="w-full h-full object-cover object-[center_38%] transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                      className="w-full h-full object-cover object-[center_20%] transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0B2545]/90 via-[#0B2545]/35 to-[#0B2545]/10 group-hover:from-[#0B2545]/80 transition-colors" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0B2545]/75 via-transparent to-transparent pointer-events-none" />
 
                     {/* Top Pill: Interactive Care Badge */}
-                    <div className="absolute top-2 left-2 z-10 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-900/70 backdrop-blur-md border border-white/20 text-[9px] font-semibold text-white/95 shadow-2xs">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#38BDF8]" />
+                    <div className="absolute top-2 left-2 z-10 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-900/75 backdrop-blur-md border border-white/20 text-[9px] font-semibold text-white/95 shadow-2xs">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#38BDF8] animate-pulse" />
                       <span>Interactive Care</span>
                     </div>
 
                     {/* Bottom Caption */}
-                    <div className="absolute bottom-2 left-2.5 right-2.5 z-10 text-white">
-                      <span className="text-[9px] font-bold uppercase tracking-wider text-sky-300 block">
-                        Doubt Solving &amp; Guidance
+                    <div className="absolute bottom-2 left-2.5 z-10">
+                      <span className="text-[10px] sm:text-[11px] font-bold text-white tracking-wide drop-shadow-md">
+                        Doubt Solving &amp; Mentorship
                       </span>
-                      <h4 className="text-[11px] sm:text-xs font-bold text-white drop-shadow-xs truncate">
-                        Director-Led Student Mentorship
-                      </h4>
                     </div>
                   </div>
 

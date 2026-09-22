@@ -204,6 +204,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         {/* Article Body Section */}
         <Section variant="default" spacing="lg" className="bg-white">
           <Container size="lg">
+            {/* Article Master Thumbnail Creative */}
+            {post.coverImage && (
+              <div className="relative w-full aspect-[16/9] max-w-4xl mx-auto rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 mb-10 bg-slate-100">
+                <Image
+                  src={post.coverImage}
+                  alt={post.title}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 896px"
+                  className="object-cover"
+                />
+              </div>
+            )}
+
             {/* Key Stats Strip if Available */}
             {post.keyStats && post.keyStats.length > 0 && (
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-10 p-5 rounded-2xl bg-[#EEF5FF]/60 border border-[#E3EAF3]">

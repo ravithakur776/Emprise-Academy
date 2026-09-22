@@ -180,14 +180,15 @@ export default function BlogPage() {
 
             {/* FEATURED LEAD ARTICLE (Shown when no search/filters active) */}
             {featuredPost && (
-              <div className="mb-10 sm:mb-12">
-                <div className="group relative rounded-3xl bg-gradient-to-br from-[#0B2748] via-[#123E73] to-[#1769E0] text-white p-6 sm:p-10 shadow-lg overflow-hidden border border-blue-300/30 text-left">
+              <div className="mb-10 sm:mb-14">
+                <div className="group relative rounded-3xl bg-gradient-to-br from-[#0B2748] via-[#123E73] to-[#1769E0] text-white p-6 sm:p-8 lg:p-10 shadow-xl overflow-hidden border border-blue-300/30 text-left">
                   <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+                  <div className="absolute bottom-0 left-0 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
 
-                  <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-                    <div className="space-y-4 max-w-2xl">
+                  <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8 lg:gap-10">
+                    <div className="space-y-4 max-w-2xl flex-1">
                       <div className="flex flex-wrap items-center gap-2.5">
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-400/90 text-[#0B2748] shadow-xs">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-400/95 text-[#0B2748] shadow-xs">
                           <Sparkles className="w-3.5 h-3.5" /> Featured Guide
                         </span>
                         <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/15 backdrop-blur-md text-white border border-white/20">
@@ -198,16 +199,18 @@ export default function BlogPage() {
                         </span>
                       </div>
 
-                      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight tracking-tight">
-                        {featuredPost.title}
-                      </h2>
+                      <Link href={`/blog/${featuredPost.slug}`} className="block group/title">
+                        <h2 className="text-2xl sm:text-3xl lg:text-[2.15rem] font-extrabold text-white leading-tight tracking-tight group-hover/title:text-amber-300 transition-colors">
+                          {featuredPost.title}
+                        </h2>
+                      </Link>
 
                       <p className="text-xs sm:text-sm text-slate-100/90 leading-relaxed font-normal">
                         {featuredPost.excerpt}
                       </p>
 
                       {/* Author Tag */}
-                      <div className="pt-2 flex items-center gap-3">
+                      <div className="pt-1 flex items-center gap-3">
                         <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-white/40 shadow-xs bg-white shrink-0">
                           <Image
                             src={featuredPost.author.photoUrl}
@@ -226,8 +229,24 @@ export default function BlogPage() {
                         </div>
                       </div>
 
+                      {/* Key Stats Strip in Featured Card */}
+                      {featuredPost.keyStats && (
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 py-3 border-y border-white/15">
+                          {featuredPost.keyStats.map((stat, idx) => (
+                            <div key={idx} className="space-y-0.5">
+                              <p className="text-[9px] sm:text-[10px] text-blue-200 uppercase font-semibold">
+                                {stat.label}
+                              </p>
+                              <p className="text-sm sm:text-base font-extrabold text-white">
+                                {stat.value}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
                       {/* Action Buttons */}
-                      <div className="pt-3 flex flex-wrap items-center gap-3">
+                      <div className="pt-2 flex flex-wrap items-center gap-3">
                         <Link href={`/blog/${featuredPost.slug}`}>
                           <Button
                             variant="accent"
@@ -249,28 +268,52 @@ export default function BlogPage() {
                       </div>
                     </div>
 
-                    {/* Key Stats Preview Card */}
-                    {featuredPost.keyStats && (
-                      <div className="w-full lg:w-80 p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 space-y-3.5 shrink-0 text-left">
-                        <p className="text-xs font-bold uppercase tracking-wider text-amber-300">
-                          Key Factsheet
-                        </p>
-                        <div className="grid grid-cols-2 gap-3">
-                          {featuredPost.keyStats.map((stat, idx) => (
-                            <div key={idx} className="space-y-0.5">
-                              <p className="text-[10px] text-blue-200 uppercase font-semibold">
-                                {stat.label}
-                              </p>
-                              <p className="text-sm sm:text-base font-extrabold text-white">
-                                {stat.value}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                        <div className="pt-2 border-t border-white/10 text-[11px] text-slate-200">
-                          Verified data sourced from official NIRF and placement reports.
-                        </div>
+                    {/* Featured Thumbnail Creative */}
+                    {featuredPost.coverImage ? (
+                      <div className="w-full lg:w-[460px] xl:w-[500px] shrink-0">
+                        <Link
+                          href={`/blog/${featuredPost.slug}`}
+                          className="block relative w-full aspect-[16/9] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border-2 border-white/30 group/thumb transform transition-all duration-500 hover:shadow-cyan-500/20 hover:border-white/50"
+                        >
+                          <Image
+                            src={featuredPost.coverImage}
+                            alt={featuredPost.title}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 500px"
+                            className="object-cover transition-transform duration-700 ease-out group-hover/thumb:scale-[1.04]"
+                            priority
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#0B2748]/70 via-transparent to-transparent opacity-0 group-hover/thumb:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                            <span className="text-xs font-bold text-white flex items-center gap-1.5 bg-white/20 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/40 shadow-xs">
+                              <span>Open Article</span>
+                              <ArrowRight className="w-3.5 h-3.5" />
+                            </span>
+                          </div>
+                        </Link>
                       </div>
+                    ) : (
+                      featuredPost.keyStats && (
+                        <div className="w-full lg:w-80 p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 space-y-3.5 shrink-0 text-left">
+                          <p className="text-xs font-bold uppercase tracking-wider text-amber-300">
+                            Key Factsheet
+                          </p>
+                          <div className="grid grid-cols-2 gap-3">
+                            {featuredPost.keyStats.map((stat, idx) => (
+                              <div key={idx} className="space-y-0.5">
+                                <p className="text-[10px] text-blue-200 uppercase font-semibold">
+                                  {stat.label}
+                                </p>
+                                <p className="text-sm sm:text-base font-extrabold text-white">
+                                  {stat.value}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="pt-2 border-t border-white/10 text-[11px] text-slate-200">
+                            Verified data sourced from official NIRF and placement reports.
+                          </div>
+                        </div>
+                      )
                     )}
                   </div>
                 </div>
@@ -279,31 +322,63 @@ export default function BlogPage() {
 
             {/* ARTICLES GRID */}
             {gridPosts.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 text-left">
                 {gridPosts.map((post) => {
                   const catClass = getCategoryStyles(post.category);
                   return (
                     <article
                       key={post.id}
-                      className="group p-6 sm:p-7 rounded-3xl bg-white border border-[var(--brand-border)] hover:border-[var(--brand-primary)]/45 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between"
+                      className="group p-5 sm:p-6 rounded-3xl bg-white border border-[var(--brand-border)] hover:border-[var(--brand-primary)]/45 shadow-2xs hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between overflow-hidden"
                     >
                       <div className="space-y-4">
-                        {/* Header: Category Badge & Read Time */}
-                        <div className="flex items-center justify-between">
-                          <span
-                            className={cn(
-                              "text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border",
-                              catClass
-                            )}
+                        {/* Thumbnail Creative (if available) */}
+                        {post.coverImage ? (
+                          <Link
+                            href={`/blog/${post.slug}`}
+                            className="block relative w-full aspect-[16/9] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200/80 shadow-xs group/img"
                           >
-                            {post.category}
-                          </span>
+                            <Image
+                              src={post.coverImage}
+                              alt={post.title}
+                              fill
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              className="object-cover transition-transform duration-500 ease-out group-hover/img:scale-[1.04]"
+                            />
+                            {/* Floating Category Badge */}
+                            <div className="absolute top-2.5 left-2.5 z-10">
+                              <span
+                                className={cn(
+                                  "text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border backdrop-blur-md bg-white/95 shadow-2xs",
+                                  catClass
+                                )}
+                              >
+                                {post.category}
+                              </span>
+                            </div>
+                            {/* Floating Read Time */}
+                            <div className="absolute top-2.5 right-2.5 z-10 flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-950/70 backdrop-blur-md text-[10px] font-medium text-white shadow-2xs">
+                              <Clock className="w-3 h-3 text-amber-300" />
+                              <span>{post.readTime}</span>
+                            </div>
+                          </Link>
+                        ) : (
+                          /* Header: Category Badge & Read Time for cards without image */
+                          <div className="flex items-center justify-between pb-1">
+                            <span
+                              className={cn(
+                                "text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border",
+                                catClass
+                              )}
+                            >
+                              {post.category}
+                            </span>
 
-                          <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
-                            <Clock className="w-3.5 h-3.5 text-slate-400" />
-                            <span>{post.readTime}</span>
+                            <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
+                              <Clock className="w-3.5 h-3.5 text-slate-400" />
+                              <span>{post.readTime}</span>
+                            </div>
                           </div>
-                        </div>
+                        )}
 
                         {/* Title */}
                         <Link href={`/blog/${post.slug}`} className="block">
@@ -352,21 +427,23 @@ export default function BlogPage() {
                       </div>
 
                       {/* Card Actions Footer */}
-                      <div className="pt-5 mt-5 border-t border-slate-100 flex items-center justify-between">
+                      <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between">
                         <button
                           type="button"
                           onClick={() => setQuickPreviewPost(post)}
                           className="text-[11px] font-semibold text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
                         >
-                          Quick View
+                          Quick Takeaways
                         </button>
-
-                        <Link
-                          href={`/blog/${post.slug}`}
-                          className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--brand-primary)] hover:text-[#0B2748] transition-colors"
-                        >
-                          <span>Read Guide</span>
-                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                        <Link href={`/blog/${post.slug}`}>
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            className="text-xs font-bold border-slate-200 hover:border-[var(--brand-primary)]"
+                            rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
+                          >
+                            Read Article
+                          </Button>
                         </Link>
                       </div>
                     </article>

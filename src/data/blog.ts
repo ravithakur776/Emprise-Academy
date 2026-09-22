@@ -90,6 +90,7 @@ export const OFFICIAL_BLOG_POSTS: BlogPost[] = [
     publishDate: "September 2026",
     readTime: "7 min read",
     featured: true,
+    coverImage: "/images/blog/iit-bombay-more-than-an-iit-dream.jpg",
     author: BLOG_AUTHORS.rakeshKumar,
     excerpt:
       "For many JEE aspirants, IIT Bombay represents a dream. But getting in is not simply about securing a seat — it is about entering an academic ecosystem where students learn, experiment, innovate, and build diverse global careers.",
@@ -251,6 +252,7 @@ export const OFFICIAL_BLOG_POSTS: BlogPost[] = [
     category: "IIT-JEE",
     publishDate: "September 2026",
     readTime: "8 min read",
+    coverImage: "/images/blog/nits-in-india-institutes-seats-admissions-placements.jpg",
     author: BLOG_AUTHORS.rakeshKumar,
     excerpt:
       "For a student preparing for JEE Main, qualifying is only one part of the journey. Understand the 31 NITs network, official JoSAA seat allocation, placement metrics, and how to craft an effective counselling choice list.",
@@ -362,6 +364,7 @@ export const OFFICIAL_BLOG_POSTS: BlogPost[] = [
     category: "NEET-UG",
     publishDate: "September 2026",
     readTime: "8 min read",
+    coverImage: "/images/blog/neet-in-india-mbbs-seats-government-colleges-admission.jpg",
     author: BLOG_AUTHORS.sushilDagur,
     excerpt:
       "Every year lakhs of aspirants dream of wearing the white coat. Understand the complete medical admission ecosystem: official NMC verified MBBS seats, government vs private colleges, counselling stages, and clinical pathways.",
@@ -453,6 +456,7 @@ export const OFFICIAL_BLOG_POSTS: BlogPost[] = [
     publishDate: "September 2026",
     readTime: "10 min read",
     featured: true,
+    coverImage: "/images/blog/how-to-prepare-for-neet-complete-strategy.jpg",
     author: BLOG_AUTHORS.sushilDagur,
     excerpt:
       "NEET preparation is not about studying for a few months with extreme pressure. It is about building a disciplined system of learning, practising, revising, testing, and error-correcting across all three core subjects.",
@@ -620,6 +624,7 @@ export const OFFICIAL_BLOG_POSTS: BlogPost[] = [
     category: "Foundation",
     publishDate: "September 2026",
     readTime: "8 min read",
+    coverImage: "/images/blog/should-students-start-jee-neet-preparation-from-class-8.jpg",
     author: BLOG_AUTHORS.rakeshKumar,
     excerpt:
       "'Sir, kya mere bachche ko Class 8 se hi JEE ya NEET ki preparation start karwa deni chahiye?' Director Rakesh Kumar provides a clear, balanced roadmap on building conceptual curiosity without academic stress.",
@@ -703,6 +708,7 @@ export const OFFICIAL_BLOG_POSTS: BlogPost[] = [
     category: "NEET-UG",
     publishDate: "September 2026",
     readTime: "7 min read",
+    coverImage: "/images/blog/top-medical-colleges-in-india-for-mbbs-aiims.jpg",
     author: BLOG_AUTHORS.sushilDagur,
     excerpt:
       "'NEET clear karna hai aur ek achhe medical college se MBBS karni hai.' Explore India's top medical colleges beyond AIIMS Delhi, NIRF 2025 medical rankings, AIIMS network, and how to create a balanced counselling choice list.",
