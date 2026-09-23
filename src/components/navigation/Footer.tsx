@@ -246,7 +246,7 @@ export const Footer: React.FC = () => {
       {/* Bottom Legal Copyright Bar */}
       <div className="border-t border-white/10 bg-black/20">
         <Container size="xl" className="py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-          <p>© {new Date().getFullYear()} Emprise Academy. All rights reserved. Mathura, Uttar Pradesh.</p>
+          <p>© {new Date().getFullYear()} Emprise Academy Private Limited All rights reserved. Mathura, Uttar Pradesh.</p>
           <div className="flex items-center gap-6">
             <Link href="/privacy-policy" className="hover:text-slate-200 transition-colors">
               Privacy Policy
