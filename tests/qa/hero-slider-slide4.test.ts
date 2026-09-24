@@ -10,14 +10,18 @@ async function runSlide4Tests() {
   // [TEST 1] Auditing Slide Order & Sequence
   console.log("\n[TEST 1] Auditing Slide Order & Sequence...");
   const slides = HOMEPAGE_DATA.heroSlides;
-  if (slides.length !== 4) {
-    throw new Error(`Expected exactly 4 slides (slides 5, 6, 7 removed), found ${slides.length}`);
+  if (slides.length !== 8) {
+    throw new Error(`Expected exactly 8 slides, found ${slides.length}`);
   }
 
   const slide1 = slides[0];
   const slide2 = slides[1];
   const slide3 = slides[2];
   const slide4 = slides[3];
+  const slide5 = slides[4];
+  const slide6 = slides[5];
+  const slide7 = slides[6];
+  const slide8 = slides[7];
 
   if (slide1.id !== "slide-jee-toppers") {
     throw new Error(`Slide 1 must be 'slide-jee-toppers', got '${slide1.id}'`);
@@ -31,7 +35,19 @@ async function runSlide4Tests() {
   if (slide4.id !== "slide-neet-ug-2026-result") {
     throw new Error(`Slide 4 must be 'slide-neet-ug-2026-result', got '${slide4.id}'`);
   }
-  console.log("✓ Verified exact sequence: 1. JEE Toppers -> 2. IIT Bombay -> 3. JEE Main 2026 Top Performers -> 4. NEET (UG) 2026 Result.");
+  if (slide5.id !== "slide-neet-excellence-aiims") {
+    throw new Error(`Slide 5 must be 'slide-neet-excellence-aiims', got '${slide5.id}'`);
+  }
+  if (slide6.id !== "slide-top-iit-jee-performers") {
+    throw new Error(`Slide 6 must be 'slide-top-iit-jee-performers', got '${slide6.id}'`);
+  }
+  if (slide7.id !== "slide-neet-2025-top-performers") {
+    throw new Error(`Slide 7 must be 'slide-neet-2025-top-performers', got '${slide7.id}'`);
+  }
+  if (slide8.id !== "slide-jee-advanced-2025-govind-gupta") {
+    throw new Error(`Slide 8 must be 'slide-jee-advanced-2025-govind-gupta', got '${slide8.id}'`);
+  }
+  console.log("✓ Verified exact sequence: 1. JEE Toppers -> 2. IIT Bombay -> 3. JEE Main 2026 -> 4. NEET (UG) 2026 -> 5. NEET Excellence AIIMS -> 6. Top IIT-JEE Performers -> 7. NEET 2025 Result -> 8. JEE Adv 2025 Govind Gupta.");
 
   // [TEST 2] Auditing Slide 4 Metadata & Content
   console.log("\n[TEST 2] Auditing Slide 4 Metadata & Content...");
@@ -108,8 +124,68 @@ async function runSlide4Tests() {
   }
   console.log("✓ Verified Slides 1, 2, 3 are completely unchanged.");
 
+  // [TEST 6] Auditing Slide 5 (Legacy of NEET Excellence AIIMS Toppers)
+  console.log("\n[TEST 6] Auditing Slide 5 (Legacy of NEET Excellence AIIMS Toppers)...");
+  if (!slide5.isBannerImage) {
+    throw new Error("Slide 5 must have isBannerImage set to true");
+  }
+  if (slide5.bannerImageSrc !== "/images/emprise-legacy-of-neet-excellence-aiims-toppers.png") {
+    throw new Error(`Slide 5 image source mismatch: ${slide5.bannerImageSrc}`);
+  }
+  const diskAssetPath5 = path.resolve(process.cwd(), "public/images/emprise-legacy-of-neet-excellence-aiims-toppers.png");
+  if (!fs.existsSync(diskAssetPath5)) {
+    throw new Error(`Master image 5 missing at ${diskAssetPath5}`);
+  }
+  const stat5 = fs.statSync(diskAssetPath5);
+  if (stat5.size < 5000000) {
+    throw new Error(`Expected high-res master asset 5 (>5MB), found ${stat5.size} bytes`);
+  }
+  const slide5Students = ["Tanisha", "Aayan", "Shobhit"];
+  for (const student of slide5Students) {
+    if (!slide5.subheading.includes(student)) {
+      throw new Error(`Slide 5 subheading missing student: ${student}`);
+    }
+  }
+  if (!heroSliderCode.includes("/images/emprise-legacy-of-neet-excellence-aiims-toppers.png")) {
+    throw new Error("HeroSlider component does not pre-warm the 5th NEET excellence image");
+  }
+  console.log(`✓ Master image 5 verified on disk: ${stat5.size} bytes (uncompressed high-res master).`);
+  console.log("✓ Verified Slide 5 metadata, alt text, link destination, and 3 AIIMS student records.");
+
+  // [TEST 7] Auditing Slides 6, 7, 8 Master Assets & Metadata
+  console.log("\n[TEST 7] Auditing Slides 6, 7, 8 Master Assets & Metadata...");
+
+  // Slide 6 Audit
+  const diskAssetPath6 = path.resolve(process.cwd(), "public/images/emprise-top-iit-jee-performers-achievement-legacy.png");
+  if (!fs.existsSync(diskAssetPath6) || fs.statSync(diskAssetPath6).size < 5000000) {
+    throw new Error("Slide 6 master asset missing or under 5MB");
+  }
+  ["Utkarsh", "Shravan", "Umesh"].forEach(s => {
+    if (!slide6.subheading.includes(s)) throw new Error(`Slide 6 missing student: ${s}`);
+  });
+
+  // Slide 7 Audit
+  const diskAssetPath7 = path.resolve(process.cwd(), "public/images/emprise-neet-2025-result-top-performers.png");
+  if (!fs.existsSync(diskAssetPath7) || fs.statSync(diskAssetPath7).size < 5000000) {
+    throw new Error("Slide 7 master asset missing or under 5MB");
+  }
+  ["Anil Yadav", "Rahul", "Deepak Singh", "Chandrabhan"].forEach(s => {
+    if (!slide7.subheading.includes(s)) throw new Error(`Slide 7 missing student: ${s}`);
+  });
+
+  // Slide 8 Audit
+  const diskAssetPath8 = path.resolve(process.cwd(), "public/images/emprise-jee-advanced-2025-govind-gupta-air-404-iit-bombay.png");
+  if (!fs.existsSync(diskAssetPath8) || fs.statSync(diskAssetPath8).size < 5000000) {
+    throw new Error("Slide 8 master asset missing or under 5MB");
+  }
+  ["Govind Gupta", "IIT Bombay"].forEach(s => {
+    if (!slide8.subheading.includes(s)) throw new Error(`Slide 8 missing: ${s}`);
+  });
+
+  console.log("✓ Verified Slides 6, 7, 8 master assets on disk (>15MB each), metadata, and student records.");
+
   console.log("\n==================================================");
-  console.log("ALL SLIDE 4 AUDIT CHECKS PASSED (100% SUCCESS)");
+  console.log("ALL SLIDES 1 THROUGH 8 AUDIT CHECKS PASSED (100% SUCCESS)");
   console.log("==================================================");
 }
 

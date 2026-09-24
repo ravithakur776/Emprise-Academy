@@ -136,6 +136,104 @@ const MASTER_RESULT_CREATIVES: FeaturedResultCreative[] = [
     imageAlt: "Emprise Academy NEET UG 2026 Result — Mathura Achievers",
     targetHref: "/results",
   },
+  {
+    id: "res-neet-excellence-aiims",
+    category: "NEET",
+    categoryLabel: "NEET (UG) • AIIMS",
+    tag: "A LEGACY OF NEET EXCELLENCE • TOP PERFORMERS",
+    badge: "AIIMS ADMISSIONS ACHIEVERS",
+    heading: "A Legacy of NEET Excellence — Top Performers",
+    subheading:
+      "Celebrating top medical performers: Tanisha (AIIMS Raebareli, NEET 2024), Aayan (AIIMS Gorakhpur, NEET 2023), and Shobhit (AIIMS Jodhpur, NEET 2022) — Medicos Begin Here! Your Dream. Our Guidance. Brighter Futures.",
+    keyMetric: "Consistent AIIMS Admissions Year After Year",
+    highlights: [
+      "Tanisha — AIIMS Raebareli (NEET 2024)",
+      "Aayan — AIIMS Gorakhpur (NEET 2023)",
+      "Shobhit — AIIMS Jodhpur (NEET 2022)",
+    ],
+    students: [
+      "Tanisha (AIIMS Raebareli)",
+      "Aayan (AIIMS Gorakhpur)",
+      "Shobhit (AIIMS Jodhpur)",
+    ],
+    imageSrc: "/images/emprise-legacy-of-neet-excellence-aiims-toppers.png",
+    imageAlt: "Emprise Academy — A Legacy of NEET Excellence AIIMS Toppers (Tanisha, Aayan, Shobhit)",
+    targetHref: "/results",
+  },
+  {
+    id: "res-top-iit-jee-performers",
+    category: "JEE_ADVANCED",
+    categoryLabel: "IIT-JEE Legacy",
+    tag: "IIT-JEE ACHIEVEMENT LEGACY • TOP PERFORMERS",
+    badge: "15 YEARS OF ACADEMIC EXCELLENCE",
+    heading: "Top IIT-JEE Performers — Consistent Excellence",
+    subheading:
+      "Consistent excellence & brighter futures: Utkarsh (IIT-Dhanbad, 99.07 %ile, 100 Percentile Physics, JEE Main 2024), Shravan (IIT-Kanpur, 99.59 %ile, AIR-92 Cat., JEE Main 2023), and Umesh (IIT-Delhi, 99.86 %ile, AIR-645 Gen., JEE Main 2022).",
+    keyMetric: "IIT Dhanbad, IIT Kanpur & IIT Delhi",
+    highlights: [
+      "Utkarsh — 99.07 %ile & 100 %ile Physics (IIT Dhanbad)",
+      "Shravan — 99.59 %ile & AIR-92 Category (IIT Kanpur)",
+      "Umesh — 99.86 %ile & AIR-645 General (IIT Delhi)",
+    ],
+    students: [
+      "Utkarsh (IIT Dhanbad)",
+      "Shravan (IIT Kanpur)",
+      "Umesh (IIT Delhi)",
+    ],
+    imageSrc: "/images/emprise-top-iit-jee-performers-achievement-legacy.png",
+    imageAlt: "Emprise Academy — Top IIT-JEE Performers Achievement Legacy (Utkarsh IIT Dhanbad, Shravan IIT Kanpur, Umesh IIT Delhi)",
+    targetHref: "/results",
+  },
+  {
+    id: "res-neet-2025-top-performers",
+    category: "NEET",
+    categoryLabel: "NEET (UG) 2025",
+    tag: "NEET 2025 RESULT • TOP PERFORMERS",
+    badge: "GLORY OF NEET • AIR 4460",
+    heading: "NEET 2025 Result — Top Performers",
+    subheading:
+      "A perfect key to unlock hidden potential: Anil Yadav (AIR 4460), Rahul (AIR-5209 OBC), Rahul Kumar (AIR-2036 Gen-EWS), Deepak Singh (AIR-8483 OBC), Chandrabhan (AIR-27707) and many more achievers.",
+    keyMetric: "AIR 4460 & Multiple Top 10K Medical Ranks",
+    highlights: [
+      "Anil Yadav — AIR 4460 in NEET",
+      "Rahul Kumar — AIR 2036 (Gen-EWS)",
+      "Rahul — AIR 5209 (OBC Category)",
+      "Deepak Singh — AIR 8483 (OBC Category)",
+    ],
+    students: [
+      "Anil Yadav (AIR 4460)",
+      "Rahul (AIR 5209)",
+      "Rahul Kumar (AIR 2036)",
+      "Deepak Singh (AIR 8483)",
+      "Chandrabhan (AIR 27707)",
+    ],
+    imageSrc: "/images/emprise-neet-2025-result-top-performers.png",
+    imageAlt: "Emprise Academy NEET 2025 Result Top Performers — Anil Yadav AIR 4460, Rahul, Rahul Kumar, Deepak Singh, Chandrabhan",
+    targetHref: "/results",
+  },
+  {
+    id: "res-jee-adv-2025-govind",
+    category: "JEE_ADVANCED",
+    categoryLabel: "JEE Advanced 2025",
+    tag: "JEE ADVANCED 2025 • SPARKLING SUCCESS",
+    badge: "AIR 404 GEN. (EWS) • IIT BOMBAY",
+    heading: "JEE Advanced 2025 — Govind Gupta (AIR 404)",
+    subheading:
+      "Sparkling success of Empriseians: Govind Gupta (Emprise Topper) — AIR 404 Gen. (EWS), 99.65 %ile JEE Main, Selected in Indian Institute of Technology Bombay (IIT Bombay). From Potential to Possibilities.",
+    keyMetric: "AIR 404 Gen. (EWS) • IIT Bombay Admission",
+    highlights: [
+      "Govind Gupta — AIR 404 General (EWS) in JEE Advanced",
+      "99.65 Percentile in JEE Main",
+      "Selected in premier B.Tech program at IIT Bombay",
+    ],
+    students: [
+      "Govind Gupta (AIR 404 • IIT Bombay)",
+      "Emprise Topper",
+    ],
+    imageSrc: "/images/emprise-jee-advanced-2025-govind-gupta-air-404-iit-bombay.png",
+    imageAlt: "Emprise Academy JEE Advanced 2025 — Govind Gupta AIR 404 Selected in IIT-Bombay",
+    targetHref: "/results",
+  },
 ];
 
 const CATEGORY_TABS: { id: ResultStreamCategory; label: string }[] = [
@@ -172,6 +270,16 @@ export const ResultsSection: React.FC = () => {
     setSelectedCategory(cat);
     setCurrentIndex(0);
   };
+
+  // Pre-warm result creatives for instant tab and slider navigation
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      MASTER_RESULT_CREATIVES.forEach((item) => {
+        const img = new window.Image();
+        img.src = item.imageSrc;
+      });
+    }
+  }, []);
 
   // 5.5s Autoplay with pause on hover/focus/reduced motion
   useEffect(() => {

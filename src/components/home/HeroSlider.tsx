@@ -43,15 +43,22 @@ export const HeroSlider: React.FC = () => {
     return () => clearInterval(interval);
   }, [isPaused, nextSlide]);
 
-  // Pre-warm second, third, and fourth banner images in background for instant transition
+  // Pre-warm remaining banner images in background for instant, zero-lag transitions
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const img2 = new window.Image();
-      img2.src = "/images/emprise-back-to-back-iit-bombay-achievers-2025-2026.png";
-      const img3 = new window.Image();
-      img3.src = "/images/emprise-jee-main-2026-top-performers.png";
-      const img4 = new window.Image();
-      img4.src = "/images/emprise-neet-ug-2026-result-achievers.png";
+      const bannerSrcs = [
+        "/images/emprise-back-to-back-iit-bombay-achievers-2025-2026.png",
+        "/images/emprise-jee-main-2026-top-performers.png",
+        "/images/emprise-neet-ug-2026-result-achievers.png",
+        "/images/emprise-legacy-of-neet-excellence-aiims-toppers.png",
+        "/images/emprise-top-iit-jee-performers-achievement-legacy.png",
+        "/images/emprise-neet-2025-result-top-performers.png",
+        "/images/emprise-jee-advanced-2025-govind-gupta-air-404-iit-bombay.png",
+      ];
+      bannerSrcs.forEach((src) => {
+        const img = new window.Image();
+        img.src = src;
+      });
     }
   }, []);
 
