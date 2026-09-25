@@ -17,11 +17,11 @@ if (!targetDomain.startsWith("https://") || targetDomain.includes("localhost")) 
 }
 console.log(`✓ Verified Canonical Host: ${targetDomain} (HTTPS Enforced).`);
 
-// 2. All 27 Canonical Public Routes Audit
-console.log("\n[TEST 2] Auditing All 27 Canonical Public Sitemap Routes...");
+// 2. All 36 Canonical Public Routes Audit
+console.log("\n[TEST 2] Auditing All 36 Canonical Public Sitemap Routes...");
 const publicRoutes = sitemap();
-if (publicRoutes.length !== 27) {
-  throw new Error(`Expected exactly 27 canonical public routes, found ${publicRoutes.length}`);
+if (publicRoutes.length !== 36) {
+  throw new Error(`Expected exactly 36 canonical public routes, found ${publicRoutes.length}`);
 }
 const essentialPaths = [
   "",
@@ -47,7 +47,16 @@ const essentialPaths = [
   "/etse-2026",
   "/courses",
   "/about",
+  "/gallery",
+  "/testimonials",
   "/blog",
+  "/blog/iit-bombay-more-than-an-iit-dream",
+  "/blog/nits-in-india-institutes-seats-admissions-placements",
+  "/blog/neet-in-india-mbbs-seats-government-colleges-admission",
+  "/blog/how-to-prepare-for-neet-complete-strategy",
+  "/blog/why-emprise-academy-best-coaching-iit-jee-mathura",
+  "/blog/should-students-start-jee-neet-preparation-from-class-8",
+  "/blog/top-medical-colleges-in-india-for-mbbs-aiims",
   "/contact",
   "/privacy-policy",
   "/terms",
@@ -59,7 +68,7 @@ for (const path of essentialPaths) {
     throw new Error(`Missing expected canonical public route: ${targetDomain}${path}`);
   }
 }
-console.log("✓ All 27 essential public routes verified in canonical sitemap.");
+console.log("✓ All 36 essential public routes verified in canonical sitemap.");
 
 // 3. Private Workspace Protection Audit
 console.log("\n[TEST 3] Auditing Private Workspace Protection in Robots.txt...");

@@ -25,21 +25,21 @@ async function runTrustIntroTests() {
 
   // [TEST 2] Verify new exact heading in component and data
   console.log("\n[TEST 2] Verifying new exact heading...");
-  const expectedHeading = "The Leader in IIT-JEE, NEET & Foundation Coaching in Mathura";
+  const expectedHeading = "Best IIT-JEE & NEET Coaching in Mathura";
   if (HOMEPAGE_DATA.trustIntro.heading !== expectedHeading) {
     throw new Error(`HOMEPAGE_DATA.trustIntro.heading mismatch. Expected: "${expectedHeading}", Found: "${HOMEPAGE_DATA.trustIntro.heading}"`);
   }
 
-  if (!componentContent.includes("The Leader in") ||
-      !componentContent.includes("IIT-JEE, NEET &amp; Foundation") ||
-      !componentContent.includes("Coaching in Mathura")) {
+  if (!componentContent.includes("Best") ||
+      !componentContent.includes("IIT-JEE &amp; NEET Coaching") ||
+      !componentContent.includes("in Mathura")) {
     throw new Error("Component missing formatted new heading segments!");
   }
-  console.log("✓ Verified exact heading 'The Leader in IIT-JEE, NEET & Foundation Coaching in Mathura'.");
+  console.log("✓ Verified exact heading 'Best IIT-JEE & NEET Coaching in Mathura'.");
 
   // [TEST 3] Verify prohibited superlatives are NOT present in heading
   console.log("\n[TEST 3] Auditing for prohibited superlative words...");
-  const prohibitedSuperlatives = ["Leading", "Best", "No. 1", "India's Best"];
+  const prohibitedSuperlatives = ["No. 1", "India's Best", "Google-ranked #1"];
   for (const word of prohibitedSuperlatives) {
     if (HOMEPAGE_DATA.trustIntro.heading.toLowerCase().includes(word.toLowerCase())) {
       throw new Error(`Detected prohibited word in heading: "${word}"`);

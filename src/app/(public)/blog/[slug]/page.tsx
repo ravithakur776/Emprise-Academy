@@ -69,6 +69,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
       post.author.name,
     ],
     authors: [{ name: post.author.name }],
+    alternates: {
+      canonical: `https://empriseacademy.com/blog/${post.slug}`,
+    },
     openGraph: {
       title: pageTitle,
       description: pageDescription,
@@ -114,8 +117,96 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     ? "text-emerald-600"
     : "text-amber-600";
 
+  const targetCourseHref = isJee
+    ? "/iit-jee-coaching-mathura"
+    : isNeet
+    ? "/neet-coaching-mathura"
+    : isFoundation
+    ? "/foundation-coaching-mathura"
+    : "/courses";
+
+  const targetCourseLabel = isJee
+    ? "Explore JEE Coaching"
+    : isNeet
+    ? "Explore NEET Coaching"
+    : isFoundation
+    ? "Explore Foundation Classes"
+    : "Explore All Courses";
+
+  const blogPostingSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://empriseacademy.com/blog/${post.slug}`,
+    },
+    headline: post.title,
+    description: post.excerpt,
+    image: post.coverImage
+      ? post.coverImage.startsWith("http")
+        ? post.coverImage
+        : `https://empriseacademy.com${post.coverImage}`
+      : "https://empriseacademy.com/brand/logo.png",
+    datePublished: "2026-09-01T00:00:00+05:30",
+    dateModified: "2026-09-01T00:00:00+05:30",
+    author: {
+      "@type": "Person",
+      name: post.author.name,
+      jobTitle: post.author.title,
+      worksFor: {
+        "@type": "EducationalOrganization",
+        name: "Emprise Academy",
+        url: "https://empriseacademy.com",
+      },
+    },
+    publisher: {
+      "@type": "EducationalOrganization",
+      name: "Emprise Academy",
+      url: "https://empriseacademy.com",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://empriseacademy.com/brand/logo.png",
+      },
+    },
+  };
+
+  const breadcrumbsSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://empriseacademy.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: "https://empriseacademy.com/blog",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: post.title,
+        item: `https://empriseacademy.com/blog/${post.slug}`,
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-[var(--brand-background)] text-[var(--brand-text)]">
+      {/* Blog & Breadcrumb Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsSchema) }}
+      />
+
       {/* Navigation */}
       <Navbar />
 
@@ -439,14 +530,19 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </div>
 
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0 w-full sm:w-auto">
-                <Link href="/contact" className="w-full sm:w-auto">
+                <Link href={targetCourseHref} className="w-full sm:w-auto">
                   <Button variant="accent" size="md" className="w-full sm:w-auto font-bold shadow-md">
-                    Book Free Counseling
+                    {targetCourseLabel}
                   </Button>
                 </Link>
-                <Link href="/courses" className="w-full sm:w-auto">
+                <Link href="/results" className="w-full sm:w-auto">
                   <Button variant="secondary" size="md" className="w-full sm:w-auto font-bold bg-white text-slate-900 hover:bg-slate-100">
-                    Explore Courses
+                    Verified Results
+                  </Button>
+                </Link>
+                <Link href="/contact" className="w-full sm:w-auto">
+                  <Button variant="outline" size="md" className="w-full sm:w-auto font-bold text-white border-white/40 hover:bg-white/10">
+                    Contact Mathura Campus
                   </Button>
                 </Link>
               </div>

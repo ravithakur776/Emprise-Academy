@@ -4,7 +4,7 @@ import AboutDirectorsPage, { metadata as directorsMetadata } from "@/app/(public
 export const metadata: Metadata = {
   ...directorsMetadata,
   alternates: {
-    canonical: "https://www.empriseacademy.com/about/directors",
+    canonical: "https://empriseacademy.com/about/directors",
   },
 };
 

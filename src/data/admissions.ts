@@ -199,7 +199,7 @@ export const MAIN_ADMISSIONS_DATA = {
 
 export const MAIN_CONTACT_DATA = {
   meta: {
-    title: "Contact Emprise Academy | IIT-JEE & NEET Coaching in Mathura",
+    title: "Contact Emprise Academy | Mathura Coaching Centre",
     description:
       "Get in touch with Emprise Academy Mathura. Explore IIT-JEE, NEET-UG, and Foundation courses or schedule an in-person academic counselling session.",
     keywords: [
@@ -209,7 +209,7 @@ export const MAIN_CONTACT_DATA = {
       "NEET Coaching in Mathura Admissions",
       "Mathura Coaching Centre Location",
     ],
-    canonical: "https://www.empriseacademy.com/contact",
+    canonical: "https://empriseacademy.com/contact",
   },
   hero: {
     eyebrow: "GET IN TOUCH",

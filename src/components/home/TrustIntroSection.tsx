@@ -27,13 +27,16 @@ export const TrustIntroSection: React.FC = () => {
               <Badge variant="primary" size="md">
                 ACADEMIC EXCELLENCE • EST. 2011
               </Badge>
-              <h2 className="text-2xl sm:text-4xl lg:text-[2.65rem] font-extrabold text-[#0B2748] tracking-tight leading-[1.2]">
-                The Leader in{" "}
+              <h1 className="text-2xl sm:text-4xl lg:text-[2.65rem] font-extrabold text-[#0B2748] tracking-tight leading-[1.2]">
+                Best{" "}
                 <span className="text-[var(--brand-primary)]">
-                  IIT-JEE, NEET &amp; Foundation
+                  IIT-JEE &amp; NEET Coaching
                 </span>{" "}
-                Coaching in Mathura
-              </h2>
+                in Mathura
+              </h1>
+              <p className="text-sm sm:text-base font-semibold text-[#1769E0] tracking-wide">
+                Structured preparation for JEE Main, JEE Advanced, NEET and Foundation students with experienced faculty, regular testing, personalised mentorship and focused academic support.
+              </p>
             </div>
 
             {/* Approved Two-Paragraph Narrative */}

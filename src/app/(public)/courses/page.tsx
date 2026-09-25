@@ -43,13 +43,13 @@ export const metadata: Metadata = {
     "NEET Dropper Batch Mathura",
   ],
   alternates: {
-    canonical: "https://www.empriseacademy.com/courses",
+    canonical: "https://empriseacademy.com/courses",
   },
   openGraph: {
     title: "Academic Courses & Programmes | Emprise Academy Mathura",
     description:
       "Concept-first classroom preparation for IIT-JEE, NEET-UG, and Foundation (Classes 8–10) in Mathura. Established in 2011.",
-    url: "https://www.empriseacademy.com/courses",
+    url: "https://empriseacademy.com/courses",
     siteName: "Emprise Academy",
     locale: "en_IN",
     type: "website",
@@ -70,10 +70,10 @@ export default function CoursesPage() {
           type="EducationalOrganization"
           pageTitle="Academic Courses & Programmes | Emprise Academy Mathura"
           description="Explore structured classroom coaching programmes at Emprise Academy Mathura for IIT-JEE, NEET-UG, and Foundation (Classes 8–10)."
-          url="https://www.empriseacademy.com/courses"
+          url="https://empriseacademy.com/courses"
           breadcrumbs={[
-            { name: "Home", item: "https://www.empriseacademy.com" },
-            { name: "Courses", item: "https://www.empriseacademy.com/courses" },
+            { name: "Home", item: "https://empriseacademy.com" },
+            { name: "Courses", item: "https://empriseacademy.com/courses" },
           ]}
         />
 

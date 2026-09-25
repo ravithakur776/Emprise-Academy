@@ -26,13 +26,13 @@ export const metadata: Metadata = {
     "Rakesh Kumar Mathematics Mathura",
   ],
   alternates: {
-    canonical: "https://www.empriseacademy.com/about/directors",
+    canonical: "https://empriseacademy.com/about/directors",
   },
   openGraph: {
     title: "Directors & Academic Leadership | Emprise Academy Mathura",
     description:
       "Meet the academic leadership behind Emprise Academy: Sushil Dagur and Rakesh Kumar, bringing UK engineering precision to IIT-JEE & NEET coaching in Mathura.",
-    url: "https://www.empriseacademy.com/about/directors",
+    url: "https://empriseacademy.com/about/directors",
     siteName: "Emprise Academy",
     locale: "en_IN",
     type: "website",
@@ -50,11 +50,11 @@ export default function AboutDirectorsPage() {
           name="Sushil Dagur & Rakesh Kumar"
           jobTitle="Founding Directors"
           description={MAIN_DIRECTORS_DATA.meta.description}
-          url="https://www.empriseacademy.com/about/directors"
+          url="https://empriseacademy.com/about/directors"
           breadcrumbs={[
-            { name: "Home", item: "https://www.empriseacademy.com" },
-            { name: "About Us", item: "https://www.empriseacademy.com/about" },
-            { name: "Directors", item: "https://www.empriseacademy.com/about/directors" },
+            { name: "Home", item: "https://empriseacademy.com" },
+            { name: "About Us", item: "https://empriseacademy.com/about" },
+            { name: "Directors", item: "https://empriseacademy.com/about/directors" },
           ]}
         />
 

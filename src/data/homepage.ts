@@ -270,7 +270,7 @@ export const HOMEPAGE_DATA = {
   },
 
   trustIntro: {
-    heading: "The Leader in IIT-JEE, NEET & Foundation Coaching in Mathura",
+    heading: "Best IIT-JEE & NEET Coaching in Mathura",
     paragraph1:
       "Since 2011, Emprise Academy has been transforming aspirations into achievements and shaping the careers of thousands of students in Mathura. Over the years, the academy has earned a strong reputation as one of the leading IIT-JEE and NEET coaching institutes in Mathura and a trusted name for competitive examination preparation.",
     paragraph2:

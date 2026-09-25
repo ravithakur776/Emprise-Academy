@@ -65,9 +65,9 @@ export const CANONICAL_BUSINESS_CONFIG: CanonicalBusinessConfig = {
   established_year: 2011,
   years_of_excellence: "15+ Years of Academic Excellence",
   years_of_excellence_enabled: true,
-  primary_positioning: "IIT-JEE & NEET Coaching in Mathura",
+  primary_positioning: "Best IIT-JEE & NEET Coaching in Mathura",
   secondary_pillar: "Foundation Classes 8–10",
-  website_url: "https://www.empriseacademy.com/",
+  website_url: "https://empriseacademy.com/",
   logo_url: "/images/emprise-academy-logo.png",
 
   address: {

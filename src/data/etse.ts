@@ -33,7 +33,7 @@ export interface EtseFaqItem {
 
 export const MAIN_ETSE_DATA = {
   meta: {
-    title: "ETSE 2026 – Emprise Talent Search Exam | Mathura | Emprise Academy",
+    title: "ETSE 2026 | Emprise Talent Search Examination | Mathura",
     description:
       "Register FREE for Emprise Talent Search Examination (ETSE 2026) for Classes 7–10 in Mathura. Exam Date: 27 September 2026. Earn merit scholarships, rank benchmarking, and academic recognition.",
     keywords: [

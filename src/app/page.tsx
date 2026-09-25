@@ -20,15 +20,19 @@ import { HomepageJsonLd } from "@/components/home/HomepageJsonLd";
 import { DesktopScrollProgress } from "@/components/home/DesktopScrollProgress";
 
 export const metadata: Metadata = {
-  title: "IIT-JEE & NEET Coaching in Mathura | Emprise Academy",
+  title: "Best IIT-JEE & NEET Coaching in Mathura | Emprise Academy",
   description:
-    "Emprise Academy is Mathura's premier coaching institute for IIT-JEE (Main & Advanced), NEET-UG, and Foundation (Classes 8–10). Established in 2011 with concept-based pedagogy, experienced mentors, and proven results.",
+    "Emprise Academy is Mathura's premier coaching institute for IIT-JEE (Main & Advanced), NEET-UG, and Foundation (Classes 8–10). Structured academic preparation, experienced faculty, personalised mentorship, and proven results since 2011.",
   keywords: [
+    "Best IIT-JEE & NEET Coaching in Mathura",
+    "Best IIT-JEE Coaching in Mathura",
+    "Best NEET Coaching in Mathura",
     "IIT-JEE Coaching in Mathura",
     "NEET Coaching in Mathura",
     "JEE Main Coaching in Mathura",
     "JEE Advanced Coaching in Mathura",
     "Foundation Coaching in Mathura",
+    "Foundation Classes 8–10 in Mathura",
     "JEE Preparation in Mathura",
     "NEET Preparation in Mathura",
     "ETSE 2026",
@@ -38,9 +42,9 @@ export const metadata: Metadata = {
     canonical: "https://empriseacademy.com",
   },
   openGraph: {
-    title: "IIT-JEE & NEET Coaching in Mathura | Emprise Academy",
+    title: "Best IIT-JEE & NEET Coaching in Mathura | Emprise Academy",
     description:
-      "Established in 2011, Emprise Academy provides structured academic preparation, experienced faculty, and regular testing for IIT-JEE, NEET-UG, and Foundation in Mathura.",
+      "Emprise Academy is Mathura's premier coaching institute for IIT-JEE (Main & Advanced), NEET-UG, and Foundation (Classes 8–10). Structured academic preparation, experienced faculty, personalised mentorship, and proven results since 2011.",
     url: "https://empriseacademy.com",
     siteName: "Emprise Academy",
     locale: "en_IN",
@@ -48,9 +52,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "IIT-JEE & NEET Coaching in Mathura | Emprise Academy",
+    title: "Best IIT-JEE & NEET Coaching in Mathura | Emprise Academy",
     description:
-      "Premier coaching institute for IIT-JEE, NEET-UG, and Foundation Classes 8–10 in Mathura. Established in 2011.",
+      "Structured preparation for JEE Main, JEE Advanced, NEET and Foundation students with experienced faculty, regular testing, personalised mentorship and focused academic support in Mathura.",
   },
 };
 

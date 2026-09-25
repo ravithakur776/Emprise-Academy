@@ -31,13 +31,13 @@ export const metadata: Metadata = {
     "Raj Bhavan Education Summit",
   ],
   alternates: {
-    canonical: "https://www.empriseacademy.com/about/awards",
+    canonical: "https://empriseacademy.com/about/awards",
   },
   openGraph: {
     title: "Awards & Accolades | Emprise Academy Mathura",
     description:
       "A dedicated space for Emprise Academy's awards, institutional honors, and recognition across 15+ years in Mathura.",
-    url: "https://www.empriseacademy.com/about/awards",
+    url: "https://empriseacademy.com/about/awards",
     siteName: "Emprise Academy",
     locale: "en_IN",
     type: "website",
@@ -55,11 +55,11 @@ export default function AwardsPage() {
           type="EducationalOrganization"
           pageTitle="Awards & Accolades | Emprise Academy Mathura"
           description="Explore the recognition, awards, and institutional accolades of Emprise Academy Mathura."
-          url="https://www.empriseacademy.com/about/awards"
+          url="https://empriseacademy.com/about/awards"
           breadcrumbs={[
-            { name: "Home", item: "https://www.empriseacademy.com" },
-            { name: "About Us", item: "https://www.empriseacademy.com/about" },
-            { name: "Awards & Accolades", item: "https://www.empriseacademy.com/about/awards" },
+            { name: "Home", item: "https://empriseacademy.com" },
+            { name: "About Us", item: "https://empriseacademy.com/about" },
+            { name: "Awards & Accolades", item: "https://empriseacademy.com/about/awards" },
           ]}
         />
 

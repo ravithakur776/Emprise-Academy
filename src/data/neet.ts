@@ -36,7 +36,7 @@ export interface NeetFaqItem {
 
 export const MAIN_NEET_DATA = {
   meta: {
-    title: "NEET Coaching in Mathura | NEET-UG Preparation | Emprise Academy",
+    title: "NEET Coaching in Mathura | Emprise Academy",
     description:
       "Emprise Academy offers structured NEET-UG coaching in Mathura with NCERT-aligned conceptual clarity, regular test series in Physics, Chemistry & Biology, and personalized mentorship.",
     keywords: [

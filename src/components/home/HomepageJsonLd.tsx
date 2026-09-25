@@ -29,10 +29,25 @@ export const HomepageJsonLd: React.FC = () => {
       "Premier coaching institute in Mathura for IIT-JEE (Main & Advanced), NEET-UG, and Foundation (Classes 8-10). Established in 2011 with concept-based learning and expert mentorship.",
     url: business.website_url,
     logo: `${business.website_url}images/emprise-academy-logo.png`,
+    image: `${business.website_url}images/emprise-jee-main-advanced-2026-mathura-toppers.png`,
     foundingDate: String(business.established_year),
     telephone: business.contact.phone_primary,
     email: business.contact.email,
+    priceRange: "$$",
     address: postalAddress,
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
+      opens: "10:00",
+      closes: "19:00",
+    },
     sameAs,
     hasOfferCatalog: {
       "@type": "OfferCatalog",
@@ -69,6 +84,20 @@ export const HomepageJsonLd: React.FC = () => {
           },
         },
       ],
+    },
+  };
+
+  const websiteSchema: Record<string, any> = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: business.academy_name,
+    url: business.website_url,
+    description:
+      "Best IIT-JEE & NEET Coaching in Mathura. Structured preparation for JEE Main, Advanced, NEET, and Foundation Classes 8–10.",
+    publisher: {
+      "@type": "EducationalOrganization",
+      name: business.academy_name,
+      logo: `${business.website_url}images/emprise-academy-logo.png`,
     },
   };
 

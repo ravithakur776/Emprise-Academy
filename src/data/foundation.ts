@@ -36,7 +36,7 @@ export interface FoundationFaqItem {
 
 export const MAIN_FOUNDATION_DATA = {
   meta: {
-    title: "Foundation Coaching in Mathura | Classes 8, 9 & 10 | Emprise Academy",
+    title: "Foundation Coaching Classes 8–10 in Mathura | Emprise Academy",
     description:
       "Emprise Academy offers structured Foundation coaching in Mathura for Classes 8, 9 & 10. Strengthen Mathematics and Science concepts, build logical thinking, and prepare for future competitive exams without pressure.",
     keywords: [
@@ -54,7 +54,7 @@ export const MAIN_FOUNDATION_DATA = {
   },
   hero: {
     eyebrow: "FOUNDATION ACADEMIC PROGRAMME",
-    h1: "Foundation Coaching for Classes 8, 9 & 10 in Mathura",
+    h1: "Foundation Coaching Classes 8–10 in Mathura",
     subheading: "Strong Fundamentals • Analytical Thinking • Problem Solving",
     paragraph:
       "At Emprise Academy, our Foundation programme helps students develop a genuine understanding of Science and Mathematics, cultivate structured problem-solving habits, and build academic confidence. Founded in 2011, we nurture curiosity and logical thinking early—setting the stage for future competitive readiness without premature examination pressure.",

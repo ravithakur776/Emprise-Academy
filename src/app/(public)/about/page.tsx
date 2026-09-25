@@ -45,13 +45,13 @@ export const metadata: Metadata = {
     "Best Coaching in Mathura Est 2011",
   ],
   alternates: {
-    canonical: "https://www.empriseacademy.com/about",
+    canonical: "https://empriseacademy.com/about",
   },
   openGraph: {
     title: "About Emprise Academy | IIT-JEE & NEET Coaching in Mathura",
     description:
       "Established in 2011, Emprise Academy provides structured academic coaching for IIT-JEE, NEET-UG, and Foundation in Mathura.",
-    url: "https://www.empriseacademy.com/about",
+    url: "https://empriseacademy.com/about",
     siteName: "Emprise Academy",
     locale: "en_IN",
     type: "website",
@@ -154,10 +154,10 @@ export default function AboutPage() {
           type="EducationalOrganization"
           pageTitle="About Emprise Academy | IIT-JEE & NEET Coaching in Mathura"
           description="Learn about Emprise Academy's history since 2011, academic pedagogy, and leadership excellence in Mathura."
-          url="https://www.empriseacademy.com/about"
+          url="https://empriseacademy.com/about"
           breadcrumbs={[
-            { name: "Home", item: "https://www.empriseacademy.com" },
-            { name: "About Us", item: "https://www.empriseacademy.com/about" },
+            { name: "Home", item: "https://empriseacademy.com" },
+            { name: "About Us", item: "https://empriseacademy.com/about" },
           ]}
         />
 

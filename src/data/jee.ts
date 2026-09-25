@@ -36,7 +36,7 @@ export interface JeeFaqItem {
 
 export const MAIN_JEE_DATA = {
   meta: {
-    title: "IIT-JEE Coaching in Mathura | JEE Main & Advanced | Emprise Academy",
+    title: "JEE Main & Advanced Coaching in Mathura | Emprise Academy",
     description:
       "Emprise Academy offers structured IIT-JEE coaching in Mathura for JEE Main and JEE Advanced. Concept-based learning, experienced mentors, regular testing, and personalized doubt resolution.",
     keywords: [
@@ -54,7 +54,7 @@ export const MAIN_JEE_DATA = {
   },
   hero: {
     eyebrow: "IIT-JEE ACADEMIC PROGRAMME",
-    h1: "IIT-JEE Coaching in Mathura",
+    h1: "JEE Main & Advanced Coaching in Mathura",
     subheading: "JEE Main | JEE Advanced | Physics | Chemistry | Mathematics",
     paragraph:
       "At Emprise Academy, our IIT-JEE preparation is engineered around deep conceptual derivations, multi-step problem solving, and relentless testing rigor. Founded in 2011 by University of Derby (UK) alumni, we bring the disciplined pedagogy of premier coaching hubs directly to Mathura.",

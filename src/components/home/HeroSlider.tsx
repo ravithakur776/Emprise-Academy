@@ -183,9 +183,9 @@ export const HeroSlider: React.FC = () => {
                 </span>
               </div>
 
-              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.15] text-white">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.15] text-white">
                 {slide.heading}
-              </h1>
+              </h2>
 
               <p className="text-sm sm:text-base lg:text-lg text-slate-100/90 leading-relaxed max-w-2xl font-normal">
                 {slide.subheading}

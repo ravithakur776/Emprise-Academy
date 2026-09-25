@@ -323,7 +323,7 @@ export const VERIFIED_TESTIMONIALS: VerifiedTestimonial[] = [
 
 export const MAIN_RESULTS_DATA = {
   meta: {
-    title: "JEE & NEET Results in Mathura | Emprise Academy",
+    title: "Emprise Academy JEE & NEET Results | Mathura",
     description:
       "Explore verified IIT-JEE and NEET-UG student results from Emprise Academy Mathura. Authentic scorecards, All India Ranks, college selections, and student preparation journeys.",
     keywords: [

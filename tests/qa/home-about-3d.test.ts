@@ -74,7 +74,7 @@ async function runHomeAbout3dTests() {
   if (!aboutContent.includes("About Emprise Academy | IIT-JEE & NEET Coaching in Mathura")) {
     throw new Error("About page missing canonical SEO title");
   }
-  if (!aboutContent.includes("https://www.empriseacademy.com/about")) {
+  if (!aboutContent.includes("https://empriseacademy.com/about")) {
     throw new Error("About page missing canonical URL");
   }
   if (!aboutContent.includes("SiteJsonLd")) {

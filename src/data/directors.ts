@@ -316,7 +316,7 @@ export const MAIN_DIRECTORS_DATA = {
       "Emprise Academy Founders",
       "IIT JEE Faculty Mathura",
     ],
-    canonical: "https://www.empriseacademy.com/directors",
+    canonical: "https://empriseacademy.com/directors",
   },
   hero: {
     eyebrow: "ACADEMIC LEADERSHIP",
