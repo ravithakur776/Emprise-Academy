@@ -203,7 +203,7 @@ export const HOMEPAGE_DATA = {
       tag: "IIT-JEE ACHIEVEMENT LEGACY • TOP IIT-JEE PERFORMERS",
       badge: "15 YEARS OF ACADEMIC EXCELLENCE",
       heading: "Top IIT-JEE Performers — Consistent Excellence",
-      subheading: "Consistent excellence. Brighter futures: Utkarsh (IIT-Dhanbad, 99.07 %ile, 100 Percentile Physics, JEE Main 2024), Shravan (IIT-Kanpur, 99.59 %ile, AIR-92 Cat., JEE Main 2023), and Umesh (IIT-Delhi, 99.86 %ile, AIR-645 Cat., JEE Main 2022).",
+      subheading: "Consistent excellence. Brighter futures: Utkarsh (IIT-Dhanbad, 99.07 %ile, 100 Percentile Physics, JEE Main 2024), Shravan (IIT-Kanpur, 99.59 %ile, AIR-92 Cat., JEE Main 2023), and Umesh (IIT-Delhi, 99.86 %ile, AIR-645 Gen., JEE Main 2022).",
       primaryBtn: { label: "View All Results", href: "/results" },
       secondaryBtn: { label: "Explore JEE Program", href: "/iit-jee-coaching-mathura" },
       gradient: "from-[#123E73] via-[#1769E0] to-[#0B2748]",
