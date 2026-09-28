@@ -144,12 +144,12 @@ const MASTER_RESULT_CREATIVES: FeaturedResultCreative[] = [
     badge: "15 YEARS OF ACADEMIC EXCELLENCE",
     heading: "Top IIT-JEE Performers — Consistent Excellence",
     subheading:
-      "Consistent excellence & brighter futures: Utkarsh (IIT-Dhanbad, 99.07 %ile, 100 Percentile Physics, JEE Main 2024), Shravan (IIT-Kanpur, 99.59 %ile, AIR-92 Cat., JEE Main 2023), and Umesh (IIT-Delhi, 99.86 %ile, AIR-645 Gen., JEE Main 2022).",
+      "Consistent excellence & brighter futures: Utkarsh (IIT-Dhanbad, 99.07 %ile, 100 Percentile Physics, JEE Main 2024), Shravan (IIT-Kanpur, 99.59 %ile, AIR-92 Cat., JEE Main 2023), and Umesh (IIT-Delhi, 99.86 %ile, AIR-645 Cat., JEE Main 2022).",
     keyMetric: "IIT Dhanbad, IIT Kanpur & IIT Delhi",
     highlights: [
       "Utkarsh — 99.07 %ile & 100 %ile Physics (IIT Dhanbad)",
       "Shravan — 99.59 %ile & AIR-92 Category (IIT Kanpur)",
-      "Umesh — 99.86 %ile & AIR-645 General (IIT Delhi)",
+      "Umesh — 99.86 %ile & AIR-645 Category (IIT Delhi)",
     ],
     students: [
       "Utkarsh (IIT Dhanbad)",
