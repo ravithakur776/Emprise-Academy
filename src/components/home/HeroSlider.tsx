@@ -50,8 +50,8 @@ export const HeroSlider: React.FC = () => {
         "/images/emprise-back-to-back-iit-bombay-achievers-2025-2026.png",
         "/images/emprise-jee-main-2026-top-performers.png",
         "/images/emprise-neet-ug-2026-result-achievers.png",
-        "/images/emprise-legacy-of-neet-excellence-aiims-toppers.png",
         "/images/emprise-top-iit-jee-performers-achievement-legacy.png",
+        "/images/emprise-legacy-of-neet-excellence-aiims-toppers.png",
         "/images/emprise-neet-2025-result-top-performers.png",
         "/images/emprise-jee-advanced-2025-govind-gupta-air-404-iit-bombay.png",
       ];

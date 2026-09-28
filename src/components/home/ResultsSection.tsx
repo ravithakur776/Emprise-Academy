@@ -137,30 +137,6 @@ const MASTER_RESULT_CREATIVES: FeaturedResultCreative[] = [
     targetHref: "/results",
   },
   {
-    id: "res-neet-excellence-aiims",
-    category: "NEET",
-    categoryLabel: "NEET (UG) • AIIMS",
-    tag: "A LEGACY OF NEET EXCELLENCE • TOP PERFORMERS",
-    badge: "AIIMS ADMISSIONS ACHIEVERS",
-    heading: "A Legacy of NEET Excellence — Top Performers",
-    subheading:
-      "Celebrating top medical performers: Tanisha (AIIMS Raebareli, NEET 2024), Aayan (AIIMS Gorakhpur, NEET 2023), and Shobhit (AIIMS Jodhpur, NEET 2022) — Medicos Begin Here! Your Dream. Our Guidance. Brighter Futures.",
-    keyMetric: "Consistent AIIMS Admissions Year After Year",
-    highlights: [
-      "Tanisha — AIIMS Raebareli (NEET 2024)",
-      "Aayan — AIIMS Gorakhpur (NEET 2023)",
-      "Shobhit — AIIMS Jodhpur (NEET 2022)",
-    ],
-    students: [
-      "Tanisha (AIIMS Raebareli)",
-      "Aayan (AIIMS Gorakhpur)",
-      "Shobhit (AIIMS Jodhpur)",
-    ],
-    imageSrc: "/images/emprise-legacy-of-neet-excellence-aiims-toppers.png",
-    imageAlt: "Emprise Academy — A Legacy of NEET Excellence AIIMS Toppers (Tanisha, Aayan, Shobhit)",
-    targetHref: "/results",
-  },
-  {
     id: "res-top-iit-jee-performers",
     category: "JEE_ADVANCED",
     categoryLabel: "IIT-JEE Legacy",
@@ -182,6 +158,30 @@ const MASTER_RESULT_CREATIVES: FeaturedResultCreative[] = [
     ],
     imageSrc: "/images/emprise-top-iit-jee-performers-achievement-legacy.png",
     imageAlt: "Emprise Academy — Top IIT-JEE Performers Achievement Legacy (Utkarsh IIT Dhanbad, Shravan IIT Kanpur, Umesh IIT Delhi)",
+    targetHref: "/results",
+  },
+  {
+    id: "res-neet-excellence-aiims",
+    category: "NEET",
+    categoryLabel: "NEET (UG) • AIIMS",
+    tag: "A LEGACY OF NEET EXCELLENCE • TOP PERFORMERS",
+    badge: "AIIMS ADMISSIONS ACHIEVERS",
+    heading: "A Legacy of NEET Excellence — Top Performers",
+    subheading:
+      "Celebrating top medical performers: Tanisha (AIIMS Raebareli, NEET 2024), Aayan (AIIMS Gorakhpur, NEET 2023), and Shobhit (AIIMS Jodhpur, NEET 2022) — Medicos Begin Here! Your Dream. Our Guidance. Brighter Futures.",
+    keyMetric: "Consistent AIIMS Admissions Year After Year",
+    highlights: [
+      "Tanisha — AIIMS Raebareli (NEET 2024)",
+      "Aayan — AIIMS Gorakhpur (NEET 2023)",
+      "Shobhit — AIIMS Jodhpur (NEET 2022)",
+    ],
+    students: [
+      "Tanisha (AIIMS Raebareli)",
+      "Aayan (AIIMS Gorakhpur)",
+      "Shobhit (AIIMS Jodhpur)",
+    ],
+    imageSrc: "/images/emprise-legacy-of-neet-excellence-aiims-toppers.png",
+    imageAlt: "Emprise Academy — A Legacy of NEET Excellence AIIMS Toppers (Tanisha, Aayan, Shobhit)",
     targetHref: "/results",
   },
   {
