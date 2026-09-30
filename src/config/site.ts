@@ -13,6 +13,7 @@ export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://empriseacademy.com",
   ogImage: "/images/og-emprise.png",
   establishedYear: 2011,
+  googleAnalyticsId: process.env.NEXT_PUBLIC_GA_ID || "G-FJGZCPVN5W",
   // Configurable excellence text (unverified data marked as pending confirmation)
   excellenceHighlight: "15+ Years of Academic Excellence",
   location: {
