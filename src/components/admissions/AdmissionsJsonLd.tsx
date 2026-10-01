@@ -34,9 +34,11 @@ export const AdmissionsJsonLd: React.FC<AdmissionsJsonLdProps> = ({
   }
 
   const orgElement: Record<string, any> = {
-    "@type": "EducationalOrganization",
+    "@type": ["EducationalOrganization", "LocalBusiness"],
+    "@id": `${business.website_url}#organization`,
     name: business.academy_name,
     url: business.website_url,
+    foundingDate: `${business.founding_year}`,
     address: postalAddress,
   };
 

@@ -32,24 +32,38 @@ export const ContactJsonLd: React.FC<ContactJsonLdProps> = ({
   ].filter(Boolean) as string[];
 
   const orgSchema: Record<string, any> = {
-    "@type": "EducationalOrganization",
+    "@type": ["EducationalOrganization", "LocalBusiness"],
     "@id": `${business.website_url}#organization`,
     name: business.academy_name,
+    alternateName: `${business.academy_name} Mathura`,
     url: business.website_url,
+    logo: `${business.website_url}images/emprise-academy-logo.png`,
+    image: `${business.website_url}images/emprise-academy-building-campus.jpg`,
     telephone: business.contact.phone_primary,
     email: business.contact.email,
+    foundingDate: `${business.founding_year}`,
     address: postalAddress,
-    sameAs,
-  };
-
-  const localBusinessSchema: Record<string, any> = {
-    "@type": "LocalBusiness",
-    name: `${business.academy_name} - ${business.primary_positioning}`,
-    image: `${business.website_url}images/emprise-academy-logo.png`,
-    url: business.website_url,
-    telephone: business.contact.phone_primary,
-    email: business.contact.email,
-    address: postalAddress,
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: business.address.coordinates.latitude,
+      longitude: business.address.coordinates.longitude,
+    },
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: business.contact.phone_primary,
+        contactType: "admissions and student counselling",
+        areaServed: "IN",
+        availableLanguage: ["Hindi", "English"],
+      },
+      {
+        "@type": "ContactPoint",
+        telephone: business.contact.phone_secondary,
+        contactType: "student support and academic queries",
+        areaServed: "IN",
+        availableLanguage: ["Hindi", "English"],
+      },
+    ],
     sameAs,
   };
 
@@ -57,7 +71,6 @@ export const ContactJsonLd: React.FC<ContactJsonLdProps> = ({
     "@context": "https://schema.org",
     "@graph": [
       orgSchema,
-      localBusinessSchema,
       {
         "@type": "BreadcrumbList",
         itemListElement: breadcrumbs.map((bc, idx) => ({

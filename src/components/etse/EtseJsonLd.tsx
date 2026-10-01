@@ -33,10 +33,11 @@ export const EtseJsonLd: React.FC<EtseJsonLdProps> = ({
   }
 
   const orgSchema: Record<string, any> = {
-    "@type": "EducationalOrganization",
-    "@id": `${business.website_url}/#organization`,
+    "@type": ["EducationalOrganization", "LocalBusiness"],
+    "@id": `${business.website_url}#organization`,
     name: business.academy_name,
     url: business.website_url,
+    foundingDate: `${business.founding_year}`,
     address: postalAddress,
   };
 

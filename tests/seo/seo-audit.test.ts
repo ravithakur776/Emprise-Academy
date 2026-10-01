@@ -65,17 +65,18 @@ console.log("✓ All 13 core academic landing pages have distinct intent mapping
 
 // 4. Local SEO NAP Consistency
 console.log("\n[TEST 4] Auditing Local SEO NAP Consistency (Mathura)...");
+import { CANONICAL_BUSINESS_CONFIG } from "../../src/config/business";
 const verifiedNAP = {
-  name: "Emprise Academy",
-  city: "Mathura",
-  state: "Uttar Pradesh",
-  postalCode: "281001",
+  name: CANONICAL_BUSINESS_CONFIG.academy_name,
+  city: CANONICAL_BUSINESS_CONFIG.address.city,
+  state: CANONICAL_BUSINESS_CONFIG.address.state,
+  postalCode: CANONICAL_BUSINESS_CONFIG.address.postal_code,
 };
 
-if (verifiedNAP.city !== "Mathura" || verifiedNAP.state !== "Uttar Pradesh") {
+if (verifiedNAP.city !== "Mathura" || verifiedNAP.state !== "Uttar Pradesh" || verifiedNAP.postalCode !== "281004") {
   throw new Error("Invalid Local SEO NAP values detected.");
 }
-console.log(`✓ Verified NAP consistency: ${verifiedNAP.name}, ${verifiedNAP.city}, ${verifiedNAP.state} ${verifiedNAP.postalCode}.`);
+console.log(`✓ Verified NAP consistency: ${verifiedNAP.name}, ${verifiedNAP.city}, ${verifiedNAP.state} - ${verifiedNAP.postalCode}.`);
 
 console.log("\n==================================================");
 console.log("ALL SEO AUDIT TESTS PASSED (100% SUCCESS)");

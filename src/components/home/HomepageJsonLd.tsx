@@ -20,18 +20,19 @@ export const HomepageJsonLd: React.FC = () => {
     business.social.youtube,
   ].filter(Boolean) as string[];
 
-  const schema: Record<string, any> = {
-    "@context": "https://schema.org",
+  // Single Authoritative Primary Business Entity
+  const organizationSchema: Record<string, any> = {
     "@type": ["EducationalOrganization", "LocalBusiness"],
+    "@id": `${business.website_url}#organization`,
     name: business.academy_name,
     alternateName: `${business.academy_name} Mathura`,
     description:
-      "Premier coaching institute in Mathura for IIT-JEE (Main & Advanced), NEET-UG, and Foundation (Classes 8-10). Established in 2011 with concept-based learning and expert mentorship.",
+      "Emprise Academy, established in 2011, provides IIT-JEE, NEET and Foundation coaching in Mathura with structured learning, experienced mentorship, regular testing and personalised academic support.",
     url: business.website_url,
     logo: `${business.website_url}images/emprise-academy-logo.png`,
-    image: `${business.website_url}images/emprise-jee-main-advanced-2026-mathura-toppers.png`,
+    image: `${business.website_url}images/emprise-academy-building-campus.jpg`,
     foundingDate: String(business.established_year),
-    telephone: business.contact.phone_primary,
+    telephone: [business.contact.phone_primary, business.contact.phone_secondary],
     email: business.contact.email,
     priceRange: "$$",
     address: postalAddress,
@@ -44,6 +45,7 @@ export const HomepageJsonLd: React.FC = () => {
         "Thursday",
         "Friday",
         "Saturday",
+        "Sunday",
       ],
       opens: "10:00",
       closes: "19:00",
@@ -51,7 +53,7 @@ export const HomepageJsonLd: React.FC = () => {
     sameAs,
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: "Coaching Programmes",
+      name: "Primary Educational Services",
       itemListElement: [
         {
           "@type": "Course",
@@ -59,8 +61,7 @@ export const HomepageJsonLd: React.FC = () => {
           description:
             "Comprehensive engineering entrance preparation for Class 11, 12, and Droppers in Mathura.",
           provider: {
-            "@type": "EducationalOrganization",
-            name: business.academy_name,
+            "@id": `${business.website_url}#organization`,
           },
         },
         {
@@ -69,8 +70,7 @@ export const HomepageJsonLd: React.FC = () => {
           description:
             "NCERT-focused medical entrance coaching with physics, chemistry, and biology test series in Mathura.",
           provider: {
-            "@type": "EducationalOrganization",
-            name: business.academy_name,
+            "@id": `${business.website_url}#organization`,
           },
         },
         {
@@ -79,8 +79,16 @@ export const HomepageJsonLd: React.FC = () => {
           description:
             "Science and Mathematics conceptual foundation for Olympiads and early JEE/NEET competitive preparation.",
           provider: {
-            "@type": "EducationalOrganization",
-            name: business.academy_name,
+            "@id": `${business.website_url}#organization`,
+          },
+        },
+        {
+          "@type": "Service",
+          name: "Digital Learning & Study Resources",
+          description:
+            "High-yield practice problem sheets, test analytics, and structured study resources for competitive aspirants.",
+          provider: {
+            "@id": `${business.website_url}#organization`,
           },
         },
       ],
@@ -88,22 +96,20 @@ export const HomepageJsonLd: React.FC = () => {
   };
 
   const websiteSchema: Record<string, any> = {
-    "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${business.website_url}#website`,
     name: business.academy_name,
     url: business.website_url,
     description:
       "Best IIT-JEE & NEET Coaching in Mathura. Structured preparation for JEE Main, Advanced, NEET, and Foundation Classes 8–10.",
     publisher: {
-      "@type": "EducationalOrganization",
-      name: business.academy_name,
-      logo: `${business.website_url}images/emprise-academy-logo.png`,
+      "@id": `${business.website_url}#organization`,
     },
   };
 
   const faqSchema: Record<string, any> = {
-    "@context": "https://schema.org",
     "@type": "FAQPage",
+    "@id": `${business.website_url}#faq`,
     mainEntity: HOMEPAGE_DATA.faqs.map((faq) => ({
       "@type": "Question",
       name: faq.question,
@@ -114,16 +120,15 @@ export const HomepageJsonLd: React.FC = () => {
     })),
   };
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [organizationSchema, websiteSchema, faqSchema],
+  };
+
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-    </>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+    />
   );
 };

@@ -40,7 +40,9 @@ export const NeetJsonLd: React.FC<NeetJsonLdProps> = ({
         url: url,
         provider: {
           "@type": "EducationalOrganization",
+          "@id": `${business.website_url}#organization`,
           name: business.academy_name,
+          url: business.website_url,
           sameAs: business.website_url,
           address: postalAddress,
         },

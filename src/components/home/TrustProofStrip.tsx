@@ -1,15 +1,13 @@
-"use client";
-
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
 import { Container } from "@/components/ui/layout/Container";
 import { Award, Users, CheckCircle2, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
 
 interface TrustMetricItem {
   id: string;
-  targetNum: number;
-  suffix: string;
-  prefix?: string;
+  value?: string | number;
+  suffix?: string;
   isTextValue?: boolean;
   textValue?: string;
   label: string;
@@ -20,15 +18,15 @@ interface TrustMetricItem {
 const TRUST_METRICS: TrustMetricItem[] = [
   {
     id: "legacy",
-    targetNum: 15,
+    value: CANONICAL_BUSINESS_CONFIG.legacy_years || 15,
     suffix: "+ Years",
-    label: "OF ACADEMIC LEGACY",
+    label: "OF ACADEMIC EXCELLENCE",
     sublabel: "Mentoring students in Mathura since 2011",
     icon: Award,
   },
   {
     id: "mentored",
-    targetNum: 5000,
+    value: "5000",
     suffix: "+",
     label: "STUDENTS MENTORED",
     sublabel: "Personalised care & concept coaching",
@@ -36,7 +34,7 @@ const TRUST_METRICS: TrustMetricItem[] = [
   },
   {
     id: "qualified",
-    targetNum: 700,
+    value: "700",
     suffix: "+",
     label: "STUDENTS QUALIFIED",
     sublabel: "Proven selections across JEE & NEET",
@@ -44,88 +42,30 @@ const TRUST_METRICS: TrustMetricItem[] = [
   },
   {
     id: "faculty",
-    targetNum: 0,
-    suffix: "",
     isTextValue: true,
-    textValue: "IITians & Doctors",
+    textValue: CANONICAL_BUSINESS_CONFIG.faculty_headline || "IITians & Doctors",
     label: "FACULTY",
     sublabel: "Director-led core classroom mentorship",
     icon: GraduationCap,
   },
 ];
 
+/**
+ * TrustProofStrip Component (Server-Side Rendered)
+ *
+ * Statically renders verified institutional proof metrics into initial HTML.
+ * Guarantees Googlebot and all search crawlers immediately receive:
+ * - 15+ Years of Academic Excellence
+ * - 5000+ Students Mentored
+ * - 700+ Students Qualified
+ * - IITians & Doctors Faculty
+ *
+ * Eliminates client-side counter initialization at 0.
+ */
 export const TrustProofStrip: React.FC = () => {
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const [counts, setCounts] = useState<{ [key: string]: number }>({
-    legacy: 0,
-    mentored: 0,
-    qualified: 0,
-  });
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    // Check reduced motion preference
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setCounts({
-        legacy: 15,
-        mentored: 5000,
-        qualified: 700,
-      });
-      setHasAnimated(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
-
-          const duration = 1400; // ms
-          const startTime = performance.now();
-
-          const animate = (currentTime: number) => {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            // Ease-out cubic curve
-            const easeProgress = 1 - Math.pow(1 - progress, 3);
-
-            setCounts({
-              legacy: Math.floor(easeProgress * 15),
-              mentored: Math.floor(easeProgress * 5000),
-              qualified: Math.floor(easeProgress * 700),
-            });
-
-            if (progress < 1) {
-              requestAnimationFrame(animate);
-            } else {
-              setCounts({
-                legacy: 15,
-                mentored: 5000,
-                qualified: 700,
-              });
-            }
-          };
-
-          requestAnimationFrame(animate);
-        }
-      },
-      { threshold: 0.25 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [hasAnimated]);
-
   return (
     <section
       id="proof-band"
-      ref={sectionRef}
       aria-label="Verified Institutional Proof & Academic Track Record"
       className="w-full bg-[#123E73] text-white border-y border-blue-900/60 py-6 sm:py-7 relative overflow-hidden select-none shadow-md z-10"
     >
@@ -140,7 +80,6 @@ export const TrustProofStrip: React.FC = () => {
           {TRUST_METRICS.map((metric, idx) => {
             const Icon = metric.icon;
             const isCount = !metric.isTextValue;
-            const countVal = counts[metric.id] ?? 0;
 
             return (
               <div
@@ -164,7 +103,7 @@ export const TrustProofStrip: React.FC = () => {
                   <div className="text-xl sm:text-2xl lg:text-[1.75rem] font-extrabold tracking-tight text-white leading-tight font-display">
                     {isCount ? (
                       <>
-                        <span>{countVal}</span>
+                        <span>{metric.value}</span>
                         <span className="text-[#FF8A00]">{metric.suffix}</span>
                       </>
                     ) : (

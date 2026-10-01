@@ -22,7 +22,7 @@ import { DesktopScrollProgress } from "@/components/home/DesktopScrollProgress";
 export const metadata: Metadata = {
   title: "Best IIT-JEE & NEET Coaching in Mathura | Emprise Academy",
   description:
-    "Emprise Academy is Mathura's premier coaching institute for IIT-JEE (Main & Advanced), NEET-UG, and Foundation (Classes 8–10). Structured academic preparation, experienced faculty, personalised mentorship, and proven results since 2011.",
+    "Emprise Academy, established in 2011, provides IIT-JEE, NEET and Foundation coaching in Mathura with structured learning, experienced mentorship, regular testing and personalised academic support.",
   keywords: [
     "Best IIT-JEE & NEET Coaching in Mathura",
     "Best IIT-JEE Coaching in Mathura",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Best IIT-JEE & NEET Coaching in Mathura | Emprise Academy",
     description:
-      "Emprise Academy is Mathura's premier coaching institute for IIT-JEE (Main & Advanced), NEET-UG, and Foundation (Classes 8–10). Structured academic preparation, experienced faculty, personalised mentorship, and proven results since 2011.",
+      "Emprise Academy, established in 2011, provides IIT-JEE, NEET and Foundation coaching in Mathura with structured learning, experienced mentorship, regular testing and personalised academic support.",
     url: "https://empriseacademy.com",
     siteName: "Emprise Academy",
     locale: "en_IN",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Best IIT-JEE & NEET Coaching in Mathura | Emprise Academy",
     description:
-      "Structured preparation for JEE Main, JEE Advanced, NEET and Foundation students with experienced faculty, regular testing, personalised mentorship and focused academic support in Mathura.",
+      "Emprise Academy, established in 2011, provides IIT-JEE, NEET and Foundation coaching in Mathura with structured learning, experienced mentorship, regular testing and personalised academic support.",
   },
 };
 

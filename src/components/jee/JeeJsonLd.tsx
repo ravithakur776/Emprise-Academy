@@ -40,7 +40,9 @@ export const JeeJsonLd: React.FC<JeeJsonLdProps> = ({
         url: url,
         provider: {
           "@type": "EducationalOrganization",
+          "@id": `${business.website_url}#organization`,
           name: business.academy_name,
+          url: business.website_url,
           sameAs: business.website_url,
           address: postalAddress,
         },

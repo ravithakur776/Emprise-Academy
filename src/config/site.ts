@@ -4,23 +4,30 @@
  * Established 2011
  */
 
+import { CANONICAL_BUSINESS_CONFIG } from "./business";
+
 export const siteConfig = {
-  name: "Emprise Academy",
-  shortName: "Emprise",
+  name: CANONICAL_BUSINESS_CONFIG.academy_name,
+  shortName: CANONICAL_BUSINESS_CONFIG.short_name,
   tagline: "Premier Institute for IIT-JEE, NEET-UG & Foundation in Mathura",
   description:
-    "Empowering future doctors and engineers with rigorous academic training, expert mentorship, and comprehensive test series since 2011 in Mathura.",
+    "Emprise Academy, established in 2011, provides IIT-JEE, NEET and Foundation coaching in Mathura with structured learning, experienced mentorship, regular testing and personalised academic support.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://empriseacademy.com",
   ogImage: "/images/og-emprise.png",
-  establishedYear: 2011,
+  establishedYear: CANONICAL_BUSINESS_CONFIG.established_year,
   googleAnalyticsId: process.env.NEXT_PUBLIC_GA_ID || "G-FJGZCPVN5W",
-  // Configurable excellence text (unverified data marked as pending confirmation)
-  excellenceHighlight: "15+ Years of Academic Excellence",
+  excellenceHighlight: CANONICAL_BUSINESS_CONFIG.years_of_excellence,
+  academicLegacy: CANONICAL_BUSINESS_CONFIG.academic_legacy,
+  studentsMentored: CANONICAL_BUSINESS_CONFIG.students_mentored,
+  studentsQualified: CANONICAL_BUSINESS_CONFIG.students_qualified,
   location: {
-    city: "Mathura",
-    state: "Uttar Pradesh",
-    country: "India",
-    addressPending: true, // Specific address to be configured in settings
+    city: CANONICAL_BUSINESS_CONFIG.address.city,
+    state: CANONICAL_BUSINESS_CONFIG.address.state,
+    country: CANONICAL_BUSINESS_CONFIG.address.country,
+    streetAddress: CANONICAL_BUSINESS_CONFIG.address.street_address,
+    postalCode: CANONICAL_BUSINESS_CONFIG.address.postal_code,
+    fullAddress: CANONICAL_BUSINESS_CONFIG.address.display_location,
+    addressPending: false,
   },
   academicPillars: [
     {
@@ -47,8 +54,10 @@ export const siteConfig = {
     adminLogin: "/admin/login",
   },
   contact: {
-    email: "info@empriseacademy.com", // verified placeholder to be configured via admin settings
-    phone: "+91-XXXXXXXXXX", // placeholder marked for admin configuration
+    email: CANONICAL_BUSINESS_CONFIG.contact.email,
+    phone: CANONICAL_BUSINESS_CONFIG.contact.phone_primary,
+    phoneSecondary: CANONICAL_BUSINESS_CONFIG.contact.phone_secondary,
+    phones: CANONICAL_BUSINESS_CONFIG.phones,
   },
 } as const;
 

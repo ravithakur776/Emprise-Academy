@@ -10,12 +10,23 @@ export interface CanonicalBusinessConfig {
   short_name: string;
   tagline: string | null;
   established_year: number;
+  founding_year: number;
   years_of_excellence: string;
   years_of_excellence_enabled: boolean;
+  academic_legacy: string;
+  legacy_years: number;
+  students_mentored: string;
+  students_qualified: string;
+  national_awards: string;
+  faculty_headline: string;
   primary_positioning: string;
   secondary_pillar: string;
   website_url: string;
+  canonical_url: string;
   logo_url: string;
+  image_url: string;
+  primary_services: readonly string[];
+  phones: readonly string[];
 
   address: {
     street_address: string;
@@ -26,6 +37,10 @@ export interface CanonicalBusinessConfig {
     country_code: string;
     display_location: string;
     short_location: string;
+    coordinates: {
+      latitude: number;
+      longitude: number;
+    };
   };
 
   contact: {
@@ -63,12 +78,28 @@ export const CANONICAL_BUSINESS_CONFIG: CanonicalBusinessConfig = {
   short_name: "Emprise",
   tagline: null, // N/A — Official Tagline is not provided. Do NOT render unverified taglines.
   established_year: 2011,
+  founding_year: 2011,
   years_of_excellence: "15+ Years of Academic Excellence",
   years_of_excellence_enabled: true,
+  academic_legacy: "15+ Years of Academic Excellence",
+  legacy_years: 15,
+  students_mentored: "5000+",
+  students_qualified: "700+",
+  national_awards: "7+",
+  faculty_headline: "IITians & Doctors",
   primary_positioning: "Best IIT-JEE & NEET Coaching in Mathura",
   secondary_pillar: "Foundation Classes 8–10",
-  website_url: "https://empriseacademy.com/",
+  website_url: "https://www.empriseacademy.com/",
+  canonical_url: "https://empriseacademy.com/",
   logo_url: "/images/emprise-academy-logo.png",
+  image_url: "/images/emprise-academy-building-campus.jpg",
+  primary_services: [
+    "IIT-JEE Coaching",
+    "NEET Coaching",
+    "Foundation Coaching",
+    "Digital Learning & Study Resources",
+  ] as const,
+  phones: ["+91 7247889955", "+91 9634448800"] as const,
 
   address: {
     street_address: "Near Tera Tower, Bhuteshwar Road",
@@ -79,6 +110,10 @@ export const CANONICAL_BUSINESS_CONFIG: CanonicalBusinessConfig = {
     country_code: "IN",
     display_location: "Near Tera Tower, Bhuteshwar Road, Mathura, Uttar Pradesh - 281004",
     short_location: "Near Tera Tower, Bhuteshwar Road, Mathura",
+    coordinates: {
+      latitude: 27.5023,
+      longitude: 77.6737,
+    },
   },
 
   contact: {

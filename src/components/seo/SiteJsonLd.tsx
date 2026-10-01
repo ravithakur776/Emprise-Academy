@@ -61,13 +61,32 @@ export const SiteJsonLd: React.FC<SiteJsonLdProps> = ({
 
   const orgSchema: Record<string, any> = {
     "@type": ["EducationalOrganization", "LocalBusiness"],
+    "@id": `${business.website_url}#organization`,
     name: business.academy_name,
     alternateName: `${business.academy_name} Mathura`,
     url: business.website_url,
     logo: `${business.website_url}images/emprise-academy-logo.png`,
+    image: `${business.website_url}images/emprise-academy-building-campus.jpg`,
     telephone: business.contact.phone_primary,
     email: business.contact.email,
+    foundingDate: `${business.founding_year}`,
     address: postalAddress,
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: business.contact.phone_primary,
+        contactType: "admissions and student counselling",
+        areaServed: "IN",
+        availableLanguage: ["Hindi", "English"],
+      },
+      {
+        "@type": "ContactPoint",
+        telephone: business.contact.phone_secondary,
+        contactType: "student support and academic queries",
+        areaServed: "IN",
+        availableLanguage: ["Hindi", "English"],
+      },
+    ],
     sameAs,
   };
 

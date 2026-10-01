@@ -56,8 +56,10 @@ export const DirectorJsonLd: React.FC<DirectorJsonLdProps> = ({
     },
     worksFor: {
       "@type": "EducationalOrganization",
+      "@id": `${business.website_url}#organization`,
       name: business.academy_name,
       url: business.website_url,
+      foundingDate: `${business.founding_year}`,
       address: postalAddress,
     },
     knowsAbout: knowsAbout,

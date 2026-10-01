@@ -35,9 +35,11 @@ export const ScholarshipJsonLd: React.FC<ScholarshipJsonLdProps> = ({
 
   const graphElements: any[] = [
     {
-      "@type": "EducationalOrganization",
+      "@type": ["EducationalOrganization", "LocalBusiness"],
+      "@id": `${business.website_url}#organization`,
       name: business.academy_name,
       url: business.website_url,
+      foundingDate: `${business.founding_year}`,
       address: postalAddress,
     },
     {
