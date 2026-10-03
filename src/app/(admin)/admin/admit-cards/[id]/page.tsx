@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
 import { useToast } from "@/components/ui/toast/ToastProvider";
 import { EmpriseLogo } from "@/components/brand/EmpriseLogo";
+import { ETSE_CONFIG } from "@/config/etse";
 import {
   ArrowLeft,
   Printer,
@@ -40,7 +41,7 @@ export default function AdminAdmitCardDetailPage({
     class: "Class 8",
     school: "St. Dominic's Senior Secondary School, Mathura",
     examTitle: "Emprise Talent Search Examination (ETSE 2026)",
-    examDate: "27 September 2026",
+    examDate: ETSE_CONFIG.examDateDisplay,
     examTime: "10:00 AM – 12:00 PM",
     reportingTime: "09:15 AM",
     centre: "Emprise Academy Campus, Mathura",

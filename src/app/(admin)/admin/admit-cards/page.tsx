@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
 import { Input, Select } from "@/components/ui/form/Input";
 import { useToast } from "@/components/ui/toast/ToastProvider";
+import { ETSE_CONFIG } from "@/config/etse";
 import {
   CreditCard,
   Search,
@@ -43,7 +44,7 @@ export default function AdminAdmitCardsPage() {
       class: "Class 8",
       school: "St. Dominic's Senior Secondary",
       examTitle: "ETSE 2026",
-      examDate: "27 Sept 2026",
+      examDate: ETSE_CONFIG.shortDateDisplay,
       centre: "Emprise Academy Campus, Mathura",
       status: "PUBLISHED",
       generatedAt: "26 Aug 2026",
@@ -58,7 +59,7 @@ export default function AdminAdmitCardsPage() {
       class: "Class 10",
       school: "Kanha Makhan Public School",
       examTitle: "ETSE 2026",
-      examDate: "27 Sept 2026",
+      examDate: ETSE_CONFIG.shortDateDisplay,
       centre: "Emprise Academy Campus, Mathura",
       status: "PUBLISHED",
       generatedAt: "26 Aug 2026",
@@ -73,7 +74,7 @@ export default function AdminAdmitCardsPage() {
       class: "Class 9",
       school: "Delhi Public School, Mathura",
       examTitle: "ETSE 2026",
-      examDate: "27 Sept 2026",
+      examDate: ETSE_CONFIG.shortDateDisplay,
       centre: "Emprise Academy Campus, Mathura",
       status: "DRAFT",
       generatedAt: "25 Aug 2026",
@@ -175,7 +176,7 @@ export default function AdminAdmitCardsPage() {
 
           <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 shadow-xs space-y-1">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Exam Date</span>
-            <div className="text-xl font-bold text-slate-900">27 Sept 2026</div>
+            <div className="text-xl font-bold text-slate-900">{ETSE_CONFIG.shortDateDisplay}</div>
             <span className="text-[10px] text-slate-500">10:00 AM – 12:00 PM</span>
           </div>
         </div>

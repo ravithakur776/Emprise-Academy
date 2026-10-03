@@ -1,5 +1,6 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "@/types/database";
+import { ETSE_CONFIG, formatEtseExamDate } from "@/config/etse";
 
 export interface StudentDashboardPayload {
   user: {
@@ -105,8 +106,8 @@ export async function getStudentDashboardData(
       id: latestApp.id,
       title: examData.title || "Emprise Talent Search Examination 2026 (ETSE 2026)",
       examDate: examData.exam_date
-        ? `${new Date(examData.exam_date).toLocaleDateString("en-IN", { weekday: "long", year: "numeric", month: "long", day: "numeric" })} (${examData.exam_time || "10:00 AM"})`
-        : "Sunday, 27 September 2026 (10:00 AM)",
+        ? `${formatEtseExamDate(examData.exam_date, { includeWeekday: true })} (${examData.exam_time || "10:00 AM"})`
+        : `${ETSE_CONFIG.fullDisplay} (10:00 AM)`,
       status: latestApp.status || "CONFIRMED",
       centre: centreData.centre_name ? `${centreData.centre_name}, ${centreData.city || "Mathura"}` : "Emprise Academy Campus, Mathura",
       applicationNo: latestApp.application_number,

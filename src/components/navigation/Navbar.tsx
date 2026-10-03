@@ -10,6 +10,7 @@ import { NavLink } from "@/components/ui/link/NavLink";
 import { Drawer } from "@/components/ui/modal/Drawer";
 import { EmpriseLogo } from "@/components/brand/EmpriseLogo";
 import { HOMEPAGE_DATA } from "@/data/homepage";
+import { ETSE_CONFIG } from "@/config/etse";
 import { createClientBrowser } from "@/lib/supabase/client";
 import {
   Sparkles,
@@ -147,10 +148,10 @@ export const Navbar: React.FC = () => {
               ETSE
             </span>
             <span className="hidden md:inline truncate text-slate-200">
-              Emprise Talent Search Examination • Exam on 27 September 2026 • 100% Free Registration Open for Classes 7th to 10th
+              Emprise Talent Search Examination • Exam on 25 October 2026 • 100% Free Registration Open for Classes 7th to 10th
             </span>
             <span className="md:hidden truncate text-slate-200">
-              • Exam: 27 Sept 2026 • Classes 7th–10th • FREE
+              • Exam: 25 Oct 2026 • Classes 7th–10th • FREE
             </span>
           </div>
 
@@ -538,7 +539,7 @@ export const Navbar: React.FC = () => {
           <div className="p-3.5 rounded-2xl bg-[var(--brand-primary-soft)] border border-blue-200/80 space-y-2">
             <div className="text-xs font-bold text-[var(--brand-primary-dark)] flex items-center gap-1.5">
               <Sparkles className="w-4 h-4 text-[var(--brand-accent)]" />
-              <span>ETSE 2026 — 27 Sept 2026</span>
+              <span>ETSE 2026 — {ETSE_CONFIG.shortDateDisplay}</span>
             </div>
             <p className="text-[11px] text-[var(--brand-text-secondary)]">
               100% Free scholarship registration open for Classes 7th to 10th.

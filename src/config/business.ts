@@ -5,6 +5,8 @@
  * Official verified data provided for Phase 5.2B.
  */
 
+import { ETSE_CONFIG } from "./etse";
+
 export interface CanonicalBusinessConfig {
   academy_name: string;
   short_name: string;
@@ -67,6 +69,8 @@ export interface CanonicalBusinessConfig {
     name: string;
     short_name: string;
     exam_date: string;
+    exam_date_iso?: string;
+    exam_day?: string;
     eligible_classes: readonly string[];
     fee: string;
     mode: string;
@@ -139,7 +143,9 @@ export const CANONICAL_BUSINESS_CONFIG: CanonicalBusinessConfig = {
   etse: {
     name: "Emprise Talent Search Examination",
     short_name: "ETSE 2026",
-    exam_date: "27 September 2026",
+    exam_date: ETSE_CONFIG.examDateDisplay,
+    exam_date_iso: ETSE_CONFIG.examDateIso,
+    exam_day: ETSE_CONFIG.examDay,
     eligible_classes: ["Class 7", "Class 8", "Class 9", "Class 10"] as const,
     fee: "FREE",
     mode: "Offline (Pen & Paper)",

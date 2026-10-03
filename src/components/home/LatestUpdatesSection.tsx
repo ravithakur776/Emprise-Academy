@@ -20,7 +20,7 @@ const ANNOUNCEMENT_VISUALS: Record<string, AnnouncementVisualConfig> = {
   "up-1": {
     imageSrc: "/images/announcements/etse-2026-exam-confirmed.jpg",
     imageAlt: "Emprise Academy ETSE 2026 Talent Search Examination",
-    formattedDate: "27 SEP 2026",
+    formattedDate: "25 OCT 2026",
     categoryTag: "ETSE",
   },
   "up-2": {

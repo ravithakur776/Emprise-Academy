@@ -3,6 +3,8 @@
  * Single source of truth for Phase 4.6 Scholarship Programme Ecosystem
  */
 
+import { ETSE_CONFIG } from "@/config/etse";
+
 export interface ScholarshipTypeItem {
   id: string;
   title: string;
@@ -203,7 +205,7 @@ export const MAIN_SCHOLARSHIP_DATA = {
     title: "Emprise Talent Search Examination (ETSE 2026)",
     description:
       "ETSE is our flagship scholarship and talent discovery examination conducted annually for middle-school and secondary students across Western Uttar Pradesh. Outstanding performers earn merit-based fee concessions for our Foundation, JEE, and NEET classroom batches.",
-    examDate: "27 September 2026",
+    examDate: ETSE_CONFIG.examDateDisplay,
     eligibleClasses: "Classes 7th to 10th",
     registrationFee: "FREE (Zero Application Fee)",
     ctaLabel: "Learn More About ETSE 2026",

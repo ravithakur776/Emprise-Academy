@@ -27,6 +27,7 @@ import { EmpriseImage } from "@/components/ui/media/EmpriseImage";
 import { TextLink, ArrowLink, Breadcrumbs } from "@/components/ui/link/TextLink";
 import { Navbar } from "@/components/navigation/Navbar";
 import { Footer, MobileBottomCTA } from "@/components/navigation/Footer";
+import { ETSE_CONFIG } from "@/config/etse";
 import {
   Sparkles,
   Trophy,
@@ -336,7 +337,7 @@ function DesignSystemContent() {
               id: "e1",
               title: "Emprise Talent Search Examination (ETSE) 2026",
               year: 2026,
-              examDate: "27 September 2026",
+              examDate: ETSE_CONFIG.examDateDisplay,
               examTime: "10:00 AM - 01:00 PM",
               reportingTime: "09:15 AM",
               eligibleClasses: ["Class 7", "Class 8", "Class 9", "Class 10"],
@@ -578,7 +579,7 @@ function DesignSystemContent() {
           <p><span className="font-bold">Candidate Name:</span> Aarav Sharma</p>
           <p><span className="font-bold">Roll Number:</span> 2026100001</p>
           <p><span className="font-bold">Exam Centre:</span> Emprise Academy Main Campus, Mathura</p>
-          <p><span className="font-bold">Exam Date:</span> 27 September 2026 (10:00 AM)</p>
+          <p><span className="font-bold">Exam Date:</span> {ETSE_CONFIG.examDateDisplay} (10:00 AM)</p>
         </div>
       </Modal>
 

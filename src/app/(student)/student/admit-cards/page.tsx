@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
 import { EmpriseLogo } from "@/components/brand/EmpriseLogo";
 import { createClientBrowser } from "@/lib/supabase/client";
+import { ETSE_CONFIG, formatEtseExamDate } from "@/config/etse";
 import {
   CreditCard,
   Calendar,
@@ -97,21 +98,8 @@ export default function StudentAdmitCardsPage() {
           }
 
           // Format Exam Date
-          const rawExamDate = ac.exam_date || exam.exam_date || "2026-09-27";
-          let formattedExamDate = "Sunday, 27 September 2026";
-          if (rawExamDate) {
-            try {
-              const ed = new Date(rawExamDate);
-              formattedExamDate = ed.toLocaleDateString("en-IN", {
-                weekday: "long",
-                day: "2-digit",
-                month: "long",
-                year: "numeric",
-              });
-            } catch {
-              formattedExamDate = String(rawExamDate);
-            }
-          }
+          const rawExamDate = ac.exam_date || exam.exam_date || ETSE_CONFIG.examDate;
+          const formattedExamDate = formatEtseExamDate(rawExamDate, { includeWeekday: true });
 
           return {
             id: ac.id,

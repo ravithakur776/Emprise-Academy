@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
 import { createClientBrowser } from "@/lib/supabase/client";
 import { ArrowLeft, CreditCard, Building, Calendar, CheckCircle2, ShieldCheck, Printer, AlertCircle, RefreshCw } from "lucide-react";
+import { ETSE_CONFIG, formatEtseExamDate } from "@/config/etse";
 
 export default function StudentApplicationDetailPage({
   params,
@@ -71,8 +72,8 @@ export default function StudentApplicationDetailPage({
           year: "numeric",
         }),
         examDate: exam.exam_date
-          ? new Date(exam.exam_date).toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" })
-          : "Sunday, 27 September 2026",
+          ? formatEtseExamDate(exam.exam_date, { includeWeekday: true })
+          : ETSE_CONFIG.fullDisplay,
         examTime: `${exam.exam_time || "10:00 AM – 12:00 PM"} (Reporting: ${exam.reporting_time || "09:30 AM"})`,
         examCentre: centre.centre_name ? `${centre.centre_name}, ${centre.city || "Mathura"}` : "Emprise Academy Campus, Mathura",
         centreAddress: centre.address || "Mathura, Uttar Pradesh",

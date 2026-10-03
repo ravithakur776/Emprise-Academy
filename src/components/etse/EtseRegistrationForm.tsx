@@ -13,6 +13,7 @@ import { Input, Select } from "@/components/ui/form/Input";
 import { PhoneField } from "@/components/ui/form/SpecializedFields";
 import { useToast } from "@/components/ui/toast/ToastProvider";
 import { createClientBrowser } from "@/lib/supabase/client";
+import { ETSE_CONFIG, formatEtseExamDate } from "@/config/etse";
 import {
   Send,
   UserCheck,
@@ -58,7 +59,7 @@ export const EtseRegistrationForm: React.FC = () => {
   const [examCentreId, setExamCentreId] = useState<string | null>(null);
   const [examInfo, setExamInfo] = useState({
     title: "Emprise Talent Search Examination (ETSE) 2026",
-    examDate: "Sunday, 27 September 2026",
+    examDate: ETSE_CONFIG.fullDisplay,
     reportingTime: "09:30 AM",
     examTime: "10:00 AM – 12:00 PM",
     centreName: "Emprise Academy Mathura",
@@ -98,14 +99,7 @@ export const EtseRegistrationForm: React.FC = () => {
           setExamInfo((prev) => ({
             ...prev,
             title: ex.title || prev.title,
-            examDate: ex.exam_date
-              ? new Date(ex.exam_date).toLocaleDateString("en-IN", {
-                  weekday: "long",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })
-              : prev.examDate,
+            examDate: formatEtseExamDate(ex.exam_date, { includeWeekday: true }),
             reportingTime: ex.reporting_time || "09:30 AM",
             examTime: ex.exam_time || "10:00 AM – 12:00 PM",
           }));

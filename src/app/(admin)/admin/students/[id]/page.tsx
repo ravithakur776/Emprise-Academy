@@ -3,6 +3,7 @@ import Link from "next/link";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
+import { ETSE_CONFIG } from "@/config/etse";
 import {
   ArrowLeft,
   User,
@@ -47,7 +48,7 @@ export default async function AdminStudentDetailPage({
     etseApplication: {
       applicationNo: "ETSE2026-000100",
       rollNumber: "26080100",
-      examDate: "27 September 2026",
+      examDate: ETSE_CONFIG.examDateDisplay,
       status: "CONFIRMED",
       admitCardStatus: "PUBLISHED",
     },

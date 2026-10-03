@@ -17,6 +17,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { useToast } from "@/components/ui/toast/ToastProvider";
+import { ETSE_CONFIG } from "@/config/etse";
 
 interface EtseRegistrationItem {
   id: string;
@@ -102,7 +103,7 @@ export default function AdminEtsePage() {
 
           <div className="flex items-center gap-3">
             <span className="text-xs px-3 py-1.5 rounded-xl bg-amber-100 text-amber-900 font-bold border border-amber-200">
-              Exam Date: 27 September 2026
+              Exam Date: {ETSE_CONFIG.examDateDisplay}
             </span>
 
             <Button

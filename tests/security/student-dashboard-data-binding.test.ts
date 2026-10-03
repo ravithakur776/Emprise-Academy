@@ -151,7 +151,7 @@ async function runStudentDashboardTestSuite() {
     stream_interest: "Medical (NEET)",
     etse_exams: {
       title: "Emprise Talent Search Examination 2026",
-      exam_date: "2026-09-27",
+      exam_date: "2026-10-25",
       exam_time: "10:00 AM",
     },
     exam_centres: {

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
 import { createClientBrowser } from "@/lib/supabase/client";
 import { FileText, Calendar, Building, CheckCircle2, ArrowRight, Eye, CreditCard, RefreshCw } from "lucide-react";
+import { ETSE_CONFIG, formatEtseExamDate } from "@/config/etse";
 
 export default function StudentApplicationsPage() {
   const router = useRouter();
@@ -81,8 +82,8 @@ export default function StudentApplicationsPage() {
               year: "numeric",
             }),
             examDate: exam.exam_date
-              ? `${new Date(exam.exam_date).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })} (${exam.exam_time || "10:00 AM"})`
-              : "27 September 2026 (10:00 AM – 12:00 PM)",
+              ? `${formatEtseExamDate(exam.exam_date)} (${exam.exam_time || "10:00 AM – 12:00 PM"})`
+              : `${ETSE_CONFIG.examDateDisplay} (10:00 AM – 12:00 PM)`,
             status: r.status || "CONFIRMED",
             classEnrolled: r.current_class || currentClass,
             stream: r.stream_interest || "Foundation (Science & Mathematics)",

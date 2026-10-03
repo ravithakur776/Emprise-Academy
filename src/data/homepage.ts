@@ -4,6 +4,7 @@
  */
 
 import { CANONICAL_BUSINESS_CONFIG } from "@/config/business";
+import { ETSE_CONFIG } from "@/config/etse";
 import { DIRECTORS_DATA } from "@/data/directors";
 
 export interface HeroSlide {
@@ -125,10 +126,10 @@ export interface HomepageFAQ {
 export const HOMEPAGE_DATA = {
   announcement: {
     badge: "ETSE",
-    text: "Emprise Talent Search Examination • Exam on 27 September 2026 • 100% Free Registration Open for Classes 7th to 10th",
+    text: `Emprise Talent Search Examination • Exam on ${ETSE_CONFIG.examDateDisplay} • 100% Free Registration Open for Classes 7th to 10th`,
     ctaText: "Register Now →",
     ctaHref: "/etse-2026#register",
-    examDate: "27 September 2026",
+    examDate: ETSE_CONFIG.examDateDisplay,
     eligibleClasses: "Classes 7th to 10th",
     fee: "100% FREE",
   },
@@ -498,7 +499,7 @@ export const HOMEPAGE_DATA = {
   etseFeature: {
     heading: "Emprise Talent Search Examination 2026",
     subheading: "A standardized benchmark to test conceptual aptitude, discover academic potential, and earn merit scholarships.",
-    examDate: "27 September 2026",
+    examDate: ETSE_CONFIG.examDateDisplay,
     examTime: "10:00 AM – 12:00 PM",
     reportingTime: "09:30 AM",
     eligibility: "Students currently in Classes 7th, 8th, 9th & 10th",
@@ -929,10 +930,10 @@ export const HOMEPAGE_DATA = {
   latestUpdates: [
     {
       id: "up-1",
-      date: "27 Sep 2026",
+      date: ETSE_CONFIG.shortDateDisplay,
       category: "ETSE",
       title: "ETSE 2026 Examination Date Confirmed",
-      preview: "Emprise Talent Search Examination will be conducted offline at the Mathura campus on 27 September 2026. Free registration is currently open.",
+      preview: `Emprise Talent Search Examination will be conducted offline at the Mathura campus on ${ETSE_CONFIG.examDateDisplay}. Free registration is currently open.`,
       href: "/etse-2026",
       isImportant: true,
     },

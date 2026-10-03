@@ -18,6 +18,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ETSE_CONFIG } from "@/config/etse";
 import type { DashboardMetrics, DashboardRecentLead, LeadSourceStat } from "@/services/dashboard.service";
 
 export default function AdminDashboardPage() {
@@ -170,7 +171,7 @@ export default function AdminDashboardPage() {
                 ETSE 2026 Registrations (Classes 7–10)
               </h3>
               <p className="text-xs text-slate-400 mt-1">
-                Exam on 27 Sept 2026. {metrics.etseRegistrations} candidate applications recorded.
+                Exam on {ETSE_CONFIG.shortDateDisplay}. {metrics.etseRegistrations} candidate applications recorded.
               </p>
             </div>
             <Link href="/admin/etse">

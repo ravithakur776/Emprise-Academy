@@ -49,7 +49,7 @@
 | :--- | :--- | :--- | :---: | :--- |
 | `etse.name` | **VERIFIED_OFFICIAL** | `CANONICAL_BUSINESS_CONFIG.etse.name` | **YES** | `"Emprise Talent Search Examination"` |
 | `etse.short_name` | **VERIFIED_OFFICIAL** | `CANONICAL_BUSINESS_CONFIG.etse.short_name` | **YES** | `"ETSE 2026"` |
-| `etse.exam_date` | **VERIFIED_OFFICIAL** | `CANONICAL_BUSINESS_CONFIG.etse.exam_date` | **YES** | `"27 September 2026"` |
+| `etse.exam_date` | **VERIFIED_OFFICIAL** | `CANONICAL_BUSINESS_CONFIG.etse.exam_date` | **YES** | `"25 October 2026"` |
 | `etse.eligible_classes`| **VERIFIED_OFFICIAL** | `CANONICAL_BUSINESS_CONFIG.etse.eligible_classes`| **YES** | `["Class 7", "Class 8", "Class 9", "Class 10"]` |
 | `etse.fee` | **VERIFIED_OFFICIAL** | `CANONICAL_BUSINESS_CONFIG.etse.fee` | **YES** | `"FREE"` |
 | `etse.mode` | **VERIFIED_OFFICIAL** | `CANONICAL_BUSINESS_CONFIG.etse.mode` | **YES** | `"Offline (Pen & Paper)"` |

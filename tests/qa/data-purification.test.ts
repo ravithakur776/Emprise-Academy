@@ -122,10 +122,10 @@ async function runDataPurificationTests() {
   if (CANONICAL_BUSINESS_CONFIG.etse.short_name !== "ETSE 2026") {
     throw new Error(`Invalid ETSE short name: ${CANONICAL_BUSINESS_CONFIG.etse.short_name}`);
   }
-  if (CANONICAL_BUSINESS_CONFIG.etse.exam_date !== "27 September 2026") {
+  if (CANONICAL_BUSINESS_CONFIG.etse.exam_date !== "25 October 2026") {
     throw new Error(`Invalid ETSE exam date: ${CANONICAL_BUSINESS_CONFIG.etse.exam_date}`);
   }
-  if (MAIN_ETSE_DATA.campaign.examDateDisplay !== "27 September 2026") {
+  if (MAIN_ETSE_DATA.campaign.examDateDisplay !== "25 October 2026") {
     throw new Error(`MAIN_ETSE_DATA exam date mismatch: ${MAIN_ETSE_DATA.campaign.examDateDisplay}`);
   }
   console.log(`✓ ETSE 2026 campaign specs verified: ${CANONICAL_BUSINESS_CONFIG.etse.exam_date}, Classes 7–10, ${CANONICAL_BUSINESS_CONFIG.etse.fee}.`);
@@ -150,7 +150,7 @@ async function runDataPurificationTests() {
   };
 
   const filesToCheck = [...getTsFiles(dataDir), ...getTsFiles(compDir)];
-  const staleDates = ["21 September 2025", "23 August 2026", "18 October 2026"];
+  const staleDates = ["21 September 2025", "23 August 2026", "18 October 2026", "27 September 2026", "06 September 2026"];
 
   for (const file of filesToCheck) {
     const content = fs.readFileSync(file, "utf-8");
