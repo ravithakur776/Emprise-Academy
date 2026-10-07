@@ -9,23 +9,22 @@ import { Heading } from "@/components/ui/typography/Heading";
 import { Text } from "@/components/ui/typography/Text";
 import { Badge } from "@/components/ui/badge/Badge";
 import { Button } from "@/components/ui/button/Button";
-import { ResultsHero } from "@/components/results/ResultsHero";
-import { ResultsDirectoryClient } from "@/components/results/ResultsDirectoryClient";
+import { ResultsShowcaseClient } from "@/components/results/ResultsShowcaseClient";
 import { StudentTestimonialsSection } from "@/components/results/StudentTestimonialsSection";
 import { ResultsJsonLd } from "@/components/results/ResultsJsonLd";
-import { MAIN_RESULTS_DATA, VERIFIED_RESULTS } from "@/data/results";
+import { MAIN_RESULTS_DATA } from "@/data/results";
 import { Trophy, GraduationCap, ArrowRight, ShieldCheck, Award } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: MAIN_RESULTS_DATA.meta.title,
-  description: MAIN_RESULTS_DATA.meta.description,
+  title: "Results That Speak For Themselves | Emprise Academy Mathura",
+  description: "Explore authentic historical JEE Advanced, NEET, Foundation, and Board result creatives from Emprise Academy Mathura. Real students, verified achievements.",
   keywords: [...MAIN_RESULTS_DATA.meta.keywords],
   alternates: {
     canonical: MAIN_RESULTS_DATA.meta.canonical,
   },
   openGraph: {
-    title: MAIN_RESULTS_DATA.meta.title,
-    description: MAIN_RESULTS_DATA.meta.description,
+    title: "Results That Speak For Themselves | Emprise Academy Mathura",
+    description: "Explore authentic historical JEE Advanced, NEET, Foundation, and Board result creatives from Emprise Academy Mathura.",
     url: MAIN_RESULTS_DATA.meta.canonical,
     siteName: "Emprise Academy",
     locale: "en_IN",
@@ -34,8 +33,6 @@ export const metadata: Metadata = {
 };
 
 export default function ResultsMainPage() {
-  const { hero } = MAIN_RESULTS_DATA;
-
   return (
     <ToastProvider>
       <div className="min-h-screen flex flex-col bg-[var(--brand-background)] text-[var(--brand-text)]">
@@ -53,24 +50,10 @@ export default function ResultsMainPage() {
         <Navbar />
 
         <main className="flex-1">
-          {/* 1. Hero Section */}
-          <ResultsHero
-            breadcrumbs={[
-              { label: "Home", href: "/" },
-              { label: "Verified Results" },
-            ]}
-            eyebrow={hero.eyebrow}
-            h1={hero.h1}
-            subheading={hero.subheading}
-            paragraph={hero.paragraph}
-            primaryCta={hero.primaryCta}
-            secondaryCta={hero.secondaryCta}
-          />
+          {/* Premium Results Showcase with Real Creatives, Galleries, Stories & Verification Gateway */}
+          <ResultsShowcaseClient />
 
-          {/* 2. Interactive Selection Roster & Scorecard Verification */}
-          <ResultsDirectoryClient resultsList={VERIFIED_RESULTS} />
-
-          {/* 3. Authentic Student & Parent Testimonials */}
+          {/* Authentic Student & Parent Testimonials */}
           <StudentTestimonialsSection />
 
           {/* 4. Programme Preparation Gateway */}

@@ -1,8 +1,9 @@
 import { MetadataRoute } from "next";
 import { OFFICIAL_BLOG_POSTS } from "@/data/blog";
+import { getSiteUrl } from "@/config/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://empriseacademy.com";
+  const baseUrl = getSiteUrl();
   const lastModified = new Date();
 
   // Core verified, canonical indexable public pages

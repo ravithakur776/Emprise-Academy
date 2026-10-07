@@ -1,7 +1,8 @@
 import { MetadataRoute } from "next";
+import { getSiteUrl } from "@/config/site";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://empriseacademy.com";
+  const baseUrl = getSiteUrl();
 
   return {
     rules: [
@@ -21,6 +22,10 @@ export default function robots(): MetadataRoute.Robots {
           "/verify-result/",
           "/_next/",
         ],
+      },
+      {
+        userAgent: "Meta-ExternalAgent",
+        disallow: ["/"],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
