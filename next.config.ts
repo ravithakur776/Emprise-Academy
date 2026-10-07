@@ -1,9 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Canonical redirect for Directors destination under About architecture
+  // Canonical redirects
   async redirects() {
     return [
+      {
+        source: "/home",
+        destination: "/",
+        permanent: true,
+      },
       {
         source: "/directors",
         destination: "/about/directors",

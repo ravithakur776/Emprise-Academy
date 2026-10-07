@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAnyRole } from "@/lib/auth-helpers";
+import { handleApiError } from "@/lib/api-response";
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAnyRole(["SUPER_ADMIN", "DIRECTOR", "ADMISSION_ADMIN", "COUNSELLOR"]);
+
     const { id } = await params;
     const supabase = createAdminClient();
 
@@ -65,11 +69,8 @@ export async function GET(
     };
 
     return NextResponse.json({ success: true, data: lead });
-  } catch {
-    return NextResponse.json(
-      { success: false, error: "Failed to fetch lead" },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleApiError(error);
   }
 }
 
@@ -78,6 +79,8 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    await requireAnyRole(["SUPER_ADMIN", "DIRECTOR", "ADMISSION_ADMIN", "COUNSELLOR"]);
+
     const { id } = await params;
     const body = await request.json();
     const supabase = createAdminClient();
@@ -104,10 +107,7 @@ export async function PATCH(
     }
 
     return NextResponse.json({ success: true, data });
-  } catch {
-    return NextResponse.json(
-      { success: false, error: "Internal server error" },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleApiError(error);
   }
 }

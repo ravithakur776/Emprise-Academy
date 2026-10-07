@@ -1,8 +1,19 @@
 import { NextResponse } from "next/server";
 import { DashboardService } from "@/services/dashboard.service";
+import { requireAnyRole } from "@/lib/auth-helpers";
+import { handleApiError } from "@/lib/api-response";
 
 export async function GET() {
   try {
+    await requireAnyRole([
+      "SUPER_ADMIN",
+      "DIRECTOR",
+      "ADMISSION_ADMIN",
+      "COUNSELLOR",
+      "EXAM_ADMIN",
+      "CONTENT_MANAGER",
+    ]);
+
     const [metrics, recentLeads, sourceBreakdown] = await Promise.all([
       DashboardService.getMetrics(),
       DashboardService.getRecentLeads(5),
@@ -17,26 +28,7 @@ export async function GET() {
         sourceBreakdown,
       },
     });
-  } catch {
-    return NextResponse.json(
-      {
-        success: false,
-        error: "Failed to load dashboard metrics",
-        data: {
-          metrics: {
-            totalLeads: 0,
-            newLeads: 0,
-            todaysFollowups: 0,
-            pendingCounselling: 0,
-            admissionsThisPeriod: 0,
-            etseRegistrations: 0,
-            conversionRate: 0,
-          },
-          recentLeads: [],
-          sourceBreakdown: [],
-        },
-      },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleApiError(error);
   }
 }

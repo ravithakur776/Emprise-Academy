@@ -3,6 +3,18 @@ import { NextResponse, type NextRequest } from "next/server";
 import { Database } from "@/types/database";
 
 export async function updateSession(request: NextRequest) {
+  const path = request.nextUrl.pathname;
+  const isProtectedPath = path.startsWith("/admin") || path.startsWith("/student");
+  const hasAuthCookie = request.cookies.getAll().some(
+    (c) => c.name.startsWith("sb-") || c.name.includes("token")
+  );
+
+  // Fast-path bypass: If accessing a public route with no auth cookies present,
+  // avoid initializing Supabase client and network session checks.
+  if (!isProtectedPath && !hasAuthCookie) {
+    return NextResponse.next({ request });
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   });
@@ -31,8 +43,6 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const path = request.nextUrl.pathname;
 
   // Helper to construct redirect with cookies preserved
   const createRedirectWithCookies = (targetUrl: URL) => {
