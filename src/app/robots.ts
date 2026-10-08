@@ -1,33 +1,39 @@
 import { MetadataRoute } from "next";
-import { getSiteUrl } from "@/config/site";
+
+const PRIVATE_DISALLOW_PATHS = [
+  "/admin",
+  "/admin/",
+  "/student",
+  "/student/",
+  "/api",
+  "/api/",
+  "/verify-admit-card",
+  "/verify-admit-card/",
+  "/verify-result",
+  "/verify-result/",
+  "/_next/",
+];
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = getSiteUrl();
-
   return {
     rules: [
       {
         userAgent: "*",
         allow: "/",
-        disallow: [
-          "/admin",
-          "/admin/",
-          "/student",
-          "/student/",
-          "/api",
-          "/api/",
-          "/verify-admit-card",
-          "/verify-admit-card/",
-          "/verify-result",
-          "/verify-result/",
-          "/_next/",
-        ],
+        disallow: PRIVATE_DISALLOW_PATHS,
       },
       {
         userAgent: "Meta-ExternalAgent",
         disallow: ["/"],
       },
+      {
+        userAgent: "Bingbot",
+        allow: "/",
+        disallow: PRIVATE_DISALLOW_PATHS,
+        crawlDelay: 5,
+      },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: "https://www.empriseacademy.com/sitemap.xml",
   };
 }
+
